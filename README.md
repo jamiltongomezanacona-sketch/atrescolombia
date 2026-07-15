@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ATRES
 
-## Getting Started
+Tienda oficial de moda ATRES construida con Next.js, TypeScript y Tailwind CSS.
 
-First, run the development server:
+## Estado actual
+
+La aplicacion funciona como una sola tienda de moda:
+
+- Home comercial mobile-first.
+- Catalogo completo.
+- Categorias visuales.
+- Busqueda.
+- Promociones.
+- Novedades.
+- Favoritos demo con `localStorage`.
+- Carrito demo con `localStorage`.
+- Detalle de producto con tallas, colores, cantidad y acciones de compra demo.
+
+## Comandos
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Rutas principales
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `/`
+- `/productos`
+- `/productos/vestido-lino-brisa`
+- `/categorias/mujer`
+- `/buscar?q=jean`
+- `/promociones`
+- `/novedades`
+- `/favoritos`
+- `/carrito`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Datos
 
-## Learn More
+Los productos y categorias demo viven en `src/lib/store-data.ts`.
 
-To learn more about Next.js, take a look at the following resources:
+La autenticacion del panel admin queda preparada con Supabase Auth. No hay pagos reales en esta fase.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Panel administrativo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Rutas:
 
-## Deploy on Vercel
+- `/admin/login`
+- `/admin`
+- `/admin/productos`
+- `/admin/productos/nuevo`
+- `/admin/categorias`
+- `/admin/banners`
+- `/admin/promociones`
+- `/admin/configuracion`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Para habilitar Supabase:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Copia `.env.example` a `.env.local`.
+2. Define `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+3. Ejecuta `supabase/migrations/0001_atres_admin_schema.sql` en Supabase.
+4. Crea el usuario admin en Supabase Auth.
+5. Inserta ese usuario en `public.profiles` con `role = 'admin'`.
+
+La migracion esta preparada para un proyecto Supabase existente. Si ya hay tablas anteriores como `businesses` o `business_members`, no las borra ni las modifica: quedan como legado del modelo anterior y la tienda oficial ATRES trabaja sobre `products`, `categories`, `product_images`, `banners`, `promotions` y `store_settings`. No uses reset de base de datos para esta fase.
+
+La tienda publica usa Supabase cuando esta configurado y mantiene fallback local para desarrollo.

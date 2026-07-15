@@ -122,7 +122,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-11 items-center justify-center rounded-full bg-white px-4 text-sm font-black text-ink ring-1 ring-black/10 transition hover:bg-black hover:text-white"
+        className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-black px-4 text-xs font-black text-white shadow-sm transition hover:bg-stone-800"
         aria-label={
           open ? "Cerrar filtros" : activeCount > 0 ? `Abrir filtros (${activeCount})` : "Abrir filtros"
         }
@@ -130,6 +130,11 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         aria-expanded={open}
         aria-controls="atres-filter-drawer"
       >
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <path d="M4 6h16" />
+          <path d="M7 12h10" />
+          <path d="M10 18h4" />
+        </svg>
         Filtros{activeCount > 0 ? ` (${activeCount})` : ""}
       </button>
       {panel}

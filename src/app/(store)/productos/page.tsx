@@ -62,8 +62,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         <QuickFilters items={navItems} />
       </section>
 
-      <section className="catalog-container py-6 md:py-8">
-        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+      <section className="catalog-container py-4 md:py-6">
+        <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-xs font-black uppercase text-brand">Catalogo ATRES</p>
             <h1 className="mt-1 text-3xl font-black tracking-tight text-ink md:text-4xl">Todos los productos</h1>
@@ -71,14 +71,16 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               Filtra por categoria, talla, color, oferta y disponibilidad con los datos reales del catalogo.
             </p>
           </div>
-          <FilterDrawer filters={filters} options={options} />
         </div>
 
         <div>
-            <GlassPanel className="mb-5 flex flex-wrap items-center justify-between gap-3 px-3 py-3">
-              <p className="text-sm font-black text-stone-700">
-                {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
-              </p>
+            <GlassPanel className="mb-4 flex flex-wrap items-center justify-between gap-3 px-3 py-3">
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-black text-stone-700">
+                  {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
+                </p>
+                <FilterDrawer filters={filters} options={options} />
+              </div>
               <div className="flex flex-wrap gap-2">
                 {orderLinks.map((link) => {
                   const active = (filters.orden ?? "relevancia") === link.value;

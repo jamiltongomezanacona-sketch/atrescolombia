@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
-import { categories, products } from "@/lib/store-data";
+import { getPublicCategories, getPublicProducts } from "@/lib/public-store";
 
 const baseUrl = "https://atrescolombia.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [categories, products] = await Promise.all([getPublicCategories(), getPublicProducts()]);
+
   return [
     "",
     "/productos",

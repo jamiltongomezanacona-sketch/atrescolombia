@@ -192,17 +192,17 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
             <div className="mt-2 grid gap-2">
               {image.is_primary ? <p className="bg-emerald-50 px-2 py-1 text-xs font-black text-emerald-700">Principal</p> : null}
               <div className="grid grid-cols-2 gap-1">
-                <button onClick={() => moveImage(image, -1)} disabled={index === 0} className="bg-zinc-100 px-2 py-1 text-xs font-black disabled:opacity-40">
+                <button onClick={() => moveImage(image, -1)} disabled={index === 0} className="min-h-11 bg-zinc-100 px-2 py-1 text-xs font-black disabled:opacity-40">
                   Subir
                 </button>
-                <button onClick={() => moveImage(image, 1)} disabled={index === sortedItems.length - 1} className="bg-zinc-100 px-2 py-1 text-xs font-black disabled:opacity-40">
+                <button onClick={() => moveImage(image, 1)} disabled={index === sortedItems.length - 1} className="min-h-11 bg-zinc-100 px-2 py-1 text-xs font-black disabled:opacity-40">
                   Bajar
                 </button>
               </div>
-              <button onClick={() => setPrimary(image)} className="bg-black px-2 py-1 text-xs font-black text-white">
+              <button onClick={() => setPrimary(image)} className="min-h-11 bg-black px-2 py-1 text-xs font-black text-white">
                 Principal
               </button>
-              <button onClick={() => deleteImage(image)} className="bg-red-50 px-2 py-1 text-xs font-black text-red-700">
+              <button onClick={() => deleteImage(image)} className="min-h-11 bg-red-50 px-2 py-1 text-xs font-black text-red-700">
                 Eliminar
               </button>
             </div>

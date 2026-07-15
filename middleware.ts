@@ -39,6 +39,16 @@ export async function middleware(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  let isAdmin = false;
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+    isAdmin = profile?.role === "admin";
+  }
 
   if (!user && !isLoginRoute) {
     const url = request.nextUrl.clone();
@@ -47,7 +57,14 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (user && isLoginRoute) {
+  if (user && !isAdmin && !isLoginRoute) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin/login";
+    url.searchParams.set("unauthorized", "1");
+    return NextResponse.redirect(url);
+  }
+
+  if (user && isAdmin && isLoginRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin";
     return NextResponse.redirect(url);

@@ -27,6 +27,8 @@ import {
   type Promo,
 } from "@/lib/store-data";
 
+const ATRES_PLACEHOLDER_IMAGE = "/icono.png";
+
 type SupabaseCategoryRow = {
   id: string;
   slug: string;
@@ -85,7 +87,7 @@ export async function getPublicCategories(): Promise<StoreCategory[]> {
       .order("display_order", { ascending: true });
 
     if (error || !data?.length) {
-      return fallbackCategories.map(mapFallbackCategory);
+      return [];
     }
 
     const slugById = new Map(
@@ -94,7 +96,7 @@ export async function getPublicCategories(): Promise<StoreCategory[]> {
 
     return (data as SupabaseCategoryRow[]).map((category) => mapCategoryRow(category, slugById));
   } catch {
-    return fallbackCategories.map(mapFallbackCategory);
+    return [];
   }
 }
 
@@ -152,13 +154,7 @@ export async function getPublicCategoryBySlug(slug: string): Promise<StoreCatego
       shortName: departmentLabel,
       description: `Explora ${departmentLabel} en ATRES. Subcategorias y productos del departamento.`,
       image:
-        departmentKey === "hogar"
-          ? "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
-          : departmentKey === "ninos"
-            ? "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=1200&q=80"
-            : departmentKey === "mujer"
-              ? "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=1200&q=80"
-              : "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1200&q=80",
+        ATRES_PLACEHOLDER_IMAGE,
       parentId: null,
     };
   }
@@ -316,18 +312,18 @@ export async function getPublicPromos(): Promise<Promo[]> {
       .limit(3);
 
     if (error || !data?.length) {
-      return promos;
+      return [];
     }
 
     return data.map((banner, index) => ({
       title: banner.title,
       subtitle: banner.subtitle,
       href: banner.link_url || "/productos",
-      image: banner.desktop_image_url ?? promos[index % promos.length].image,
+      image: banner.desktop_image_url ?? ATRES_PLACEHOLDER_IMAGE,
       tone: index === 0 ? "bg-promo text-black" : index === 1 ? "bg-black text-white" : "bg-white text-black",
     }));
   } catch {
-    return promos;
+    return [];
   }
 }
 
@@ -422,7 +418,7 @@ function mapCategoryRow(category: SupabaseCategoryRow, slugById: Map<string, str
     slug: category.slug,
     name: category.name,
     shortName: category.name.replace(/^Moda\s+/i, ""),
-    image: category.image_url ?? fallbackCategories[0].image,
+    image: category.image_url ?? ATRES_PLACEHOLDER_IMAGE,
     description: category.description ?? "",
     parentId: category.parent_id ?? null,
     parentSlug: category.parent_id ? slugById.get(category.parent_id) ?? null : null,
@@ -467,8 +463,8 @@ function mapProductRow(
     isPromo: row.is_promo,
     rating: 4.7,
     stock: row.inventory_total,
-    image: imageUrls[0] ?? fallbackProducts[0].image,
-    images: imageUrls.length ? imageUrls : fallbackProducts[0].images,
+    image: imageUrls[0] ?? ATRES_PLACEHOLDER_IMAGE,
+    images: imageUrls.length ? imageUrls : [ATRES_PLACEHOLDER_IMAGE],
     colors: colors.length ? colors : ["Unico"],
     sizes: sizes.length ? sizes : ["Unica"],
     description: row.description || row.short_description || row.name,

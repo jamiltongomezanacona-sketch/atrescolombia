@@ -342,17 +342,17 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
                   ) : null}
                 </div>
                 <div className="mt-2 grid gap-2">
-                  <button type="button" onClick={() => setPrimary(image.id)} className="h-9 bg-black text-xs font-black text-white">
+                  <button type="button" onClick={() => setPrimary(image.id)} className="h-11 bg-black text-xs font-black text-white">
                     Usar como principal
                   </button>
                   <div className="grid grid-cols-3 gap-1">
-                    <button type="button" onClick={() => moveImage(image.id, -1)} disabled={index === 0} className="h-9 bg-zinc-100 text-xs font-black disabled:opacity-40">
+                    <button type="button" onClick={() => moveImage(image.id, -1)} disabled={index === 0} className="h-11 bg-zinc-100 text-xs font-black disabled:opacity-40">
                       Subir
                     </button>
-                    <button type="button" onClick={() => moveImage(image.id, 1)} disabled={index === images.length - 1} className="h-9 bg-zinc-100 text-xs font-black disabled:opacity-40">
+                    <button type="button" onClick={() => moveImage(image.id, 1)} disabled={index === images.length - 1} className="h-11 bg-zinc-100 text-xs font-black disabled:opacity-40">
                       Bajar
                     </button>
-                    <button type="button" onClick={() => removeImage(image.id)} className="h-9 bg-red-50 text-xs font-black text-red-700">
+                    <button type="button" onClick={() => removeImage(image.id)} className="h-11 bg-red-50 text-xs font-black text-red-700">
                       Quitar
                     </button>
                   </div>

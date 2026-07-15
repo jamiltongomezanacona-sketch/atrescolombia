@@ -230,7 +230,14 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
       setProgress("");
       setMessage({
         type: "ok",
-        text: mode === "another" ? "Producto guardado. Listo para cargar el siguiente." : "Producto guardado correctamente.",
+        text:
+          saveStatus === "active"
+            ? mode === "another"
+              ? "Producto publicado. Listo para cargar el siguiente."
+              : "Producto publicado correctamente. Ya debe aparecer en la tienda."
+            : mode === "another"
+              ? "Producto guardado como oculto. No aparece en la tienda hasta publicarlo. Listo para cargar el siguiente."
+              : "Producto guardado como oculto. No aparece en la tienda hasta cambiarlo a Publicado.",
         productId: createdProductId,
       });
 
@@ -400,6 +407,9 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
               <option value="hidden">Oculto</option>
               <option value="active">Publicado</option>
             </select>
+            <span className="text-xs font-bold text-zinc-500">
+              Oculto solo queda en admin. Publicado aparece en la tienda.
+            </span>
           </Field>
         </div>
 

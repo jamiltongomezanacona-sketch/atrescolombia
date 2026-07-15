@@ -41,7 +41,7 @@ export function HeaderNav({ categories }: HeaderNavProps) {
               href={link.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "shrink-0 rounded-full px-3 py-2 transition",
+                "shrink-0 rounded-full px-3 py-2 capitalize transition",
                 active ? "bg-white text-black" : "text-white/90 hover:bg-white/10 hover:text-white",
               )}
             >

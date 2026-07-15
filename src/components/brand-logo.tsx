@@ -16,24 +16,38 @@ export function BrandLogo({
   dark = false,
   compact = false,
 }: BrandLogoProps) {
+  const size = compact ? 40 : 48;
+
   const content = (
     <>
-      <span className={`relative grid shrink-0 place-items-center overflow-hidden rounded-[10px] ${compact ? "size-10" : "size-12"} bg-white shadow-sm ring-1 ring-black/10`}>
+      <span
+        className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-[10px] bg-white shadow-sm ring-1 ring-black/10 ${
+          compact ? "h-10 w-10" : "h-12 w-12"
+        }`}
+      >
         <Image
           src="/icono.png"
           alt=""
-          fill
-          sizes={compact ? "40px" : "48px"}
+          width={size}
+          height={size}
           priority
-          className="object-contain p-1"
+          className="h-full w-full object-contain p-1"
         />
       </span>
       <span className="min-w-0">
-        <span className={`block font-black leading-none tracking-[0.18em] ${compact ? "text-xl" : "text-2xl"} ${dark ? "text-white" : "text-black"}`}>
+        <span
+          className={`block font-black leading-none tracking-[0.18em] ${compact ? "text-xl" : "text-2xl"} ${
+            dark ? "text-white" : "text-black"
+          }`}
+        >
           {label}
         </span>
         {sublabel ? (
-          <span className={`mt-1 block text-[10px] font-black uppercase tracking-wide ${dark ? "text-white/60" : "text-stone-500"}`}>
+          <span
+            className={`mt-1 block text-[10px] font-black uppercase tracking-wide ${
+              dark ? "text-white/60" : "text-stone-500"
+            }`}
+          >
             {sublabel}
           </span>
         ) : null}

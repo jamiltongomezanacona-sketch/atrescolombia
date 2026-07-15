@@ -2,6 +2,8 @@
 
 import { useActionState } from "react";
 import { signInAdmin } from "@/lib/admin/actions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const initialState = { ok: false, message: "" };
 
@@ -10,30 +12,16 @@ export function LoginForm() {
 
   return (
     <form action={formAction} className="grid gap-4">
-      <label className="grid gap-2 text-sm font-bold">
-        Correo
-        <input
-          name="email"
-          type="email"
-          required
-          className="h-11 border border-zinc-300 px-3 outline-none focus:border-black"
-        />
-      </label>
-      <label className="grid gap-2 text-sm font-bold">
-        Contrasena
-        <input
-          name="password"
-          type="password"
-          required
-          className="h-11 border border-zinc-300 px-3 outline-none focus:border-black"
-        />
-      </label>
+      <Input label="Correo" name="email" type="email" required className="rounded-none" />
+      <Input label="Contrasena" name="password" type="password" required className="rounded-none" />
       {state.message ? (
-        <p className="bg-red-50 p-3 text-sm font-bold text-red-700">{state.message}</p>
+        <p role="status" aria-live="polite" className="bg-red-50 p-3 text-sm font-bold text-red-700">
+          {state.message}
+        </p>
       ) : null}
-      <button disabled={pending} className="h-12 bg-black text-sm font-black text-white disabled:opacity-50">
+      <Button type="submit" disabled={pending} size="lg" className="rounded-none">
         {pending ? "Ingresando..." : "Ingresar"}
-      </button>
+      </Button>
     </form>
   );
 }

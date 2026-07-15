@@ -3,6 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { GlassPanel } from "@/components/ui/glass-panel";
+import { ProductPrice } from "@/components/ui/product-price";
 import { formatCOP, type Product } from "@/lib/store-data";
 
 type CartItem = {
@@ -77,8 +81,7 @@ export function CartView({ products }: CartViewProps) {
   function removeItem(target: CartItem) {
     persistCart(
       items.filter(
-        (item) =>
-          !(item.slug === target.slug && item.color === target.color && item.size === target.size),
+        (item) => !(item.slug === target.slug && item.color === target.color && item.size === target.size),
       ),
     );
   }
@@ -89,36 +92,37 @@ export function CartView({ products }: CartViewProps) {
 
   if (rows.length === 0) {
     return (
-      <div className="glass-surface rounded-lg p-8 text-center ring-1 ring-white/65">
-        <h2 className="text-2xl font-black">Tu carrito esta vacio</h2>
-        <p className="mt-2 text-sm font-semibold text-stone-500">
-          Agrega productos desde el detalle para verlos aqui.
-        </p>
-        <Link href="/productos" className="mt-5 inline-flex rounded-full bg-black px-5 py-3 text-sm font-black text-white">
-          Explorar productos
-        </Link>
-      </div>
+      <EmptyState
+        title="Tu carrito esta vacio"
+        description="Agrega productos desde el detalle para verlos aqui."
+        actionHref="/productos"
+        actionLabel="Explorar productos"
+      />
     );
   }
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
-      <div className="grid gap-3">
+      <div className="grid gap-3" role="status" aria-live="polite">
         {rows.map(({ item, product }) => (
-          <article key={`${item.slug}-${item.color}-${item.size}`} className="grid grid-cols-[96px_1fr] gap-3 rounded-lg bg-white/82 p-3 shadow-[0_18px_45px_rgba(18,18,18,0.06)] ring-1 ring-white/65 backdrop-blur">
-            <Link href={`/productos/${product.slug}`} className="relative aspect-square overflow-hidden rounded-lg bg-stone-100">
+          <article
+            key={`${item.slug}-${item.color}-${item.size}`}
+            className="grid grid-cols-[96px_1fr] gap-3 rounded-lg bg-white/85 p-3 shadow-soft ring-1 ring-white/65"
+          >
+            <Link
+              href={`/productos/${product.slug}`}
+              className="relative aspect-square overflow-hidden rounded-lg bg-surface-muted"
+            >
               <Image src={product.image} alt={product.name} fill sizes="96px" className="object-cover" />
             </Link>
             <div className="min-w-0">
-              <Link href={`/productos/${product.slug}`} className="line-clamp-2 text-base font-black">
+              <Link href={`/productos/${product.slug}`} className="line-clamp-2 text-base font-black text-ink">
                 {product.name}
               </Link>
               <p className="mt-1 text-xs font-bold text-stone-500">
                 {item.color} / {item.size}
               </p>
-              <p className="mt-3 text-lg font-black text-orange-600">
-                {formatCOP(product.price * item.quantity)}
-              </p>
+              <ProductPrice price={product.price * item.quantity} className="mt-3" />
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 <div className="grid grid-cols-[36px_44px_36px] overflow-hidden rounded-full bg-stone-100 text-center">
                   <button
@@ -153,19 +157,19 @@ export function CartView({ products }: CartViewProps) {
           </article>
         ))}
       </div>
-      <aside className="glass-surface rounded-lg p-5 ring-1 ring-white/65">
-        <h2 className="text-2xl font-black">Resumen</h2>
+      <GlassPanel as="aside" className="p-5">
+        <h2 className="text-2xl font-black text-ink">Resumen</h2>
         <div className="mt-4 flex items-center justify-between border-t border-black/10 pt-4">
           <span className="text-sm font-bold text-stone-500">Subtotal</span>
           <span className="text-xl font-black">{formatCOP(subtotal)}</span>
         </div>
-        <button className="mt-5 h-12 w-full rounded-full bg-orange-600 text-sm font-black text-white">
+        <Button variant="brand" size="lg" className="mt-5">
           Continuar compra
-        </button>
-        <button onClick={clearCart} className="mt-3 h-11 w-full rounded-full bg-stone-100 text-sm font-black text-stone-700">
+        </Button>
+        <Button variant="secondary" size="lg" className="mt-3 rounded-full" onClick={clearCart}>
           Vaciar carrito
-        </button>
-      </aside>
+        </Button>
+      </GlassPanel>
     </div>
   );
 }

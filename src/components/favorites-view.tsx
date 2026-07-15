@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ProductCard } from "@/components/product-card";
+import { EmptyState } from "@/components/ui/empty-state";
 import type { Product } from "@/lib/store-data";
 
 type FavoritesViewProps = {
@@ -39,17 +40,17 @@ export function FavoritesView({ products }: FavoritesViewProps) {
 
   if (favoriteProducts.length === 0) {
     return (
-      <div className="glass-surface rounded-lg p-8 text-center ring-1 ring-white/65">
-        <h2 className="text-2xl font-black">Aun no tienes favoritos</h2>
-        <p className="mt-2 text-sm font-semibold text-stone-500">
-          Marca productos como favoritos y apareceran aqui.
-        </p>
-      </div>
+      <EmptyState
+        title="Aun no tienes favoritos"
+        description="Marca productos como favoritos y apareceran aqui."
+        actionHref="/productos"
+        actionLabel="Explorar productos"
+      />
     );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4" aria-live="polite">
       {favoriteProducts.map((product) => (
         <ProductCard key={product.slug} product={product} />
       ))}

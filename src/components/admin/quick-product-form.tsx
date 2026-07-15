@@ -508,8 +508,8 @@ function CheckField({ label, checked, onChange }: { label: string; checked: bool
   );
 }
 
-const inputClass = "h-12 w-full border border-zinc-300 px-3 text-base outline-none focus:border-black";
-const textareaClass = "w-full border border-zinc-300 px-3 py-3 text-base outline-none focus:border-black";
+const inputClass = "h-12 w-full border border-zinc-300 px-3 text-base focus:border-black";
+const textareaClass = "w-full border border-zinc-300 px-3 py-3 text-base focus:border-black";
 
 function ensurePrimary(images: LocalImage[]) {
   if (!images.length || images.some((image) => image.isPrimary)) return images;

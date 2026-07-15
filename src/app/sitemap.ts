@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/productos",
     "/buscar",
+    "/categorias",
     "/ofertas",
     "/promociones",
     "/novedades",

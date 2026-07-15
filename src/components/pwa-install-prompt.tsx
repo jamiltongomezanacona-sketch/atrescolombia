@@ -87,11 +87,21 @@ export function PwaInstallPrompt() {
           </p>
           <div className="mt-3 flex gap-2">
             {installEvent ? (
-              <button onClick={install} className="rounded-full bg-white px-4 py-2 text-xs font-black text-black">
+              <button
+                type="button"
+                onClick={install}
+                aria-label="Instalar aplicacion ATRES"
+                className="rounded-full bg-white px-4 py-2 text-xs font-black text-black"
+              >
                 Instalar
               </button>
             ) : null}
-            <button onClick={dismiss} className="rounded-full bg-white/10 px-4 py-2 text-xs font-black text-white">
+            <button
+              type="button"
+              onClick={dismiss}
+              aria-label="Cerrar aviso de instalacion"
+              className="rounded-full bg-white/10 px-4 py-2 text-xs font-black text-white"
+            >
               Ahora no
             </button>
           </div>

@@ -21,7 +21,7 @@ export function ProductForm({
           <select
             name="category_id"
             defaultValue={product?.category_id ?? ""}
-            className="h-11 border border-zinc-300 px-3 outline-none focus:border-black"
+            className="h-11 border border-zinc-300 px-3 focus:border-black"
           >
             <option value="">Sin categoria</option>
             {categories.map((category) => (
@@ -43,7 +43,7 @@ export function ProductForm({
           <select
             name="status"
             defaultValue={product?.status ?? "hidden"}
-            className="h-11 border border-zinc-300 px-3 outline-none focus:border-black"
+            className="h-11 border border-zinc-300 px-3 focus:border-black"
           >
             <option value="active">Activo</option>
             <option value="hidden">Oculto</option>

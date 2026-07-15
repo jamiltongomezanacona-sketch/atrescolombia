@@ -200,7 +200,7 @@ export async function getPublicPromos(): Promise<Promo[]> {
       subtitle: banner.subtitle,
       href: banner.link_url || "/productos",
       image: banner.desktop_image_url ?? promos[index % promos.length].image,
-      tone: index === 0 ? "bg-[#ffea61] text-black" : index === 1 ? "bg-black text-white" : "bg-white text-black",
+      tone: index === 0 ? "bg-promo text-black" : index === 1 ? "bg-black text-white" : "bg-white text-black",
     }));
   } catch {
     return promos;

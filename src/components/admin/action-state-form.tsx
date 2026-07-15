@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input, TextArea } from "@/components/ui/input";
 
 type State = {
   ok: boolean;
@@ -22,13 +24,17 @@ export function ActionStateForm({ action, children, submitLabel }: ActionStateFo
     <form action={formAction} className="grid gap-4">
       {children}
       {state.message ? (
-        <p className={`${state.ok ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"} p-3 text-sm font-bold`}>
+        <p
+          role="status"
+          aria-live="polite"
+          className={`${state.ok ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"} p-3 text-sm font-bold`}
+        >
           {state.message}
         </p>
       ) : null}
-      <button disabled={pending} className="h-11 bg-black px-4 text-sm font-black text-white disabled:opacity-50">
+      <Button type="submit" disabled={pending} className="rounded-none">
         {pending ? "Guardando..." : submitLabel}
-      </button>
+      </Button>
     </form>
   );
 }
@@ -47,16 +53,14 @@ export function TextField({
   required?: boolean;
 }) {
   return (
-    <label className="grid gap-2 text-sm font-bold">
-      {label}
-      <input
-        name={name}
-        type={type}
-        required={required}
-        defaultValue={defaultValue ?? ""}
-        className="h-11 border border-zinc-300 px-3 outline-none focus:border-black"
-      />
-    </label>
+    <Input
+      label={label}
+      name={name}
+      type={type}
+      required={required}
+      defaultValue={defaultValue ?? ""}
+      className="rounded-none"
+    />
   );
 }
 
@@ -70,14 +74,6 @@ export function TextAreaField({
   defaultValue?: string | null;
 }) {
   return (
-    <label className="grid gap-2 text-sm font-bold">
-      {label}
-      <textarea
-        name={name}
-        defaultValue={defaultValue ?? ""}
-        rows={4}
-        className="border border-zinc-300 px-3 py-2 outline-none focus:border-black"
-      />
-    </label>
+    <TextArea label={label} name={name} defaultValue={defaultValue ?? ""} rows={4} className="rounded-none" />
   );
 }

@@ -408,7 +408,7 @@ export const promos: Promo[] = [
     href: "/ofertas",
     image:
       "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1200&q=80",
-    tone: "bg-[#ffea61] text-black",
+    tone: "bg-promo text-black",
   },
   {
     title: "Novedades de la semana",

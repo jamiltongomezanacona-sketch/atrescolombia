@@ -20,7 +20,7 @@ const defaultTheme: CategoryVisualTheme = {
   heroImage: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=1200&q=80",
   washClass: "bg-[linear-gradient(135deg,#f7f3ec_0%,#fff7ed_42%,#dbeafe_100%)]",
   panelClass: "bg-white/[0.74] text-[#171717] ring-black/10",
-  accentClass: "text-[#ff4d00]",
+  accentClass: "text-brand",
   textClass: "text-[#171717]",
   mutedTextClass: "text-stone-600",
   chips: ["Novedad", "Oferta", "Top ventas", "Para ti"],

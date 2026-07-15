@@ -4,4 +4,4 @@ export {
   default,
   generateMetadata,
   generateStaticParams,
-} from "@/app/categorias/[slug]/page";
+} from "@/app/(store)/categorias/[slug]/page";

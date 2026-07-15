@@ -3,13 +3,37 @@
 :root {
   --background: #f7f4ef;
   --foreground: #1c1917;
+  --brand: #ff4d00;
+  --brand-hover: #e64500;
+  --promo: #ffea61;
+  --ink: #111111;
+  --ink-muted: #57534e;
+  --surface: #ffffff;
+  --surface-muted: #efedea;
+  --ring: #f97316;
+  --shadow-soft: 0 18px 45px rgba(18, 18, 18, 0.06);
+  --shadow-lift: 0 24px 58px rgba(18, 18, 18, 0.12);
+  --radius-card: 0.5rem;
+  --content-max: 1350px;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-promo: var(--promo);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-ring: var(--ring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --shadow-soft: var(--shadow-soft);
+  --shadow-lift: var(--shadow-lift);
+  --radius-card: var(--radius-card);
+  --max-width-content: var(--content-max);
 }
 
 * {
@@ -45,8 +69,10 @@ a {
 
 button:focus-visible,
 a:focus-visible,
-input:focus-visible {
-  outline: 3px solid #f97316;
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--ring);
   outline-offset: 3px;
 }
 
@@ -58,7 +84,7 @@ input:focus-visible {
 .store-surface {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(247, 244, 239, 0.88) 38%, rgba(241, 237, 229, 0.96) 100%),
-    linear-gradient(125deg, rgba(250, 204, 21, 0.12) 0%, rgba(255, 255, 255, 0) 34%, rgba(147, 197, 253, 0.12) 100%);
+    linear-gradient(125deg, rgba(250, 204, 21, 0.1) 0%, rgba(255, 255, 255, 0) 34%, rgba(147, 197, 253, 0.1) 100%);
 }
 
 .soft-section {
@@ -74,7 +100,54 @@ input:focus-visible {
 }
 
 .glass-surface {
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 18px 55px rgba(38, 34, 30, 0.08);
-  backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(8px);
+}
+
+.store-container {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .store-container {
+    padding-inline: 1rem;
+  }
+}
+
+.product-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 46%;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0.25rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.product-rail > * {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 640px) {
+  .product-rail {
+    grid-auto-columns: 30%;
+  }
+}
+
+@media (min-width: 768px) {
+  .product-rail {
+    display: grid;
+    grid-auto-flow: unset;
+    grid-auto-columns: unset;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    overflow: visible;
+    scroll-snap-type: none;
+  }
 }

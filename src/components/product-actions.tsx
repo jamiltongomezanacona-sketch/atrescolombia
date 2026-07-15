@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FavoriteButton } from "@/components/favorite-button";
+import { Button } from "@/components/ui/button";
 import type { Product } from "@/lib/store-data";
 
 type ProductActionsProps = {
@@ -81,19 +82,19 @@ export function ProductActions({ product }: ProductActionsProps) {
 
       <div>
         <p className="mb-2 text-xs font-black uppercase text-stone-500">Cantidad</p>
-        <div className="inline-grid grid-cols-[44px_54px_44px] bg-stone-100 text-center">
+        <div className="inline-grid grid-cols-[44px_54px_44px] rounded-full bg-stone-100 text-center">
           <button
             type="button"
+            aria-label="Reducir cantidad"
             className="h-11 font-black"
             onClick={() => setQuantity((current) => Math.max(1, current - 1))}
           >
             -
           </button>
-          <span className="flex h-11 items-center justify-center bg-white text-sm font-black">
-            {quantity}
-          </span>
+          <span className="flex h-11 items-center justify-center bg-white text-sm font-black">{quantity}</span>
           <button
             type="button"
+            aria-label="Aumentar cantidad"
             className="h-11 font-black"
             onClick={() => setQuantity((current) => Math.min(9, current + 1))}
           >
@@ -103,20 +104,12 @@ export function ProductActions({ product }: ProductActionsProps) {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
-        <button
-          type="button"
-          onClick={() => addToCart(false)}
-          className="h-12 bg-black px-4 text-sm font-black text-white transition hover:bg-stone-800"
-        >
+        <Button type="button" onClick={() => addToCart(false)} className="rounded-full">
           Agregar al carrito
-        </button>
-        <button
-          type="button"
-          onClick={() => addToCart(true)}
-          className="h-12 bg-orange-600 px-4 text-sm font-black text-white transition hover:bg-orange-500"
-        >
+        </Button>
+        <Button type="button" variant="brand" onClick={() => addToCart(true)} className="rounded-full">
           Comprar
-        </button>
+        </Button>
         <FavoriteButton
           productSlug={product.slug}
           label="Agregar este producto a favoritos"
@@ -124,15 +117,15 @@ export function ProductActions({ product }: ProductActionsProps) {
         />
       </div>
 
-      <button
-        type="button"
-        onClick={shareProduct}
-        className="h-11 w-full bg-stone-100 px-4 text-sm font-black text-stone-800 transition hover:bg-stone-200"
-      >
+      <Button type="button" variant="secondary" size="lg" onClick={shareProduct}>
         Compartir producto
-      </button>
+      </Button>
 
-      {message ? <p className="text-sm font-bold text-emerald-700">{message}</p> : null}
+      {message ? (
+        <p className="text-sm font-bold text-emerald-700" role="status" aria-live="polite">
+          {message}
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -151,13 +144,14 @@ function OptionGroup({
   return (
     <div>
       <p className="mb-2 text-xs font-black uppercase text-stone-500">{title}</p>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2" role="group" aria-label={title}>
         {items.map((item) => (
           <button
             key={item}
             type="button"
+            aria-pressed={value === item}
             onClick={() => onChange(item)}
-            className={`border px-3 py-2 text-sm font-bold transition ${
+            className={`rounded-full border px-3 py-2 text-sm font-bold transition ${
               value === item
                 ? "border-black bg-black text-white"
                 : "border-black/10 bg-white text-stone-700 hover:border-black"

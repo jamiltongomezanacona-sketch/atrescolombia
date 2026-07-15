@@ -7,6 +7,8 @@ export const metadata = {
   title: "Novedades | ATRES",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function NewProductsPage() {
   const newProducts = await getPublicNewProducts();
 

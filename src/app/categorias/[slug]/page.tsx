@@ -11,6 +11,8 @@ type CategoryPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const categories = await getPublicCategories();
   return categories.map((category) => ({ slug: category.slug }));

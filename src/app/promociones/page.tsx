@@ -7,6 +7,8 @@ export const metadata = {
   title: "Promociones | ATRES",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function PromosPage() {
   const promoProducts = await getPublicPromoProducts();
 

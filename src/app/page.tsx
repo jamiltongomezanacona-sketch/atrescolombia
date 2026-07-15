@@ -15,6 +15,8 @@ import {
 } from "@/lib/public-store";
 import type { Product } from "@/lib/store-data";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const [categories, products, trendingProducts, newProducts, promoProducts, promos] =
     await Promise.all([

@@ -19,8 +19,8 @@ export default async function CategoriesIndexPage() {
       <section className="store-container py-6 md:py-8">
         <PageHeader
           eyebrow="ATRES"
-          title="Categorias de ropa"
-          description="Moda y ropa directa de la marca. Elige una categoria para ver prendas disponibles."
+          title="Departamentos"
+          description="Hombre, Mujer, Niños y Hogar. Entra a cada uno para ver sus subcategorias."
         />
         {categories.length === 0 ? (
           <p className="text-sm font-semibold text-stone-500">No hay categorias con productos disponibles.</p>

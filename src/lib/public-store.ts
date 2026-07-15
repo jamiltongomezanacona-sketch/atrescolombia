@@ -1,9 +1,14 @@
 import {
   buildPrimaryNavItems,
+  categorySlugMatches,
+  DEPARTMENT_SLUGS,
   getChildCategories,
+  getDepartmentKeyForSlug,
   getDescendantCategorySlugs,
-  getTopLevelCategories,
-  sortCategoriesForDisplay,
+  getPrimaryDepartmentsForDisplay,
+  normalizeNavSlug,
+  PRIMARY_DEPARTMENT_KEYS,
+  PRIMARY_NAV,
   type NavItem,
   type StoreCategory,
 } from "@/lib/store-navigation";
@@ -101,27 +106,103 @@ export async function getStoreNavigation(): Promise<NavItem[]> {
 
 export async function getPublicCategoriesForDisplay(): Promise<StoreCategory[]> {
   const [categories, products] = await Promise.all([getPublicCategories(), getPublicProducts()]);
-  const roots = sortCategoriesForDisplay(getTopLevelCategories(categories));
+  const primary = getPrimaryDepartmentsForDisplay(categories);
 
-  return roots.filter((category) => categoryHasProducts(category, categories, products));
+  return primary.filter((category) => {
+    if (!category.id) return true;
+    return categoryHasProducts(category, categories, products);
+  });
 }
 
-export async function getPublicCategoryBySlug(slug: string) {
+export async function getPublicCategoryBySlug(slug: string): Promise<StoreCategory | null> {
   const categories = await getPublicCategories();
-  return categories.find((category) => category.slug === slug || normalizeCategorySlug(category.slug) === normalizeCategorySlug(slug));
+  const normalized = normalizeCategorySlug(slug);
+  const departmentKey = getDepartmentKeyForSlug(slug);
+  const departmentLabel =
+    departmentKey && (PRIMARY_DEPARTMENT_KEYS as readonly string[]).includes(departmentKey)
+      ? PRIMARY_NAV.find((item) => item.key === departmentKey)?.label
+      : undefined;
+
+  const direct = categories.find(
+    (category) => category.slug === slug || normalizeCategorySlug(category.slug) === normalized,
+  );
+  if (direct) {
+    return departmentLabel
+      ? { ...direct, name: departmentLabel, shortName: departmentLabel }
+      : direct;
+  }
+
+  const aliases = getCategoryAliasGroup(normalized);
+  const aliased = categories.find((category) =>
+    aliases.includes(normalizeCategorySlug(category.slug)),
+  );
+  if (aliased) {
+    return {
+      ...aliased,
+      slug: departmentKey ? (DEPARTMENT_SLUGS[departmentKey]?.[0] ?? slug) : aliased.slug,
+      name: departmentLabel ?? aliased.name,
+      shortName: departmentLabel ?? aliased.shortName,
+    };
+  }
+
+  if (departmentKey && departmentLabel) {
+    return {
+      slug: DEPARTMENT_SLUGS[departmentKey]?.[0] ?? slug,
+      name: departmentLabel,
+      shortName: departmentLabel,
+      description: `Explora ${departmentLabel} en ATRES. Subcategorias y productos del departamento.`,
+      image:
+        departmentKey === "hogar"
+          ? "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
+          : departmentKey === "ninos"
+            ? "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=1200&q=80"
+            : departmentKey === "mujer"
+              ? "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=1200&q=80"
+              : "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1200&q=80",
+      parentId: null,
+    };
+  }
+
+  return null;
 }
 
 export async function getPublicSubcategories(parentSlug: string) {
   const [categories, products] = await Promise.all([getPublicCategories(), getPublicProducts()]);
-  const parent = categories.find(
-    (category) =>
-      category.slug === parentSlug || normalizeCategorySlug(category.slug) === normalizeCategorySlug(parentSlug),
-  );
+  const parent =
+    categories.find(
+      (category) =>
+        category.slug === parentSlug ||
+        normalizeCategorySlug(category.slug) === normalizeCategorySlug(parentSlug),
+    ) ?? (await getPublicCategoryBySlug(parentSlug));
 
   if (!parent) return [];
 
-  const children = getChildCategories(categories, parent);
-  return children.filter((child) => categoryHasProducts(child, categories, products));
+  const children = parent.id
+    ? getChildCategories(categories, parent)
+    : categories.filter((category) => category.parentSlug === parent.slug);
+
+  const bySlug = new Map<string, StoreCategory>();
+  for (const child of children) {
+    bySlug.set(normalizeNavSlug(child.slug), child);
+  }
+
+  // Subtitulos / peers: categorias del mismo departamento (Nina, Bebe, etc.).
+  const departmentKey = getDepartmentKeyForSlug(parentSlug) ?? getDepartmentKeyForSlug(parent.slug);
+  if (departmentKey) {
+    const aliases = DEPARTMENT_SLUGS[departmentKey] ?? [];
+    for (const category of categories) {
+      if (!categorySlugMatches(category.slug, aliases)) continue;
+      if (normalizeNavSlug(category.slug) === normalizeNavSlug(parent.slug)) continue;
+      if (normalizeNavSlug(category.slug) === normalizeNavSlug(parentSlug)) continue;
+      if (!bySlug.has(normalizeNavSlug(category.slug))) {
+        bySlug.set(normalizeNavSlug(category.slug), category);
+      }
+    }
+  }
+
+  return Array.from(bySlug.values()).filter((child) =>
+    categoryHasProducts(child, categories, products),
+  );
 }
 
 export async function getPublicProducts(): Promise<Product[]> {
@@ -422,14 +503,17 @@ function normalizeCategorySlug(value: string) {
 
 function getCategoryAliasGroup(slug: string) {
   const groups = [
-    ["infantil", "moda-infantil", "ninos", "ninas", "kids", "bebe", "bebes", "baby"],
+    ["hombre", "moda-hombre"],
+    ["mujer", "moda-mujer"],
+    ["infantil", "moda-infantil", "ninos", "ninas", "nino", "nina", "kids", "bebe", "bebes", "baby"],
     ["urbana", "moda-urbana", "streetwear", "casual"],
     ["jeans", "denim", "jeans-y-denim", "mezclilla"],
     ["deportiva", "deportivo", "ropa-deportiva", "sport", "sport-wear"],
-    ["textiles-para-hogar", "textiles", "hogar", "hogar-y-vida"],
+    ["textiles-para-hogar", "textiles", "hogar", "hogar-y-vida", "textiles-hogar"],
     ["elegante", "moda-elegante", "formal"],
     ["accesorios", "bisuteria-y-accesorios", "bolsos", "bolsas-y-maletas"],
     ["uniformes", "colegio", "escolar"],
+    ["pijamas", "pijama"],
   ].map((group) => group.map(normalizeCategorySlug));
 
   return groups.find((group) => group.includes(slug)) ?? [slug];

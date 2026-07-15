@@ -56,11 +56,11 @@ export default async function Home() {
         <div className="store-container relative py-10 md:py-16 lg:py-20">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-brand">ATRES Colombia</p>
           <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
-            {heroPromo?.title || "Moda y ropa directa de la marca"}
+            {heroPromo?.title || "Hombre, Mujer, Niños y Hogar"}
           </h1>
           <p className="mt-4 max-w-lg text-sm font-semibold leading-6 text-white/75 md:text-base">
             {heroPromo?.subtitle ||
-              "Novedades, categorias y ofertas con precios claros y compra rapida."}
+              "Cuatro departamentos ATRES. Entra a cada uno y explora sus subcategorias."}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Button href={heroPromo?.href || "/productos"} variant="brand">
@@ -81,9 +81,9 @@ export default async function Home() {
         <section className="soft-section store-container py-6 md:py-8" aria-label="Categorias">
           <div className="mb-4 flex items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-black uppercase tracking-wide text-brand">Colecciones</p>
+              <p className="text-xs font-black uppercase tracking-wide text-brand">Departamentos</p>
               <h2 className="mt-1 text-2xl font-black tracking-tight text-ink md:text-3xl">
-                Compra por categoria
+                Hombre, Mujer, Niños y Hogar
               </h2>
             </div>
             <Link
@@ -93,7 +93,7 @@ export default async function Home() {
               Ver todas
             </Link>
           </div>
-          <div className="grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-4 md:gap-y-8 lg:grid-cols-8">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4 md:gap-y-8">
             {categories.map((category) => {
               const theme = getCategoryVisualTheme(category.slug, category.name);
 
@@ -161,24 +161,14 @@ export default async function Home() {
       </div>
 
       {HOME_DEPARTMENT_SECTIONS.map((section) => {
-        const keys =
-          "combineKeys" in section && section.combineKeys
-            ? [...section.combineKeys]
-            : [section.key];
-        const sectionProducts = filterProductsByDepartmentKeys(products, keys);
-        const href =
-          section.key === "kids"
-            ? sectionProducts[0]
-              ? `/categoria/${sectionProducts[0].categorySlug}`
-              : "/categorias"
-            : section.href;
+        const sectionProducts = filterProductsByDepartmentKeys(products, [section.key]);
 
         return (
           <HomeCategorySection
             key={section.id}
             id={section.id}
             title={section.title}
-            href={href}
+            href={section.href}
             products={sectionProducts}
           />
         );

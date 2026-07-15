@@ -15,31 +15,42 @@ export type NavItem = {
   kind: "route" | "category";
 };
 
-/** Orden comercial ATRES — rutas especiales + slugs de categoría en DB. */
+/**
+ * Estructura comercial ATRES:
+ * principales = Hombre, Mujer, Niños, Hogar
+ * el resto vive como subcategorias bajo esos departamentos.
+ */
 export const PRIMARY_NAV: NavItem[] = [
   { key: "novedades", label: "Novedades", href: "/novedades", kind: "route" },
-  { key: "mujer", label: "Mujer", href: "/categoria/mujer", kind: "category" },
   { key: "hombre", label: "Hombre", href: "/categoria/hombre", kind: "category" },
-  { key: "nina", label: "Niña", href: "/categoria/ninas", kind: "category" },
-  { key: "nino", label: "Niño", href: "/categoria/ninos", kind: "category" },
-  { key: "bebes", label: "Bebés", href: "/categoria/bebes", kind: "category" },
-  { key: "pijamas", label: "Pijamas", href: "/categoria/pijamas", kind: "category" },
-  { key: "deportivo", label: "Deportivo", href: "/categoria/deportivo", kind: "category" },
-  { key: "uniformes", label: "Uniformes", href: "/categoria/uniformes", kind: "category" },
+  { key: "mujer", label: "Mujer", href: "/categoria/mujer", kind: "category" },
+  { key: "ninos", label: "Niños", href: "/categoria/ninos", kind: "category" },
+  { key: "hogar", label: "Hogar", href: "/categoria/hogar", kind: "category" },
   { key: "ofertas", label: "Ofertas", href: "/ofertas", kind: "route" },
 ];
 
 /** Slugs equivalentes por departamento (DB + alias legacy). */
 export const DEPARTMENT_SLUGS: Record<string, string[]> = {
-  mujer: ["mujer", "moda-mujer"],
   hombre: ["hombre", "moda-hombre"],
-  nina: ["ninas", "nina", "moda-ninas"],
-  nino: ["ninos", "nino", "moda-ninos"],
-  bebes: ["bebes", "bebe", "infantil", "baby"],
-  pijamas: ["pijamas"],
-  deportivo: ["deportivo", "deportiva", "ropa-deportiva", "sport"],
-  uniformes: ["uniformes", "escolar", "colegio"],
+  mujer: ["mujer", "moda-mujer"],
+  ninos: [
+    "ninos",
+    "nino",
+    "ninas",
+    "nina",
+    "bebes",
+    "bebe",
+    "infantil",
+    "kids",
+    "baby",
+    "moda-ninos",
+    "moda-ninas",
+    "moda-infantil",
+  ],
+  hogar: ["hogar", "hogar-y-vida", "textiles", "textiles-para-hogar", "textiles-hogar"],
 };
+
+export const PRIMARY_DEPARTMENT_KEYS = ["hombre", "mujer", "ninos", "hogar"] as const;
 
 export function normalizeNavSlug(value: string) {
   return value
@@ -101,21 +112,22 @@ export function getDepartmentSlugsForCategory(slug: string): string[] {
   return [slug];
 }
 
-/** Secciones del home comercial (orden fijo; se ocultan si no hay productos). */
+export function getDepartmentKeyForSlug(slug: string): string | null {
+  const normalized = normalizeNavSlug(slug);
+  for (const [key, slugs] of Object.entries(DEPARTMENT_SLUGS)) {
+    if (slugs.some((item) => normalizeNavSlug(item) === normalized)) {
+      return key;
+    }
+  }
+  return null;
+}
+
+/** Secciones del home: solo los 4 departamentos principales. */
 export const HOME_DEPARTMENT_SECTIONS = [
-  { key: "mujer", title: "Mujer", href: "/categoria/mujer", id: "seccion-mujer" },
   { key: "hombre", title: "Hombre", href: "/categoria/hombre", id: "seccion-hombre" },
-  {
-    key: "kids",
-    title: "Nina y Nino",
-    href: "/categorias",
-    id: "seccion-nina-nino",
-    combineKeys: ["nina", "nino"] as const,
-  },
-  { key: "bebes", title: "Bebes", href: "/categoria/bebes", id: "seccion-bebes" },
-  { key: "pijamas", title: "Pijamas", href: "/categoria/pijamas", id: "seccion-pijamas" },
-  { key: "deportivo", title: "Deportivo", href: "/categoria/deportivo", id: "seccion-deportivo" },
-  { key: "uniformes", title: "Uniformes", href: "/categoria/uniformes", id: "seccion-uniformes" },
+  { key: "mujer", title: "Mujer", href: "/categoria/mujer", id: "seccion-mujer" },
+  { key: "ninos", title: "Niños", href: "/categoria/ninos", id: "seccion-ninos" },
+  { key: "hogar", title: "Hogar", href: "/categoria/hogar", id: "seccion-hogar" },
 ] as const;
 
 export function filterProductsByDepartmentKeys<
@@ -150,19 +162,16 @@ export function buildPrimaryNavItems(
   const available = new Set(categories.map((category) => normalizeNavSlug(category.slug)));
 
   return PRIMARY_NAV.filter((item) => {
-    if (item.kind === "route") {
-      if (item.key === "novedades") {
-        return true;
-      }
-      if (item.key === "ofertas") {
-        return true;
-      }
-      return true;
-    }
+    if (item.kind === "route") return true;
 
     const departmentSlugs = DEPARTMENT_SLUGS[item.key] ?? [item.href.split("/").pop() ?? ""];
     const hasCategory = departmentSlugs.some((slug) => available.has(normalizeNavSlug(slug)));
     const hasProducts = countProductsForDepartment(item.key, productCategorySlugs) > 0;
+
+    // Los 4 departamentos principales siempre visibles en navegacion.
+    if ((PRIMARY_DEPARTMENT_KEYS as readonly string[]).includes(item.key)) {
+      return true;
+    }
 
     return hasCategory || hasProducts;
   });
@@ -172,10 +181,12 @@ export function getTopLevelCategories(categories: StoreCategory[]): StoreCategor
   return categories.filter((category) => !category.parentId);
 }
 
+/**
+ * Prioriza Hombre / Mujer / Ninos / Hogar.
+ * Otras categorias raiz (legacy) van al final.
+ */
 export function sortCategoriesForDisplay(categories: StoreCategory[]): StoreCategory[] {
-  const primaryOrder = PRIMARY_NAV.filter((item) => item.kind === "category").flatMap(
-    (item) => DEPARTMENT_SLUGS[item.key] ?? [],
-  );
+  const primaryOrder = PRIMARY_DEPARTMENT_KEYS.flatMap((key) => DEPARTMENT_SLUGS[key] ?? []);
 
   return [...categories].sort((a, b) => {
     const aIndex = primaryOrder.findIndex((slug) => categorySlugMatches(a.slug, [slug]));
@@ -187,8 +198,52 @@ export function sortCategoriesForDisplay(categories: StoreCategory[]): StoreCate
       return aIndex - bIndex;
     }
 
-    return (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
+    return (a.displayOrder ?? 0) - (b.displayOrder ?? 0) || a.name.localeCompare(b.name, "es");
   });
+}
+
+/** Solo departamentos principales para circulos/home (si existen en DB o hay alias). */
+export function getPrimaryDepartmentsForDisplay(categories: StoreCategory[]): StoreCategory[] {
+  const sorted = sortCategoriesForDisplay(getTopLevelCategories(categories));
+  const primary: StoreCategory[] = [];
+  const seenKeys = new Set<string>();
+
+  for (const category of sorted) {
+    const key = getDepartmentKeyForSlug(category.slug);
+    if (!key || !(PRIMARY_DEPARTMENT_KEYS as readonly string[]).includes(key)) continue;
+    if (seenKeys.has(key)) continue;
+    seenKeys.add(key);
+    primary.push({
+      ...category,
+      name: PRIMARY_NAV.find((item) => item.key === key)?.label ?? category.name,
+      shortName: PRIMARY_NAV.find((item) => item.key === key)?.label ?? category.shortName,
+      slug: DEPARTMENT_SLUGS[key]?.[0] ?? category.slug,
+    });
+  }
+
+  // Placeholders tipograficos si aun no hay categoria en DB (enlace listo).
+  for (const key of PRIMARY_DEPARTMENT_KEYS) {
+    if (seenKeys.has(key)) continue;
+    const nav = PRIMARY_NAV.find((item) => item.key === key);
+    if (!nav) continue;
+    primary.push({
+      slug: DEPARTMENT_SLUGS[key]?.[0] ?? key,
+      name: nav.label,
+      shortName: nav.label,
+      description: `Explora ${nav.label.toLowerCase()} en ATRES.`,
+      image:
+        key === "hogar"
+          ? "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80"
+          : key === "ninos"
+            ? "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=600&q=80"
+            : key === "mujer"
+              ? "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=600&q=80"
+              : "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+      parentId: null,
+    });
+  }
+
+  return primary;
 }
 
 export function getDescendantCategorySlugs(categories: StoreCategory[], rootSlug: string): string[] {

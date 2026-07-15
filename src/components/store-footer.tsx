@@ -16,7 +16,7 @@ export function StoreFooter() {
         <div>
           <p className="text-2xl font-black tracking-tight">ATRES</p>
           <p className="mt-2 max-w-sm text-sm font-semibold text-white/70">
-            Moda y ropa directa de la marca. Novedades, categorias y ofertas con compra rapida en Colombia.
+            Hombre, Mujer, Niños y Hogar. Subcategorias y compra rapida en Colombia.
           </p>
         </div>
         <div>

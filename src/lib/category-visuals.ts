@@ -27,6 +27,32 @@ const defaultTheme: CategoryVisualTheme = {
 };
 
 const themes: Record<string, CategoryVisualTheme> = {
+  hombre: {
+    eyebrow: "Hombre ATRES",
+    headline: "Prendas claras para el dia a dia.",
+    description: "Looks funcionales, urbanos y listos para combinar.",
+    trendTag: "#HombreAtres",
+    heroImage: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1200&q=80",
+    washClass: "bg-[linear-gradient(135deg,#111827_0%,#334155_48%,#bbf7d0_100%)]",
+    panelClass: "bg-black/50 text-white ring-white/15",
+    accentClass: "text-lime-200",
+    textClass: "text-white",
+    mutedTextClass: "text-white/75",
+    chips: ["Casual", "Denim", "Basicos", "Nuevo"],
+  },
+  mujer: {
+    eyebrow: "Mujer ATRES",
+    headline: "Siluetas frescas y piezas faciles de llevar.",
+    description: "Desde diario hasta un look mas especial, con precios claros.",
+    trendTag: "#MujerAtres",
+    heroImage: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=1200&q=80",
+    washClass: "bg-[linear-gradient(135deg,#fff1f2_0%,#fce7f3_44%,#e0f2fe_100%)]",
+    panelClass: "bg-white/[0.78] text-[#2b1521] ring-pink-200/70",
+    accentClass: "text-pink-700",
+    textClass: "text-[#2b1521]",
+    mutedTextClass: "text-stone-600",
+    chips: ["Vestidos", "Sets", "Tops", "Nuevo"],
+  },
   infantil: {
     eyebrow: "Infantil ATRES",
     headline: "Color, comodidad y prendas para moverse libre.",
@@ -193,7 +219,20 @@ export function getCategoryVisualTheme(slug?: string, name?: string): CategoryVi
 function normalizeThemeKey(slug?: string, name?: string) {
   const value = `${slug ?? ""} ${name ?? ""}`.toLowerCase();
 
-  if (value.includes("infantil") || value.includes("niño") || value.includes("nino")) return "infantil";
+  if (value.includes("hombre") || value.includes("masculin")) return "hombre";
+  if (value.includes("mujer") || value.includes("femenin")) return "mujer";
+  if (
+    value.includes("infantil") ||
+    value.includes("niño") ||
+    value.includes("nino") ||
+    value.includes("niña") ||
+    value.includes("nina") ||
+    value.includes("bebe") ||
+    value.includes("bebé") ||
+    value.includes("kids")
+  ) {
+    return "infantil";
+  }
   if (value.includes("urbana") || value.includes("urbano") || value.includes("street")) return "urbana";
   if (value.includes("jean") || value.includes("denim") || value.includes("mezclilla")) return "jeans";
   if (value.includes("uniform")) return "uniformes";
@@ -203,8 +242,6 @@ function normalizeThemeKey(slug?: string, name?: string) {
   if (value.includes("accesorio") || value.includes("bolso")) return "accesorios";
   if (value.includes("calzado") || value.includes("zapato")) return "calzado";
   if (value.includes("pijama")) return "pijamas";
-  if (value.includes("nina")) return "ninas";
-  if (value.includes("ninos")) return "ninos";
 
   return slug ?? "default";
 }

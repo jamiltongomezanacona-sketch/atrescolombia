@@ -69,7 +69,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       />
 
       {subcategories.length > 0 ? (
-        <section className="store-container pb-4">
+        <section className="store-container pb-4" aria-label="Subcategorias">
+          <p className="mb-3 text-xs font-black uppercase tracking-wide text-stone-500">
+            Subcategorias
+          </p>
           <div className="flex flex-wrap gap-2">
             <Link
               href={`/categoria/${category.slug}`}

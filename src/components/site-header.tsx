@@ -8,7 +8,7 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 bg-black text-white shadow-[0_10px_34px_rgba(0,0,0,0.16)]">
       <div className="border-b border-white/10 bg-[#121212]">
-        <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-3 px-3 py-2 text-[11px] font-black uppercase tracking-wide text-white/74 sm:px-4">
+        <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-3 px-3 py-2 text-[11px] font-black uppercase tracking-wide text-white/75 sm:px-4">
           <span>Envios a toda Colombia</span>
           <span className="hidden sm:inline">Nuevas prendas cada semana</span>
           <Link href="/ofertas" className="text-amber-200 hover:text-white">
@@ -49,7 +49,7 @@ export async function SiteHeader() {
             <Link
               key={category.slug}
               href={`/categoria/${category.slug}`}
-              className="shrink-0 rounded-full px-3 py-2 text-white/82 transition hover:bg-white/10 hover:text-white"
+              className="shrink-0 rounded-full px-3 py-2 text-white/80 transition hover:bg-white/10 hover:text-white"
             >
               {category.shortName}
             </Link>

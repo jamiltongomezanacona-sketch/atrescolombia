@@ -2,6 +2,8 @@ import Link from "next/link";
 import { BottomNav } from "@/components/bottom-nav";
 import { ProductCard } from "@/components/product-card";
 import { SiteHeader } from "@/components/site-header";
+import { TrendShowcase } from "@/components/trend-showcase";
+import { getCategoryVisualTheme } from "@/lib/category-visuals";
 import { getPublicCategories, getPublicProducts } from "@/lib/public-store";
 import type { Product } from "@/lib/store-data";
 
@@ -19,6 +21,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const order = params?.orden ?? "relevancia";
   const [categories, products] = await Promise.all([getPublicCategories(), getPublicProducts()]);
   const sortedProducts = sortProducts(products, order);
+  const trendTheme = getCategoryVisualTheme("urbana", "Urbana");
+  const trendProducts = products.filter((product) => product.isTrending || product.isNew || product.isPromo).slice(0, 4);
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#f4f3f1] pb-24 text-[#111]">
@@ -30,6 +34,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           <p className="sm:text-right">Precios directos de temporada</p>
         </div>
       </section>
+
+      <TrendShowcase theme={trendTheme} products={trendProducts.length ? trendProducts : products.slice(0, 4)} compact />
 
       <section className="mx-auto max-w-[1350px] px-3 py-5 sm:px-4">
         <div className="mb-4 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
@@ -62,6 +68,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </p>
           <div className="flex flex-wrap gap-2">
             <OrderLink label="Relevancia" value="relevancia" active={order === "relevancia"} />
+            <OrderLink label="Tendencias" value="tendencias" active={order === "tendencias"} />
             <OrderLink label="Nuevos" value="nuevos" active={order === "nuevos"} />
             <OrderLink label="Menor precio" value="precio-menor" active={order === "precio-menor"} />
             <OrderLink label="Mayor descuento" value="descuento" active={order === "descuento"} />
@@ -99,6 +106,10 @@ function sortProducts(products: Product[], order: string) {
     return sorted.sort((a, b) => Number(b.isNew) - Number(a.isNew));
   }
 
+  if (order === "tendencias") {
+    return sorted.sort((a, b) => trendScore(b) - trendScore(a));
+  }
+
   if (order === "precio-menor") {
     return sorted.sort((a, b) => a.price - b.price);
   }
@@ -113,4 +124,8 @@ function sortProducts(products: Product[], order: string) {
 function discountValue(product: Product) {
   if (!product.previousPrice || product.previousPrice <= product.price) return 0;
   return product.previousPrice - product.price;
+}
+
+function trendScore(product: Product) {
+  return Number(product.isTrending) * 3 + Number(product.isNew) * 2 + Number(product.isPromo);
 }

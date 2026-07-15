@@ -24,7 +24,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               priority={priority}
               className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
             />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/16 to-transparent opacity-0 transition group-hover:opacity-100" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/[0.16] to-transparent opacity-0 transition group-hover:opacity-100" />
           </div>
         </Link>
         <div className="absolute right-2.5 top-2.5">

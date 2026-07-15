@@ -14,14 +14,14 @@ export default async function NewArrivalsPage() {
 
   return (
     <main>
-      <section className="store-container py-6 md:py-8">
+      <section className="catalog-container py-6 md:py-8">
         <PageHeader
           variant="dark"
           eyebrow="Recien llegado"
           title="Novedades"
           description="Prendas nuevas de temporada listas para descubrir."
         />
-        <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-6">
+        <div className="catalog-grid">
           {products.map((product, index) => (
             <ProductCard key={product.slug} product={product} priority={index < 2} />
           ))}

@@ -40,7 +40,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <main>
-      <section className="store-container py-6 md:py-8">
+      <section className="catalog-container py-6 md:py-8">
         <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <PageHeader
             className="mb-0 flex-1"
@@ -73,7 +73,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         ) : null}
 
         {query ? (
-          <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
+          <div className="grid gap-5 lg:grid-cols-[220px_1fr] xl:grid-cols-[235px_1fr]">
             <aside className="hidden lg:block">
               <GlassPanel className="sticky top-28 p-4">
                 <p className="mb-4 text-sm font-black text-ink">Refinar busqueda</p>
@@ -95,7 +95,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                   actionLabel="Ver categorias"
                 />
               ) : (
-                <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="catalog-grid-with-sidebar">
                   {results.map((product, index) => (
                     <ProductCard key={product.slug} product={product} priority={index < 2} />
                   ))}

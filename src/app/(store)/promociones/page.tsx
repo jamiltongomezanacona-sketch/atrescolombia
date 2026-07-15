@@ -14,14 +14,14 @@ export default async function OffersPage() {
 
   return (
     <main>
-      <section className="store-container py-6 md:py-8">
+      <section className="catalog-container py-6 md:py-8">
         <PageHeader
           variant="promo"
           eyebrow="Precios especiales"
           title="Ofertas"
           description="Descuentos activos y promociones de temporada."
         />
-        <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-6">
+        <div className="catalog-grid">
           {products.map((product, index) => (
             <ProductCard key={product.slug} product={product} priority={index < 2} />
           ))}

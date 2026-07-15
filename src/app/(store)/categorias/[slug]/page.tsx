@@ -69,7 +69,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       />
 
       {subcategories.length > 0 ? (
-        <section className="store-container pb-4" aria-label="Subcategorias">
+        <section className="catalog-container pb-4" aria-label="Subcategorias">
           <p className="mb-3 text-xs font-black uppercase tracking-wide text-stone-500">
             Subcategorias
           </p>
@@ -93,13 +93,13 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </section>
       ) : null}
 
-      <section className="store-container py-6 md:py-8">
+      <section className="catalog-container py-6 md:py-8">
         {categoryProducts.length === 0 ? (
           <p className="text-sm font-semibold text-stone-500">
             No hay productos en esta categoria por ahora. Explora otras colecciones ATRES.
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-6">
+          <div className="catalog-grid">
             {categoryProducts.map((product, index) => (
               <ProductCard key={product.slug} product={product} priority={index < 2} />
             ))}

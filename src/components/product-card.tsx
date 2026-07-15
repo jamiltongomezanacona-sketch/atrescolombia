@@ -32,7 +32,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             <SafeProductImage
               src={product.image}
               alt={product.name}
-              sizes="(max-width: 768px) 50vw, 25vw"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, (max-width: 1700px) 17vw, 14vw"
               priority={priority}
               className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
             />

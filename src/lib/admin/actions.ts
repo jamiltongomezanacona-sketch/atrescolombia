@@ -10,6 +10,39 @@ type ActionState = {
   message: string;
 };
 
+export type QuickProductImageInput = {
+  storage_path: string;
+  public_url: string;
+  alt: string;
+  aspect_ratio: string;
+  display_order: number;
+  is_primary: boolean;
+};
+
+export type QuickProductInput = {
+  id: string;
+  name: string;
+  slug: string;
+  short_description: string;
+  description: string;
+  category_id: string;
+  subcategory_id: string | null;
+  price: number;
+  previous_price: number | null;
+  discount_percent: number | null;
+  sku: string;
+  inventory_total: number;
+  status: "active" | "hidden";
+  is_featured: boolean;
+  is_new: boolean;
+  is_promo: boolean;
+  tags: string[];
+  collection: string;
+  display_order: number;
+  primary_image_url: string;
+  images: QuickProductImageInput[];
+};
+
 export async function signInAdmin(_: ActionState, formData: FormData): Promise<ActionState> {
   if (!hasSupabaseEnv()) {
     return { ok: false, message: "Configura NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY." };
@@ -96,6 +129,163 @@ export async function revalidateProductAdminChanges() {
   revalidateStore();
   revalidatePath("/admin");
   revalidatePath("/admin/productos");
+}
+
+export async function createQuickProduct(input: QuickProductInput): Promise<ActionState & { productId?: string }> {
+  const guard = ensureSupabase();
+  if (guard) return guard;
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const businessId = await resolveLegacyBusinessId();
+  const corePayload = {
+    id: input.id,
+    name: input.name,
+    slug: input.slug,
+    category_id: input.category_id,
+    price: input.price,
+    previous_price: input.previous_price,
+    discount_percent: input.discount_percent,
+    sku: input.sku,
+    inventory_total: input.inventory_total,
+    status: input.status,
+  };
+  const textPayload = {
+    ...corePayload,
+    short_description: input.short_description || input.name,
+    description: input.description || input.short_description || input.name,
+  };
+  const fullPayload = {
+    ...textPayload,
+    subcategory_id: input.subcategory_id,
+    is_featured: input.is_featured,
+    is_new: input.is_new,
+    is_promo: input.is_promo,
+    tags: input.tags,
+    collection: input.collection,
+    display_order: input.display_order,
+    created_by: user?.id ?? null,
+    updated_by: user?.id ?? null,
+  };
+  const imageFieldVariants = [
+    { image_url: input.primary_image_url },
+    { main_image_url: input.primary_image_url },
+    { cover_image_url: input.primary_image_url },
+    { featured_image_url: input.primary_image_url },
+    { image_url: input.primary_image_url, main_image_url: input.primary_image_url },
+  ];
+
+  const variants = [
+    fullPayload,
+    textPayload,
+    corePayload,
+    businessId ? { ...textPayload, business_id: businessId } : null,
+    businessId ? { ...corePayload, business_id: businessId } : null,
+    ...imageFieldVariants.map((fields) => ({ ...textPayload, ...fields })),
+    ...imageFieldVariants.map((fields) => ({ ...corePayload, ...fields })),
+    ...(businessId ? imageFieldVariants.map((fields) => ({ ...textPayload, business_id: businessId, ...fields })) : []),
+    ...(businessId ? imageFieldVariants.map((fields) => ({ ...corePayload, business_id: businessId, ...fields })) : []),
+  ].filter(Boolean) as Array<Record<string, unknown>>;
+
+  const errors: string[] = [];
+
+  for (const payload of variants) {
+    const { error } = await supabase.from("products").insert(payload).select("id").single();
+
+    if (!error) {
+      const imageResult = await insertQuickProductImages(input.id, input.images, user?.id ?? null);
+      if (!imageResult.ok) {
+        await supabase.from("products").delete().eq("id", input.id);
+        return imageResult;
+      }
+      revalidateStore();
+      revalidatePath("/admin");
+      revalidatePath("/admin/productos");
+      return { ok: true, message: "Producto guardado correctamente.", productId: input.id };
+    }
+
+    errors.push(error.message);
+  }
+
+  return {
+    ok: false,
+    message: `No se pudo crear el producto. Detalle: ${Array.from(new Set(errors)).slice(0, 3).join(" | ")}`,
+  };
+}
+
+async function insertQuickProductImages(productId: string, images: QuickProductImageInput[], userId: string | null): Promise<ActionState> {
+  const supabase = await createSupabaseServerClient();
+
+  for (const image of images) {
+    const fullPayload = {
+      product_id: productId,
+      storage_path: image.storage_path,
+      public_url: image.public_url,
+      alt: image.alt,
+      aspect_ratio: image.aspect_ratio,
+      display_order: image.display_order,
+      is_primary: image.is_primary,
+      created_by: userId,
+    };
+    const compatiblePayload = {
+      product_id: productId,
+      storage_path: image.storage_path,
+      public_url: image.public_url,
+      alt: image.alt,
+      aspect_ratio: image.aspect_ratio,
+      display_order: image.display_order,
+      is_primary: image.is_primary,
+    };
+    const legacyImagePayload = {
+      product_id: productId,
+      image_url: image.public_url,
+      public_url: image.public_url,
+      storage_path: image.storage_path,
+      alt: image.alt,
+      display_order: image.display_order,
+      is_primary: image.is_primary,
+    };
+
+    const attempts: Array<Record<string, unknown>> = [fullPayload, compatiblePayload, legacyImagePayload];
+    const errors: string[] = [];
+    let inserted = false;
+
+    for (const payload of attempts) {
+      const { error } = await supabase.from("product_images").insert(payload);
+      if (!error) {
+        inserted = true;
+        break;
+      }
+      errors.push(error.message);
+    }
+
+    if (!inserted) {
+      return {
+        ok: false,
+        message: `Producto creado, pero fallo una imagen. Detalle: ${Array.from(new Set(errors)).slice(0, 2).join(" | ")}`,
+      };
+    }
+  }
+
+  return { ok: true, message: "Imagenes guardadas." };
+}
+
+async function resolveLegacyBusinessId() {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("businesses")
+    .select("id,name,slug")
+    .or("slug.ilike.%atres%,name.ilike.%atres%")
+    .limit(1)
+    .maybeSingle();
+
+  if (!error && data?.id) return data.id as string;
+
+  const { data: fallbackData } = await supabase.from("businesses").select("id").limit(1).maybeSingle();
+  return fallbackData?.id ? (fallbackData.id as string) : null;
 }
 
 export async function setProductStatus(productId: string, status: "active" | "hidden" | "archived") {

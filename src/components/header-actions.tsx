@@ -7,6 +7,10 @@ type CartItem = {
   quantity: number;
 };
 
+type HeaderActionsProps = {
+  compact?: boolean;
+};
+
 function readCount() {
   try {
     const items = JSON.parse(window.localStorage.getItem("atres:cart") ?? "[]") as CartItem[];
@@ -16,7 +20,7 @@ function readCount() {
   }
 }
 
-export function HeaderActions() {
+export function HeaderActions({ compact = false }: HeaderActionsProps) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -34,18 +38,44 @@ export function HeaderActions() {
     };
   }, []);
 
+  if (compact) {
+    return (
+      <nav className="flex items-center justify-end gap-1 md:hidden" aria-label="Acciones rapidas">
+        <Link
+          href="/favoritos"
+          aria-label="Favoritos"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white/90 transition hover:bg-white/10 hover:text-white"
+        >
+          <HeaderIcon type="heart" />
+        </Link>
+        <Link
+          href="/carrito"
+          aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
+          className="relative inline-flex h-11 w-11 items-center justify-center rounded-full text-white/90 transition hover:bg-white/10 hover:text-white"
+        >
+          <HeaderIcon type="bag" />
+          {count > 0 ? (
+            <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[9px] font-black text-white">
+              {count}
+            </span>
+          ) : null}
+        </Link>
+      </nav>
+    );
+  }
+
   return (
     <nav className="hidden items-center justify-end gap-2 text-sm font-black md:flex" aria-label="Acciones">
       <Link
         href="/favoritos"
-        className="inline-flex h-10 items-center gap-2 rounded-full px-3 text-white/90 transition hover:bg-white/10 hover:text-white"
+        className="inline-flex h-11 items-center gap-2 rounded-full px-3 text-white/90 transition hover:bg-white/10 hover:text-white"
       >
         <HeaderIcon type="heart" />
         Favoritos
       </Link>
       <Link
         href="/carrito"
-        className="relative inline-flex h-10 items-center gap-2 rounded-full px-3 text-white/90 transition hover:bg-white/10 hover:text-white"
+        className="relative inline-flex h-11 items-center gap-2 rounded-full px-3 text-white/90 transition hover:bg-white/10 hover:text-white"
       >
         <HeaderIcon type="bag" />
         Carrito
@@ -57,7 +87,7 @@ export function HeaderActions() {
       </Link>
       <Link
         href="/ofertas"
-        className="inline-flex h-10 items-center rounded-full bg-white px-3 text-black transition hover:bg-amber-100"
+        className="inline-flex h-11 items-center rounded-full bg-white px-3 text-black transition hover:bg-amber-100"
       >
         Ofertas
       </Link>
@@ -71,7 +101,7 @@ function HeaderIcon({ type }: { type: "heart" | "bag" }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-4 fill-none"
+        className="size-5 fill-none"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
@@ -86,7 +116,7 @@ function HeaderIcon({ type }: { type: "heart" | "bag" }) {
     <svg
       aria-hidden="true"
       viewBox="0 0 24 24"
-      className="size-4 fill-none"
+      className="size-5 fill-none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"

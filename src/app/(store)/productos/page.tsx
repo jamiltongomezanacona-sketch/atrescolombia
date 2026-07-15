@@ -1,10 +1,21 @@
 import Link from "next/link";
+import { CatalogFiltersForm } from "@/components/catalog-filters";
+import { EmptyState } from "@/components/ui/empty-state";
+import { FilterDrawer } from "@/components/filter-drawer";
 import { ProductCard } from "@/components/product-card";
-import { TrendShowcase } from "@/components/trend-showcase";
+import { QuickFilters } from "@/components/quick-filters";
 import { GlassPanel } from "@/components/ui/glass-panel";
-import { getCategoryVisualTheme } from "@/lib/category-visuals";
-import { getPublicCategories, getPublicProducts } from "@/lib/public-store";
-import type { Product } from "@/lib/store-data";
+import {
+  applyCatalogFilters,
+  buildCatalogQuery,
+  collectFilterOptions,
+  parseCatalogFilters,
+} from "@/lib/product-filters";
+import {
+  getPublicCategories,
+  getPublicProducts,
+  getStoreNavigation,
+} from "@/lib/public-store";
 
 export const metadata = {
   title: "Productos | ATRES",
@@ -14,18 +25,29 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 type ProductsPageProps = {
-  searchParams?: Promise<{ orden?: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const params = await searchParams;
-  const order = params?.orden ?? "relevancia";
-  const [categories, products] = await Promise.all([getPublicCategories(), getPublicProducts()]);
-  const sortedProducts = sortProducts(products, order);
-  const trendTheme = getCategoryVisualTheme("urbana", "Urbana");
-  const trendProducts = products
-    .filter((product) => product.isTrending || product.isNew || product.isPromo)
-    .slice(0, 4);
+  const filters = parseCatalogFilters(params);
+  const [products, categories, navItems] = await Promise.all([
+    getPublicProducts(),
+    getPublicCategories(),
+    getStoreNavigation(),
+  ]);
+
+  const options = collectFilterOptions(products, categories);
+  const filteredProducts = applyCatalogFilters(products, filters, categories);
+
+  const orderLinks = [
+    { label: "Relevancia", value: "relevancia" },
+    { label: "Tendencias", value: "tendencias" },
+    { label: "Nuevos", value: "nuevos" },
+    { label: "Menor precio", value: "precio-menor" },
+    { label: "Mayor precio", value: "precio-mayor" },
+    { label: "Mayor descuento", value: "descuento" },
+  ];
 
   return (
     <main>
@@ -37,101 +59,77 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
       </section>
 
-      <TrendShowcase
-        theme={trendTheme}
-        products={trendProducts.length ? trendProducts : products.slice(0, 4)}
-        compact
-      />
+      <section className="border-b border-black/5 bg-white/55 py-3">
+        <QuickFilters items={navItems} />
+      </section>
 
       <section className="store-container py-6 md:py-8">
-        <div className="mb-5 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-xs font-black uppercase text-brand">Catalogo ATRES</p>
             <h1 className="mt-1 text-3xl font-black tracking-tight text-ink md:text-4xl">Todos los productos</h1>
             <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-stone-600">
-              Explora prendas, ofertas y novedades de moda ATRES en una experiencia rapida para comprar desde Colombia.
+              Filtra por categoria, talla, color, oferta y disponibilidad con los datos reales del catalogo.
             </p>
           </div>
-          <div className="flex items-center gap-2 overflow-x-auto [scrollbar-width:none]">
-            <Link href="/productos" className="shrink-0 rounded-full bg-black px-4 py-2 text-xs font-black text-white">
-              Todo
-            </Link>
-            {categories.slice(0, 6).map((category) => (
-              <Link
-                key={category.slug}
-                href={`/categoria/${category.slug}`}
-                className="shrink-0 rounded-full bg-white/80 px-4 py-2 text-xs font-black text-stone-800 shadow-sm ring-1 ring-black/5 transition hover:bg-black hover:text-white"
-              >
-                {category.shortName}
-              </Link>
-            ))}
-          </div>
+          <FilterDrawer filters={filters} options={options} />
         </div>
 
-        <GlassPanel className="mb-5 flex flex-wrap items-center justify-between gap-3 px-3 py-3">
-          <p className="text-sm font-black text-stone-700">{sortedProducts.length} productos disponibles</p>
-          <div className="flex flex-wrap gap-2">
-            <OrderLink label="Relevancia" value="relevancia" active={order === "relevancia"} />
-            <OrderLink label="Tendencias" value="tendencias" active={order === "tendencias"} />
-            <OrderLink label="Nuevos" value="nuevos" active={order === "nuevos"} />
-            <OrderLink label="Menor precio" value="precio-menor" active={order === "precio-menor"} />
-            <OrderLink label="Mayor descuento" value="descuento" active={order === "descuento"} />
-          </div>
-        </GlassPanel>
+        <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
+          <aside className="hidden lg:block">
+            <GlassPanel className="sticky top-28 p-4">
+              <p className="mb-4 text-sm font-black text-ink">Filtros</p>
+              <CatalogFiltersForm
+                filters={filters}
+                options={options}
+                idPrefix="desktop-filter"
+              />
+            </GlassPanel>
+          </aside>
 
-        <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-6">
-          {sortedProducts.map((product, index) => (
-            <ProductCard key={product.slug} product={product} priority={index < 2} />
-          ))}
+          <div>
+            <GlassPanel className="mb-5 flex flex-wrap items-center justify-between gap-3 px-3 py-3">
+              <p className="text-sm font-black text-stone-700">
+                {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {orderLinks.map((link) => {
+                  const active = (filters.orden ?? "relevancia") === link.value;
+                  return (
+                    <Link
+                      key={link.value}
+                      href={buildCatalogQuery({ ...filters, orden: link.value })}
+                      className={`rounded-full px-3 py-2 text-xs font-black transition ${
+                        active
+                          ? "bg-black text-white shadow-sm"
+                          : "bg-white/70 text-stone-700 ring-1 ring-black/5 hover:bg-white"
+                      }`}
+                      aria-current={active ? "page" : undefined}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </GlassPanel>
+
+            {filteredProducts.length === 0 ? (
+              <EmptyState
+                title="Sin resultados"
+                description="Prueba quitando algunos filtros o explora todo el catalogo ATRES."
+                actionHref="/productos"
+                actionLabel="Ver todo"
+              />
+            ) : (
+              <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+                {filteredProducts.map((product, index) => (
+                  <ProductCard key={product.slug} product={product} priority={index < 2} />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </main>
   );
-}
-
-function OrderLink({ label, value, active }: { label: string; value: string; active: boolean }) {
-  return (
-    <Link
-      href={value === "relevancia" ? "/productos" : `/productos?orden=${value}`}
-      className={`rounded-full px-3 py-2 text-xs font-black transition ${
-        active
-          ? "bg-black text-white shadow-sm"
-          : "bg-white/70 text-stone-700 ring-1 ring-black/5 hover:bg-white"
-      }`}
-      aria-current={active ? "page" : undefined}
-    >
-      {label}
-    </Link>
-  );
-}
-
-function sortProducts(products: Product[], order: string) {
-  const sorted = [...products];
-
-  if (order === "nuevos") {
-    return sorted.sort((a, b) => Number(b.isNew) - Number(a.isNew));
-  }
-
-  if (order === "tendencias") {
-    return sorted.sort((a, b) => trendScore(b) - trendScore(a));
-  }
-
-  if (order === "precio-menor") {
-    return sorted.sort((a, b) => a.price - b.price);
-  }
-
-  if (order === "descuento") {
-    return sorted.sort((a, b) => discountValue(b) - discountValue(a));
-  }
-
-  return sorted;
-}
-
-function discountValue(product: Product) {
-  if (!product.previousPrice || product.previousPrice <= product.price) return 0;
-  return product.previousPrice - product.price;
-}
-
-function trendScore(product: Product) {
-  return Number(product.isTrending) * 3 + Number(product.isNew) * 2 + Number(product.isPromo);
 }

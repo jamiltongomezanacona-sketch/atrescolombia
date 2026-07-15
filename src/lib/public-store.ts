@@ -1,3 +1,12 @@
+import {
+  buildPrimaryNavItems,
+  getChildCategories,
+  getDescendantCategorySlugs,
+  getTopLevelCategories,
+  sortCategoriesForDisplay,
+  type NavItem,
+  type StoreCategory,
+} from "@/lib/store-navigation";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
@@ -20,6 +29,7 @@ type SupabaseCategoryRow = {
   description?: string | null;
   image_url?: string | null;
   display_order?: number | null;
+  parent_id?: string | null;
 };
 
 type SupabaseProductRow = {
@@ -56,33 +66,62 @@ type SupabaseVariantRow = {
   inventory: number;
 };
 
-export async function getPublicCategories(): Promise<Category[]> {
+export async function getPublicCategories(): Promise<StoreCategory[]> {
   if (!hasSupabaseEnv()) {
-    return fallbackCategories;
+    return fallbackCategories.map(mapFallbackCategory);
   }
 
   try {
     const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase
       .from("categories")
-      .select("slug,name,description,image_url,display_order")
+      .select("id,slug,name,description,image_url,display_order,parent_id")
       .eq("status", "active")
       .order("display_order", { ascending: true });
 
     if (error || !data?.length) {
-      return fallbackCategories;
+      return fallbackCategories.map(mapFallbackCategory);
     }
 
-    return data.map((category) => ({
-      slug: category.slug,
-      name: category.name,
-      shortName: category.name.replace("Moda ", ""),
-      image: category.image_url ?? fallbackCategories[0].image,
-      description: category.description ?? "",
-    }));
+    const slugById = new Map(
+      (data as SupabaseCategoryRow[]).map((category) => [category.id, category.slug]),
+    );
+
+    return (data as SupabaseCategoryRow[]).map((category) => mapCategoryRow(category, slugById));
   } catch {
-    return fallbackCategories;
+    return fallbackCategories.map(mapFallbackCategory);
   }
+}
+
+export async function getStoreNavigation(): Promise<NavItem[]> {
+  const [categories, products] = await Promise.all([getPublicCategories(), getPublicProducts()]);
+  const productCategorySlugs = products.map((product) => product.categorySlug);
+  return buildPrimaryNavItems(categories, productCategorySlugs);
+}
+
+export async function getPublicCategoriesForDisplay(): Promise<StoreCategory[]> {
+  const [categories, products] = await Promise.all([getPublicCategories(), getPublicProducts()]);
+  const roots = sortCategoriesForDisplay(getTopLevelCategories(categories));
+
+  return roots.filter((category) => categoryHasProducts(category, categories, products));
+}
+
+export async function getPublicCategoryBySlug(slug: string) {
+  const categories = await getPublicCategories();
+  return categories.find((category) => category.slug === slug || normalizeCategorySlug(category.slug) === normalizeCategorySlug(slug));
+}
+
+export async function getPublicSubcategories(parentSlug: string) {
+  const [categories, products] = await Promise.all([getPublicCategories(), getPublicProducts()]);
+  const parent = categories.find(
+    (category) =>
+      category.slug === parentSlug || normalizeCategorySlug(category.slug) === normalizeCategorySlug(parentSlug),
+  );
+
+  if (!parent) return [];
+
+  const children = getChildCategories(categories, parent);
+  return children.filter((child) => categoryHasProducts(child, categories, products));
 }
 
 export async function getPublicProducts(): Promise<Product[]> {
@@ -134,8 +173,12 @@ export async function getPublicProduct(slug: string) {
 }
 
 export async function getPublicProductsByCategory(slug: string) {
-  const products = await getPublicProducts();
-  return products.filter((product) => categoryMatches(slug, product.categorySlug, product.categoryName));
+  const [products, categories] = await Promise.all([getPublicProducts(), getPublicCategories()]);
+  const slugs = getDescendantCategorySlugs(categories, slug);
+
+  return products.filter((product) =>
+    slugs.some((candidate) => categoryMatches(candidate, product.categorySlug, product.categoryName)),
+  );
 }
 
 export async function getPublicNewProducts() {
@@ -283,6 +326,36 @@ async function getVariantsByProductId(productIds: string[]) {
   }
 
   return variantsByProductId;
+}
+
+function mapFallbackCategory(category: Category): StoreCategory {
+  return {
+    ...category,
+    displayOrder: 0,
+  };
+}
+
+function mapCategoryRow(category: SupabaseCategoryRow, slugById: Map<string, string>): StoreCategory {
+  return {
+    id: category.id,
+    slug: category.slug,
+    name: category.name,
+    shortName: category.name.replace(/^Moda\s+/i, ""),
+    image: category.image_url ?? fallbackCategories[0].image,
+    description: category.description ?? "",
+    parentId: category.parent_id ?? null,
+    parentSlug: category.parent_id ? slugById.get(category.parent_id) ?? null : null,
+    displayOrder: category.display_order ?? 0,
+  };
+}
+
+function categoryHasProducts(category: StoreCategory, allCategories: StoreCategory[], products: Product[]) {
+  if (!products.length) return true;
+
+  const slugs = getDescendantCategorySlugs(allCategories, category.slug);
+  return products.some((product) =>
+    slugs.some((candidate) => categoryMatches(candidate, product.categorySlug, product.categoryName)),
+  );
 }
 
 function mapProductRow(

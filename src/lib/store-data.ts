@@ -4,6 +4,10 @@ export type Category = {
   shortName: string;
   image: string;
   description: string;
+  id?: string;
+  parentId?: string | null;
+  parentSlug?: string | null;
+  displayOrder?: number;
 };
 
 export type Product = {

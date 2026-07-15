@@ -16,7 +16,10 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 px-3 pb-3 md:hidden" aria-label="Navegacion principal">
+    <nav
+      className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden"
+      aria-label="Navegacion principal"
+    >
       <div className="mx-auto grid max-w-md grid-cols-5 rounded-full border border-white/70 bg-white/90 px-2 py-1.5 shadow-[0_-10px_30px_rgba(20,34,30,0.1)]">
         {items.map((item) => {
           const active =

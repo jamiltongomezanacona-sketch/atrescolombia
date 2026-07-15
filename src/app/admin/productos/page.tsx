@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminSelect } from "@/components/admin/admin-select";
+import { AdminStatusBadge } from "@/components/admin/admin-status-badge";
 import { ProductRowActions } from "@/components/admin/product-row-actions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { requireAdmin } from "@/lib/admin/auth";
 import { getAdminCategories, getAdminProducts } from "@/lib/admin/data";
 
@@ -31,49 +35,50 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
             <p className="text-xs font-black uppercase text-zinc-500">Catalogo</p>
             <h1 className="text-3xl font-black">Productos</h1>
           </div>
-          <Link href="/admin/productos/nuevo" className="bg-black px-4 py-3 text-sm font-black text-white">
+          <Button href="/admin/productos/nuevo" className="rounded-none">
             Nuevo producto
-          </Link>
+          </Button>
         </div>
         <form className="grid gap-3 bg-white p-4 shadow-sm md:grid-cols-[1fr_180px_auto]">
-          <input
-            name="q"
-            defaultValue={params?.q ?? ""}
-            placeholder="Buscar producto o SKU"
-            className="h-11 border border-zinc-300 px-3 focus:border-black"
-          />
-          <select name="estado" defaultValue={estado} className="h-11 border border-zinc-300 px-3 focus:border-black">
+          <Input name="q" defaultValue={params?.q ?? ""} placeholder="Buscar producto o SKU" />
+          <AdminSelect name="estado" defaultValue={estado} aria-label="Estado">
             <option value="">Todos</option>
             <option value="active">Activos</option>
             <option value="hidden">Ocultos</option>
             <option value="archived">Archivados</option>
-          </select>
-          <button className="h-11 bg-black px-4 text-sm font-black text-white">Filtrar</button>
+          </AdminSelect>
+          <Button type="submit" className="rounded-none">
+            Filtrar
+          </Button>
         </form>
 
-        <div className="grid gap-3 md:hidden">
+        <div className="grid gap-3 lg:hidden">
           {filtered.map((product) => (
             <article key={product.id} className="bg-white p-4 shadow-sm">
-              <Link href={`/admin/productos/${product.id}/editar`} className="font-black hover:underline">
-                {safeText(product.name) || "Producto sin nombre"}
-              </Link>
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <Link href={`/admin/productos/${product.id}/editar`} className="font-black hover:underline">
+                  {safeText(product.name) || "Producto sin nombre"}
+                </Link>
+                <AdminStatusBadge status={safeText(product.status) || "hidden"} />
+              </div>
               <p className="mt-1 text-xs font-semibold text-zinc-500">{safeText(product.sku) || "Sin SKU"}</p>
               <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
-                <div>
-                  <dt className="text-xs font-black uppercase text-zinc-500">Estado</dt>
-                  <dd className="font-bold">{safeText(product.status) || "hidden"}</dd>
-                </div>
                 <div>
                   <dt className="text-xs font-black uppercase text-zinc-500">Precio</dt>
                   <dd className="font-black">${safeNumber(product.price).toLocaleString("es-CO")}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-black uppercase text-zinc-500">Categoria</dt>
-                  <dd>{product.category_id ? categoryById.get(product.category_id) : "Sin categoria"}</dd>
-                </div>
-                <div>
                   <dt className="text-xs font-black uppercase text-zinc-500">Inventario</dt>
-                  <dd>{safeNumber(product.inventory_total)}</dd>
+                  <dd className="font-bold">{safeNumber(product.inventory_total)}</dd>
+                </div>
+                <div className="col-span-2">
+                  <dt className="text-xs font-black uppercase text-zinc-500">Categoria</dt>
+                  <dd className="font-semibold">
+                    {product.category_id ? categoryById.get(product.category_id) : "Sin categoria"}
+                    {product.subcategory_id && categoryById.get(product.subcategory_id)
+                      ? ` / ${categoryById.get(product.subcategory_id)}`
+                      : ""}
+                  </dd>
                 </div>
               </dl>
               <div className="mt-3">
@@ -84,11 +89,11 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
           {!filtered.length ? <p className="bg-white p-6 text-sm font-semibold text-zinc-500">No hay productos para mostrar.</p> : null}
         </div>
 
-        <div className="hidden overflow-x-auto bg-white shadow-sm md:block">
-          <table className="w-full text-left text-sm">
+        <div className="hidden overflow-x-auto bg-white shadow-sm lg:block">
+          <table className="w-full min-w-[720px] text-left text-sm">
             <thead className="bg-zinc-50 text-xs uppercase text-zinc-500">
               <tr>
-                <th className="p-3">Producto</th>
+                <th className="sticky left-0 bg-zinc-50 p-3">Producto</th>
                 <th className="p-3">Estado</th>
                 <th className="p-3">Categoria</th>
                 <th className="p-3">Precio</th>
@@ -100,14 +105,21 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
             <tbody>
               {filtered.map((product) => (
                 <tr key={product.id} className="border-t border-zinc-100">
-                  <td className="p-3">
+                  <td className="sticky left-0 bg-white p-3">
                     <Link href={`/admin/productos/${product.id}/editar`} className="font-black hover:underline">
                       {safeText(product.name) || "Producto sin nombre"}
                     </Link>
                     <p className="text-xs font-semibold text-zinc-500">{safeText(product.sku) || "Sin SKU"}</p>
                   </td>
-                  <td className="p-3 font-bold">{safeText(product.status) || "hidden"}</td>
-                  <td className="p-3">{product.category_id ? categoryById.get(product.category_id) : "Sin categoria"}</td>
+                  <td className="p-3">
+                    <AdminStatusBadge status={safeText(product.status) || "hidden"} />
+                  </td>
+                  <td className="p-3">
+                    {product.category_id ? categoryById.get(product.category_id) : "Sin categoria"}
+                    {product.subcategory_id && categoryById.get(product.subcategory_id)
+                      ? ` / ${categoryById.get(product.subcategory_id)}`
+                      : ""}
+                  </td>
                   <td className="p-3 font-black">${safeNumber(product.price).toLocaleString("es-CO")}</td>
                   <td className="p-3">{safeNumber(product.inventory_total)}</td>
                   <td className="p-3">{formatDate(product.created_at)}</td>

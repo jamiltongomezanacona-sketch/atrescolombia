@@ -61,7 +61,10 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               </button>
             </form>
           </div>
-          <nav className="mt-3 flex gap-2 overflow-x-auto [scrollbar-width:none]" aria-label="Admin movil">
+          <nav
+            className="mt-3 flex gap-2 overflow-x-auto [mask-image:linear-gradient(90deg,#000_85%,transparent)] [scrollbar-width:none] sm:[mask-image:none]"
+            aria-label="Admin movil"
+          >
             {navItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
@@ -70,8 +73,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "shrink-0 rounded-full px-3 py-1.5 text-xs font-black",
-                    active ? "bg-black text-white" : "bg-zinc-100 text-zinc-700",
+                    "shrink-0 rounded-full px-3 py-1.5 text-xs font-black ring-1 ring-transparent",
+                    active ? "bg-black text-white ring-black/10" : "bg-zinc-100 text-zinc-700",
                   )}
                 >
                   {item.label}
@@ -97,7 +100,7 @@ export function AdminNotice({ title, body }: { title: string; body: string }) {
 
 export function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-zinc-200/80 bg-white p-4 shadow-sm">
       <p className="text-xs font-black uppercase text-zinc-500">{label}</p>
       <p className="mt-2 text-3xl font-black">{value}</p>
     </div>

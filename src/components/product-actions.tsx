@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { FavoriteButton } from "@/components/favorite-button";
 import { Button } from "@/components/ui/button";
+import { buildProductWhatsAppMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
 import type { Product } from "@/lib/store-data";
 
 type ProductActionsProps = {
   product: Product;
+  whatsapp?: string;
 };
 
 const CART_KEY = "atres:cart";
@@ -30,13 +32,22 @@ function readCart() {
   }
 }
 
-export function ProductActions({ product }: ProductActionsProps) {
+export function ProductActions({ product, whatsapp }: ProductActionsProps) {
   const [color, setColor] = useState(product.colors[0] ?? "");
   const [size, setSize] = useState(product.sizes[0] ?? "");
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
+  const whatsappUrl = whatsapp
+    ? buildWhatsAppUrl(whatsapp, buildProductWhatsAppMessage(product, size, color))
+    : null;
+  const outOfStock = product.stock <= 0;
 
   function addToCart(goToCart = false) {
+    if (outOfStock) {
+      setMessage("Este producto no tiene stock disponible.");
+      return;
+    }
+
     const cart = readCart();
     const existing = cart.find(
       (item) => item.slug === product.slug && item.color === color && item.size === size,
@@ -82,7 +93,7 @@ export function ProductActions({ product }: ProductActionsProps) {
 
       <div>
         <p className="mb-2 text-xs font-black uppercase text-stone-500">Cantidad</p>
-        <div className="inline-grid grid-cols-[44px_54px_44px] rounded-full bg-stone-100 text-center">
+        <div className="inline-grid grid-cols-[44px_54px_44px] rounded-full bg-stone-100 text-center" role="group" aria-label="Cantidad">
           <button
             type="button"
             aria-label="Reducir cantidad"
@@ -91,7 +102,13 @@ export function ProductActions({ product }: ProductActionsProps) {
           >
             -
           </button>
-          <span className="flex h-11 items-center justify-center bg-white text-sm font-black">{quantity}</span>
+          <span
+            aria-live="polite"
+            aria-atomic="true"
+            className="flex h-11 items-center justify-center bg-white text-sm font-black"
+          >
+            {quantity}
+          </span>
           <button
             type="button"
             aria-label="Aumentar cantidad"
@@ -104,10 +121,21 @@ export function ProductActions({ product }: ProductActionsProps) {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
-        <Button type="button" onClick={() => addToCart(false)} className="rounded-full">
+        <Button
+          type="button"
+          onClick={() => addToCart(false)}
+          className="rounded-full"
+          disabled={outOfStock}
+        >
           Agregar al carrito
         </Button>
-        <Button type="button" variant="brand" onClick={() => addToCart(true)} className="rounded-full">
+        <Button
+          type="button"
+          variant="brand"
+          onClick={() => addToCart(true)}
+          className="rounded-full"
+          disabled={outOfStock}
+        >
           Comprar
         </Button>
         <FavoriteButton
@@ -116,6 +144,17 @@ export function ProductActions({ product }: ProductActionsProps) {
           activeLabel="Quitar este producto de favoritos"
         />
       </div>
+
+      {whatsappUrl ? (
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-black text-white transition hover:bg-[#1ebe57]"
+        >
+          Consultar por WhatsApp
+        </a>
+      ) : null}
 
       <Button type="button" variant="secondary" size="lg" onClick={shareProduct}>
         Compartir producto
@@ -151,7 +190,7 @@ function OptionGroup({
             type="button"
             aria-pressed={value === item}
             onClick={() => onChange(item)}
-            className={`rounded-full border px-3 py-2 text-sm font-bold transition ${
+            className={`min-h-11 rounded-full border px-3 py-2 text-sm font-bold transition ${
               value === item
                 ? "border-black bg-black text-white"
                 : "border-black/10 bg-white text-stone-700 hover:border-black"

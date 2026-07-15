@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import { CategoryPickers } from "@/components/admin/category-pickers";
 import type { AdminCategory } from "@/lib/admin/types";
 import { cleanupQuickProductUploads, createQuickProduct, uploadQuickProductImage } from "@/lib/admin/actions";
 import type { QuickProductImageInput } from "@/lib/admin/actions";
@@ -372,16 +373,17 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
           <input value={name} onChange={(event) => setName(event.target.value)} className={inputClass} placeholder="Ej: Vestido lino Brisa" />
         </Field>
 
-        <Field label="Categoria">
-          <select value={categoryId} onChange={(event) => setCategoryId(event.target.value)} className={inputClass}>
-            <option value="">Selecciona una categoria</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </Field>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <CategoryPickers
+            categories={categories}
+            controlled
+            requiredCategory
+            categoryId={categoryId}
+            subcategoryId={advanced.subcategoryId}
+            onCategoryChange={setCategoryId}
+            onSubcategoryChange={(value) => setAdvancedValue("subcategoryId", value)}
+          />
+        </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Precio">
@@ -422,9 +424,6 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
               </Field>
               <Field label="SKU manual">
                 <input value={advanced.sku} onChange={(event) => setAdvancedValue("sku", event.target.value)} className={inputClass} placeholder={skuPreview} />
-              </Field>
-              <Field label="Subcategoria ID">
-                <input value={advanced.subcategoryId} onChange={(event) => setAdvancedValue("subcategoryId", event.target.value)} className={inputClass} />
               </Field>
               <Field label="Coleccion">
                 <input value={advanced.collection} onChange={(event) => setAdvancedValue("collection", event.target.value)} className={inputClass} />

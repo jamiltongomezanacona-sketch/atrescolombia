@@ -13,8 +13,8 @@ export type CategoryVisualTheme = {
 };
 
 const defaultTheme: CategoryVisualTheme = {
-  eyebrow: "Departamento ATRES",
-  headline: "Moda para descubrir hoy",
+  eyebrow: "Coleccion ATRES",
+  headline: "Moda directa de la marca",
   description: "Una seleccion curada con prendas nuevas, precios visibles y compra rapida.",
   trendTag: "#AtresNuevo",
   heroImage: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=1200&q=80",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { Button } from "@/components/ui/button";
 import { duplicateProduct, setProductStatus } from "@/lib/admin/actions";
 
 export function ProductRowActions({ productId, status }: { productId: string; status: string }) {
@@ -23,19 +24,36 @@ export function ProductRowActions({ productId, status }: { productId: string; st
 
   return (
     <div className="flex flex-wrap gap-2">
-      <button
+      <Button
+        type="button"
         disabled={pending}
         onClick={() => run(status === "active" ? "hidden" : "active")}
-        className="bg-zinc-100 px-2 py-1 text-xs font-black"
+        variant="secondary"
+        size="sm"
+        className="h-9 rounded-none px-2.5"
       >
         {status === "active" ? "Ocultar" : "Activar"}
-      </button>
-      <button disabled={pending} onClick={() => run("duplicate")} className="bg-zinc-100 px-2 py-1 text-xs font-black">
+      </Button>
+      <Button
+        type="button"
+        disabled={pending}
+        onClick={() => run("duplicate")}
+        variant="secondary"
+        size="sm"
+        className="h-9 rounded-none px-2.5"
+      >
         Duplicar
-      </button>
-      <button disabled={pending} onClick={() => run("archived")} className="bg-red-50 px-2 py-1 text-xs font-black text-red-700">
+      </Button>
+      <Button
+        type="button"
+        disabled={pending}
+        onClick={() => run("archived")}
+        variant="ghost"
+        size="sm"
+        className="h-9 rounded-none bg-red-50 px-2.5 text-red-700 hover:bg-red-100"
+      >
         Archivar
-      </button>
+      </Button>
     </div>
   );
 }

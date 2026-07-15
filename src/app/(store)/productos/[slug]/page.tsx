@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductActions } from "@/components/product-actions";
 import { ProductRail } from "@/components/product-rail";
@@ -5,8 +6,8 @@ import { SafeProductImage } from "@/components/safe-product-image";
 import { Badge } from "@/components/ui/badge";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { ProductPrice } from "@/components/ui/product-price";
-import { products } from "@/lib/store-data";
-import { getDiscountPercent } from "@/lib/store-data";
+import { getPublicStoreSettings } from "@/lib/public-settings";
+import { products, getDiscountPercent } from "@/lib/store-data";
 import { getPublicProduct, getPublicProducts, getPublicRelatedProducts } from "@/lib/public-store";
 
 type ProductPageProps = {
@@ -41,10 +42,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const related = await getPublicRelatedProducts(product);
+  const [related, publicProducts, settings] = await Promise.all([
+    getPublicRelatedProducts(product),
+    getPublicProducts(),
+    getPublicStoreSettings(),
+  ]);
   const discount = getDiscountPercent(product);
-  const publicProducts = await getPublicProducts();
   const recentlyViewed = publicProducts.filter((item) => item.slug !== product.slug).slice(0, 4);
+  const inStock = product.stock > 0;
+  const sizes = product.sizes.filter((size) => {
+    const value = size.trim().toLowerCase();
+    return value && value !== "unica" && value !== "única";
+  });
 
   return (
     <main>
@@ -75,13 +84,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="flex flex-wrap gap-2">
             {product.badge ? <Badge>{product.badge}</Badge> : null}
             {discount ? <Badge tone="amber">-{discount}%</Badge> : null}
-            <Badge tone="emerald">Disponible</Badge>
+            <Badge tone={inStock ? "emerald" : "soft"}>
+              {inStock ? "Disponible" : "Agotado"}
+            </Badge>
           </div>
 
-          <h1 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-5xl">{product.name}</h1>
-          <p className="mt-2 text-sm font-bold text-stone-500">
-            {product.categoryName} / {product.collection}
+          <p className="mt-4 text-xs font-black uppercase tracking-wide text-stone-500">
+            <Link href={`/categoria/${product.categorySlug}`} className="hover:text-brand">
+              {product.categoryName}
+            </Link>
+            {product.collection ? ` / ${product.collection}` : ""}
           </p>
+
+          <h1 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-5xl">{product.name}</h1>
 
           <ProductPrice
             price={product.price}
@@ -92,13 +107,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           <p className="mt-5 text-base font-semibold leading-7 text-stone-700">{product.description}</p>
 
-          <ProductActions product={product} />
+          {sizes.length > 0 ? (
+            <p className="mt-3 text-sm font-semibold text-stone-500">
+              Tallas: {product.sizes.join(" · ")}
+            </p>
+          ) : null}
+
+          <ProductActions product={product} whatsapp={settings?.whatsapp} />
 
           <div className="mt-5 grid gap-2 rounded-lg bg-white/70 p-4 text-sm font-semibold text-stone-700 ring-1 ring-black/5">
             <p className="font-black text-ink">Guia rapida</p>
             <p>Disponibilidad: {product.stock} unidades</p>
-            <p>Guia de tallas: elige tu talla habitual; fit regular salvo indicacion.</p>
-            <p>Compartir: copia el enlace de esta pagina desde tu navegador.</p>
+            {settings?.shippingText ? <p>{settings.shippingText}</p> : (
+              <p>Guia de tallas: elige tu talla habitual; fit regular salvo indicacion.</p>
+            )}
+            {settings?.promoMessage ? <p className="text-brand">{settings.promoMessage}</p> : null}
           </div>
 
           <div className="mt-5">

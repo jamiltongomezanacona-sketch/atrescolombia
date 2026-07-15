@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { ProductPrice } from "@/components/ui/product-price";
+import { buildCartWhatsAppMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
 import { formatCOP, type Product } from "@/lib/store-data";
 
 type CartItem = {
@@ -18,6 +19,7 @@ type CartItem = {
 
 type CartViewProps = {
   products: Product[];
+  whatsapp?: string;
 };
 
 const CART_KEY = "atres:cart";
@@ -30,7 +32,7 @@ function readCart() {
   }
 }
 
-export function CartView({ products }: CartViewProps) {
+export function CartView({ products, whatsapp }: CartViewProps) {
   const [items, setItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
@@ -60,6 +62,23 @@ export function CartView({ products }: CartViewProps) {
   );
 
   const subtotal = rows.reduce((sum, row) => sum + row.product.price * row.item.quantity, 0);
+
+  const whatsappUrl =
+    whatsapp && rows.length
+      ? buildWhatsAppUrl(
+          whatsapp,
+          buildCartWhatsAppMessage(
+            rows.map(({ item, product }) => ({
+              name: product.name,
+              quantity: item.quantity,
+              color: item.color,
+              size: item.size,
+              price: product.price,
+            })),
+            subtotal,
+          ),
+        )
+      : null;
 
   function persistCart(nextItems: CartItem[]) {
     window.localStorage.setItem(CART_KEY, JSON.stringify(nextItems));
@@ -129,18 +148,18 @@ export function CartView({ products }: CartViewProps) {
                     type="button"
                     aria-label={`Reducir cantidad de ${product.name}`}
                     onClick={() => updateQuantity(item, item.quantity - 1)}
-                    className="h-9 font-black"
+                    className="h-11 min-w-9 font-black"
                   >
                     -
                   </button>
-                  <span className="flex h-9 items-center justify-center bg-white text-sm font-black">
+                  <span className="flex h-11 items-center justify-center bg-white text-sm font-black">
                     {item.quantity}
                   </span>
                   <button
                     type="button"
                     aria-label={`Aumentar cantidad de ${product.name}`}
                     onClick={() => updateQuantity(item, item.quantity + 1)}
-                    className="h-9 font-black"
+                    className="h-11 min-w-9 font-black"
                   >
                     +
                   </button>
@@ -148,7 +167,7 @@ export function CartView({ products }: CartViewProps) {
                 <button
                   type="button"
                   onClick={() => removeItem(item)}
-                  className="h-9 rounded-full bg-stone-100 px-3 text-xs font-black text-stone-700"
+                  className="h-11 rounded-full bg-stone-100 px-3 text-xs font-black text-stone-700"
                 >
                   Eliminar
                 </button>
@@ -163,9 +182,20 @@ export function CartView({ products }: CartViewProps) {
           <span className="text-sm font-bold text-stone-500">Subtotal</span>
           <span className="text-xl font-black">{formatCOP(subtotal)}</span>
         </div>
-        <Button variant="brand" size="lg" className="mt-5">
-          Continuar compra
-        </Button>
+        {whatsappUrl ? (
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex h-12 w-full items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-black text-white transition hover:bg-[#1ebe57]"
+          >
+            Continuar por WhatsApp
+          </a>
+        ) : (
+          <Button variant="brand" size="lg" className="mt-5" href="/productos">
+            Seguir comprando
+          </Button>
+        )}
         <Button variant="secondary" size="lg" className="mt-3 rounded-full" onClick={clearCart}>
           Vaciar carrito
         </Button>

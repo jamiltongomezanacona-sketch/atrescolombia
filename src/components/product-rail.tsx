@@ -7,9 +7,17 @@ type ProductRailProps = {
   href: string;
   products: Product[];
   linkLabel?: string;
+  /** Eager-load first N cards (home above-fold only). Default 0. */
+  priorityCount?: number;
 };
 
-export function ProductRail({ title, href, products, linkLabel = "Ver mas" }: ProductRailProps) {
+export function ProductRail({
+  title,
+  href,
+  products,
+  linkLabel = "Ver mas",
+  priorityCount = 0,
+}: ProductRailProps) {
   if (!products.length) return null;
 
   return (
@@ -22,7 +30,11 @@ export function ProductRail({ title, href, products, linkLabel = "Ver mas" }: Pr
       </div>
       <div className="product-rail">
         {products.slice(0, 6).map((product, index) => (
-          <ProductCard key={product.slug} product={product} priority={index < 2} />
+          <ProductCard
+            key={product.slug}
+            product={product}
+            priority={priorityCount > 0 && index < priorityCount}
+          />
         ))}
       </div>
     </section>

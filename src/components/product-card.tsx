@@ -10,10 +10,19 @@ type ProductCardProps = {
   priority?: boolean;
 };
 
+function meaningfulSizes(sizes: string[]) {
+  return sizes.filter((size) => {
+    const value = size.trim().toLowerCase();
+    return value && value !== "unica" && value !== "única" && value !== "u";
+  });
+}
+
 export function ProductCard({ product, priority = false }: ProductCardProps) {
   const discount = getDiscountPercent(product);
   const previousPrice =
     product.previousPrice && product.previousPrice > product.price ? product.previousPrice : null;
+  const sizes = meaningfulSizes(product.sizes).slice(0, 4);
+  const inStock = product.stock > 0;
 
   return (
     <article className="group overflow-hidden rounded-lg bg-white/85 shadow-soft ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-lift">
@@ -35,27 +44,53 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </div>
         {product.badge ? (
           <div className="absolute left-2.5 top-2.5">
-            <Badge>{product.badge}</Badge>
+            <Badge tone="black" className="text-[11px] ring-1 ring-black/25">
+              {product.badge}
+            </Badge>
           </div>
         ) : null}
         {discount ? (
           <div className="absolute bottom-2.5 left-2.5">
-            <Badge tone="brand">-{discount}%</Badge>
+            <Badge tone="brand" className="bg-brand text-[11px] text-white ring-1 ring-black/20">
+              -{discount}%
+            </Badge>
+          </div>
+        ) : null}
+        {!inStock ? (
+          <div className="absolute inset-x-2.5 bottom-2.5">
+            <Badge tone="black" className="text-[11px] ring-1 ring-black/25">
+              Agotado
+            </Badge>
           </div>
         ) : null}
       </div>
-      <div className="space-y-2.5 p-3.5">
+      <div className="space-y-2 p-3.5">
+        <p className="truncate text-xs font-black uppercase tracking-wide text-stone-500">
+          {product.categoryName}
+        </p>
         <Link href={`/productos/${product.slug}`} className="block">
           <h3 className="line-clamp-2 min-h-10 text-xs font-semibold leading-5 text-ink transition group-hover:text-black sm:text-sm">
             {product.name}
           </h3>
         </Link>
+        {sizes.length > 0 ? (
+          <p className="truncate text-[11px] font-semibold text-stone-500">
+            Tallas: {sizes.join(" · ")}
+            {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
+          </p>
+        ) : null}
         <div className="flex min-h-10 items-end justify-between gap-2">
           <ProductPrice price={product.price} previousPrice={previousPrice} />
-          <span className="hidden shrink-0 rounded-full bg-stone-100/80 px-2 py-1 text-[10px] font-black uppercase text-stone-600 sm:inline-flex">
+          <Link
+            href={`/productos/${product.slug}`}
+            className="hidden shrink-0 rounded-full bg-stone-100/80 px-2.5 py-1.5 text-[10px] font-black uppercase text-stone-700 transition hover:bg-black hover:text-white sm:inline-flex"
+          >
             Ver
-          </span>
+          </Link>
         </div>
+        <p className={`text-[11px] font-bold ${inStock ? "text-emerald-700" : "text-stone-400"}`}>
+          {inStock ? "Disponible" : "Sin stock"}
+        </p>
       </div>
     </article>
   );

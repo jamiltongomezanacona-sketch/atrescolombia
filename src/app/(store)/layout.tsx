@@ -8,7 +8,10 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
     <div className="store-surface flex min-h-screen flex-col overflow-x-hidden text-ink">
       <SkipLink />
       <SiteHeader />
-      <div id="contenido-principal" className="flex flex-1 flex-col pb-24">
+      <div
+        id="contenido-principal"
+        className="flex flex-1 flex-col pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-0"
+      >
         {children}
       </div>
       <StoreFooter />

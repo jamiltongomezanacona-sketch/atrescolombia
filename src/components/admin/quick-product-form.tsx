@@ -2,9 +2,8 @@
 
 import { useMemo, useRef, useState } from "react";
 import type { AdminCategory } from "@/lib/admin/types";
-import { createQuickProduct } from "@/lib/admin/actions";
+import { cleanupQuickProductUploads, createQuickProduct, uploadQuickProductImage } from "@/lib/admin/actions";
 import type { QuickProductImageInput } from "@/lib/admin/actions";
-import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 type QuickProductFormProps = {
   categories: AdminCategory[];
@@ -160,7 +159,6 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
 
     setSaving(true);
 
-    const supabase = createSupabaseBrowserClient();
     const uploadedPaths: string[] = [];
     const plannedProductId = crypto.randomUUID();
     let createdProductId = plannedProductId;
@@ -200,23 +198,20 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
       for (const [index, image] of orderedImages.entries()) {
         setProgress(`Subiendo imagen ${index + 1} de ${orderedImages.length}...`);
         const webp = await normalizeImage(image.file);
-        const storagePath = `products/${plannedProductId}/${crypto.randomUUID()}.webp`;
-        const { error: uploadError } = await supabase.storage
-          .from("product-images")
-          .upload(storagePath, webp, { contentType: "image/webp", upsert: false });
+        const imageFormData = new FormData();
+        imageFormData.set("productId", plannedProductId);
+        imageFormData.set("fileName", image.file.name);
+        imageFormData.set("displayOrder", String(index));
+        imageFormData.set("isPrimary", String(image.isPrimary || index === 0));
+        imageFormData.set("file", new File([webp], `${image.id}.webp`, { type: "image/webp" }));
+        const uploadResult = await uploadQuickProductImage(imageFormData);
 
-        if (uploadError) throw uploadError;
-        uploadedPaths.push(storagePath);
+        if (!uploadResult.ok || !uploadResult.image) {
+          throw new Error(uploadResult.message);
+        }
 
-        const { data: publicUrlData } = supabase.storage.from("product-images").getPublicUrl(storagePath);
-        uploadedImages.push({
-          storage_path: storagePath,
-          public_url: publicUrlData.publicUrl,
-          alt: image.file.name,
-          aspect_ratio: "3:4",
-          display_order: index,
-          is_primary: image.isPrimary || index === 0,
-        });
+        uploadedPaths.push(uploadResult.image.storage_path);
+        uploadedImages.push(uploadResult.image);
       }
 
       const primaryImage = uploadedImages.find((image) => image.is_primary) ?? uploadedImages[0];
@@ -244,7 +239,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
       }
     } catch (error) {
       if (uploadedPaths.length) {
-        await supabase.storage.from("product-images").remove(uploadedPaths);
+        await cleanupQuickProductUploads(uploadedPaths);
       }
       setMessage({ type: "error", text: error instanceof Error ? error.message : "No se pudo guardar el producto." });
       setProgress("");

@@ -131,6 +131,61 @@ export async function revalidateProductAdminChanges() {
   revalidatePath("/admin/productos");
 }
 
+export async function uploadQuickProductImage(
+  formData: FormData,
+): Promise<ActionState & { image?: QuickProductImageInput }> {
+  const guard = ensureSupabase();
+  if (guard) return guard;
+
+  const productId = stringValue(formData, "productId");
+  const fileName = stringValue(formData, "fileName") || "producto.webp";
+  const displayOrder = numberValue(formData, "displayOrder");
+  const isPrimary = stringValue(formData, "isPrimary") === "true";
+  const file = formData.get("file");
+
+  if (!productId || !(file instanceof File)) {
+    return { ok: false, message: "No se recibio la imagen para subir." };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const storagePath = `products/${productId}/${crypto.randomUUID()}.webp`;
+  const { error } = await supabase.storage
+    .from("product-images")
+    .upload(storagePath, file, { contentType: file.type || "image/webp", upsert: false });
+
+  if (error) {
+    return {
+      ok: false,
+      message: `No se pudo subir la imagen a Supabase Storage. Revisa que exista el bucket product-images y sus politicas. Detalle: ${error.message}`,
+    };
+  }
+
+  const { data } = supabase.storage.from("product-images").getPublicUrl(storagePath);
+  return {
+    ok: true,
+    message: "Imagen subida.",
+    image: {
+      storage_path: storagePath,
+      public_url: data.publicUrl,
+      alt: fileName,
+      aspect_ratio: "3:4",
+      display_order: displayOrder,
+      is_primary: isPrimary,
+    },
+  };
+}
+
+export async function cleanupQuickProductUploads(paths: string[]): Promise<ActionState> {
+  const guard = ensureSupabase();
+  if (guard) return guard;
+  if (!paths.length) return { ok: true, message: "Sin imagenes temporales." };
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.storage.from("product-images").remove(paths);
+  if (error) return { ok: false, message: error.message };
+  return { ok: true, message: "Imagenes temporales eliminadas." };
+}
+
 export async function createQuickProduct(input: QuickProductInput): Promise<ActionState & { productId?: string }> {
   const guard = ensureSupabase();
   if (guard) return guard;

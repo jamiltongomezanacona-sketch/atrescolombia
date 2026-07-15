@@ -139,7 +139,7 @@ export async function uploadQuickProductImage(
 
   const productId = stringValue(formData, "productId");
   const fileName = stringValue(formData, "fileName") || "producto.webp";
-  const displayOrder = numberValue(formData, "displayOrder");
+  const displayOrder = Math.max(1, numberValue(formData, "displayOrder"));
   const isPrimary = stringValue(formData, "isPrimary") === "true";
   const file = formData.get("file");
 
@@ -294,17 +294,7 @@ async function insertQuickProductImages(productId: string, images: QuickProductI
       display_order: image.display_order,
       is_primary: image.is_primary,
     };
-    const legacyImagePayload = {
-      product_id: productId,
-      image_url: image.public_url,
-      public_url: image.public_url,
-      storage_path: image.storage_path,
-      alt: image.alt,
-      display_order: image.display_order,
-      is_primary: image.is_primary,
-    };
-
-    const attempts: Array<Record<string, unknown>> = [fullPayload, compatiblePayload, legacyImagePayload];
+    const attempts: Array<Record<string, unknown>> = [fullPayload, compatiblePayload];
     const errors: string[] = [];
     let inserted = false;
 

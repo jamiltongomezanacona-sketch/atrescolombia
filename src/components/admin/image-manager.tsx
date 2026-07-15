@@ -68,7 +68,7 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
               public_url: publicUrlData.publicUrl,
               alt: file.name,
               aspect_ratio: aspectRatio,
-              display_order: items.length + uploaded.length,
+              display_order: items.length + uploaded.length + 1,
               is_primary: items.length === 0 && uploaded.length === 0,
             })
             .select("*")
@@ -116,11 +116,11 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
     if (nextIndex < 0 || nextIndex >= ordered.length) return;
     [ordered[index], ordered[nextIndex]] = [ordered[nextIndex], ordered[index]];
     const supabase = createSupabaseBrowserClient();
-    const updates = ordered.map((item, display_order) =>
-      supabase.from("product_images").update({ display_order }).eq("id", item.id),
+    const updates = ordered.map((item, index) =>
+      supabase.from("product_images").update({ display_order: index + 1 }).eq("id", item.id),
     );
     await Promise.all(updates);
-    setItems(ordered.map((item, display_order) => ({ ...item, display_order })));
+    setItems(ordered.map((item, index) => ({ ...item, display_order: index + 1 })));
   }
 
   return (

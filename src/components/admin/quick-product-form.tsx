@@ -201,7 +201,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         const imageFormData = new FormData();
         imageFormData.set("productId", plannedProductId);
         imageFormData.set("fileName", image.file.name);
-        imageFormData.set("displayOrder", String(index));
+        imageFormData.set("displayOrder", String(index + 1));
         imageFormData.set("isPrimary", String(image.isPrimary || index === 0));
         imageFormData.set("file", new File([webp], `${image.id}.webp`, { type: "image/webp" }));
         const uploadResult = await uploadQuickProductImage(imageFormData);

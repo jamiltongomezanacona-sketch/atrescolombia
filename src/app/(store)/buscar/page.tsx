@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { CatalogFiltersForm } from "@/components/catalog-filters";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FilterDrawer } from "@/components/filter-drawer";
 import { ProductCard } from "@/components/product-card";
 import { PageHeader } from "@/components/ui/page-header";
-import { GlassPanel } from "@/components/ui/glass-panel";
 import {
   applyCatalogFilters,
   collectFilterOptions,
@@ -73,36 +71,20 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         ) : null}
 
         {query ? (
-          <div className="grid gap-5 lg:grid-cols-[220px_1fr] xl:grid-cols-[235px_1fr]">
-            <aside className="hidden lg:block">
-              <GlassPanel className="sticky top-28 p-4">
-                <p className="mb-4 text-sm font-black text-ink">Refinar busqueda</p>
-                <CatalogFiltersForm
-                  filters={filters}
-                  options={options}
-                  action="/buscar"
-                  idPrefix="search-filter"
-                />
-              </GlassPanel>
-            </aside>
-
-            <div>
-              {results.length === 0 ? (
-                <EmptyState
-                  title="No encontramos coincidencias"
-                  description="Prueba otra palabra o explora las categorias ATRES."
-                  actionHref="/categorias"
-                  actionLabel="Ver categorias"
-                />
-              ) : (
-                <div className="catalog-grid-with-sidebar">
-                  {results.map((product, index) => (
-                    <ProductCard key={product.slug} product={product} priority={index < 2} />
-                  ))}
-                </div>
-              )}
+          results.length === 0 ? (
+            <EmptyState
+              title="No encontramos coincidencias"
+              description="Prueba otra palabra o explora las categorias ATRES."
+              actionHref="/categorias"
+              actionLabel="Ver categorias"
+            />
+          ) : (
+            <div className="catalog-grid">
+              {results.map((product, index) => (
+                <ProductCard key={product.slug} product={product} priority={index < 2} />
+              ))}
             </div>
-          </div>
+          )
         ) : null}
       </section>
     </main>

@@ -66,7 +66,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
     mounted &&
     createPortal(
       <div
-        className={cn("fixed inset-0 z-50 lg:hidden", open ? "pointer-events-auto" : "pointer-events-none")}
+        className={cn("fixed inset-0 z-50", open ? "pointer-events-auto" : "pointer-events-none")}
         aria-hidden={!open}
         {...(!open ? { inert: true } : {})}
       >
@@ -83,8 +83,8 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
           aria-modal="true"
           aria-labelledby={titleId}
           className={cn(
-            "absolute inset-y-0 right-0 flex w-[min(92vw,380px)] flex-col bg-white shadow-lift transition-transform duration-300",
-            open ? "translate-x-0" : "translate-x-full",
+            "absolute flex bg-white shadow-lift transition-transform duration-300 max-sm:inset-x-0 max-sm:bottom-0 max-sm:max-h-[88vh] max-sm:rounded-t-3xl sm:inset-y-0 sm:right-0 sm:w-[min(92vw,420px)]",
+            open ? "translate-x-0 translate-y-0" : "max-sm:translate-y-full sm:translate-x-full",
           )}
         >
           <div className="flex items-center justify-between border-b border-black/5 px-4 py-4">
@@ -122,7 +122,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-11 items-center justify-center rounded-full bg-white px-4 text-sm font-black text-ink ring-1 ring-black/10 lg:hidden"
+        className="inline-flex h-11 items-center justify-center rounded-full bg-white px-4 text-sm font-black text-ink ring-1 ring-black/10 transition hover:bg-black hover:text-white"
         aria-label={
           open ? "Cerrar filtros" : activeCount > 0 ? `Abrir filtros (${activeCount})` : "Abrir filtros"
         }

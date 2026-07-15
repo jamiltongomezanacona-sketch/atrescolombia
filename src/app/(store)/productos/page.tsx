@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { CatalogFiltersForm } from "@/components/catalog-filters";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FilterDrawer } from "@/components/filter-drawer";
 import { ProductCard } from "@/components/product-card";
@@ -75,19 +74,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           <FilterDrawer filters={filters} options={options} />
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-[220px_1fr] xl:grid-cols-[235px_1fr]">
-          <aside className="hidden lg:block">
-            <GlassPanel className="sticky top-28 p-4">
-              <p className="mb-4 text-sm font-black text-ink">Filtros</p>
-              <CatalogFiltersForm
-                filters={filters}
-                options={options}
-                idPrefix="desktop-filter"
-              />
-            </GlassPanel>
-          </aside>
-
-          <div>
+        <div>
             <GlassPanel className="mb-5 flex flex-wrap items-center justify-between gap-3 px-3 py-3">
               <p className="text-sm font-black text-stone-700">
                 {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
@@ -121,13 +108,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 actionLabel="Ver todo"
               />
             ) : (
-              <div className="catalog-grid-with-sidebar">
+              <div className="catalog-grid">
                 {filteredProducts.map((product, index) => (
                   <ProductCard key={product.slug} product={product} priority={index < 2} />
                 ))}
               </div>
             )}
-          </div>
         </div>
       </section>
     </main>

@@ -107,7 +107,7 @@ export async function getPublicProduct(slug: string) {
 
 export async function getPublicProductsByCategory(slug: string) {
   const products = await getPublicProducts();
-  return products.filter((product) => product.categorySlug === slug);
+  return products.filter((product) => categoryMatches(slug, product.categorySlug, product.categoryName));
 }
 
 export async function getPublicNewProducts() {
@@ -211,4 +211,43 @@ function mapProductRow(row: SupabaseProductRow): Product {
     details: row.tags?.length ? row.tags : ["Producto ATRES", "Disponible en tienda"],
     collection: row.collection || "ATRES",
   };
+}
+
+function categoryMatches(requestedSlug: string, productSlug: string, productName: string) {
+  const requested = normalizeCategorySlug(requestedSlug);
+  const product = normalizeCategorySlug(productSlug);
+  const productNameKey = normalizeCategorySlug(productName);
+
+  if (requested === product || requested === productNameKey) {
+    return true;
+  }
+
+  return getCategoryAliasGroup(requested).some((alias) => alias === product || alias === productNameKey);
+}
+
+function normalizeCategorySlug(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/&/g, " y ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/^moda-/, "")
+    .replace(/^ropa-/, "");
+}
+
+function getCategoryAliasGroup(slug: string) {
+  const groups = [
+    ["infantil", "moda-infantil", "ninos", "ninas", "kids", "bebe", "bebes", "baby"],
+    ["urbana", "moda-urbana", "streetwear", "casual"],
+    ["jeans", "denim", "jeans-y-denim", "mezclilla"],
+    ["deportiva", "deportivo", "ropa-deportiva", "sport", "sport-wear"],
+    ["textiles-para-hogar", "textiles", "hogar", "hogar-y-vida"],
+    ["elegante", "moda-elegante", "formal"],
+    ["accesorios", "bisuteria-y-accesorios", "bolsos", "bolsas-y-maletas"],
+    ["uniformes", "colegio", "escolar"],
+  ].map((group) => group.map(normalizeCategorySlug));
+
+  return groups.find((group) => group.includes(slug)) ?? [slug];
 }

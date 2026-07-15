@@ -539,6 +539,9 @@ function slugify(value: string) {
 function revalidateStore() {
   revalidatePath("/");
   revalidatePath("/productos");
+  revalidatePath("/productos/[slug]", "page");
+  revalidatePath("/categoria/[slug]", "page");
+  revalidatePath("/categorias/[slug]", "page");
   revalidatePath("/ofertas");
   revalidatePath("/novedades");
 }

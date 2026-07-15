@@ -13,10 +13,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const previousPrice = product.previousPrice && product.previousPrice > product.price ? product.previousPrice : null;
 
   return (
-    <article className="group overflow-hidden rounded-[2px] bg-white shadow-[0_1px_0_rgba(18,18,18,0.06),0_10px_28px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.04] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_38px_rgba(18,18,18,0.10)]">
+    <article className="group overflow-hidden rounded-lg bg-white/82 shadow-[0_1px_0_rgba(18,18,18,0.04),0_18px_45px_rgba(18,18,18,0.06)] ring-1 ring-black/[0.035] backdrop-blur transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-[0_24px_58px_rgba(18,18,18,0.12)]">
       <div className="relative bg-[#efedea]">
         <Link href={`/productos/${product.slug}`} className="block">
-          <div className="relative aspect-[3/4] overflow-hidden bg-[#ebe7e1]">
+          <div className="relative aspect-[3/4] overflow-hidden rounded-b-[5px] bg-[#ebe7e1]">
             <SafeProductImage
               src={product.image}
               alt={product.name}
@@ -24,26 +24,26 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               priority={priority}
               className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
             />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/[0.16] to-transparent opacity-0 transition group-hover:opacity-100" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/[0.18] via-black/[0.04] to-transparent opacity-0 transition group-hover:opacity-100" />
           </div>
         </Link>
         <div className="absolute right-2.5 top-2.5">
           <FavoriteButton productSlug={product.slug} compact />
         </div>
         {product.badge ? (
-          <span className="absolute left-2.5 top-2.5 rounded-full bg-black px-2.5 py-1 text-[10px] font-black uppercase text-white shadow-sm">
+          <span className="absolute left-2.5 top-2.5 rounded-full bg-black/84 px-2.5 py-1 text-[10px] font-black uppercase text-white shadow-sm backdrop-blur">
             {product.badge}
           </span>
         ) : null}
         {discount ? (
-          <span className="absolute bottom-2.5 left-2.5 rounded-full bg-[#ff4d00] px-2.5 py-1 text-[10px] font-black text-white shadow-sm">
+          <span className="absolute bottom-2.5 left-2.5 rounded-full bg-[#ff4d00]/92 px-2.5 py-1 text-[10px] font-black text-white shadow-sm backdrop-blur">
             -{discount}%
           </span>
         ) : null}
       </div>
-      <div className="space-y-2.5 p-3">
+      <div className="space-y-2.5 p-3.5">
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="line-clamp-2 min-h-10 text-[13px] font-bold leading-5 text-[#181818] transition group-hover:text-black">
+          <h3 className="line-clamp-2 min-h-10 text-[13px] font-semibold leading-5 text-[#181818] transition group-hover:text-black">
             {product.name}
           </h3>
         </Link>
@@ -54,7 +54,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               <p className="mt-1 text-xs font-semibold text-stone-400 line-through">{formatCOP(previousPrice)}</p>
             ) : null}
           </div>
-          <span className="hidden shrink-0 rounded-full bg-stone-100 px-2 py-1 text-[10px] font-black uppercase text-stone-600 sm:inline-flex">
+          <span className="hidden shrink-0 rounded-full bg-stone-100/80 px-2 py-1 text-[10px] font-black uppercase text-stone-600 sm:inline-flex">
             Ver
           </span>
         </div>

@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BottomNav } from "@/components/bottom-nav";
 import { ProductActions } from "@/components/product-actions";
 import { ProductCard } from "@/components/product-card";
+import { SafeProductImage } from "@/components/safe-product-image";
 import { SiteHeader } from "@/components/site-header";
 import {
   formatCOP,
@@ -49,16 +49,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const recentlyViewed = publicProducts.filter((item) => item.slug !== product.slug).slice(0, 4);
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#f3f3f3] pb-24 text-stone-950">
+    <main className="store-surface min-h-screen overflow-x-hidden pb-24 text-stone-950">
       <SiteHeader />
 
-      <section className="mx-auto grid max-w-[1350px] gap-5 px-3 py-5 sm:px-4 lg:grid-cols-[1.08fr_0.92fr]">
+      <section className="mx-auto grid max-w-[1350px] gap-5 px-3 py-6 sm:px-4 md:py-8 lg:grid-cols-[1.08fr_0.92fr]">
         <div className="grid gap-3 sm:grid-cols-[1fr_116px]">
-          <div className="relative aspect-[4/5] overflow-hidden bg-stone-100 shadow-sm">
-            <Image
+          <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-stone-100 shadow-[0_24px_70px_rgba(18,18,18,0.10)] ring-1 ring-white/60">
+            <SafeProductImage
               src={product.images[0]}
               alt={product.name}
-              fill
               priority
               sizes="(max-width: 1024px) 100vw, 55vw"
               className="object-cover"
@@ -66,26 +65,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
             {product.images.slice(1).map((image) => (
-              <div key={image} className="relative aspect-square overflow-hidden bg-stone-100 shadow-sm">
-                <Image src={image} alt={product.name} fill sizes="116px" className="object-cover" />
+              <div key={image} className="relative aspect-square overflow-hidden rounded-lg bg-stone-100 shadow-[0_12px_32px_rgba(18,18,18,0.08)] ring-1 ring-white/60">
+                <SafeProductImage src={image} alt={product.name} sizes="116px" className="object-cover" />
               </div>
             ))}
           </div>
         </div>
 
-        <div className="self-start bg-white p-5 shadow-sm lg:sticky lg:top-28">
+        <div className="glass-surface self-start rounded-lg p-5 ring-1 ring-white/65 lg:sticky lg:top-28">
           <div className="flex flex-wrap gap-2">
             {product.badge ? (
-              <span className="bg-black px-2 py-1 text-[11px] font-black text-white">
+              <span className="rounded-full bg-black/86 px-2.5 py-1 text-[11px] font-black text-white">
                 {product.badge}
               </span>
             ) : null}
             {discount ? (
-              <span className="bg-amber-100 px-2 py-1 text-[11px] font-black text-amber-900">
+              <span className="rounded-full bg-amber-100/86 px-2.5 py-1 text-[11px] font-black text-amber-900">
                 -{discount}%
               </span>
             ) : null}
-            <span className="bg-emerald-100 px-2 py-1 text-[11px] font-black text-emerald-900">
+            <span className="rounded-full bg-emerald-100/86 px-2.5 py-1 text-[11px] font-black text-emerald-900">
               Disponible
             </span>
           </div>
@@ -110,7 +109,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           <ProductActions product={product} />
 
-          <div className="mt-5 grid gap-2 bg-[#f3f3f3] p-4 text-sm font-semibold text-stone-700">
+          <div className="mt-5 grid gap-2 rounded-lg bg-white/55 p-4 text-sm font-semibold text-stone-700 ring-1 ring-black/5 backdrop-blur">
             <p className="font-black text-black">Guia rapida</p>
             <p>Disponibilidad: {product.stock} unidades</p>
             <p>Guia de tallas: elige tu talla habitual; fit regular salvo indicacion.</p>
@@ -121,7 +120,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <p className="mb-2 text-xs font-black uppercase text-stone-500">Detalles</p>
             <ul className="grid gap-2 text-sm font-semibold text-stone-700">
               {product.details.map((detail) => (
-                <li key={detail} className="bg-stone-50 px-3 py-2">
+                <li key={detail} className="rounded-lg bg-white/58 px-3 py-2 ring-1 ring-black/5">
                   {detail}
                 </li>
               ))}
@@ -144,14 +143,14 @@ function ProductRail({ title, href, products }: { title: string; href: string; p
   }
 
   return (
-    <section className="mx-auto max-w-[1350px] px-3 py-6 sm:px-4">
+    <section className="mx-auto max-w-[1350px] px-3 py-7 sm:px-4 md:py-9">
       <div className="mb-4 flex items-end justify-between gap-4">
         <h2 className="text-2xl font-black tracking-tight text-black">{title}</h2>
         <Link href={href} className="text-sm font-black text-black underline-offset-4 hover:underline">
           Ver mas
         </Link>
       </div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4">
         {products.map((item) => (
           <ProductCard key={`${title}-${item.slug}`} product={item} />
         ))}

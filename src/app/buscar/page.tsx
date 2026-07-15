@@ -27,10 +27,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     : products;
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#f3f3f3] pb-24 text-[#111]">
+    <main className="store-surface min-h-screen overflow-x-hidden pb-24 text-[#111]">
       <SiteHeader />
-      <section className="mx-auto max-w-[1350px] px-3 py-5 sm:px-4">
-        <div className="mb-5 bg-white p-5 shadow-sm">
+      <section className="mx-auto max-w-[1350px] px-3 py-6 sm:px-4 md:py-8">
+        <div className="glass-surface mb-5 rounded-lg p-5 ring-1 ring-white/65">
           <p className="text-xs font-black uppercase text-stone-500">Busqueda</p>
           <h1 className="mt-1 text-3xl font-black tracking-tight">
             {query ? `Resultados para "${query}"` : "Busca productos ATRES"}
@@ -40,13 +40,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </p>
         </div>
         {results.length > 0 ? (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-6">
             {results.map((product, index) => (
               <ProductCard key={product.slug} product={product} priority={index < 2} />
             ))}
           </div>
         ) : (
-          <div className="bg-white p-8 text-center shadow-sm">
+          <div className="glass-surface rounded-lg p-8 text-center ring-1 ring-white/65">
             <h2 className="text-2xl font-black">No encontramos coincidencias</h2>
             <p className="mt-2 text-sm font-semibold text-stone-500">
               Prueba con una categoria, coleccion o prenda diferente.
@@ -56,7 +56,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 <Link
                   key={category.slug}
                   href={`/categoria/${category.slug}`}
-                  className="bg-stone-100 px-3 py-2 text-xs font-black text-stone-800"
+                  className="rounded-full bg-white/72 px-3 py-2 text-xs font-black text-stone-800 ring-1 ring-black/5 backdrop-blur transition hover:bg-black hover:text-white"
                 >
                   {category.shortName}
                 </Link>

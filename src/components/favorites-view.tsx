@@ -39,7 +39,7 @@ export function FavoritesView({ products }: FavoritesViewProps) {
 
   if (favoriteProducts.length === 0) {
     return (
-      <div className="bg-white p-8 text-center shadow-sm">
+      <div className="glass-surface rounded-lg p-8 text-center ring-1 ring-white/65">
         <h2 className="text-2xl font-black">Aun no tienes favoritos</h2>
         <p className="mt-2 text-sm font-semibold text-stone-500">
           Marca productos como favoritos y apareceran aqui.
@@ -49,7 +49,7 @@ export function FavoritesView({ products }: FavoritesViewProps) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4">
       {favoriteProducts.map((product) => (
         <ProductCard key={product.slug} product={product} />
       ))}

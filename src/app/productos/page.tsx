@@ -25,9 +25,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const trendProducts = products.filter((product) => product.isTrending || product.isNew || product.isPromo).slice(0, 4);
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#f4f3f1] pb-24 text-[#111]">
+    <main className="store-surface min-h-screen overflow-x-hidden pb-24 text-[#111]">
       <SiteHeader />
-      <section className="border-b border-black/5 bg-white">
+      <section className="border-b border-white/70 bg-white/64 backdrop-blur">
         <div className="mx-auto grid max-w-[1350px] gap-2 px-3 py-3 text-xs font-black uppercase text-stone-600 sm:grid-cols-3 sm:px-4">
           <p>Compra facil y segura</p>
           <p className="sm:text-center">Nuevas colecciones ATRES</p>
@@ -37,8 +37,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
       <TrendShowcase theme={trendTheme} products={trendProducts.length ? trendProducts : products.slice(0, 4)} compact />
 
-      <section className="mx-auto max-w-[1350px] px-3 py-5 sm:px-4">
-        <div className="mb-4 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
+      <section className="mx-auto max-w-[1350px] px-3 py-6 sm:px-4 md:py-8">
+        <div className="mb-5 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
             <p className="text-xs font-black uppercase text-[#ff4d00]">Catalogo ATRES</p>
             <h1 className="mt-1 text-3xl font-black tracking-tight md:text-4xl">Todos los productos</h1>
@@ -54,7 +54,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               <Link
                 key={category.slug}
                 href={`/categoria/${category.slug}`}
-                className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-black text-stone-800 shadow-sm ring-1 ring-black/5 transition hover:bg-black hover:text-white"
+              className="shrink-0 rounded-full bg-white/76 px-4 py-2 text-xs font-black text-stone-800 shadow-sm ring-1 ring-black/5 backdrop-blur transition hover:bg-black hover:text-white"
               >
                 {category.shortName}
               </Link>
@@ -62,7 +62,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </div>
         </div>
 
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-[2px] bg-white px-3 py-3 shadow-sm ring-1 ring-black/[0.04]">
+        <div className="glass-surface mb-5 flex flex-wrap items-center justify-between gap-3 rounded-lg px-3 py-3 ring-1 ring-white/65">
           <p className="text-sm font-black text-stone-700">
             {sortedProducts.length} productos disponibles
           </p>
@@ -75,7 +75,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-6">
           {sortedProducts.map((product, index) => (
             <ProductCard key={product.slug} product={product} priority={index < 2} />
           ))}
@@ -91,7 +91,7 @@ function OrderLink({ label, value, active }: { label: string; value: string; act
     <Link
       href={value === "relevancia" ? "/productos" : `/productos?orden=${value}`}
       className={`rounded-full px-3 py-2 text-xs font-black transition ${
-        active ? "bg-black text-white" : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+        active ? "bg-black text-white shadow-sm" : "bg-white/70 text-stone-700 ring-1 ring-black/5 backdrop-blur hover:bg-white"
       }`}
     >
       {label}

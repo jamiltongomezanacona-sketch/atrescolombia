@@ -11,10 +11,10 @@ export default async function FavoritesPage() {
   const products = await getPublicProducts();
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#f3f3f3] pb-24 text-[#111]">
+    <main className="store-surface min-h-screen overflow-x-hidden pb-24 text-[#111]">
       <SiteHeader />
-      <section className="mx-auto max-w-[1350px] px-3 py-5 sm:px-4">
-        <div className="mb-5 bg-white p-5 shadow-sm">
+      <section className="mx-auto max-w-[1350px] px-3 py-6 sm:px-4 md:py-8">
+        <div className="glass-surface mb-5 rounded-lg p-5 ring-1 ring-white/65">
           <p className="text-xs font-black uppercase text-stone-500">Tu seleccion</p>
           <h1 className="mt-1 text-4xl font-black tracking-tight">Favoritos</h1>
         </div>

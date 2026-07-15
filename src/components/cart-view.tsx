@@ -89,12 +89,12 @@ export function CartView({ products }: CartViewProps) {
 
   if (rows.length === 0) {
     return (
-      <div className="bg-white p-8 text-center shadow-sm">
+      <div className="glass-surface rounded-lg p-8 text-center ring-1 ring-white/65">
         <h2 className="text-2xl font-black">Tu carrito esta vacio</h2>
         <p className="mt-2 text-sm font-semibold text-stone-500">
           Agrega productos desde el detalle para verlos aqui.
         </p>
-        <Link href="/productos" className="mt-5 inline-flex bg-black px-5 py-3 text-sm font-black text-white">
+        <Link href="/productos" className="mt-5 inline-flex rounded-full bg-black px-5 py-3 text-sm font-black text-white">
           Explorar productos
         </Link>
       </div>
@@ -105,8 +105,8 @@ export function CartView({ products }: CartViewProps) {
     <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
       <div className="grid gap-3">
         {rows.map(({ item, product }) => (
-          <article key={`${item.slug}-${item.color}-${item.size}`} className="grid grid-cols-[96px_1fr] gap-3 bg-white p-3 shadow-sm">
-            <Link href={`/productos/${product.slug}`} className="relative aspect-square overflow-hidden bg-stone-100">
+          <article key={`${item.slug}-${item.color}-${item.size}`} className="grid grid-cols-[96px_1fr] gap-3 rounded-lg bg-white/82 p-3 shadow-[0_18px_45px_rgba(18,18,18,0.06)] ring-1 ring-white/65 backdrop-blur">
+            <Link href={`/productos/${product.slug}`} className="relative aspect-square overflow-hidden rounded-lg bg-stone-100">
               <Image src={product.image} alt={product.name} fill sizes="96px" className="object-cover" />
             </Link>
             <div className="min-w-0">
@@ -120,7 +120,7 @@ export function CartView({ products }: CartViewProps) {
                 {formatCOP(product.price * item.quantity)}
               </p>
               <div className="mt-3 flex flex-wrap items-center gap-2">
-                <div className="grid grid-cols-[36px_44px_36px] bg-stone-100 text-center">
+                <div className="grid grid-cols-[36px_44px_36px] overflow-hidden rounded-full bg-stone-100 text-center">
                   <button
                     type="button"
                     aria-label={`Reducir cantidad de ${product.name}`}
@@ -144,7 +144,7 @@ export function CartView({ products }: CartViewProps) {
                 <button
                   type="button"
                   onClick={() => removeItem(item)}
-                  className="h-9 bg-stone-100 px-3 text-xs font-black text-stone-700"
+                  className="h-9 rounded-full bg-stone-100 px-3 text-xs font-black text-stone-700"
                 >
                   Eliminar
                 </button>
@@ -153,16 +153,16 @@ export function CartView({ products }: CartViewProps) {
           </article>
         ))}
       </div>
-      <aside className="bg-white p-5 shadow-sm">
+      <aside className="glass-surface rounded-lg p-5 ring-1 ring-white/65">
         <h2 className="text-2xl font-black">Resumen</h2>
         <div className="mt-4 flex items-center justify-between border-t border-black/10 pt-4">
           <span className="text-sm font-bold text-stone-500">Subtotal</span>
           <span className="text-xl font-black">{formatCOP(subtotal)}</span>
         </div>
-        <button className="mt-5 h-12 w-full bg-orange-600 text-sm font-black text-white">
+        <button className="mt-5 h-12 w-full rounded-full bg-orange-600 text-sm font-black text-white">
           Continuar compra
         </button>
-        <button onClick={clearCart} className="mt-3 h-11 w-full bg-stone-100 text-sm font-black text-stone-700">
+        <button onClick={clearCart} className="mt-3 h-11 w-full rounded-full bg-stone-100 text-sm font-black text-stone-700">
           Vaciar carrito
         </button>
       </aside>

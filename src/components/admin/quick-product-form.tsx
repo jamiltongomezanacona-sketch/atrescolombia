@@ -543,12 +543,47 @@ async function insertProductWithCompatibilityFallback(
     .single();
 
   if (fallbackError || !fallbackData?.id) {
+    const businessId = await resolveLegacyBusinessId(supabase);
+
+    if (businessId) {
+      const legacyPayload = { ...corePayload, business_id: businessId };
+      const { data: legacyData, error: legacyError } = await supabase
+        .from("products")
+        .insert(legacyPayload)
+        .select("id")
+        .single();
+
+      if (!legacyError && legacyData?.id) {
+        return legacyData.id as string;
+      }
+
+      throw new Error(
+        `${legacyError?.message ?? "No se pudo crear el producto con negocio legado."} Detalle minimo: ${
+          fallbackError?.message ?? "sin detalle"
+        }. Detalle inicial: ${error?.message ?? "sin detalle"}`,
+      );
+    }
+
     throw new Error(
       `${fallbackError?.message ?? "No se pudo crear el producto."}${error ? ` Detalle inicial: ${error.message}` : ""}`,
     );
   }
 
   return fallbackData.id as string;
+}
+
+async function resolveLegacyBusinessId(supabase: SupabaseBrowserClient) {
+  const { data, error } = await supabase
+    .from("businesses")
+    .select("id,name,slug")
+    .or("slug.ilike.%atres%,name.ilike.%atres%")
+    .limit(1)
+    .maybeSingle();
+
+  if (!error && data?.id) return data.id as string;
+
+  const { data: fallbackData } = await supabase.from("businesses").select("id").limit(1).maybeSingle();
+  return fallbackData?.id ? (fallbackData.id as string) : null;
 }
 
 function ensurePrimary(images: LocalImage[]) {

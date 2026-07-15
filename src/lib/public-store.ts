@@ -26,6 +26,7 @@ import {
   type Product,
   type Promo,
 } from "@/lib/store-data";
+import { curatedAtresProducts, curatedAtresPromos } from "@/lib/curated-atres-assets";
 
 const ATRES_PLACEHOLDER_IMAGE = "/icono.png";
 
@@ -203,7 +204,7 @@ export async function getPublicSubcategories(parentSlug: string) {
 
 export async function getPublicProducts(): Promise<Product[]> {
   if (!hasSupabaseEnv()) {
-    return fallbackProducts;
+    return mergeProducts(curatedAtresProducts, fallbackProducts);
   }
 
   try {
@@ -230,7 +231,7 @@ export async function getPublicProducts(): Promise<Product[]> {
       getVariantsByProductId(productIds),
     ]);
 
-    return products.map((row) =>
+    const supabaseProducts = products.map((row) =>
       mapProductRow(
         row,
         row.category_id ? categoriesById.get(row.category_id) ?? null : null,
@@ -238,9 +239,11 @@ export async function getPublicProducts(): Promise<Product[]> {
         variantsByProductId.get(row.id) ?? [],
       ),
     );
+
+    return mergeProducts(supabaseProducts, curatedAtresProducts);
   } catch (error) {
     console.error("ATRES public products unexpected failure:", error);
-    return [];
+    return curatedAtresProducts;
   }
 }
 
@@ -299,7 +302,7 @@ export async function getPublicRelatedProducts(product: Product) {
 
 export async function getPublicPromos(): Promise<Promo[]> {
   if (!hasSupabaseEnv()) {
-    return promos;
+    return [...curatedAtresPromos, ...promos];
   }
 
   try {
@@ -312,19 +315,31 @@ export async function getPublicPromos(): Promise<Promo[]> {
       .limit(3);
 
     if (error || !data?.length) {
-      return [];
+      return curatedAtresPromos;
     }
 
-    return data.map((banner, index) => ({
+    const supabasePromos = data.map((banner, index) => ({
       title: banner.title,
       subtitle: banner.subtitle,
       href: banner.link_url || "/productos",
       image: banner.desktop_image_url ?? ATRES_PLACEHOLDER_IMAGE,
       tone: index === 0 ? "bg-promo text-black" : index === 1 ? "bg-black text-white" : "bg-white text-black",
     }));
+
+    return [...supabasePromos, ...curatedAtresPromos];
   } catch {
-    return [];
+    return curatedAtresPromos;
   }
+}
+
+function mergeProducts(primary: Product[], secondary: Product[]) {
+  const bySlug = new Map<string, Product>();
+  for (const product of [...primary, ...secondary]) {
+    if (!bySlug.has(product.slug)) {
+      bySlug.set(product.slug, product);
+    }
+  }
+  return Array.from(bySlug.values());
 }
 
 async function getCategoriesById(categoryIds: string[]) {

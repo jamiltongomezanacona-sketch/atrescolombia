@@ -168,19 +168,22 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         data: { user },
       } = await supabase.auth.getUser();
 
-      const productPayload = {
+      const coreProductPayload = {
         name: name.trim(),
         slug: advanced.slug.trim() ? effectiveSlug : uniqueSlug(effectiveSlug),
-        short_description: advanced.shortDescription.trim(),
-        description: advanced.description.trim(),
         category_id: categoryId,
-        subcategory_id: advanced.subcategoryId.trim() || null,
         price: Math.round(parsedPrice),
         previous_price: previousPrice.trim() ? Math.round(Number(previousPrice)) : null,
         discount_percent: discountPercent,
         sku: advanced.sku.trim() || buildSku(name),
         inventory_total: Number.isFinite(parsedInventory) && parsedInventory >= 0 ? Math.round(parsedInventory) : 1,
         status: saveStatus,
+      };
+      const productPayload = {
+        ...coreProductPayload,
+        short_description: advanced.shortDescription.trim(),
+        description: advanced.description.trim(),
+        subcategory_id: advanced.subcategoryId.trim() || null,
         is_featured: advanced.isFeatured,
         is_new: advanced.isNew,
         is_promo: advanced.isPromo || Boolean(discountPercent),
@@ -195,14 +198,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
       };
 
       setProgress("Creando producto...");
-      const { data: product, error: productError } = await supabase
-        .from("products")
-        .insert(productPayload)
-        .select("id")
-        .single();
-
-      if (productError) throw productError;
-      createdProductId = product.id as string;
+      createdProductId = await insertProductWithCompatibilityFallback(supabase, productPayload, coreProductPayload);
 
       const orderedImages = orderImages(images);
 
@@ -218,7 +214,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         uploadedPaths.push(storagePath);
 
         const { data: publicUrlData } = supabase.storage.from("product-images").getPublicUrl(storagePath);
-        const { error: imageError } = await supabase.from("product_images").insert({
+        const imagePayload = {
           product_id: createdProductId,
           storage_path: storagePath,
           public_url: publicUrlData.publicUrl,
@@ -227,9 +223,24 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
           display_order: index,
           is_primary: image.isPrimary,
           created_by: user?.id ?? null,
-        });
+        };
+        const { error: imageError } = await supabase.from("product_images").insert(imagePayload);
 
-        if (imageError) throw imageError;
+        if (imageError) {
+          const compatibleImagePayload: Omit<typeof imagePayload, "created_by"> = {
+            product_id: imagePayload.product_id,
+            storage_path: imagePayload.storage_path,
+            public_url: imagePayload.public_url,
+            alt: imagePayload.alt,
+            aspect_ratio: imagePayload.aspect_ratio,
+            display_order: imagePayload.display_order,
+            is_primary: imagePayload.is_primary,
+          };
+          const { error: fallbackImageError } = await supabase.from("product_images").insert(compatibleImagePayload);
+          if (fallbackImageError) {
+            throw new Error(`${fallbackImageError.message}. Detalle inicial: ${imageError.message}`);
+          }
+        }
       }
 
       await revalidateProductAdminChanges();
@@ -510,6 +521,35 @@ function CheckField({ label, checked, onChange }: { label: string; checked: bool
 
 const inputClass = "h-12 w-full border border-zinc-300 px-3 text-base outline-none focus:border-black";
 const textareaClass = "w-full border border-zinc-300 px-3 py-3 text-base outline-none focus:border-black";
+
+type SupabaseBrowserClient = ReturnType<typeof createSupabaseBrowserClient>;
+type ProductPayload = Record<string, unknown>;
+
+async function insertProductWithCompatibilityFallback(
+  supabase: SupabaseBrowserClient,
+  fullPayload: ProductPayload,
+  corePayload: ProductPayload,
+) {
+  const { data, error } = await supabase.from("products").insert(fullPayload).select("id").single();
+
+  if (!error && data?.id) {
+    return data.id as string;
+  }
+
+  const { data: fallbackData, error: fallbackError } = await supabase
+    .from("products")
+    .insert(corePayload)
+    .select("id")
+    .single();
+
+  if (fallbackError || !fallbackData?.id) {
+    throw new Error(
+      `${fallbackError?.message ?? "No se pudo crear el producto."}${error ? ` Detalle inicial: ${error.message}` : ""}`,
+    );
+  }
+
+  return fallbackData.id as string;
+}
 
 function ensurePrimary(images: LocalImage[]) {
   if (!images.length || images.some((image) => image.isPrimary)) return images;

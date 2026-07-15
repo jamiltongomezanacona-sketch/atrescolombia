@@ -1,4 +1,5 @@
 import { BottomNav } from "@/components/bottom-nav";
+import { FloatingWhatsApp } from "@/components/floating-whatsapp";
 import { SiteHeader } from "@/components/site-header";
 import { SkipLink } from "@/components/skip-link";
 import { StoreFooter } from "@/components/store-footer";
@@ -15,6 +16,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
         {children}
       </div>
       <StoreFooter />
+      <FloatingWhatsApp />
       <BottomNav />
     </div>
   );

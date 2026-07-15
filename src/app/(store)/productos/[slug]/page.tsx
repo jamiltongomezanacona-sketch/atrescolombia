@@ -56,7 +56,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
   });
 
   return (
-    <main>
+    <main
+      data-whatsapp-product-name={product.name}
+      data-whatsapp-product-price={new Intl.NumberFormat("es-CO", {
+        style: "currency",
+        currency: "COP",
+        maximumFractionDigits: 0,
+      }).format(product.price)}
+    >
       <section className="store-container grid gap-5 py-6 md:py-8 lg:grid-cols-[1.08fr_0.92fr]">
         <div className="grid gap-3 sm:grid-cols-[1fr_116px]">
           <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-surface-muted shadow-soft ring-1 ring-white/60">

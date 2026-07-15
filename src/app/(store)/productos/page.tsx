@@ -2,7 +2,6 @@ import Link from "next/link";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FilterDrawer } from "@/components/filter-drawer";
 import { ProductCard } from "@/components/product-card";
-import { QuickFilters } from "@/components/quick-filters";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import {
   applyCatalogFilters,
@@ -13,7 +12,6 @@ import {
 import {
   getPublicCategories,
   getPublicProducts,
-  getStoreNavigation,
 } from "@/lib/public-store";
 
 export const metadata = {
@@ -30,10 +28,9 @@ type ProductsPageProps = {
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const params = await searchParams;
   const filters = parseCatalogFilters(params);
-  const [products, categories, navItems] = await Promise.all([
+  const [products, categories] = await Promise.all([
     getPublicProducts(),
     getPublicCategories(),
-    getStoreNavigation(),
   ]);
 
   const options = collectFilterOptions(products, categories);
@@ -50,20 +47,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <main>
-      <section className="border-b border-white/70 bg-white/70">
-        <div className="store-container grid gap-2 py-3 text-xs font-black uppercase text-stone-600 sm:grid-cols-3">
-          <p>Compra facil y segura</p>
-          <p className="sm:text-center">Nuevas colecciones ATRES</p>
-          <p className="sm:text-right">Precios directos de temporada</p>
-        </div>
-      </section>
-
-      <section className="border-b border-black/5 bg-white/55 py-3">
-        <QuickFilters items={navItems} />
-      </section>
-
-      <section className="catalog-container py-4 md:py-6">
-        <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+      <section className="catalog-container py-3 md:py-4">
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-xs font-black uppercase text-brand">Catalogo ATRES</p>
             <h1 className="mt-1 text-3xl font-black tracking-tight text-ink md:text-4xl">Todos los productos</h1>

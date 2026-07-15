@@ -92,6 +92,12 @@ export async function saveProduct(_: ActionState, formData: FormData): Promise<A
   redirect(`/admin/productos/${result.data.id}/editar?guardado=1`);
 }
 
+export async function revalidateProductAdminChanges() {
+  revalidateStore();
+  revalidatePath("/admin");
+  revalidatePath("/admin/productos");
+}
+
 export async function setProductStatus(productId: string, status: "active" | "hidden" | "archived") {
   const guard = ensureSupabase();
   if (guard) return guard;

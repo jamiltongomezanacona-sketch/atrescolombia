@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,6 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://atrescolombia.com"),
+  applicationName: "ATRES Colombia",
+  manifest: "/manifest.webmanifest",
   title: {
     default: "ATRES | Tienda oficial de moda",
     template: "%s | ATRES",
@@ -29,6 +32,11 @@ export const metadata: Metadata = {
     ],
     shortcut: "/icono.png",
     apple: "/icono.png",
+  },
+  appleWebApp: {
+    capable: true,
+    title: "ATRES",
+    statusBarStyle: "black-translucent",
   },
   openGraph: {
     title: "ATRES",
@@ -54,7 +62,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es-CO" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <PwaInstallPrompt />
+      </body>
     </html>
   );
 }

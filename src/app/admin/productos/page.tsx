@@ -16,7 +16,9 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
   const estado = params?.estado ?? "";
   const categoryById = new Map(categories.map((category) => [category.id, category.name]));
   const filtered = products.filter((product) => {
-    const matchesQuery = !q || product.name.toLowerCase().includes(q) || product.sku.toLowerCase().includes(q);
+    const name = safeText(product.name);
+    const sku = safeText(product.sku);
+    const matchesQuery = !q || name.toLowerCase().includes(q) || sku.toLowerCase().includes(q);
     const matchesStatus = !estado || product.status === estado;
     return matchesQuery && matchesStatus;
   });
@@ -61,17 +63,17 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
                 <tr key={product.id} className="border-t border-zinc-100">
                   <td className="p-3">
                     <Link href={`/admin/productos/${product.id}/editar`} className="font-black hover:underline">
-                      {product.name}
+                      {safeText(product.name) || "Producto sin nombre"}
                     </Link>
-                    <p className="text-xs font-semibold text-zinc-500">{product.sku}</p>
+                    <p className="text-xs font-semibold text-zinc-500">{safeText(product.sku) || "Sin SKU"}</p>
                   </td>
-                  <td className="p-3 font-bold">{product.status}</td>
+                  <td className="p-3 font-bold">{safeText(product.status) || "hidden"}</td>
                   <td className="p-3">{product.category_id ? categoryById.get(product.category_id) : "Sin categoria"}</td>
-                  <td className="p-3 font-black">${product.price.toLocaleString("es-CO")}</td>
-                  <td className="p-3">{product.inventory_total}</td>
-                  <td className="p-3">{new Date(product.created_at).toLocaleDateString("es-CO")}</td>
+                  <td className="p-3 font-black">${safeNumber(product.price).toLocaleString("es-CO")}</td>
+                  <td className="p-3">{safeNumber(product.inventory_total)}</td>
+                  <td className="p-3">{formatDate(product.created_at)}</td>
                   <td className="p-3">
-                    <ProductRowActions productId={product.id} status={product.status} />
+                    <ProductRowActions productId={product.id} status={safeText(product.status) || "hidden"} />
                   </td>
                 </tr>
               ))}
@@ -82,4 +84,24 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
       </div>
     </AdminShell>
   );
+}
+
+function safeText(value: unknown) {
+  return typeof value === "string" ? value : "";
+}
+
+function safeNumber(value: unknown) {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string") {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+  return 0;
+}
+
+function formatDate(value: unknown) {
+  if (!value || typeof value !== "string") return "Sin fecha";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Sin fecha";
+  return date.toLocaleDateString("es-CO");
 }

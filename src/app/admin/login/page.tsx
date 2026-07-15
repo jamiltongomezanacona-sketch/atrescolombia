@@ -1,3 +1,4 @@
+import { BrandLogo } from "@/components/brand-logo";
 import { LoginForm } from "@/components/admin/login-form";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
 
@@ -11,6 +12,9 @@ export default function AdminLoginPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-zinc-100 px-4">
       <section className="w-full max-w-md bg-white p-6 shadow-sm">
+        <div className="mb-5">
+          <BrandLogo href="/admin/login" label="ATRES" sublabel="Admin" />
+        </div>
         <p className="text-xs font-black uppercase text-zinc-500">Panel privado</p>
         <h1 className="mt-2 text-3xl font-black">ATRES Admin</h1>
         <p className="mt-2 text-sm font-semibold text-zinc-500">

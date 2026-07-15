@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand-logo";
 import { HeaderActions } from "@/components/header-actions";
 import { getPublicCategories } from "@/lib/public-store";
 
@@ -17,9 +18,7 @@ export async function SiteHeader() {
         </div>
       </div>
       <div className="mx-auto grid max-w-[1500px] items-center gap-3 px-3 py-3 sm:px-4 md:grid-cols-[220px_1fr_300px]">
-        <Link href="/" className="justify-self-start text-3xl font-black tracking-[0.19em] md:text-4xl">
-          ATRES
-        </Link>
+        <BrandLogo dark compact />
         <form action="/buscar" className="mx-auto flex h-11 w-full max-w-3xl overflow-hidden rounded-full bg-white text-black shadow-[0_0_0_1px_rgba(255,255,255,0.18)]">
           <input
             name="q"

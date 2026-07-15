@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand-logo";
 import { signOutAdmin } from "@/lib/admin/actions";
 
 const navItems = [
@@ -14,9 +15,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
     <main className="min-h-screen bg-zinc-100 text-zinc-950">
       <aside className="fixed inset-y-0 left-0 hidden w-64 border-r border-zinc-200 bg-white p-4 lg:block">
-        <Link href="/admin" className="text-2xl font-black tracking-tight">
-          ATRES Admin
-        </Link>
+        <BrandLogo href="/admin" label="ATRES" sublabel="Admin" compact />
         <nav className="mt-8 grid gap-1">
           {navItems.map((item) => (
             <Link
@@ -37,9 +36,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <div className="lg:pl-64">
         <header className="sticky top-0 z-30 border-b border-zinc-200 bg-white px-4 py-3 lg:hidden">
           <div className="flex items-center justify-between gap-3">
-            <Link href="/admin" className="text-lg font-black">
-              ATRES Admin
-            </Link>
+            <BrandLogo href="/admin" label="ATRES" sublabel="Admin" compact />
             <form action={signOutAdmin}>
               <button className="bg-black px-3 py-2 text-xs font-black text-white">
                 Salir

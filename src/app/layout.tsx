@@ -20,12 +20,30 @@ export const metadata: Metadata = {
   },
   description:
     "Tienda oficial ATRES: moda, novedades, promociones, categorias y productos tendencia.",
+  icons: {
+    icon: [
+      {
+        url: "/icono.png",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/icono.png",
+    apple: "/icono.png",
+  },
   openGraph: {
     title: "ATRES",
     description:
       "Moda ATRES con novedades, promociones y categorias para descubrir.",
     type: "website",
     locale: "es_CO",
+    images: [
+      {
+        url: "/icono.png",
+        width: 1254,
+        height: 1254,
+        alt: "ATRES",
+      },
+    ],
   },
 };
 

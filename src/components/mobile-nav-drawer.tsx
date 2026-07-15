@@ -79,7 +79,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
     createPortal(
       <div
         className={cn(
-          "fixed inset-0 z-50 md:hidden",
+          "fixed inset-0 z-50 lg:hidden",
           open ? "pointer-events-auto" : "pointer-events-none",
         )}
         aria-hidden={!open}
@@ -173,7 +173,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
       <button
         ref={triggerRef}
         type="button"
-        className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-white transition hover:bg-white/10 md:hidden"
+        className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white transition hover:bg-white/10 lg:hidden"
         aria-expanded={open}
         aria-controls="atres-mobile-drawer"
         aria-haspopup="dialog"

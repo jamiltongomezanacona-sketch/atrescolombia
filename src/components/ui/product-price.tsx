@@ -9,9 +9,9 @@ type ProductPriceProps = {
 };
 
 const sizeClass = {
-  sm: "text-lg",
-  md: "text-xl",
-  lg: "text-3xl",
+  sm: "text-base sm:text-lg",
+  md: "text-lg sm:text-xl",
+  lg: "text-2xl sm:text-3xl",
 } as const;
 
 export function ProductPrice({ price, previousPrice, size = "sm", className }: ProductPriceProps) {

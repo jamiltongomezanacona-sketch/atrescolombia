@@ -10,7 +10,7 @@ export async function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 bg-black/95 text-white shadow-[0_10px_30px_rgba(0,0,0,0.16)]">
-      <div className="hidden border-b border-white/10 bg-white/[0.04] sm:block">
+      <div className="hidden border-b border-white/10 bg-white/[0.04] lg:block">
         <div className="catalog-container flex items-center justify-between gap-3 py-2 text-[11px] font-black uppercase tracking-wide text-white/75">
           <span>Envios a toda Colombia</span>
           <span className="hidden md:inline">Nuevas prendas cada semana</span>
@@ -20,8 +20,8 @@ export async function SiteHeader() {
         </div>
       </div>
 
-      <div className="catalog-container py-2.5 sm:py-3">
-        <div className="flex items-center gap-2 md:grid md:grid-cols-[220px_1fr_300px] md:gap-3">
+      <div className="catalog-container py-2 lg:py-3">
+        <div className="flex items-center gap-2 lg:grid lg:grid-cols-[220px_1fr_300px] lg:gap-3">
           <div className="flex min-w-0 items-center gap-1.5">
             <MobileNavDrawer items={navItems} />
             <BrandLogo dark compact />
@@ -29,7 +29,7 @@ export async function SiteHeader() {
 
           <form
             action="/buscar"
-            className="hidden h-11 w-full max-w-3xl overflow-hidden rounded-full bg-white/94 text-black shadow-soft ring-1 ring-white/25 md:mx-auto md:flex"
+            className="hidden h-11 w-full max-w-3xl overflow-hidden rounded-full bg-white/94 text-black shadow-soft ring-1 ring-white/25 lg:mx-auto lg:flex"
           >
             <input
               name="q"
@@ -55,7 +55,7 @@ export async function SiteHeader() {
 
         <form
           action="/buscar"
-          className="mt-2.5 flex h-11 w-full overflow-hidden rounded-full bg-white/94 text-black shadow-soft ring-1 ring-white/25 md:hidden"
+          className="mt-2 flex h-10 w-full overflow-hidden rounded-full bg-white/94 text-black shadow-soft ring-1 ring-white/25 lg:hidden"
         >
           <input
             name="q"
@@ -73,7 +73,7 @@ export async function SiteHeader() {
         </form>
       </div>
 
-      <div className="hidden md:block">
+      <div className="hidden lg:block">
         <HeaderNav items={navItems} />
       </div>
     </header>

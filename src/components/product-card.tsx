@@ -64,22 +64,22 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </div>
         ) : null}
       </div>
-      <div className="space-y-2 p-3.5">
-        <p className="truncate text-xs font-black uppercase tracking-wide text-stone-500">
+      <div className="space-y-1.5 p-2.5 sm:space-y-2 sm:p-3.5">
+        <p className="hidden truncate text-xs font-black uppercase tracking-wide text-stone-500 sm:block">
           {product.categoryName}
         </p>
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="line-clamp-2 min-h-10 text-xs font-semibold leading-5 text-ink transition group-hover:text-black sm:text-sm">
+          <h3 className="line-clamp-2 min-h-9 text-xs font-semibold leading-4 text-ink transition group-hover:text-black sm:min-h-10 sm:leading-5 md:text-sm">
             {product.name}
           </h3>
         </Link>
         {sizes.length > 0 ? (
-          <p className="truncate text-[11px] font-semibold text-stone-500">
+          <p className="hidden truncate text-[11px] font-semibold text-stone-500 sm:block">
             Tallas: {sizes.join(" · ")}
             {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
           </p>
         ) : null}
-        <div className="flex min-h-10 items-end justify-between gap-2">
+        <div className="flex min-h-9 items-end justify-between gap-2 sm:min-h-10">
           <ProductPrice price={product.price} previousPrice={previousPrice} />
           <Link
             href={`/productos/${product.slug}`}
@@ -88,7 +88,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             Ver
           </Link>
         </div>
-        <p className={`text-[11px] font-bold ${inStock ? "text-emerald-700" : "text-stone-400"}`}>
+        <p className={`hidden text-[11px] font-bold sm:block ${inStock ? "text-emerald-700" : "text-stone-400"}`}>
           {inStock ? "Disponible" : "Sin stock"}
         </p>
       </div>

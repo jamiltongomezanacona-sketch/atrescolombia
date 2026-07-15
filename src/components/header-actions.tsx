@@ -40,18 +40,18 @@ export function HeaderActions({ compact = false }: HeaderActionsProps) {
 
   if (compact) {
     return (
-      <nav className="flex items-center justify-end gap-1 md:hidden" aria-label="Acciones rapidas">
+      <nav className="flex items-center justify-end gap-1 lg:hidden" aria-label="Acciones rapidas">
         <Link
           href="/favoritos"
           aria-label="Favoritos"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white/90 transition hover:bg-white/10 hover:text-white"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white/90 transition hover:bg-white/10 hover:text-white"
         >
           <HeaderIcon type="heart" />
         </Link>
         <Link
           href="/carrito"
           aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
-          className="relative inline-flex h-11 w-11 items-center justify-center rounded-full text-white/90 transition hover:bg-white/10 hover:text-white"
+          className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white/90 transition hover:bg-white/10 hover:text-white"
         >
           <HeaderIcon type="bag" />
           {count > 0 ? (
@@ -65,7 +65,7 @@ export function HeaderActions({ compact = false }: HeaderActionsProps) {
   }
 
   return (
-    <nav className="hidden items-center justify-end gap-2 text-sm font-black md:flex" aria-label="Acciones">
+    <nav className="hidden items-center justify-end gap-2 text-sm font-black lg:flex" aria-label="Acciones">
       <Link
         href="/favoritos"
         className="inline-flex h-11 items-center gap-2 rounded-full px-3 text-white/90 transition hover:bg-white/10 hover:text-white"

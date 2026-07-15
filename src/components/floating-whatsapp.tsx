@@ -71,7 +71,7 @@ export function FloatingWhatsApp() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={product ? `Consultar ${product.name} por WhatsApp` : "Consultar por WhatsApp"}
-      className="group fixed bottom-[calc(6.4rem+env(safe-area-inset-bottom))] right-4 z-50 flex items-center gap-2 rounded-full border border-white/70 bg-[#0f2f22]/92 px-3 py-2.5 text-white shadow-[0_18px_45px_rgba(15,47,34,0.28)] backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 hover:bg-[#103b28] md:bottom-6 md:right-6 md:px-4"
+      className="group fixed bottom-[calc(5.8rem+env(safe-area-inset-bottom))] right-3 z-50 flex items-center gap-2 rounded-full border border-white/70 bg-[#0f2f22]/92 p-1.5 text-white shadow-[0_18px_45px_rgba(15,47,34,0.28)] backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 hover:bg-[#103b28] sm:px-3 sm:py-2.5 md:bottom-6 md:right-6 md:px-4"
     >
       <span className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_25%_20%,rgba(255,255,255,0.32),transparent_34%),linear-gradient(135deg,rgba(37,211,102,0.95),rgba(12,126,64,0.92))] opacity-100 transition group-hover:opacity-95" />
       <span className="relative grid size-10 place-items-center rounded-full bg-white text-[#128C4A] shadow-inner md:size-11">

@@ -47,33 +47,33 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <main>
-      <section className="catalog-container py-3 md:py-4">
-        <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+      <section className="catalog-container py-2.5 lg:py-4">
+        <div className="mb-2.5 flex flex-wrap items-end justify-between gap-2 lg:mb-3">
           <div>
-            <p className="text-xs font-black uppercase text-brand">Catalogo ATRES</p>
-            <h1 className="mt-1 text-3xl font-black tracking-tight text-ink md:text-4xl">Todos los productos</h1>
-            <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-stone-600">
+            <p className="text-[11px] font-black uppercase text-brand lg:text-xs">Catalogo ATRES</p>
+            <h1 className="mt-0.5 text-2xl font-black tracking-tight text-ink sm:text-3xl lg:text-4xl">Todos los productos</h1>
+            <p className="mt-2 hidden max-w-2xl text-sm font-semibold leading-6 text-stone-600 sm:block">
               Filtra por categoria, talla, color, oferta y disponibilidad con los datos reales del catalogo.
             </p>
           </div>
         </div>
 
         <div>
-            <GlassPanel className="mb-4 flex flex-wrap items-center justify-between gap-3 px-3 py-3">
-              <div className="flex items-center gap-2">
+            <GlassPanel className="mb-3 grid gap-2 px-2.5 py-2.5 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-3 sm:px-3 sm:py-3 lg:mb-4">
+              <div className="flex items-center justify-between gap-2 sm:justify-start">
                 <p className="text-sm font-black text-stone-700">
                   {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
                 </p>
                 <FilterDrawer filters={filters} options={options} />
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0">
                 {orderLinks.map((link) => {
                   const active = (filters.orden ?? "relevancia") === link.value;
                   return (
                     <Link
                       key={link.value}
                       href={buildCatalogQuery({ ...filters, orden: link.value })}
-                      className={`rounded-full px-3 py-2 text-xs font-black transition ${
+                      className={`shrink-0 rounded-full px-3 py-2 text-xs font-black transition ${
                         active
                           ? "bg-black text-white shadow-sm"
                           : "bg-white/70 text-stone-700 ring-1 ring-black/5 hover:bg-white"

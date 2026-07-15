@@ -11,7 +11,7 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 bg-black/95 text-white shadow-[0_10px_30px_rgba(0,0,0,0.16)]">
       <div className="hidden border-b border-white/10 bg-white/[0.04] sm:block">
-        <div className="store-container flex items-center justify-between gap-3 py-2 text-[11px] font-black uppercase tracking-wide text-white/75">
+        <div className="catalog-container flex items-center justify-between gap-3 py-2 text-[11px] font-black uppercase tracking-wide text-white/75">
           <span>Envios a toda Colombia</span>
           <span className="hidden md:inline">Nuevas prendas cada semana</span>
           <Link href="/ofertas" className="text-amber-200 hover:text-white">
@@ -20,7 +20,7 @@ export async function SiteHeader() {
         </div>
       </div>
 
-      <div className="store-container py-2.5 sm:py-3">
+      <div className="catalog-container py-2.5 sm:py-3">
         <div className="flex items-center gap-2 md:grid md:grid-cols-[220px_1fr_300px] md:gap-3">
           <div className="flex min-w-0 items-center gap-1.5">
             <MobileNavDrawer items={navItems} />

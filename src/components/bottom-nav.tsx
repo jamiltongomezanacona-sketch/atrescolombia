@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 
 const items = [
-  { label: "Inicio", href: "/", icon: "home" as const },
+  { label: "Comprar", href: "/productos", icon: "home" as const },
   { label: "Categorias", href: "/categorias", icon: "grid" as const },
   { label: "Buscar", href: "/buscar", icon: "search" as const },
   { label: "Favoritos", href: "/favoritos", icon: "heart" as const },

@@ -122,7 +122,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-black px-4 text-xs font-black text-white shadow-sm transition hover:bg-stone-800"
+        className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-black px-3.5 text-xs font-black text-white shadow-sm transition hover:bg-stone-800"
         aria-label={
           open ? "Cerrar filtros" : activeCount > 0 ? `Abrir filtros (${activeCount})` : "Abrir filtros"
         }

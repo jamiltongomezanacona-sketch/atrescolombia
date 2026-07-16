@@ -81,21 +81,21 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <main>
-      <section className="catalog-container py-2 lg:py-3">
-        <div className="mb-2">
+      <section className="catalog-container pt-1 pb-[calc(8.75rem+env(safe-area-inset-bottom))] md:py-3">
+        <div className="mb-1.5">
           <p className="text-[10px] font-black uppercase tracking-[0.18em] text-brand lg:text-xs">
             Catalogo ATRES
           </p>
-          <h1 className="mt-0.5 text-2xl font-black tracking-tight text-ink sm:text-3xl">
+          <h1 className="mt-0.5 text-xl font-black tracking-tight text-ink sm:text-3xl">
             Todos los productos
           </h1>
         </div>
 
-        <div className="sticky top-[5.35rem] z-30 -mx-3 mb-3 border-y border-black/5 bg-background/95 px-3 py-2 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:top-[7.25rem]">
+        <div className="sticky top-[3.45rem] z-30 -mx-3 mb-2 border-y border-black/5 bg-background/95 px-3 py-1.5 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:top-[7.25rem]">
           <form
             action="/productos"
             method="get"
-            className="flex h-10 overflow-hidden rounded-full bg-white text-black shadow-sm ring-1 ring-black/10"
+            className="flex h-9 overflow-hidden rounded-full bg-white text-black shadow-sm ring-1 ring-black/10"
           >
             {hiddenFilterInputs(filters, ["q"])}
             <input
@@ -114,13 +114,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </button>
           </form>
 
-          <nav className="mt-2 flex gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" aria-label="Departamentos del catalogo">
+          <nav className="mt-1.5 flex gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" aria-label="Departamentos del catalogo">
             {categoryTabs.map((tab) => (
               <Link
                 key={tab.label}
                 href={tab.href}
                 aria-current={tab.active ? "page" : undefined}
-                className={`inline-flex h-9 shrink-0 items-center rounded-full px-3 text-xs font-black transition ${
+                className={`inline-flex h-8 shrink-0 items-center rounded-full px-3 text-xs font-black transition ${
                   tab.active
                     ? "bg-black text-white shadow-sm"
                     : "bg-white text-stone-700 ring-1 ring-black/5 hover:bg-stone-100"
@@ -132,7 +132,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </nav>
         </div>
 
-        <div className="mb-3 grid gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-between">
+        <div className="mb-2 grid gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-between">
           <div className="flex items-center justify-between gap-2 sm:justify-start">
             <p className="text-sm font-black text-stone-700">
               {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
@@ -151,7 +151,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 <Link
                   key={link.value}
                   href={buildCatalogQuery({ ...filters, orden: link.value })}
-                  className={`shrink-0 rounded-full px-3 py-2 text-xs font-black transition ${
+                  className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-black transition ${
                     active
                       ? "bg-black text-white shadow-sm"
                       : "bg-white/75 text-stone-700 ring-1 ring-black/5 hover:bg-white"

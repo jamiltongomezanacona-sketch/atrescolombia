@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
 import { HeaderActions } from "@/components/header-actions";
+import { HeaderMobileSearch } from "@/components/header-mobile-search";
 import { HeaderNav } from "@/components/header-nav";
 import { MobileNavDrawer } from "@/components/mobile-nav-drawer";
 import { getStoreNavigation } from "@/lib/public-store";
@@ -53,24 +54,7 @@ export async function SiteHeader() {
           </div>
         </div>
 
-        <form
-          action="/buscar"
-          className="mt-1.5 flex h-9 w-full overflow-hidden rounded-full bg-white/94 text-black shadow-sm ring-1 ring-white/20 lg:hidden"
-        >
-          <input
-            name="q"
-            aria-label="Buscar productos"
-            placeholder="Buscar ropa ATRES..."
-            className="min-w-0 flex-1 bg-transparent px-4 text-sm font-semibold placeholder:text-stone-400"
-          />
-          <button
-            className="inline-flex h-9 w-11 items-center justify-center bg-white/70 text-black ring-1 ring-black/10"
-            type="submit"
-            aria-label="Buscar"
-          >
-            <SearchIcon />
-          </button>
-        </form>
+        <HeaderMobileSearch />
       </div>
 
       <div className="hidden lg:block">

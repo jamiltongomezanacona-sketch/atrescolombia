@@ -75,10 +75,10 @@ export default async function Home() {
               Prendas, sabanas, cobijas y accesorios seleccionados con una compra simple y atencion directa.
             </p>
             <Link
-              href={heroPromo?.href || "/productos"}
+              href="/productos"
               className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-white px-5 text-sm font-black text-black shadow-sm transition hover:bg-stone-100"
             >
-              Explorar coleccion
+              Ver todos los productos
             </Link>
           </div>
         </div>

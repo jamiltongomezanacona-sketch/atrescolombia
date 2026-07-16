@@ -52,6 +52,10 @@ export function ProductForm({
         <TextAreaField label="Descripcion corta" name="short_description" defaultValue={product?.short_description} />
         <TextAreaField label="Descripcion completa" name="description" defaultValue={product?.description} />
         <TextField label="Etiquetas separadas por coma" name="tags" defaultValue={product?.tags?.join(", ")} />
+        <p className="rounded-xl bg-[#eef6ff] p-3 text-xs font-bold leading-5 text-[#0b1f3a]">
+          Para estilo tipo marketplace usa: badge:Top ventas, copy:pocas piezas, tono:sale, rank:Ahorra $5.000.
+          Las etiquetas normales siguen apareciendo en detalles del producto.
+        </p>
       </section>
 
       <section className="grid gap-3 rounded-2xl border border-[#bcd7ee] bg-[#eef6ff]/60 p-3 md:gap-4 md:p-4">

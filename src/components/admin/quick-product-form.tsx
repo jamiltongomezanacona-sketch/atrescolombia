@@ -447,6 +447,9 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
             </Field>
             <Field label="Etiquetas separadas por coma">
               <input value={advanced.tags} onChange={(event) => setAdvancedValue("tags", event.target.value)} className={inputClass} />
+              <span className="text-xs font-bold leading-5 text-zinc-500">
+                Ej: badge:Top ventas, copy:pocas piezas, tono:sale, rank:Ahorra $5.000.
+              </span>
             </Field>
             <div className="grid gap-3 sm:grid-cols-3">
               <CheckField label="Destacado" checked={advanced.isFeatured} onChange={(checked) => setAdvancedValue("isFeatured", checked)} />

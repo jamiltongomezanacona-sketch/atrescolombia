@@ -6,6 +6,13 @@ import { SafeProductImage } from "@/components/safe-product-image";
 import { Badge } from "@/components/ui/badge";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { ProductPrice } from "@/components/ui/product-price";
+import {
+  getCommercialBadge,
+  getCommercialLine,
+  getCommercialTone,
+  getToneClass,
+  getVisibleProductDetails,
+} from "@/lib/product-merchandising";
 import { getPublicStoreSettings } from "@/lib/public-settings";
 import { products, getDiscountPercent } from "@/lib/store-data";
 import { getPublicProduct, getPublicProducts, getPublicRelatedProducts } from "@/lib/public-store";
@@ -50,6 +57,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const discount = getDiscountPercent(product);
   const recentlyViewed = publicProducts.filter((item) => item.slug !== product.slug).slice(0, 4);
   const inStock = product.stock > 0;
+  const commercialBadge = getCommercialBadge(product);
+  const commercialTone = getCommercialTone(product);
+  const commercialLine = getCommercialLine(product, inStock);
+  const visibleDetails = getVisibleProductDetails(product);
   const sizes = product.sizes.filter((size) => {
     const value = size.trim().toLowerCase();
     return value && value !== "unica" && value !== "única";
@@ -89,9 +100,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <GlassPanel className="self-start p-5 lg:sticky lg:top-28">
           <div className="flex flex-wrap gap-2">
-            {product.badge ? <Badge>{product.badge}</Badge> : null}
-            {discount ? <Badge tone="amber">-{discount}%</Badge> : null}
-            <Badge tone={inStock ? "emerald" : "soft"}>
+            {commercialBadge ? (
+              <Badge tone="black" className={getToneClass(commercialTone)}>
+                {commercialBadge}
+              </Badge>
+            ) : null}
+            {discount ? <Badge tone="brand" className="bg-[#ff4d00] text-white">-{discount}%</Badge> : null}
+            <Badge tone={inStock ? "metal" : "soft"}>
               {inStock ? "Disponible" : "Agotado"}
             </Badge>
           </div>
@@ -113,10 +128,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
           />
 
           <p className="mt-5 text-base font-semibold leading-7 text-stone-700">{product.description}</p>
+          <p className="mt-2 text-sm font-black text-[#ff4d00]">{commercialLine}</p>
 
           {sizes.length > 0 ? (
             <p className="mt-3 text-sm font-semibold text-stone-500">
-              Tallas: {product.sizes.join(" · ")}
+              Tallas: {product.sizes.join(" / ")}
             </p>
           ) : null}
 
@@ -134,7 +150,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="mt-5">
             <p className="mb-2 text-xs font-black uppercase text-stone-500">Detalles</p>
             <ul className="grid gap-2 text-sm font-semibold text-stone-700">
-              {product.details.map((detail) => (
+              {visibleDetails.map((detail) => (
                 <li key={detail} className="rounded-lg bg-white/70 px-3 py-2 ring-1 ring-black/5">
                   {detail}
                 </li>

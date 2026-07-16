@@ -21,7 +21,7 @@ export function ProductRail({
   if (!products.length) return null;
 
   return (
-    <section className="store-container py-5 md:py-6">
+    <section className="store-container py-4 md:py-5">
       <div className="mb-3 flex items-end justify-between gap-4">
         <h2 className="text-xl font-black tracking-tight text-ink md:text-2xl">{title}</h2>
         <Link href={href} className="text-sm font-black text-ink underline-offset-4 hover:underline">

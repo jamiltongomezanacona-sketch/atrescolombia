@@ -35,7 +35,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             : product.badge;
 
   return (
-    <article className="group flex h-full min-h-[310px] flex-col overflow-hidden rounded-lg bg-white shadow-soft ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-lift sm:min-h-[360px]">
+    <article className="group flex h-full min-h-[292px] flex-col overflow-hidden rounded-lg bg-white shadow-[0_10px_28px_rgba(18,18,18,0.045)] ring-1 ring-black/[0.04] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft sm:min-h-[342px]">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
           <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
@@ -49,19 +49,19 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/15 via-black/5 to-transparent opacity-0 transition group-hover:opacity-100" />
           </div>
         </Link>
-        <div className="absolute right-2.5 top-2.5">
+        <div className="absolute right-2 top-2">
           <FavoriteButton productSlug={product.slug} compact />
         </div>
         {visualTag ? (
-          <div className="absolute left-2.5 top-2.5">
-            <Badge tone="black" className="text-[11px] ring-1 ring-black/25">
+          <div className="absolute left-2 top-2">
+            <Badge tone="black" className="bg-black/72 text-[10px] ring-1 ring-white/15">
               {visualTag}
             </Badge>
           </div>
         ) : null}
         {discount ? (
-          <div className="absolute bottom-2.5 left-2.5">
-            <Badge tone="brand" className="bg-brand text-[11px] text-white ring-1 ring-black/20">
+          <div className="absolute bottom-2 left-2">
+            <Badge tone="brand" className="bg-brand/92 text-[10px] text-white ring-1 ring-black/10">
               -{discount}%
             </Badge>
           </div>
@@ -75,7 +75,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         ) : null}
       </div>
       <div className="flex flex-1 flex-col p-2.5 sm:p-3">
-        <p className="hidden truncate text-xs font-black uppercase tracking-wide text-stone-500 sm:block">
+        <p className="hidden truncate text-[11px] font-black uppercase tracking-wide text-stone-400 sm:block">
           {product.categoryName}
         </p>
         <Link href={`/productos/${product.slug}`} className="block">
@@ -84,7 +84,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </h3>
         </Link>
         {sizes.length > 0 ? (
-          <p className="mt-2 hidden truncate text-[11px] font-semibold text-stone-500 sm:block">
+          <p className="mt-2 hidden truncate text-[11px] font-semibold text-stone-500/90 sm:block">
             Tallas: {sizes.join(" · ")}
             {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
           </p>
@@ -93,7 +93,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           <ProductPrice price={product.price} previousPrice={previousPrice} />
           <Link
             href={`/productos/${product.slug}`}
-            className="hidden shrink-0 rounded-full bg-stone-100/90 px-2.5 py-1.5 text-[10px] font-black uppercase text-stone-700 transition hover:bg-black hover:text-white sm:inline-flex"
+            className="hidden shrink-0 rounded-full bg-stone-100/80 px-2.5 py-1.5 text-[10px] font-black uppercase text-stone-600 transition hover:bg-black hover:text-white sm:inline-flex"
           >
             Ver
           </Link>

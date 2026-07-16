@@ -44,14 +44,14 @@ export function HeaderActions({ compact = false }: HeaderActionsProps) {
         <Link
           href="/favoritos"
           aria-label="Favoritos"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white/90 transition hover:bg-white/10 hover:text-white"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white/86 transition hover:bg-white/10 hover:text-white"
         >
           <HeaderIcon type="heart" />
         </Link>
         <Link
           href="/carrito"
           aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
-          className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white/90 transition hover:bg-white/10 hover:text-white"
+          className="relative inline-flex h-9 w-9 items-center justify-center rounded-full text-white/86 transition hover:bg-white/10 hover:text-white"
         >
           <HeaderIcon type="bag" />
           {count > 0 ? (
@@ -101,7 +101,7 @@ function HeaderIcon({ type }: { type: "heart" | "bag" }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-5 fill-none"
+        className="size-[18px] fill-none"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
@@ -116,7 +116,7 @@ function HeaderIcon({ type }: { type: "heart" | "bag" }) {
     <svg
       aria-hidden="true"
       viewBox="0 0 24 24"
-      className="size-5 fill-none"
+      className="size-[18px] fill-none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"

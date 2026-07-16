@@ -9,7 +9,7 @@ export async function SiteHeader() {
   const navItems = await getStoreNavigation();
 
   return (
-    <header className="sticky top-0 z-40 bg-black/95 text-white shadow-[0_10px_30px_rgba(0,0,0,0.16)]">
+    <header className="sticky top-0 z-40 bg-[#080808]/96 text-white shadow-[0_8px_22px_rgba(0,0,0,0.12)]">
       <div className="hidden border-b border-white/10 bg-white/[0.04] lg:block">
         <div className="catalog-container flex items-center justify-between gap-3 py-2 text-[11px] font-black uppercase tracking-wide text-white/75">
           <span>100% producto colombiano</span>
@@ -20,7 +20,7 @@ export async function SiteHeader() {
         </div>
       </div>
 
-      <div className="catalog-container py-2 lg:py-3">
+      <div className="catalog-container py-1.5 lg:py-3">
         <div className="flex items-center gap-2 lg:grid lg:grid-cols-[220px_1fr_300px] lg:gap-3">
           <div className="flex min-w-0 items-center gap-1.5">
             <MobileNavDrawer items={navItems} />
@@ -55,7 +55,7 @@ export async function SiteHeader() {
 
         <form
           action="/buscar"
-          className="mt-2 flex h-10 w-full overflow-hidden rounded-full bg-white/94 text-black shadow-soft ring-1 ring-white/25 lg:hidden"
+          className="mt-1.5 flex h-9 w-full overflow-hidden rounded-full bg-white/94 text-black shadow-sm ring-1 ring-white/20 lg:hidden"
         >
           <input
             name="q"
@@ -64,7 +64,7 @@ export async function SiteHeader() {
             className="min-w-0 flex-1 bg-transparent px-4 text-sm font-semibold placeholder:text-stone-400"
           />
           <button
-            className="inline-flex h-11 w-12 items-center justify-center bg-white/70 text-black ring-1 ring-black/10"
+            className="inline-flex h-9 w-11 items-center justify-center bg-white/70 text-black ring-1 ring-black/10"
             type="submit"
             aria-label="Buscar"
           >

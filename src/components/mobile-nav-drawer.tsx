@@ -173,7 +173,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
       <button
         ref={triggerRef}
         type="button"
-        className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white transition hover:bg-white/10 lg:hidden"
+        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white transition hover:bg-white/10 lg:hidden"
         aria-expanded={open}
         aria-controls="atres-mobile-drawer"
         aria-haspopup="dialog"
@@ -189,7 +189,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
 
 function MenuIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-6 fill-none" stroke="currentColor" strokeWidth="2">
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5 fill-none" stroke="currentColor" strokeWidth="2">
       <path d="M4 7h16M4 12h16M4 17h16" />
     </svg>
   );

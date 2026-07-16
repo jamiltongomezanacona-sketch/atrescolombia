@@ -16,13 +16,13 @@ export function BrandLogo({
   dark = false,
   compact = false,
 }: BrandLogoProps) {
-  const size = compact ? 40 : 48;
+  const size = compact ? 34 : 48;
 
   const content = (
     <>
       <span
-        className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-[10px] bg-white shadow-sm ring-1 ring-black/10 ${
-          compact ? "h-10 w-10" : "h-12 w-12"
+        className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-black/10 ${
+          compact ? "h-[34px] w-[34px]" : "h-12 w-12"
         }`}
       >
         <Image
@@ -36,7 +36,7 @@ export function BrandLogo({
       </span>
       <span className="min-w-0">
         <span
-          className={`block font-black leading-none tracking-[0.18em] ${compact ? "text-xl" : "text-2xl"} ${
+          className={`block font-black leading-none tracking-[0.18em] ${compact ? "text-lg" : "text-2xl"} ${
             dark ? "text-white" : "text-black"
           }`}
         >
@@ -56,7 +56,7 @@ export function BrandLogo({
   );
 
   return (
-    <Link href={href} className="inline-flex items-center gap-3">
+    <Link href={href} className="inline-flex items-center gap-2.5">
       {content}
     </Link>
   );

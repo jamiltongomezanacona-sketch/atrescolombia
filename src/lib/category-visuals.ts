@@ -14,8 +14,8 @@ export type CategoryVisualTheme = {
 
 const defaultTheme: CategoryVisualTheme = {
   eyebrow: "Coleccion ATRES",
-  headline: "Moda directa de la marca",
-  description: "Una seleccion curada con prendas nuevas, precios visibles y compra rapida.",
+  headline: "Moda colombiana directa",
+  description: "Una seleccion curada del taller al cliente, con prendas nuevas, precios visibles y compra rapida.",
   trendTag: "#AtresNuevo",
   heroImage: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=1200&q=80",
   washClass: "bg-[linear-gradient(135deg,#f7f3ec_0%,#fff7ed_42%,#dbeafe_100%)]",

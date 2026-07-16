@@ -48,7 +48,7 @@ export default async function Home() {
     {
       eyebrow: "Compra directa",
       title: "Fabricacion colombiana",
-      subtitle: "Catalogo ATRES con envio rapido y atencion por WhatsApp.",
+      subtitle: "Del taller al cliente, con atencion por prenda o al por mayor.",
     },
   ];
 
@@ -77,7 +77,7 @@ export default async function Home() {
           </h1>
           <p className="mt-3 max-w-lg text-sm font-semibold leading-6 text-white/75">
             {heroPromo?.subtitle ||
-              "Cuatro departamentos ATRES. Entra a cada uno y explora sus subcategorias."}
+              "Moda 100% colombiana que conecta fabricantes grandes y pequenos directamente con cada cliente."}
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Button href={heroPromo?.href || "/productos"} variant="brand">

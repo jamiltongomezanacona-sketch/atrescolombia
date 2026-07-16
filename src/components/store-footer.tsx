@@ -16,7 +16,10 @@ export function StoreFooter() {
         <div>
           <p className="text-2xl font-black tracking-tight">ATRES</p>
           <p className="mt-2 max-w-sm text-sm font-semibold text-white/70">
-            Hombre, Mujer, Niños y Hogar. Subcategorias y compra rapida en Colombia.
+            Moda 100% colombiana. Del taller al cliente, con fabricantes grandes y pequenos en una vitrina directa.
+          </p>
+          <p className="mt-3 max-w-sm text-xs font-bold uppercase tracking-wide text-white/45">
+            Personaliza, compra por prenda o contacta al por mayor.
           </p>
         </div>
         <div>
@@ -51,8 +54,8 @@ export function StoreFooter() {
       </div>
       <div className="border-t border-white/10">
         <div className="store-container flex flex-wrap items-center justify-between gap-2 py-4 text-xs font-semibold text-white/55">
-          <p>© {new Date().getFullYear()} ATRES Colombia</p>
-          <p>Envios a toda Colombia</p>
+          <p>&copy; {new Date().getFullYear()} ATRES Colombia</p>
+          <p>Producto colombiano directo</p>
         </div>
       </div>
     </footer>

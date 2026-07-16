@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | ATRES",
   },
   description:
-    "Tienda oficial ATRES: moda, novedades, promociones, categorias y productos tendencia.",
+    "ATRES Colombia conecta moda 100% colombiana, fabricantes y talleres con clientes finales, compras por prenda y contacto al por mayor.",
   icons: {
     icon: [
       {
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ATRES",
     description:
-      "Moda ATRES con novedades, promociones y categorias para descubrir.",
+      "Moda colombiana directa: del taller al cliente, con fabricantes, talleres y prendas para descubrir.",
     type: "website",
     locale: "es_CO",
     images: [

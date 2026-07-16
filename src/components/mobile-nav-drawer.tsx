@@ -111,7 +111,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
               <p id={titleId} className="text-lg font-black tracking-tight">
                 ATRES
               </p>
-              <p className="text-xs font-semibold text-stone-500">Moda y ropa directa de la marca</p>
+              <p className="text-xs font-semibold text-stone-500">Moda colombiana del taller al cliente</p>
             </div>
             <button
               ref={closeRef}

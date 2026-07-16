@@ -1,19 +1,19 @@
 const benefits = [
   {
-    title: "Envios nacionales",
-    description: "Despachos a Colombia con seguimiento claro del pedido.",
+    title: "100% colombiano",
+    description: "Producto hecho en Colombia, impulsando fabricantes grandes, pequenos y talleres locales.",
   },
   {
-    title: "Compra segura",
-    description: "Catalogo claro, precios visibles y asesoría por WhatsApp.",
+    title: "Del taller al cliente",
+    description: "Compra directa, precios visibles y contacto cercano dentro de una vitrina organizada.",
   },
   {
-    title: "Productos disponibles",
-    description: "Inventario organizado para encontrar prendas listas para comprar.",
+    title: "Personaliza tu prenda",
+    description: "Consulta ajustes, disenos o variaciones posibles directamente por WhatsApp antes de comprar.",
   },
   {
-    title: "Fabricacion colombiana",
-    description: "Una vitrina pensada para moda y comercio local.",
+    title: "Por prenda o al por mayor",
+    description: "Atencion para clientes finales, boutiques y compradores que buscan contacto con fabricantes.",
   },
 ];
 
@@ -21,9 +21,9 @@ export function StoreBenefits() {
   return (
     <section className="store-container py-5 md:py-6" aria-labelledby="beneficios-titulo">
       <div className="mb-3">
-        <p className="text-xs font-black uppercase tracking-wide text-brand">Por que comprar en ATRES</p>
+        <p className="text-xs font-black uppercase tracking-wide text-brand">Vision ATRES</p>
         <h2 id="beneficios-titulo" className="mt-1 text-xl font-black tracking-tight text-ink md:text-2xl">
-          Confianza para comprar
+          Moda colombiana directa
         </h2>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

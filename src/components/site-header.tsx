@@ -12,10 +12,10 @@ export async function SiteHeader() {
     <header className="sticky top-0 z-40 bg-black/95 text-white shadow-[0_10px_30px_rgba(0,0,0,0.16)]">
       <div className="hidden border-b border-white/10 bg-white/[0.04] lg:block">
         <div className="catalog-container flex items-center justify-between gap-3 py-2 text-[11px] font-black uppercase tracking-wide text-white/75">
-          <span>Envios a toda Colombia</span>
-          <span className="hidden md:inline">Nuevas prendas cada semana</span>
+          <span>100% producto colombiano</span>
+          <span className="hidden md:inline">Del taller al cliente</span>
           <Link href="/ofertas" className="text-amber-200 hover:text-white">
-            Ofertas activas
+            Contacto por prenda o al por mayor
           </Link>
         </div>
       </div>

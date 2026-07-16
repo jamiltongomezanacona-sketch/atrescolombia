@@ -66,6 +66,14 @@ export const categories: Category[] = [
     description: "Ropa comoda, colorida y resistente para pequenos.",
   },
   {
+    slug: "hogar",
+    name: "Hogar",
+    shortName: "Hogar",
+    image:
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=420&q=80",
+    description: "Sabanas, cobijas, textiles y accesorios para renovar tu hogar.",
+  },
+  {
     slug: "ninas",
     name: "Ninas",
     shortName: "Ninas",
@@ -195,6 +203,29 @@ export const products: Product[] = [
     description: "Set infantil comodo y colorido para juego, colegio y fines de semana.",
     details: ["Algodon suave", "Elastico comodo", "Costuras reforzadas", "Secado rapido"],
     collection: "Mini Color",
+  },
+  {
+    slug: "set-sabanas-brisa",
+    name: "Set sabanas Brisa",
+    categorySlug: "hogar",
+    categoryName: "Hogar",
+    price: 89900,
+    previousPrice: 119900,
+    badge: "Nuevo",
+    isNew: true,
+    rating: 4.7,
+    stock: 18,
+    image:
+      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+    ],
+    colors: ["Blanco", "Arena", "Gris"],
+    sizes: ["Sencilla", "Doble", "Queen"],
+    description: "Set de sabanas suaves para renovar la cama con textura limpia y fresca.",
+    details: ["Ropa de cama", "Tacto suave", "Lavado facil", "Disponible para entrega"],
+    collection: "Casa Suave",
   },
   {
     slug: "enterizo-flor-luna",

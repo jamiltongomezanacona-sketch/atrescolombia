@@ -27,7 +27,7 @@ export function PageHeader({
         )}
       >
         <p className="text-xs font-black uppercase tracking-wide text-amber-200">{eyebrow}</p>
-        <h1 className="mt-1 text-4xl font-black tracking-tight md:text-5xl">{title}</h1>
+        <h1 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl md:text-5xl">{title}</h1>
         {description ? <p className="mt-2 max-w-2xl text-sm font-semibold text-white/75">{description}</p> : null}
         {children}
       </div>
@@ -43,7 +43,7 @@ export function PageHeader({
         )}
       >
         <p className="text-xs font-black uppercase tracking-wide text-stone-700">{eyebrow}</p>
-        <h1 className="mt-1 text-4xl font-black tracking-tight md:text-5xl">{title}</h1>
+        <h1 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl md:text-5xl">{title}</h1>
         {description ? <p className="mt-2 max-w-2xl text-sm font-semibold text-stone-700">{description}</p> : null}
         {children}
       </div>
@@ -53,7 +53,7 @@ export function PageHeader({
   return (
     <GlassPanel className={cn("mb-5 p-5 md:p-6", className)}>
       <p className="text-xs font-black uppercase text-stone-500">{eyebrow}</p>
-      <h1 className="mt-1 text-4xl font-black tracking-tight text-ink">{title}</h1>
+      <h1 className="mt-1 text-3xl font-black tracking-tight text-ink sm:text-4xl">{title}</h1>
       {description ? <p className="mt-2 max-w-2xl text-sm font-semibold text-stone-500">{description}</p> : null}
       {children}
     </GlassPanel>

@@ -6,7 +6,7 @@ import { getPublicCategoriesForDisplay } from "@/lib/public-store";
 
 export const metadata = {
   title: "Categorias | ATRES",
-  description: "Ropa directa de ATRES por categorias y colecciones.",
+  description: "Departamentos ATRES por categorias, hogar y colecciones.",
 };
 
 export const dynamic = "force-dynamic";
@@ -25,7 +25,7 @@ export default async function CategoriesIndexPage() {
         {categories.length === 0 ? (
           <p className="text-sm font-semibold text-stone-500">No hay categorias con productos disponibles.</p>
         ) : (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
             {categories.map((category) => {
               const theme = getCategoryVisualTheme(category.slug, category.name);
 
@@ -33,25 +33,28 @@ export default async function CategoriesIndexPage() {
                 <Link
                   key={category.slug}
                   href={`/categoria/${category.slug}`}
-                  className={`group relative isolate min-h-[180px] overflow-hidden rounded-lg p-4 shadow-soft ring-1 ring-white/60 transition hover:-translate-y-1 ${theme.washClass}`}
+                  className={`group relative isolate min-h-[184px] overflow-hidden rounded-lg p-4 shadow-soft ring-1 ring-white/60 transition hover:-translate-y-1 sm:min-h-[210px] ${theme.washClass}`}
                 >
                   <div className="pointer-events-none absolute inset-0">
                     <Image
-                      src={category.image}
+                      src={theme.heroImage}
                       alt=""
                       fill
                       sizes="(max-width: 768px) 50vw, 25vw"
-                      className="object-cover opacity-25"
+                      className="object-cover opacity-45 transition duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/58 via-black/28 to-black/48" />
+                  <div className="relative flex h-full min-h-[152px] flex-col justify-between sm:min-h-[178px]">
                     <p className={`text-xs font-black uppercase ${theme.accentClass}`}>{theme.eyebrow}</p>
-                    <h2 className={`mt-2 text-2xl font-black tracking-tight ${theme.textClass}`}>
-                      {category.shortName}
-                    </h2>
-                    <p className={`mt-2 line-clamp-2 text-sm font-semibold ${theme.mutedTextClass}`}>
-                      {category.description}
-                    </p>
+                    <div>
+                      <h2 className="text-[1.7rem] font-black leading-none tracking-tight text-white sm:text-3xl">
+                        {category.shortName}
+                      </h2>
+                      <p className="mt-2 line-clamp-3 text-sm font-bold leading-5 text-white/82">
+                        {category.description || theme.description}
+                      </p>
+                    </div>
                   </div>
                 </Link>
               );

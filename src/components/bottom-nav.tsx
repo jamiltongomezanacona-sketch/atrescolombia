@@ -17,10 +17,10 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 px-2 pb-[max(0.45rem,env(safe-area-inset-bottom))] md:hidden"
       aria-label="Navegacion principal"
     >
-      <div className="mx-auto grid max-w-md grid-cols-5 rounded-full border border-white/70 bg-white/92 px-2 py-1.5 shadow-[0_-10px_30px_rgba(20,34,30,0.1)] backdrop-blur-xl">
+      <div className="mx-auto grid max-w-md grid-cols-5 rounded-full border border-white/80 bg-white/95 px-1.5 py-1 shadow-[0_-6px_20px_rgba(20,34,30,0.1)] backdrop-blur-xl">
         {items.map((item) => {
           const active =
             item.href === "/"
@@ -33,8 +33,8 @@ export function BottomNav() {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-full px-1 text-[10px] font-black transition duration-200 active:scale-95",
-                active ? "bg-black text-white shadow-sm" : "text-stone-700 hover:bg-stone-100/80 hover:text-black",
+                "flex min-h-10 flex-col items-center justify-center gap-0.5 rounded-full px-1 text-[9px] font-black leading-none transition duration-200 active:scale-95",
+                active ? "bg-stone-950 text-white shadow-[0_4px_12px_rgba(0,0,0,0.14)]" : "text-stone-700 hover:bg-stone-100/80 hover:text-black",
               )}
             >
               <NavIcon type={item.icon} />
@@ -48,7 +48,7 @@ export function BottomNav() {
 }
 
 function NavIcon({ type }: { type: "home" | "grid" | "search" | "heart" | "bag" }) {
-  const className = "size-4";
+  const className = "size-3.5";
 
   if (type === "home") {
     return (

@@ -11,7 +11,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
       <SiteHeader />
       <div
         id="contenido-principal"
-        className="flex flex-1 flex-col pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-0"
+        className="flex flex-1 flex-col pb-[calc(7.25rem+env(safe-area-inset-bottom))] md:pb-0"
       >
         {children}
       </div>

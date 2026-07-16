@@ -108,12 +108,15 @@ export async function getStoreNavigation(): Promise<NavItem[]> {
 }
 
 export async function getPublicCategoriesForDisplay(): Promise<StoreCategory[]> {
-  const [categories, products] = await Promise.all([getPublicCategories(), getPublicProducts()]);
+  const categories = await getPublicCategories();
   const primary = getPrimaryDepartmentsForDisplay(categories);
 
   return primary.filter((category) => {
     if (!category.id) return true;
-    return categoryHasProducts(category, categories, products);
+    const departmentKey = getDepartmentKeyForSlug(category.slug);
+    return Boolean(
+      departmentKey && (PRIMARY_DEPARTMENT_KEYS as readonly string[]).includes(departmentKey),
+    );
   });
 }
 
@@ -520,7 +523,19 @@ function getCategoryAliasGroup(slug: string) {
     ["urbana", "moda-urbana", "streetwear", "casual"],
     ["jeans", "denim", "jeans-y-denim", "mezclilla"],
     ["deportiva", "deportivo", "ropa-deportiva", "sport", "sport-wear"],
-    ["textiles-para-hogar", "textiles", "hogar", "hogar-y-vida", "textiles-hogar"],
+    [
+      "textiles-para-hogar",
+      "textiles",
+      "hogar",
+      "hogar-y-vida",
+      "textiles-hogar",
+      "sabanas",
+      "cobijas",
+      "ropa-de-cama",
+      "lenceria-hogar",
+      "accesorios-hogar",
+      "decoracion-hogar",
+    ],
     ["elegante", "moda-elegante", "formal"],
     ["accesorios", "bisuteria-y-accesorios", "bolsos", "bolsas-y-maletas"],
     ["uniformes", "colegio", "escolar"],

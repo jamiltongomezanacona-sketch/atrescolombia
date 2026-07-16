@@ -71,10 +71,10 @@ export function FloatingWhatsApp() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={product ? `Consultar ${product.name} por WhatsApp` : "Consultar por WhatsApp"}
-      className="group fixed bottom-[calc(5.2rem+env(safe-area-inset-bottom))] right-3 z-50 flex items-center gap-2 rounded-full border border-white/70 bg-[#0f2f22]/90 p-1 text-white shadow-[0_14px_34px_rgba(15,47,34,0.22)] backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 hover:bg-[#103b28] active:scale-95 sm:px-2.5 sm:py-2 md:bottom-5 md:right-5 md:px-3"
+      className="group fixed bottom-[calc(5.7rem+env(safe-area-inset-bottom))] right-3 z-50 flex items-center gap-2 rounded-full border border-white/70 bg-[#0f2f22]/90 p-1 text-white shadow-[0_12px_28px_rgba(15,47,34,0.2)] backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 hover:bg-[#103b28] active:scale-95 sm:px-2.5 sm:py-2 md:bottom-5 md:right-5 md:px-3"
     >
       <span className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_25%_20%,rgba(255,255,255,0.32),transparent_34%),linear-gradient(135deg,rgba(37,211,102,0.95),rgba(12,126,64,0.92))] opacity-100 transition group-hover:opacity-95" />
-      <span className="relative grid size-11 place-items-center rounded-full bg-white text-[#128C4A] shadow-inner sm:size-10 md:size-10">
+      <span className="relative grid size-10 place-items-center rounded-full bg-white text-[#128C4A] shadow-inner md:size-10">
         <WhatsAppIcon />
       </span>
       <span className="relative hidden min-w-0 pr-1 text-left sm:block">

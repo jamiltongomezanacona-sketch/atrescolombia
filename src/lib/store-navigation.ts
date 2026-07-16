@@ -47,7 +47,19 @@ export const DEPARTMENT_SLUGS: Record<string, string[]> = {
     "moda-ninas",
     "moda-infantil",
   ],
-  hogar: ["hogar", "hogar-y-vida", "textiles", "textiles-para-hogar", "textiles-hogar"],
+  hogar: [
+    "hogar",
+    "hogar-y-vida",
+    "textiles",
+    "textiles-para-hogar",
+    "textiles-hogar",
+    "sabanas",
+    "cobijas",
+    "ropa-de-cama",
+    "lenceria-hogar",
+    "accesorios-hogar",
+    "decoracion-hogar",
+  ],
 };
 
 export const PRIMARY_DEPARTMENT_KEYS = ["hombre", "mujer", "ninos", "hogar"] as const;
@@ -230,7 +242,10 @@ export function getPrimaryDepartmentsForDisplay(categories: StoreCategory[]): St
       slug: DEPARTMENT_SLUGS[key]?.[0] ?? key,
       name: nav.label,
       shortName: nav.label,
-      description: `Explora ${nav.label.toLowerCase()} en ATRES.`,
+      description:
+        key === "hogar"
+          ? "Sabanas, cobijas, textiles y accesorios para renovar tu hogar."
+          : `Explora ${nav.label.toLowerCase()} en ATRES.`,
       image:
         key === "hogar"
           ? "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80"

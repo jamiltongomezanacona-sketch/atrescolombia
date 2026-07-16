@@ -146,16 +146,16 @@ const themes: Record<string, CategoryVisualTheme> = {
   },
   "textiles-hogar": {
     eyebrow: "Hogar ATRES",
-    headline: "Texturas calmas para renovar espacios.",
-    description: "Piezas suaves, limpias y faciles de combinar en casa.",
+    headline: "Sabanas, cobijas y accesorios para casa.",
+    description: "Textiles suaves, ropa de cama y detalles practicos para renovar el hogar.",
     trendTag: "#CasaSuave",
     heroImage: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
-    washClass: "bg-[linear-gradient(135deg,#fafaf9_0%,#e7e5e4_45%,#d9f99d_100%)]",
+    washClass: "bg-[linear-gradient(135deg,#1f2937_0%,#78716c_48%,#d9f99d_100%)]",
     panelClass: "bg-white/80 text-[#262019] ring-stone-200",
-    accentClass: "text-lime-800",
-    textClass: "text-[#262019]",
-    mutedTextClass: "text-stone-600",
-    chips: ["Suave", "Set", "Hogar", "Premium"],
+    accentClass: "text-lime-200",
+    textClass: "text-white",
+    mutedTextClass: "text-white/82",
+    chips: ["Sabanas", "Cobijas", "Textiles", "Accesorios"],
   },
   elegante: {
     eyebrow: "Elegante ATRES",
@@ -237,7 +237,16 @@ function normalizeThemeKey(slug?: string, name?: string) {
   if (value.includes("jean") || value.includes("denim") || value.includes("mezclilla")) return "jeans";
   if (value.includes("uniform")) return "uniformes";
   if (value.includes("deport")) return "deportivo";
-  if (value.includes("textil") || value.includes("hogar")) return "textiles-hogar";
+  if (
+    value.includes("textil") ||
+    value.includes("hogar") ||
+    value.includes("sabana") ||
+    value.includes("cobija") ||
+    value.includes("ropa de cama") ||
+    value.includes("ropa-de-cama")
+  ) {
+    return "textiles-hogar";
+  }
   if (value.includes("elegante") || value.includes("evento")) return "elegante";
   if (value.includes("accesorio") || value.includes("bolso")) return "accesorios";
   if (value.includes("calzado") || value.includes("zapato")) return "calzado";

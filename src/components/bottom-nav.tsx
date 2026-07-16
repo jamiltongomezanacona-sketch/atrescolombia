@@ -20,7 +20,7 @@ export function BottomNav() {
       className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden"
       aria-label="Navegacion principal"
     >
-      <div className="mx-auto grid max-w-md grid-cols-5 rounded-full border border-white/70 bg-white/90 px-2 py-1.5 shadow-[0_-10px_30px_rgba(20,34,30,0.1)]">
+      <div className="mx-auto grid max-w-md grid-cols-5 rounded-full border border-white/70 bg-white/92 px-2 py-1.5 shadow-[0_-10px_30px_rgba(20,34,30,0.1)] backdrop-blur-xl">
         {items.map((item) => {
           const active =
             item.href === "/"
@@ -33,8 +33,8 @@ export function BottomNav() {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-full px-1 text-[10px] font-black transition",
-                active ? "bg-black text-white" : "text-stone-700 hover:bg-stone-100/80 hover:text-black",
+                "flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-full px-1 text-[10px] font-black transition duration-200 active:scale-95",
+                active ? "bg-black text-white shadow-sm" : "text-stone-700 hover:bg-stone-100/80 hover:text-black",
               )}
             >
               <NavIcon type={item.icon} />

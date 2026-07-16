@@ -34,6 +34,23 @@ export default async function Home() {
 
   const heroPromo = promos[0];
   const promoCards = promos.slice(0, 3);
+  const promoLabels = [
+    {
+      eyebrow: "Nueva coleccion",
+      title: "Comprar ahora",
+      subtitle: "Prendas seleccionadas para estrenar hoy.",
+    },
+    {
+      eyebrow: "Ofertas del dia",
+      title: "Hasta 40% OFF",
+      subtitle: "Precios directos de temporada en productos elegidos.",
+    },
+    {
+      eyebrow: "Compra directa",
+      title: "Fabricacion colombiana",
+      subtitle: "Catalogo ATRES con envio rapido y atencion por WhatsApp.",
+    },
+  ];
 
   return (
     <main>
@@ -53,18 +70,18 @@ export default async function Home() {
         ) : (
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,77,0,0.28),transparent_42%),radial-gradient(circle_at_80%_0%,rgba(255,234,97,0.16),transparent_36%)]" />
         )}
-        <div className="store-container relative py-10 md:py-16 lg:py-20">
+        <div className="store-container relative py-6 md:py-8 lg:py-10">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-brand">ATRES Colombia</p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
+          <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] tracking-tight sm:text-4xl md:text-5xl">
             {heroPromo?.title || "Hombre, Mujer, Niños y Hogar"}
           </h1>
-          <p className="mt-4 max-w-lg text-sm font-semibold leading-6 text-white/75 md:text-base">
+          <p className="mt-3 max-w-lg text-sm font-semibold leading-6 text-white/75">
             {heroPromo?.subtitle ||
               "Cuatro departamentos ATRES. Entra a cada uno y explora sus subcategorias."}
           </p>
-          <div className="mt-7 flex flex-wrap gap-3">
+          <div className="mt-5 flex flex-wrap gap-3">
             <Button href={heroPromo?.href || "/productos"} variant="brand">
-              Ver catalogo
+              Comprar ahora
             </Button>
             <Button href="/ofertas" variant="secondary">
               Ver ofertas
@@ -73,16 +90,16 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="border-b border-black/5 bg-white/55 py-3 md:py-4">
+      <section className="border-b border-black/5 bg-white/70 py-2 md:py-2.5">
         <QuickFilters items={navItems} />
       </section>
 
       {categories.length > 0 ? (
-        <section className="soft-section store-container py-6 md:py-8" aria-label="Categorias">
-          <div className="mb-4 flex items-end justify-between gap-3">
+        <section className="soft-section store-container py-4 md:py-5" aria-label="Categorias">
+          <div className="mb-3 flex items-end justify-between gap-3">
             <div>
               <p className="text-xs font-black uppercase tracking-wide text-brand">Departamentos</p>
-              <h2 className="mt-1 text-2xl font-black tracking-tight text-ink md:text-3xl">
+              <h2 className="mt-1 text-xl font-black tracking-tight text-ink md:text-2xl">
                 Hombre, Mujer, Niños y Hogar
               </h2>
             </div>
@@ -93,16 +110,16 @@ export default async function Home() {
               Ver todas
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4 md:gap-y-8">
+          <div className="grid grid-cols-4 gap-2.5 sm:grid-cols-6 md:grid-cols-8 md:gap-3">
             {categories.map((category) => {
               const theme = getCategoryVisualTheme(category.slug, category.name);
 
               return (
                 <Link key={category.slug} href={`/categoria/${category.slug}`} className="group text-center">
                   <div
-                    className={`relative mx-auto aspect-square w-full max-w-[96px] overflow-hidden rounded-full p-1.5 shadow-soft ring-1 ring-white/60 transition duration-300 group-hover:-translate-y-1 group-hover:scale-105 ${theme.washClass}`}
+                    className={`relative mx-auto aspect-square w-full max-w-[82px] overflow-hidden rounded-full p-1 shadow-soft ring-1 ring-white/70 transition duration-300 group-hover:-translate-y-1 group-hover:scale-[1.04] ${theme.washClass}`}
                   >
-                    <div className="absolute inset-1.5 overflow-hidden rounded-full bg-white/80">
+                    <div className="absolute inset-1 overflow-hidden rounded-full bg-white/85">
                       <Image
                         src={category.image}
                         alt={category.name}
@@ -112,7 +129,7 @@ export default async function Home() {
                       />
                     </div>
                   </div>
-                  <p className="mx-auto mt-3 min-h-10 max-w-[110px] text-sm font-semibold capitalize leading-5 text-ink">
+                  <p className="mx-auto mt-2 min-h-8 max-w-[96px] text-[11px] font-black capitalize leading-4 text-ink sm:text-xs">
                     {category.shortName}
                   </p>
                 </Link>
@@ -123,13 +140,16 @@ export default async function Home() {
       ) : null}
 
       {promoCards.length > 0 ? (
-        <section className="store-container py-3 md:py-5" aria-label="Promociones">
+        <section className="store-container py-2 md:py-3" aria-label="Promociones">
           <div className="grid gap-3 md:grid-cols-3 md:gap-4">
-            {promoCards.map((promo) => (
+            {promoCards.map((promo, index) => {
+              const label = promoLabels[index] ?? promoLabels[0];
+
+              return (
               <Link
                 key={promo.title}
                 href={promo.href}
-                className={`${promo.tone} relative isolate min-h-[150px] overflow-hidden rounded-lg p-5 shadow-soft ring-1 ring-black/5 transition duration-300 hover:-translate-y-1`}
+                className={`${promo.tone} relative isolate min-h-[118px] overflow-hidden rounded-lg p-4 shadow-soft ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-lift`}
               >
                 <div className="pointer-events-none absolute inset-0">
                   <Image
@@ -137,15 +157,20 @@ export default async function Home() {
                     alt=""
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover opacity-[0.16]"
+                    className="object-cover opacity-[0.18] transition duration-500"
                   />
                 </div>
                 <div className="relative">
-                  <p className="text-2xl font-black tracking-tight">{promo.title}</p>
-                  <p className="mt-2 max-w-xs text-sm font-bold opacity-75">{promo.subtitle}</p>
+                  <p className="text-[11px] font-black uppercase tracking-wide opacity-70">{label.eyebrow}</p>
+                  <p className="mt-1 text-xl font-black tracking-tight">{label.title}</p>
+                  <p className="mt-1.5 max-w-xs text-sm font-bold opacity-75">{label.subtitle || promo.subtitle}</p>
+                  <span className="mt-3 inline-flex rounded-full bg-black px-3 py-1.5 text-[11px] font-black uppercase text-white">
+                    Comprar ahora
+                  </span>
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </section>
       ) : null}
@@ -181,9 +206,9 @@ export default async function Home() {
       <StoreBenefits />
 
       {products.length > 0 ? (
-        <section className="store-container py-7 md:py-9">
-          <div className="mb-4 flex items-end justify-between gap-4">
-            <h2 className="text-2xl font-black tracking-tight text-ink md:text-3xl">Recomendados para ti</h2>
+        <section className="store-container py-5 md:py-6">
+          <div className="mb-3 flex items-end justify-between gap-4">
+            <h2 className="text-xl font-black tracking-tight text-ink md:text-2xl">Recomendados para ti</h2>
             <Link href="/productos" className="text-sm font-black text-ink underline-offset-4 hover:underline">
               Ver todo
             </Link>

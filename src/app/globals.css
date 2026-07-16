@@ -150,7 +150,7 @@ select:focus-visible {
 .catalog-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.875rem;
+  gap: 0.75rem;
 }
 
 @media (min-width: 640px) {
@@ -162,7 +162,7 @@ select:focus-visible {
 @media (min-width: 1024px) {
   .catalog-grid {
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 0.875rem;
   }
 }
 
@@ -212,8 +212,8 @@ select:focus-visible {
 .product-rail {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 46%;
-  gap: 0.75rem;
+  grid-auto-columns: 44%;
+  gap: 0.625rem;
   overflow-x: auto;
   padding-bottom: 0.25rem;
   scroll-snap-type: x mandatory;
@@ -228,7 +228,7 @@ select:focus-visible {
 
 @media (min-width: 640px) {
   .product-rail {
-    grid-auto-columns: 30%;
+    grid-auto-columns: 28%;
   }
 }
 
@@ -238,7 +238,14 @@ select:focus-visible {
     grid-auto-flow: unset;
     grid-auto-columns: unset;
     grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.875rem;
     overflow: visible;
     scroll-snap-type: none;
+  }
+}
+
+@media (min-width: 1536px) {
+  .product-rail {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 }

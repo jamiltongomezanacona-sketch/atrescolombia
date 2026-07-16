@@ -47,11 +47,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <main>
-      <section className="catalog-container py-2.5 lg:py-4">
-        <div className="mb-2.5 flex flex-wrap items-end justify-between gap-2 lg:mb-3">
+      <section className="catalog-container py-2 lg:py-3">
+        <div className="mb-2 flex flex-wrap items-end justify-between gap-2">
           <div>
             <p className="text-[11px] font-black uppercase text-brand lg:text-xs">Catalogo ATRES</p>
-            <h1 className="mt-0.5 text-2xl font-black tracking-tight text-ink sm:text-3xl lg:text-4xl">Todos los productos</h1>
+            <h1 className="mt-0.5 text-2xl font-black tracking-tight text-ink sm:text-3xl">Todos los productos</h1>
             <p className="mt-2 hidden max-w-2xl text-sm font-semibold leading-6 text-stone-600 sm:block">
               Filtra por categoria, talla, color, oferta y disponibilidad con los datos reales del catalogo.
             </p>
@@ -59,7 +59,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
 
         <div>
-            <GlassPanel className="mb-3 grid gap-2 px-2.5 py-2.5 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-3 sm:px-3 sm:py-3 lg:mb-4">
+            <GlassPanel className="mb-3 grid gap-2 px-2.5 py-2.5 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-3 sm:px-3 sm:py-2.5">
               <div className="flex items-center justify-between gap-2 sm:justify-start">
                 <p className="text-sm font-black text-stone-700">
                   {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}

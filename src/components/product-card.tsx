@@ -23,12 +23,22 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     product.previousPrice && product.previousPrice > product.price ? product.previousPrice : null;
   const sizes = meaningfulSizes(product.sizes).slice(0, 4);
   const inStock = product.stock > 0;
+  const visualTag =
+    product.isPromo || discount
+      ? "Oferta"
+      : product.isNew
+        ? "Nuevo"
+        : product.isTrending
+          ? "Tendencia"
+          : product.stock > 0 && product.stock <= 3
+            ? "Ultimas unidades"
+            : product.badge;
 
   return (
-    <article className="group overflow-hidden rounded-lg bg-white/85 shadow-soft ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-lift">
+    <article className="group flex h-full min-h-[310px] flex-col overflow-hidden rounded-lg bg-white shadow-soft ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-lift sm:min-h-[360px]">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
-          <div className="relative aspect-[3/4] overflow-hidden rounded-b-[5px] bg-surface-muted">
+          <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
             <SafeProductImage
               src={product.image}
               alt={product.name}
@@ -42,10 +52,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         <div className="absolute right-2.5 top-2.5">
           <FavoriteButton productSlug={product.slug} compact />
         </div>
-        {product.badge ? (
+        {visualTag ? (
           <div className="absolute left-2.5 top-2.5">
             <Badge tone="black" className="text-[11px] ring-1 ring-black/25">
-              {product.badge}
+              {visualTag}
             </Badge>
           </div>
         ) : null}
@@ -64,31 +74,31 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </div>
         ) : null}
       </div>
-      <div className="space-y-1.5 p-2.5 sm:space-y-2 sm:p-3.5">
+      <div className="flex flex-1 flex-col p-2.5 sm:p-3">
         <p className="hidden truncate text-xs font-black uppercase tracking-wide text-stone-500 sm:block">
           {product.categoryName}
         </p>
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="line-clamp-2 min-h-9 text-xs font-semibold leading-4 text-ink transition group-hover:text-black sm:min-h-10 sm:leading-5 md:text-sm">
+          <h3 className="mt-1 line-clamp-2 min-h-9 text-xs font-bold leading-4 text-ink transition group-hover:text-black sm:min-h-10 sm:leading-5 md:text-sm">
             {product.name}
           </h3>
         </Link>
         {sizes.length > 0 ? (
-          <p className="hidden truncate text-[11px] font-semibold text-stone-500 sm:block">
+          <p className="mt-2 hidden truncate text-[11px] font-semibold text-stone-500 sm:block">
             Tallas: {sizes.join(" · ")}
             {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
           </p>
         ) : null}
-        <div className="flex min-h-9 items-end justify-between gap-2 sm:min-h-10">
+        <div className="mt-auto flex min-h-11 items-end justify-between gap-2 pt-3 sm:min-h-12">
           <ProductPrice price={product.price} previousPrice={previousPrice} />
           <Link
             href={`/productos/${product.slug}`}
-            className="hidden shrink-0 rounded-full bg-stone-100/80 px-2.5 py-1.5 text-[10px] font-black uppercase text-stone-700 transition hover:bg-black hover:text-white sm:inline-flex"
+            className="hidden shrink-0 rounded-full bg-stone-100/90 px-2.5 py-1.5 text-[10px] font-black uppercase text-stone-700 transition hover:bg-black hover:text-white sm:inline-flex"
           >
             Ver
           </Link>
         </div>
-        <p className={`hidden text-[11px] font-bold sm:block ${inStock ? "text-emerald-700" : "text-stone-400"}`}>
+        <p className={`mt-1 hidden text-[11px] font-bold sm:block ${inStock ? "text-emerald-700" : "text-stone-400"}`}>
           {inStock ? "Disponible" : "Sin stock"}
         </p>
       </div>

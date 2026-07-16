@@ -21,15 +21,15 @@ export function ProductRail({
   if (!products.length) return null;
 
   return (
-    <section className="store-container py-7 md:py-9">
-      <div className="mb-4 flex items-end justify-between gap-4">
-        <h2 className="text-2xl font-black tracking-tight text-ink md:text-3xl">{title}</h2>
+    <section className="store-container py-5 md:py-6">
+      <div className="mb-3 flex items-end justify-between gap-4">
+        <h2 className="text-xl font-black tracking-tight text-ink md:text-2xl">{title}</h2>
         <Link href={href} className="text-sm font-black text-ink underline-offset-4 hover:underline">
           {linkLabel}
         </Link>
       </div>
       <div className="product-rail">
-        {products.slice(0, 6).map((product, index) => (
+        {products.slice(0, 8).map((product, index) => (
           <ProductCard
             key={product.slug}
             product={product}

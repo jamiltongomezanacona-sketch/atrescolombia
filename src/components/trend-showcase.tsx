@@ -35,7 +35,7 @@ export function TrendShowcase({
   if (!featured.length && !title) return null;
 
   return (
-    <section className="store-container py-4 md:py-5">
+    <section className="store-container py-3 md:py-4">
       <div className={cn("relative overflow-hidden rounded-lg shadow-soft ring-1 ring-white/55", theme.washClass)}>
         <div className="pointer-events-none absolute inset-0">
           <SafeProductImage
@@ -48,7 +48,7 @@ export function TrendShowcase({
         <div className="absolute inset-0 bg-gradient-to-r from-black/15 via-white/10 to-white/40" />
         <div
           className={cn(
-            "relative grid gap-5 p-4 md:p-7",
+            "relative grid gap-4 p-3 md:p-5",
             showStats ? "md:grid-cols-[1fr_0.85fr]" : "md:grid-cols-[0.75fr_1.55fr]",
             compact && "lg:p-6",
           )}
@@ -56,7 +56,7 @@ export function TrendShowcase({
           <Link
             href={href}
             className={cn(
-              "flex min-h-[200px] flex-col justify-center rounded-lg p-5 ring-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)]",
+              "flex min-h-[148px] flex-col justify-center rounded-lg p-4 ring-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] md:min-h-[168px]",
               theme.panelClass,
             )}
           >
@@ -67,13 +67,13 @@ export function TrendShowcase({
               className={cn(
                 "mt-4 font-black leading-none tracking-tight",
                 theme.textClass,
-                title ? "text-4xl md:text-5xl lg:text-6xl" : "text-4xl md:text-5xl",
+                title ? "text-3xl md:text-4xl lg:text-5xl" : "text-3xl md:text-4xl",
               )}
             >
               {headline}
             </h2>
-            <p className={cn("mt-4 max-w-sm text-sm font-bold leading-6", theme.mutedTextClass)}>{body}</p>
-            <div className="mt-5 flex flex-wrap gap-2">
+            <p className={cn("mt-3 max-w-sm text-sm font-bold leading-6", theme.mutedTextClass)}>{body}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
               {theme.chips.slice(0, compact ? 3 : 4).map((chip) => (
                 <span
                   key={chip}

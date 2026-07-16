@@ -30,19 +30,22 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
   return (
     <AdminShell>
       <div className="grid gap-5">
-        <div className="flex flex-wrap items-end justify-between gap-3 rounded-2xl bg-white/92 p-4 shadow-sm ring-1 ring-black/5 md:p-5">
+        <div className="relative overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#111827_0%,#3b0764_48%,#ff4d00_100%)] p-4 text-white shadow-sm md:p-5">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.18),transparent_30%)]" />
+          <div className="relative flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-xs font-black uppercase tracking-wide text-zinc-500">Catalogo</p>
+            <p className="text-xs font-black uppercase tracking-wide text-orange-200">Catalogo studio</p>
             <h1 className="mt-1 text-3xl font-black tracking-tight">Productos</h1>
-            <p className="mt-1 text-sm font-semibold text-zinc-500">
-              {filtered.length} visibles de {products.length} productos. Edita, duplica o publica sin salir del panel.
+            <p className="mt-1 text-sm font-semibold text-white/72">
+              {filtered.length} visibles de {products.length} productos. Usa Editar para cambiar precio, fotos, stock y contenido.
             </p>
           </div>
-          <Button href="/admin/productos/nuevo" className="rounded-full px-5">
+          <Button href="/admin/productos/nuevo" variant="secondary" className="rounded-full px-5">
             Nuevo producto
           </Button>
+          </div>
         </div>
-        <form className="grid gap-3 rounded-2xl bg-white/92 p-3 shadow-sm ring-1 ring-black/5 md:grid-cols-[1fr_180px_auto] md:p-4">
+        <form className="grid gap-3 rounded-2xl bg-white/92 p-3 shadow-sm ring-1 ring-orange-100 md:grid-cols-[1fr_180px_auto] md:p-4">
           <Input name="q" defaultValue={params?.q ?? ""} placeholder="Buscar producto o SKU" />
           <AdminSelect name="estado" defaultValue={estado} aria-label="Estado">
             <option value="">Todos</option>
@@ -57,7 +60,8 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
 
         <div className="grid gap-3 lg:hidden">
           {filtered.map((product) => (
-            <article key={product.id} className="rounded-2xl bg-white/92 p-4 shadow-sm ring-1 ring-black/5">
+            <article key={product.id} className="overflow-hidden rounded-2xl bg-white/92 p-4 shadow-sm ring-1 ring-black/5">
+              <div className="mb-3 h-1 rounded-full bg-gradient-to-r from-brand via-fuchsia-500 to-sky-400" />
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <Link href={`/admin/productos/${product.id}/editar`} className="text-base font-black hover:underline">
                   {safeText(product.name) || "Producto sin nombre"}
@@ -95,7 +99,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
         <div className="hidden overflow-hidden rounded-2xl bg-white/95 shadow-sm ring-1 ring-black/5 lg:block">
           <div className="overflow-x-auto">
           <table className="w-full min-w-[720px] text-left text-sm">
-            <thead className="bg-zinc-950 text-xs uppercase text-white/62">
+            <thead className="bg-[linear-gradient(90deg,#111827_0%,#581c87_55%,#ff4d00_100%)] text-xs uppercase text-white/75">
               <tr>
                 <th className="sticky left-0 bg-zinc-950 p-4">Producto</th>
                 <th className="p-3">Estado</th>
@@ -108,7 +112,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
             </thead>
             <tbody>
               {filtered.map((product) => (
-                <tr key={product.id} className="border-t border-zinc-100 transition hover:bg-zinc-50">
+                <tr key={product.id} className="border-t border-zinc-100 transition hover:bg-orange-50/45">
                   <td className="sticky left-0 bg-white p-4">
                     <Link href={`/admin/productos/${product.id}/editar`} className="font-black hover:underline">
                       {safeText(product.name) || "Producto sin nombre"}

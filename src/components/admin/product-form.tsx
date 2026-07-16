@@ -69,7 +69,7 @@ export function ProductForm({
 function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <div>
-      <p className="text-[11px] font-black uppercase tracking-wide text-zinc-500">{eyebrow}</p>
+      <p className="text-[11px] font-black uppercase tracking-wide text-brand">{eyebrow}</p>
       <h2 className="mt-1 text-lg font-black tracking-tight text-zinc-950">{title}</h2>
     </div>
   );
@@ -85,7 +85,7 @@ function OptionCheck({
   defaultChecked?: boolean;
 }) {
   return (
-    <label className="flex min-h-12 items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 text-sm font-bold transition hover:bg-white">
+    <label className="flex min-h-12 items-center gap-3 rounded-xl border border-orange-100 bg-orange-50/40 px-3 text-sm font-bold transition hover:bg-white">
       <input name={name} type="checkbox" defaultChecked={defaultChecked} className="size-4 accent-black" />
       {label}
     </label>

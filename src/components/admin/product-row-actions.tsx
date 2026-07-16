@@ -33,6 +33,14 @@ export function ProductRowActions({ productId, status }: { productId: string; st
     <div className="grid gap-2">
       <div className="flex flex-wrap gap-2">
         <Button
+          href={`/admin/productos/${productId}/editar`}
+          variant="brand"
+          size="sm"
+          className="h-10 rounded-full px-3 shadow-sm"
+        >
+          Editar
+        </Button>
+        <Button
           type="button"
           disabled={pending}
           onClick={() => run(status === "active" ? "hidden" : "active")}

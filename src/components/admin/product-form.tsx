@@ -14,9 +14,9 @@ export function ProductForm({
   return (
     <ActionStateForm action={saveProduct} submitLabel="Guardar producto">
       {product?.id ? <input type="hidden" name="id" value={product.id} /> : null}
-      <section className="grid gap-4">
+      <section className="grid gap-3 rounded-2xl border border-orange-100 bg-orange-50/20 p-3 md:gap-4 md:p-4">
         <SectionTitle eyebrow="Informacion base" title="Datos principales" />
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-3 md:grid-cols-2 md:gap-4">
           <TextField label="Nombre" name="name" defaultValue={product?.name} required />
           <TextField label="Slug unico" name="slug" defaultValue={product?.slug} required />
           <TextField label="SKU" name="sku" defaultValue={product?.sku} required />
@@ -30,9 +30,9 @@ export function ProductForm({
         </div>
       </section>
 
-      <section className="grid gap-4">
+      <section className="grid gap-3 rounded-2xl border border-sky-100 bg-sky-50/30 p-3 md:gap-4 md:p-4">
         <SectionTitle eyebrow="Venta" title="Precio e inventario" />
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-3 md:grid-cols-2 md:gap-4">
           <TextField label="Precio" name="price" type="number" defaultValue={product?.price ?? 0} required />
           <TextField label="Precio anterior" name="previous_price" type="number" defaultValue={product?.previous_price} />
           <TextField label="Descuento %" name="discount_percent" type="number" defaultValue={product?.discount_percent} />
@@ -47,14 +47,14 @@ export function ProductForm({
         </div>
       </section>
 
-      <section className="grid gap-4">
+      <section className="grid gap-3 rounded-2xl border border-violet-100 bg-violet-50/25 p-3 md:gap-4 md:p-4">
         <SectionTitle eyebrow="Contenido" title="Descripcion y etiquetas" />
         <TextAreaField label="Descripcion corta" name="short_description" defaultValue={product?.short_description} />
         <TextAreaField label="Descripcion completa" name="description" defaultValue={product?.description} />
         <TextField label="Etiquetas separadas por coma" name="tags" defaultValue={product?.tags?.join(", ")} />
       </section>
 
-      <section className="grid gap-4">
+      <section className="grid gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/25 p-3 md:gap-4 md:p-4">
         <SectionTitle eyebrow="Visibilidad" title="Etiquetas comerciales" />
         <div className="grid gap-3 sm:grid-cols-3">
           <OptionCheck label="Destacado" name="is_featured" defaultChecked={product?.is_featured} />
@@ -70,7 +70,7 @@ function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <div>
       <p className="text-[11px] font-black uppercase tracking-wide text-brand">{eyebrow}</p>
-      <h2 className="mt-1 text-lg font-black tracking-tight text-zinc-950">{title}</h2>
+      <h2 className="mt-1 text-base font-black tracking-tight text-zinc-950 md:text-lg">{title}</h2>
     </div>
   );
 }

@@ -21,7 +21,7 @@ export function ActionStateForm({ action, children, submitLabel }: ActionStateFo
   const [state, formAction, pending] = useActionState(action, initialState);
 
   return (
-    <form action={formAction} className="grid gap-5">
+    <form action={formAction} className="grid gap-4 md:gap-5">
       {children}
       {state.message ? (
         <p
@@ -32,8 +32,8 @@ export function ActionStateForm({ action, children, submitLabel }: ActionStateFo
           {state.message}
         </p>
       ) : null}
-      <div className="sticky bottom-4 z-10 rounded-2xl border border-zinc-200/80 bg-white/90 p-2 shadow-[0_18px_45px_rgba(0,0,0,0.12)] backdrop-blur">
-        <Button type="submit" disabled={pending} className="h-12 w-full rounded-xl">
+      <div className="sticky bottom-3 z-10 rounded-2xl border border-zinc-200/80 bg-white/92 p-2 shadow-[0_18px_45px_rgba(0,0,0,0.12)] backdrop-blur md:bottom-4">
+        <Button type="submit" disabled={pending} className="h-11 w-full rounded-xl md:h-12">
         {pending ? "Guardando..." : submitLabel}
         </Button>
       </div>
@@ -61,7 +61,7 @@ export function TextField({
       type={type}
       required={required}
       defaultValue={defaultValue ?? ""}
-      className="rounded-xl border-zinc-200 bg-zinc-50/70 focus:bg-white"
+      className="h-11 rounded-xl border-zinc-200 bg-zinc-50/70 px-3 text-sm focus:bg-white md:h-12 md:px-4"
     />
   );
 }
@@ -76,6 +76,6 @@ export function TextAreaField({
   defaultValue?: string | null;
 }) {
   return (
-    <TextArea label={label} name={name} defaultValue={defaultValue ?? ""} rows={4} className="rounded-xl border-zinc-200 bg-zinc-50/70 focus:bg-white" />
+    <TextArea label={label} name={name} defaultValue={defaultValue ?? ""} rows={3} className="rounded-xl border-zinc-200 bg-zinc-50/70 px-3 text-sm focus:bg-white md:px-4" />
   );
 }

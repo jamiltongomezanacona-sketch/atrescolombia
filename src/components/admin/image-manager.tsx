@@ -129,22 +129,22 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
   }
 
   return (
-    <div className="grid gap-4 rounded-2xl bg-white/95 p-4 shadow-sm ring-1 ring-black/5 md:p-5">
+    <div className="grid gap-4 rounded-2xl bg-white/95 p-3 shadow-sm ring-1 ring-orange-100 md:p-5">
       <div>
-        <p className="text-xs font-black uppercase tracking-wide text-zinc-500">Galeria</p>
-        <h2 className="mt-1 text-xl font-black">Imagenes del producto</h2>
+        <p className="text-xs font-black uppercase tracking-wide text-brand">Galeria</p>
+        <h2 className="mt-1 text-lg font-black md:text-xl">Imagenes del producto</h2>
         <p className="mt-1 text-sm font-semibold text-zinc-500">
           1 a 8 imagenes. Maximo 8MB cada una; se guardan optimizadas en WebP.
         </p>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         <label className="grid gap-2 text-sm font-bold">
           Proporcion
           <select
             value={aspectRatio}
             onChange={(event) => setAspectRatio(event.target.value)}
-            className="h-11 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3"
+            className="h-11 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 md:h-12"
           >
             <option value="3:4">3:4 catalogo</option>
             <option value="1:1">1:1 miniatura</option>
@@ -156,7 +156,7 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
           <select
             value={rotation}
             onChange={(event) => setRotation(Number(event.target.value))}
-            className="h-11 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3"
+            className="h-11 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 md:h-12"
           >
             <option value={0}>0 grados</option>
             <option value={90}>90 grados</option>
@@ -178,7 +178,7 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
       </div>
 
       {previewUrls.length ? (
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
           {previewUrls.map((url) => (
             <div key={url} className="relative aspect-square overflow-hidden rounded-xl bg-zinc-100">
               <Image src={url} alt="Vista previa" fill unoptimized sizes="120px" className="object-cover" />
@@ -189,7 +189,7 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
 
       {message ? <p className="rounded-xl bg-zinc-100 p-3 text-sm font-bold">{message}</p> : null}
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-3 xl:grid-cols-2">
         {sortedItems.map((image, index) => (
           <article key={image.id} className="rounded-xl border border-zinc-200 bg-white p-2 shadow-sm">
             <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-zinc-100">

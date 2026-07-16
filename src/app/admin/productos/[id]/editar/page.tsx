@@ -24,14 +24,14 @@ export default async function EditProductPage({ params, searchParams }: EditProd
 
   return (
     <AdminShell>
-      <div className="grid gap-5">
-        <div className="relative overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#111827_0%,#3b0764_48%,#ff4d00_100%)] p-5 text-white shadow-sm md:p-6">
+      <div className="grid gap-4 md:gap-5">
+        <div className="relative overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#111827_0%,#3b0764_48%,#ff4d00_100%)] p-4 text-white shadow-sm md:p-6">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.2),transparent_30%)]" />
           <p className="relative text-xs font-black uppercase tracking-[0.18em] text-orange-200">Catalogo studio</p>
           <div className="relative mt-2 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-black tracking-tight md:text-4xl">Editar producto</h1>
-              <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-white/62">
+              <h1 className="text-2xl font-black tracking-tight md:text-4xl">Editar producto</h1>
+              <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-white/70">
                 Ajusta informacion comercial, estado, precio, inventario e imagenes del producto.
               </p>
             </div>
@@ -50,8 +50,8 @@ export default async function EditProductPage({ params, searchParams }: EditProd
             Producto guardado.
           </p>
         ) : null}
-        <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_420px] xl:items-start">
-          <div className="rounded-2xl bg-white/95 p-4 shadow-sm ring-1 ring-orange-100 md:p-5">
+        <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_420px] xl:items-start">
+          <div className="rounded-2xl bg-white/95 p-3 shadow-sm ring-1 ring-orange-100 md:p-5">
             <ProductForm product={product} categories={categories} />
           </div>
           <div className="xl:sticky xl:top-6">

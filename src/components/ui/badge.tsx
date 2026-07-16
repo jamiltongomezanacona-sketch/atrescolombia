@@ -2,6 +2,8 @@ import { cn } from "@/lib/cn";
 
 const tones = {
   black: "bg-black/84 text-white",
+  metal: "bg-[#0b1f3a] text-white",
+  steel: "bg-[#dbeafe] text-[#0b1f3a]",
   brand: "bg-brand/92 text-white",
   soft: "bg-stone-100/90 text-stone-700",
   amber: "bg-amber-100 text-amber-900",

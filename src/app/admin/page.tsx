@@ -19,17 +19,17 @@ export default async function AdminDashboardPage() {
   return (
     <AdminShell>
       <div className="grid gap-5">
-        <div className="relative overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#111827_0%,#581c87_48%,#ff4d00_100%)] p-5 text-white shadow-sm md:p-6">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_4%,rgba(255,255,255,0.2),transparent_32%),radial-gradient(circle_at_0%_100%,rgba(14,165,233,0.2),transparent_28%)]" />
+        <div className="relative overflow-hidden rounded-2xl bg-[#0b1f3a] p-5 text-white shadow-sm ring-1 ring-[#284a68] md:p-6">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[#6ea8d9]" />
           <div className="relative flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-200">ATRES Studio</p>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#9fd2ff]">ATRES Studio</p>
               <h1 className="mt-2 text-3xl font-black tracking-tight md:text-4xl">Dashboard creativo</h1>
               <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-white/62">
                 Control rapido del catalogo, productos publicados, inventario y campanas activas.
               </p>
             </div>
-            <Link href="/admin/productos/nuevo" className="rounded-full bg-white px-5 py-3 text-sm font-black text-black transition hover:bg-zinc-100 active:scale-[0.98]">
+            <Link href="/admin/productos/nuevo" className="rounded-full bg-[#dbeafe] px-5 py-3 text-sm font-black text-[#07111f] transition hover:bg-white active:scale-[0.98]">
               Crear producto
             </Link>
           </div>
@@ -44,10 +44,10 @@ export default async function AdminDashboardPage() {
           <StatCard label="Banners" value={banners.length} />
         </div>
         <section className="grid gap-4 lg:grid-cols-[1fr_360px]">
-          <div className="rounded-2xl bg-white/92 p-4 shadow-sm ring-1 ring-orange-100 md:p-5">
+          <div className="rounded-2xl bg-white/95 p-4 shadow-sm ring-1 ring-[#d8e7f5] md:p-5">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs font-black uppercase tracking-wide text-brand">Edicion rapida</p>
+                <p className="text-xs font-black uppercase tracking-wide text-[#2f6f9f]">Edicion rapida</p>
                 <h2 className="text-xl font-black">Productos recientes</h2>
               </div>
               <Link href="/admin/productos" className="rounded-full bg-zinc-100 px-3 py-2 text-xs font-black text-zinc-700 hover:bg-black hover:text-white">
@@ -59,7 +59,7 @@ export default async function AdminDashboardPage() {
                 <Link
                   key={product.id}
                   href={`/admin/productos/${product.id}/editar`}
-                  className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-xl border border-orange-100 bg-orange-50/40 px-3 py-3 text-sm transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
+                  className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-xl border border-[#d8e7f5] bg-[#eef6ff]/65 px-3 py-3 text-sm transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
                 >
                   <span>
                     <span className="block font-black">{product.name}</span>
@@ -81,7 +81,7 @@ export default async function AdminDashboardPage() {
             ].map(([label, href]) => (
               <Link key={href} href={href} className="rounded-2xl bg-white/92 p-4 text-sm font-black shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-md">
                 <span className="block">{label}</span>
-                <span className="mt-1 block text-xs font-semibold text-brand">Gestionar modulo</span>
+                <span className="mt-1 block text-xs font-semibold text-[#2f6f9f]">Gestionar modulo</span>
               </Link>
             ))}
           </div>

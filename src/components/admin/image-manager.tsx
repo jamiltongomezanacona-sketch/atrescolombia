@@ -129,9 +129,9 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
   }
 
   return (
-    <div className="grid gap-4 rounded-2xl bg-white/95 p-3 shadow-sm ring-1 ring-orange-100 md:p-5">
+    <div className="grid gap-4 rounded-2xl bg-white/95 p-3 shadow-sm ring-1 ring-[#d8e7f5] md:p-5">
       <div>
-        <p className="text-xs font-black uppercase tracking-wide text-brand">Galeria</p>
+        <p className="text-xs font-black uppercase tracking-wide text-[#2f6f9f]">Galeria</p>
         <h2 className="mt-1 text-lg font-black md:text-xl">Imagenes del producto</h2>
         <p className="mt-1 text-sm font-semibold text-zinc-500">
           1 a 8 imagenes. Maximo 8MB cada una; se guardan optimizadas en WebP.
@@ -196,7 +196,7 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
               <Image src={image.public_url} alt={image.alt || "Producto"} fill sizes="180px" className="object-cover" />
             </div>
             <div className="mt-2 grid gap-2">
-              {image.is_primary ? <p className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-black text-emerald-700">Principal</p> : null}
+              {image.is_primary ? <p className="rounded-full bg-[#eef6ff] px-2 py-1 text-xs font-black text-[#0b1f3a]">Principal</p> : null}
               <div className="grid grid-cols-2 gap-1">
                 <button onClick={() => moveImage(image, -1)} disabled={index === 0} className="min-h-10 rounded-full bg-zinc-100 px-2 py-1 text-xs font-black disabled:opacity-40">
                   Subir
@@ -205,7 +205,7 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
                   Bajar
                 </button>
               </div>
-              <button onClick={() => setPrimary(image)} className="min-h-10 rounded-full bg-black px-2 py-1 text-xs font-black text-white">
+              <button onClick={() => setPrimary(image)} className="min-h-10 rounded-full bg-[#0b1f3a] px-2 py-1 text-xs font-black text-white">
                 Principal
               </button>
               <button onClick={() => deleteImage(image)} className="min-h-10 rounded-full bg-red-50 px-2 py-1 text-xs font-black text-red-700">

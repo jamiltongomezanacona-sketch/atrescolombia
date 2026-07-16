@@ -34,7 +34,7 @@ export function ProductRowActions({ productId, status }: { productId: string; st
       <div className="flex flex-wrap gap-2">
         <Button
           href={`/admin/productos/${productId}/editar`}
-          variant="brand"
+          variant="metal"
           size="sm"
           className="h-10 rounded-full px-3 shadow-sm"
         >

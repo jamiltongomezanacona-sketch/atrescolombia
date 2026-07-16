@@ -3,6 +3,7 @@ import { cn } from "@/lib/cn";
 
 const variants = {
   primary: "bg-black text-white hover:bg-stone-800",
+  metal: "bg-[#0b1f3a] text-white hover:bg-[#123052]",
   brand: "bg-brand text-white hover:bg-brand-hover",
   secondary: "bg-white text-black ring-1 ring-black/10 hover:bg-stone-100",
   ghost: "bg-transparent text-inherit hover:bg-black/5",

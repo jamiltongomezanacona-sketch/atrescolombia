@@ -7,9 +7,9 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const STATUS_TONES = {
-  active: "emerald",
+  active: "metal",
   hidden: "soft",
-  archived: "amber",
+  archived: "steel",
 } as const;
 
 export function AdminStatusBadge({ status }: { status: string }) {

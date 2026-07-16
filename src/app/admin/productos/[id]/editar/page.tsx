@@ -25,9 +25,9 @@ export default async function EditProductPage({ params, searchParams }: EditProd
   return (
     <AdminShell>
       <div className="grid gap-4 md:gap-5">
-        <div className="relative overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#111827_0%,#3b0764_48%,#ff4d00_100%)] p-4 text-white shadow-sm md:p-6">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.2),transparent_30%)]" />
-          <p className="relative text-xs font-black uppercase tracking-[0.18em] text-orange-200">Catalogo studio</p>
+        <div className="relative overflow-hidden rounded-2xl bg-[#0b1f3a] p-4 text-white shadow-sm ring-1 ring-[#284a68] md:p-6">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[#6ea8d9]" />
+          <p className="relative text-xs font-black uppercase tracking-[0.18em] text-[#9fd2ff]">Catalogo studio</p>
           <div className="relative mt-2 flex flex-wrap items-end justify-between gap-4">
             <div>
               <h1 className="text-2xl font-black tracking-tight md:text-4xl">Editar producto</h1>
@@ -46,12 +46,12 @@ export default async function EditProductPage({ params, searchParams }: EditProd
           </div>
         </div>
         {query?.guardado ? (
-          <p className="rounded-xl bg-emerald-50 p-3 text-sm font-bold text-emerald-700 ring-1 ring-emerald-100">
+          <p className="rounded-xl bg-[#eef6ff] p-3 text-sm font-bold text-[#0b1f3a] ring-1 ring-[#d8e7f5]">
             Producto guardado.
           </p>
         ) : null}
         <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_420px] xl:items-start">
-          <div className="rounded-2xl bg-white/95 p-3 shadow-sm ring-1 ring-orange-100 md:p-5">
+          <div className="rounded-2xl bg-white/95 p-3 shadow-sm ring-1 ring-[#d8e7f5] md:p-5">
             <ProductForm product={product} categories={categories} />
           </div>
           <div className="xl:sticky xl:top-6">

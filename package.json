@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "migrate:curated:supabase": "node scripts/migrate-curated-assets-to-supabase.mjs"
+    "migrate:curated:supabase": "node scripts/migrate-curated-assets-to-supabase.mjs",
+    "activate:banners": "node scripts/activate-demo-banners.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",

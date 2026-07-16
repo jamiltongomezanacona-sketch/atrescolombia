@@ -23,16 +23,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     product.previousPrice && product.previousPrice > product.price ? product.previousPrice : null;
   const sizes = meaningfulSizes(product.sizes).slice(0, 4);
   const inStock = product.stock > 0;
-  const visualTag =
-    product.isPromo || discount
-      ? "Oferta"
-      : product.isNew
-        ? "Nuevo"
-        : product.isTrending
-          ? "Tendencia"
-          : product.stock > 0 && product.stock <= 3
-            ? "Ultimas unidades"
-            : product.badge;
+  const visualTag = getVisualTag(product, discount);
+  const metaCopy = getMetaCopy(product);
+  const sellingLine = getSellingLine(product, inStock);
 
   return (
     <article className="group flex h-full min-h-[292px] flex-col overflow-hidden rounded-lg bg-white shadow-[0_10px_28px_rgba(18,18,18,0.045)] ring-1 ring-black/[0.04] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft sm:min-h-[342px]">
@@ -95,7 +88,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </span>
           <span>{product.rating.toFixed(1)}</span>
           <span className="text-stone-300">|</span>
-          <span>{product.stock > 0 ? "Disponible" : "Sin stock"}</span>
+          <span>{metaCopy}</span>
         </div>
         <div className="mt-auto flex min-h-11 items-end justify-between gap-2 pt-2 sm:min-h-12">
           <ProductPrice price={product.price} previousPrice={previousPrice} size="md" />
@@ -107,9 +100,53 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </Link>
         </div>
         <p className={`mt-1 hidden text-[11px] font-bold sm:block ${inStock ? "text-emerald-700" : "text-stone-400"}`}>
-          {inStock ? "Compra directa por WhatsApp" : "Consulta disponibilidad"}
+          {sellingLine}
         </p>
       </div>
     </article>
   );
+}
+
+function getVisualTag(product: Product, discount: number | null) {
+  if (discount && discount >= 25) return "Mega sale";
+  if (product.isPromo || discount) return "Precio wow";
+  if (product.isNew && product.isTrending) return "Nuevo trend";
+  if (product.isNew) return "New in";
+  if (product.isTrending) return "Top look";
+  if (product.stock > 0 && product.stock <= 3) return "Ultimas piezas";
+  if (product.badge === "Oferta") return "Sale";
+  if (product.badge === "Nuevo") return "New in";
+  if (product.badge === "Tendencia" || product.badge === "Top") return "Atres pick";
+  return product.badge;
+}
+
+function getMetaCopy(product: Product) {
+  if (product.isTrending) return "favorito ATRES";
+  if (product.isNew) return "recien llegado";
+  if (product.isPromo) return "precio especial";
+  if (product.stock > 0 && product.stock <= 3) return "pocas piezas";
+  return "en vitrina";
+}
+
+function getSellingLine(product: Product, inStock: boolean) {
+  if (!inStock) return "Pide disponibilidad por WhatsApp";
+
+  const key = `${product.categorySlug} ${product.categoryName} ${product.collection}`.toLowerCase();
+
+  if (product.isPromo) return "Precio especial por tiempo limitado";
+  if (product.isNew) return "Nuevo drop listo para estrenar";
+  if (key.includes("hogar") || key.includes("textil") || key.includes("sabana") || key.includes("cobija")) {
+    return "Texturas suaves para renovar casa";
+  }
+  if (key.includes("infantil") || key.includes("nino") || key.includes("nina") || key.includes("bebe")) {
+    return "Looks comodos para todos los dias";
+  }
+  if (key.includes("mujer") || key.includes("femenin")) {
+    return "Una pieza facil para elevar el look";
+  }
+  if (key.includes("hombre") || key.includes("masculin")) {
+    return "Basico versatil con estilo limpio";
+  }
+
+  return "Seleccion ATRES lista para comprar";
 }

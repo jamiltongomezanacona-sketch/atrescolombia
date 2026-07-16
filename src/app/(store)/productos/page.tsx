@@ -42,12 +42,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const activeFilters = countActiveFilters(filters);
 
   const orderLinks = [
-    { label: "Relevancia", value: "relevancia" },
-    { label: "Trends", value: "tendencias" },
-    { label: "Nuevos", value: "nuevos" },
-    { label: "Menor precio", value: "precio-menor" },
-    { label: "Mayor precio", value: "precio-mayor" },
-    { label: "Descuento", value: "descuento" },
+    { label: "Para ti", value: "relevancia" },
+    { label: "Trend edit", value: "tendencias" },
+    { label: "New in", value: "nuevos" },
+    { label: "$ menor", value: "precio-menor" },
+    { label: "$ mayor", value: "precio-mayor" },
+    { label: "Sale", value: "descuento" },
   ];
   const categoryTabs = [
     {
@@ -68,7 +68,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         normalizeNavSlug(filters.categoria ?? "") === normalizeNavSlug(category.slug),
     })),
     {
-      label: "Ofertas",
+      label: "Sale",
       href: buildCatalogQuery({
         ...filters,
         categoria: undefined,
@@ -84,10 +84,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <section className="catalog-container pt-1 pb-[calc(8.75rem+env(safe-area-inset-bottom))] md:py-3">
         <div className="mb-1.5">
           <p className="text-[10px] font-black uppercase tracking-[0.18em] text-brand lg:text-xs">
-            Catalogo ATRES
+            ATRES edit
           </p>
           <h1 className="mt-0.5 text-xl font-black tracking-tight text-ink sm:text-3xl">
-            Todos los productos
+            Comprar por estilo
           </h1>
         </div>
 
@@ -102,7 +102,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               name="q"
               defaultValue={filters.q ?? ""}
               aria-label="Buscar productos"
-              placeholder="Buscar productos ATRES..."
+              placeholder="Buscar jeans, sets, hogar..."
               className="min-w-0 flex-1 bg-transparent px-4 text-sm font-semibold placeholder:text-stone-400"
             />
             <button

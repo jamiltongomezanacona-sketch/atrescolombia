@@ -38,7 +38,7 @@ export function ProductRowActions({ productId, status }: { productId: string; st
           onClick={() => run(status === "active" ? "hidden" : "active")}
           variant="secondary"
           size="sm"
-          className="h-11 rounded-none px-2.5"
+          className="h-10 rounded-full px-3"
         >
           {status === "active" ? "Ocultar" : "Activar"}
         </Button>
@@ -48,7 +48,7 @@ export function ProductRowActions({ productId, status }: { productId: string; st
           onClick={() => run("duplicate")}
           variant="secondary"
           size="sm"
-          className="h-11 rounded-none px-2.5"
+          className="h-10 rounded-full px-3"
         >
           Duplicar
         </Button>
@@ -58,7 +58,7 @@ export function ProductRowActions({ productId, status }: { productId: string; st
           onClick={() => run("archived")}
           variant="ghost"
           size="sm"
-          className="h-11 rounded-none bg-red-50 px-2.5 text-red-700 hover:bg-red-100"
+          className="h-10 rounded-full bg-red-50 px-3 text-red-700 hover:bg-red-100"
         >
           Archivar
         </Button>

@@ -285,7 +285,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
 
   return (
     <div className="grid gap-5 pb-28 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
-      <section ref={imagesRef} className="grid gap-4 bg-white p-4 shadow-sm lg:sticky lg:top-24">
+      <section ref={imagesRef} className="grid gap-4 rounded-2xl bg-white/95 p-4 shadow-sm ring-1 ring-black/5 lg:sticky lg:top-24">
         <div>
           <p className="text-xs font-black uppercase text-zinc-500">Paso 1</p>
           <h2 className="text-2xl font-black">Imagenes del producto</h2>
@@ -301,8 +301,8 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
           }}
           onDragLeave={() => setDragActive(false)}
           onDrop={handleDrop}
-          className={`grid min-h-40 place-items-center border-2 border-dashed p-4 text-center transition ${
-            dragActive ? "border-black bg-zinc-100" : "border-zinc-300 bg-zinc-50"
+          className={`grid min-h-40 place-items-center rounded-2xl border-2 border-dashed p-4 text-center transition ${
+            dragActive ? "border-black bg-zinc-100" : "border-zinc-200 bg-zinc-50/80"
           }`}
         >
           <div>
@@ -312,7 +312,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={saving || images.length >= MAX_IMAGES}
-              className="mt-4 h-12 bg-black px-5 text-sm font-black text-white disabled:opacity-50"
+              className="mt-4 h-12 rounded-full bg-black px-5 text-sm font-black text-white disabled:opacity-50"
             >
               Seleccionar imagenes
             </button>
@@ -330,7 +330,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         <button
           type="button"
           disabled
-          className="h-11 border border-dashed border-zinc-300 text-sm font-black text-zinc-400"
+          className="h-11 rounded-full border border-dashed border-zinc-300 text-sm font-black text-zinc-400"
         >
           Optimizar imagenes con IA
         </button>
@@ -338,28 +338,28 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         {images.length ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
             {orderImages(images).map((image, index) => (
-              <article key={image.id} className="border border-zinc-200 bg-white p-2">
-                <div className="relative aspect-[3/4] overflow-hidden bg-zinc-100">
+              <article key={image.id} className="rounded-xl border border-zinc-200 bg-white p-2 shadow-sm">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-zinc-100">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={image.previewUrl} alt={image.file.name} className="h-full w-full object-cover" />
                   {image.isPrimary ? (
-                    <span className="absolute left-2 top-2 bg-black px-2 py-1 text-[10px] font-black text-white">
+                    <span className="absolute left-2 top-2 rounded-full bg-black px-2 py-1 text-[10px] font-black text-white">
                       Principal
                     </span>
                   ) : null}
                 </div>
                 <div className="mt-2 grid gap-2">
-                  <button type="button" onClick={() => setPrimary(image.id)} className="h-11 bg-black text-xs font-black text-white">
+                  <button type="button" onClick={() => setPrimary(image.id)} className="h-10 rounded-full bg-black text-xs font-black text-white">
                     Usar como principal
                   </button>
                   <div className="grid grid-cols-3 gap-1">
-                    <button type="button" onClick={() => moveImage(image.id, -1)} disabled={index === 0} className="h-11 bg-zinc-100 text-xs font-black disabled:opacity-40">
+                    <button type="button" onClick={() => moveImage(image.id, -1)} disabled={index === 0} className="h-10 rounded-full bg-zinc-100 text-xs font-black disabled:opacity-40">
                       Subir
                     </button>
-                    <button type="button" onClick={() => moveImage(image.id, 1)} disabled={index === images.length - 1} className="h-11 bg-zinc-100 text-xs font-black disabled:opacity-40">
+                    <button type="button" onClick={() => moveImage(image.id, 1)} disabled={index === images.length - 1} className="h-10 rounded-full bg-zinc-100 text-xs font-black disabled:opacity-40">
                       Bajar
                     </button>
-                    <button type="button" onClick={() => removeImage(image.id)} className="h-11 bg-red-50 text-xs font-black text-red-700">
+                    <button type="button" onClick={() => removeImage(image.id)} className="h-10 rounded-full bg-red-50 text-xs font-black text-red-700">
                       Quitar
                     </button>
                   </div>
@@ -370,7 +370,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         ) : null}
       </section>
 
-      <section className="grid gap-4 bg-white p-4 shadow-sm">
+      <section className="grid gap-4 rounded-2xl bg-white/95 p-4 shadow-sm ring-1 ring-black/5">
         <div>
           <p className="text-xs font-black uppercase text-zinc-500">Carga rapida</p>
           <h1 className="text-3xl font-black">Crear producto</h1>
@@ -422,8 +422,8 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
           </Field>
         </div>
 
-        <details open={showAdvanced} onToggle={(event) => setShowAdvanced(event.currentTarget.open)} className="border border-zinc-200">
-          <summary className="cursor-pointer bg-zinc-50 px-4 py-3 text-sm font-black">Opciones avanzadas</summary>
+        <details open={showAdvanced} onToggle={(event) => setShowAdvanced(event.currentTarget.open)} className="rounded-2xl border border-zinc-200">
+          <summary className="cursor-pointer rounded-2xl bg-zinc-50 px-4 py-3 text-sm font-black">Opciones avanzadas</summary>
           <div className="grid gap-4 p-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Slug manual">
@@ -469,10 +469,10 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         ) : null}
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <button type="button" disabled={saving} onClick={() => save("status")} className="h-12 bg-black px-4 text-sm font-black text-white disabled:opacity-50">
+          <button type="button" disabled={saving} onClick={() => save("status")} className="h-12 rounded-full bg-black px-4 text-sm font-black text-white disabled:opacity-50">
             {saving ? "Guardando..." : "Guardar producto"}
           </button>
-          <button type="button" disabled={saving} onClick={() => save("another")} className="h-12 border border-black px-4 text-sm font-black text-black disabled:opacity-50">
+          <button type="button" disabled={saving} onClick={() => save("another")} className="h-12 rounded-full border border-black px-4 text-sm font-black text-black disabled:opacity-50">
             Guardar y crear otro
           </button>
         </div>
@@ -480,10 +480,10 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
 
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-200 bg-white/95 p-3 shadow-[0_-14px_40px_rgba(0,0,0,0.08)] backdrop-blur">
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3">
-          <button type="button" disabled={saving} onClick={() => save("draft")} className="h-12 border border-black text-sm font-black text-black disabled:opacity-50">
+          <button type="button" disabled={saving} onClick={() => save("draft")} className="h-12 rounded-full border border-black text-sm font-black text-black disabled:opacity-50">
             Guardar borrador
           </button>
-          <button type="button" disabled={saving} onClick={() => save("publish")} className="h-12 bg-black text-sm font-black text-white disabled:opacity-50">
+          <button type="button" disabled={saving} onClick={() => save("publish")} className="h-12 rounded-full bg-black text-sm font-black text-white disabled:opacity-50">
             Publicar
           </button>
         </div>
@@ -514,8 +514,8 @@ function CheckField({ label, checked, onChange }: { label: string; checked: bool
   );
 }
 
-const inputClass = "h-12 w-full border border-zinc-300 px-3 text-base focus:border-black";
-const textareaClass = "w-full border border-zinc-300 px-3 py-3 text-base focus:border-black";
+const inputClass = "h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 text-base focus:border-black focus:bg-white";
+const textareaClass = "w-full rounded-xl border border-zinc-200 bg-zinc-50/70 px-3 py-3 text-base focus:border-black focus:bg-white";
 
 function ensurePrimary(images: LocalImage[]) {
   if (!images.length || images.some((image) => image.isPrimary)) return images;

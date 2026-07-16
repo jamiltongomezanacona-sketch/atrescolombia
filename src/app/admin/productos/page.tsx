@@ -29,17 +29,20 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
 
   return (
     <AdminShell>
-      <div className="grid gap-4">
-        <div className="flex flex-wrap items-end justify-between gap-3">
+      <div className="grid gap-5">
+        <div className="flex flex-wrap items-end justify-between gap-3 rounded-2xl bg-white/92 p-4 shadow-sm ring-1 ring-black/5 md:p-5">
           <div>
-            <p className="text-xs font-black uppercase text-zinc-500">Catalogo</p>
-            <h1 className="text-3xl font-black">Productos</h1>
+            <p className="text-xs font-black uppercase tracking-wide text-zinc-500">Catalogo</p>
+            <h1 className="mt-1 text-3xl font-black tracking-tight">Productos</h1>
+            <p className="mt-1 text-sm font-semibold text-zinc-500">
+              {filtered.length} visibles de {products.length} productos. Edita, duplica o publica sin salir del panel.
+            </p>
           </div>
-          <Button href="/admin/productos/nuevo" className="rounded-none">
+          <Button href="/admin/productos/nuevo" className="rounded-full px-5">
             Nuevo producto
           </Button>
         </div>
-        <form className="grid gap-3 bg-white p-4 shadow-sm md:grid-cols-[1fr_180px_auto]">
+        <form className="grid gap-3 rounded-2xl bg-white/92 p-3 shadow-sm ring-1 ring-black/5 md:grid-cols-[1fr_180px_auto] md:p-4">
           <Input name="q" defaultValue={params?.q ?? ""} placeholder="Buscar producto o SKU" />
           <AdminSelect name="estado" defaultValue={estado} aria-label="Estado">
             <option value="">Todos</option>
@@ -47,16 +50,16 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
             <option value="hidden">Ocultos</option>
             <option value="archived">Archivados</option>
           </AdminSelect>
-          <Button type="submit" className="rounded-none">
+          <Button type="submit" className="rounded-full">
             Filtrar
           </Button>
         </form>
 
         <div className="grid gap-3 lg:hidden">
           {filtered.map((product) => (
-            <article key={product.id} className="bg-white p-4 shadow-sm">
+            <article key={product.id} className="rounded-2xl bg-white/92 p-4 shadow-sm ring-1 ring-black/5">
               <div className="flex flex-wrap items-start justify-between gap-2">
-                <Link href={`/admin/productos/${product.id}/editar`} className="font-black hover:underline">
+                <Link href={`/admin/productos/${product.id}/editar`} className="text-base font-black hover:underline">
                   {safeText(product.name) || "Producto sin nombre"}
                 </Link>
                 <AdminStatusBadge status={safeText(product.status) || "hidden"} />
@@ -86,14 +89,15 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
               </div>
             </article>
           ))}
-          {!filtered.length ? <p className="bg-white p-6 text-sm font-semibold text-zinc-500">No hay productos para mostrar.</p> : null}
+          {!filtered.length ? <p className="rounded-2xl bg-white p-6 text-sm font-semibold text-zinc-500 shadow-sm">No hay productos para mostrar.</p> : null}
         </div>
 
-        <div className="hidden overflow-x-auto bg-white shadow-sm lg:block">
+        <div className="hidden overflow-hidden rounded-2xl bg-white/95 shadow-sm ring-1 ring-black/5 lg:block">
+          <div className="overflow-x-auto">
           <table className="w-full min-w-[720px] text-left text-sm">
-            <thead className="bg-zinc-50 text-xs uppercase text-zinc-500">
+            <thead className="bg-zinc-950 text-xs uppercase text-white/62">
               <tr>
-                <th className="sticky left-0 bg-zinc-50 p-3">Producto</th>
+                <th className="sticky left-0 bg-zinc-950 p-4">Producto</th>
                 <th className="p-3">Estado</th>
                 <th className="p-3">Categoria</th>
                 <th className="p-3">Precio</th>
@@ -104,8 +108,8 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
             </thead>
             <tbody>
               {filtered.map((product) => (
-                <tr key={product.id} className="border-t border-zinc-100">
-                  <td className="sticky left-0 bg-white p-3">
+                <tr key={product.id} className="border-t border-zinc-100 transition hover:bg-zinc-50">
+                  <td className="sticky left-0 bg-white p-4">
                     <Link href={`/admin/productos/${product.id}/editar`} className="font-black hover:underline">
                       {safeText(product.name) || "Producto sin nombre"}
                     </Link>
@@ -130,6 +134,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
               ))}
             </tbody>
           </table>
+          </div>
           {!filtered.length ? <p className="p-6 text-sm font-semibold text-zinc-500">No hay productos para mostrar.</p> : null}
         </div>
       </div>

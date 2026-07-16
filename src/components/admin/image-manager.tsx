@@ -129,9 +129,10 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
   }
 
   return (
-    <div className="grid gap-4 bg-white p-4 shadow-sm">
+    <div className="grid gap-4 rounded-2xl bg-white/95 p-4 shadow-sm ring-1 ring-black/5 md:p-5">
       <div>
-        <h2 className="text-xl font-black">Imagenes del producto</h2>
+        <p className="text-xs font-black uppercase tracking-wide text-zinc-500">Galeria</p>
+        <h2 className="mt-1 text-xl font-black">Imagenes del producto</h2>
         <p className="mt-1 text-sm font-semibold text-zinc-500">
           1 a 8 imagenes. Maximo 8MB cada una; se guardan optimizadas en WebP.
         </p>
@@ -143,7 +144,7 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
           <select
             value={aspectRatio}
             onChange={(event) => setAspectRatio(event.target.value)}
-            className="h-10 border border-zinc-300 px-3"
+            className="h-11 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3"
           >
             <option value="3:4">3:4 catalogo</option>
             <option value="1:1">1:1 miniatura</option>
@@ -155,7 +156,7 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
           <select
             value={rotation}
             onChange={(event) => setRotation(Number(event.target.value))}
-            className="h-10 border border-zinc-300 px-3"
+            className="h-11 rounded-xl border border-zinc-200 bg-zinc-50/70 px-3"
           >
             <option value={0}>0 grados</option>
             <option value={90}>90 grados</option>
@@ -171,7 +172,7 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
             multiple
             disabled={!canUploadMore || uploading}
             onChange={onFilesSelected}
-            className="text-sm"
+            className="text-sm file:mr-3 file:rounded-full file:border-0 file:bg-black file:px-4 file:py-2 file:text-sm file:font-black file:text-white"
           />
         </label>
       </div>
@@ -179,35 +180,35 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
       {previewUrls.length ? (
         <div className="grid grid-cols-4 gap-2">
           {previewUrls.map((url) => (
-            <div key={url} className="relative aspect-square overflow-hidden bg-zinc-100">
+            <div key={url} className="relative aspect-square overflow-hidden rounded-xl bg-zinc-100">
               <Image src={url} alt="Vista previa" fill unoptimized sizes="120px" className="object-cover" />
             </div>
           ))}
         </div>
       ) : null}
 
-      {message ? <p className="bg-zinc-100 p-3 text-sm font-bold">{message}</p> : null}
+      {message ? <p className="rounded-xl bg-zinc-100 p-3 text-sm font-bold">{message}</p> : null}
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {sortedItems.map((image, index) => (
-          <article key={image.id} className="border border-zinc-200 bg-white p-2">
-            <div className="relative aspect-[3/4] bg-zinc-100">
+          <article key={image.id} className="rounded-xl border border-zinc-200 bg-white p-2 shadow-sm">
+            <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-zinc-100">
               <Image src={image.public_url} alt={image.alt || "Producto"} fill sizes="180px" className="object-cover" />
             </div>
             <div className="mt-2 grid gap-2">
-              {image.is_primary ? <p className="bg-emerald-50 px-2 py-1 text-xs font-black text-emerald-700">Principal</p> : null}
+              {image.is_primary ? <p className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-black text-emerald-700">Principal</p> : null}
               <div className="grid grid-cols-2 gap-1">
-                <button onClick={() => moveImage(image, -1)} disabled={index === 0} className="min-h-11 bg-zinc-100 px-2 py-1 text-xs font-black disabled:opacity-40">
+                <button onClick={() => moveImage(image, -1)} disabled={index === 0} className="min-h-10 rounded-full bg-zinc-100 px-2 py-1 text-xs font-black disabled:opacity-40">
                   Subir
                 </button>
-                <button onClick={() => moveImage(image, 1)} disabled={index === sortedItems.length - 1} className="min-h-11 bg-zinc-100 px-2 py-1 text-xs font-black disabled:opacity-40">
+                <button onClick={() => moveImage(image, 1)} disabled={index === sortedItems.length - 1} className="min-h-10 rounded-full bg-zinc-100 px-2 py-1 text-xs font-black disabled:opacity-40">
                   Bajar
                 </button>
               </div>
-              <button onClick={() => setPrimary(image)} className="min-h-11 bg-black px-2 py-1 text-xs font-black text-white">
+              <button onClick={() => setPrimary(image)} className="min-h-10 rounded-full bg-black px-2 py-1 text-xs font-black text-white">
                 Principal
               </button>
-              <button onClick={() => deleteImage(image)} className="min-h-11 bg-red-50 px-2 py-1 text-xs font-black text-red-700">
+              <button onClick={() => deleteImage(image)} className="min-h-10 rounded-full bg-red-50 px-2 py-1 text-xs font-black text-red-700">
                 Eliminar
               </button>
             </div>

@@ -89,8 +89,16 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
           </p>
         ) : null}
-        <div className="mt-auto flex min-h-11 items-end justify-between gap-2 pt-3 sm:min-h-12">
-          <ProductPrice price={product.price} previousPrice={previousPrice} />
+        <div className="mt-2 flex items-center gap-1 text-[11px] font-bold text-stone-500">
+          <span className="text-amber-500" aria-hidden="true">
+            ★
+          </span>
+          <span>{product.rating.toFixed(1)}</span>
+          <span className="text-stone-300">|</span>
+          <span>{product.stock > 0 ? "Disponible" : "Sin stock"}</span>
+        </div>
+        <div className="mt-auto flex min-h-11 items-end justify-between gap-2 pt-2 sm:min-h-12">
+          <ProductPrice price={product.price} previousPrice={previousPrice} size="md" />
           <Link
             href={`/productos/${product.slug}`}
             className="hidden shrink-0 rounded-full bg-stone-100/80 px-2.5 py-1.5 text-[10px] font-black uppercase text-stone-600 transition hover:bg-black hover:text-white sm:inline-flex"
@@ -99,7 +107,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </Link>
         </div>
         <p className={`mt-1 hidden text-[11px] font-bold sm:block ${inStock ? "text-emerald-700" : "text-stone-400"}`}>
-          {inStock ? "Disponible" : "Sin stock"}
+          {inStock ? "Compra directa por WhatsApp" : "Consulta disponibilidad"}
         </p>
       </div>
     </article>

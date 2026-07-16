@@ -22,6 +22,10 @@ type SaveMode = "status" | "draft" | "publish" | "another";
 
 const MAX_IMAGES = 10;
 const MAX_IMAGE_SIZE = 8 * 1024 * 1024;
+const MAX_UPLOAD_IMAGE_SIZE = 900 * 1024;
+const MAX_IMAGE_WIDTH = 1200;
+const IMAGE_RATIO = 3 / 4;
+const IMAGE_QUALITY_STEPS = [0.82, 0.76, 0.68, 0.6];
 
 const initialAdvanced = {
   slug: "",
@@ -199,6 +203,9 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
       for (const [index, image] of orderedImages.entries()) {
         setProgress(`Subiendo imagen ${index + 1} de ${orderedImages.length}...`);
         const webp = await normalizeImage(image.file);
+        if (webp.size > MAX_UPLOAD_IMAGE_SIZE) {
+          throw new Error("La imagen comprimida sigue siendo muy pesada. Usa una foto mas liviana o recortala antes de subirla.");
+        }
         const imageFormData = new FormData();
         imageFormData.set("productId", plannedProductId);
         imageFormData.set("fileName", image.file.name);
@@ -283,7 +290,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
           <p className="text-xs font-black uppercase text-zinc-500">Paso 1</p>
           <h2 className="text-2xl font-black">Imagenes del producto</h2>
           <p className="mt-1 text-sm font-semibold text-zinc-500">
-            Sube de 1 a 10 imagenes. Se comprimen y convierten a WebP antes de subir.
+            Sube de 1 a 10 imagenes. Maximo 8MB cada una; se guardan optimizadas en WebP.
           </p>
         </div>
 
@@ -544,31 +551,41 @@ function slugify(value: string) {
 
 async function normalizeImage(file: File) {
   const bitmap = await createImageBitmap(file);
-  const ratio = 3 / 4;
   const sourceRatio = bitmap.width / bitmap.height;
   let sx = 0;
   let sy = 0;
   let sw = bitmap.width;
   let sh = bitmap.height;
 
-  if (sourceRatio > ratio) {
-    sw = bitmap.height * ratio;
+  if (sourceRatio > IMAGE_RATIO) {
+    sw = bitmap.height * IMAGE_RATIO;
     sx = (bitmap.width - sw) / 2;
   } else {
-    sh = bitmap.width / ratio;
+    sh = bitmap.width / IMAGE_RATIO;
     sy = (bitmap.height - sh) / 2;
   }
 
-  const width = Math.min(1200, sw);
-  const height = Math.round(width / ratio);
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("No se pudo preparar la imagen.");
+  for (const width of [Math.min(MAX_IMAGE_WIDTH, sw), 1080, 960, 840]) {
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(width);
+    canvas.height = Math.round(width / IMAGE_RATIO);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("No se pudo preparar la imagen.");
 
-  ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, width, height);
+    ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
 
+    for (const quality of IMAGE_QUALITY_STEPS) {
+      const blob = await canvasToWebp(canvas, quality);
+      if (blob.size <= MAX_UPLOAD_IMAGE_SIZE || width === 840) {
+        return blob;
+      }
+    }
+  }
+
+  throw new Error("No se pudo optimizar la imagen.");
+}
+
+function canvasToWebp(canvas: HTMLCanvasElement, quality: number) {
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
       (blob) => {
@@ -576,7 +593,7 @@ async function normalizeImage(file: File) {
         else reject(new Error("No se pudo convertir la imagen."));
       },
       "image/webp",
-      0.84,
+      quality,
     );
   });
 }

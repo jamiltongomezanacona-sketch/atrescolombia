@@ -11,7 +11,9 @@ type ImageManagerProps = {
 };
 
 const MAX_IMAGES = 8;
-const MAX_SIZE = 5 * 1024 * 1024;
+const MAX_SIZE = 8 * 1024 * 1024;
+const MAX_UPLOAD_SIZE = 900 * 1024;
+const QUALITY_STEPS = [0.82, 0.76, 0.68, 0.6];
 
 export function ImageManager({ productId, images }: ImageManagerProps) {
   const [items, setItems] = useState(images);
@@ -48,10 +50,13 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
             throw new Error("Solo se permiten JPG, PNG o WebP.");
           }
           if (file.size > MAX_SIZE) {
-            throw new Error("Cada imagen debe pesar maximo 5MB.");
+            throw new Error("Cada imagen original debe pesar maximo 8MB.");
           }
 
           const webp = await normalizeImage(file, aspectRatio, rotation);
+          if (webp.size > MAX_UPLOAD_SIZE) {
+            throw new Error("La imagen optimizada sigue superando 900KB. Usa una foto mas liviana.");
+          }
           const path = `products/${productId}/${crypto.randomUUID()}.webp`;
           const { error: uploadError } = await supabase.storage
             .from("product-images")
@@ -128,7 +133,7 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
       <div>
         <h2 className="text-xl font-black">Imagenes del producto</h2>
         <p className="mt-1 text-sm font-semibold text-zinc-500">
-          1 a 8 imagenes. Se convierten a WebP antes de subir.
+          1 a 8 imagenes. Maximo 8MB cada una; se guardan optimizadas en WebP.
         </p>
       </div>
 
@@ -231,23 +236,36 @@ async function normalizeImage(file: File, aspectRatio: string, rotation: number)
   }
 
   const maxWidth = aspectRatio === "16:9" ? 1600 : 1200;
-  const width = Math.min(maxWidth, sw);
-  const height = Math.round(width / ratio);
-  const canvas = document.createElement("canvas");
-  const rotated = rotation === 90 || rotation === 270;
-  canvas.width = rotated ? height : width;
-  canvas.height = rotated ? width : height;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("No se pudo preparar la imagen.");
+  for (const targetWidth of [Math.min(maxWidth, sw), 1080, 960, 840]) {
+    const width = Math.round(targetWidth);
+    const height = Math.round(width / ratio);
+    const canvas = document.createElement("canvas");
+    const rotated = rotation === 90 || rotation === 270;
+    canvas.width = rotated ? height : width;
+    canvas.height = rotated ? width : height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("No se pudo preparar la imagen.");
 
-  ctx.translate(canvas.width / 2, canvas.height / 2);
-  ctx.rotate((rotation * Math.PI) / 180);
-  ctx.drawImage(bitmap, sx, sy, sw, sh, -width / 2, -height / 2, width, height);
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate((rotation * Math.PI) / 180);
+    ctx.drawImage(bitmap, sx, sy, sw, sh, -width / 2, -height / 2, width, height);
 
+    for (const quality of QUALITY_STEPS) {
+      const blob = await canvasToWebp(canvas, quality);
+      if (blob.size <= MAX_UPLOAD_SIZE || targetWidth === 840) {
+        return blob;
+      }
+    }
+  }
+
+  throw new Error("No se pudo optimizar la imagen.");
+}
+
+function canvasToWebp(canvas: HTMLCanvasElement, quality: number) {
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (blob) resolve(blob);
       else reject(new Error("No se pudo convertir la imagen."));
-    }, "image/webp", 0.86);
+    }, "image/webp", quality);
   });
 }

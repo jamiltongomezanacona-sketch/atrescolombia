@@ -10,6 +10,9 @@ type ActionState = {
   message: string;
 };
 
+const MAX_QUICK_PRODUCT_IMAGE_BYTES = 900 * 1024;
+const ALLOWED_QUICK_PRODUCT_IMAGE_TYPES = new Set(["image/webp", "image/jpeg", "image/png"]);
+
 export type QuickProductImageInput = {
   storage_path: string;
   public_url: string;
@@ -145,6 +148,17 @@ export async function uploadQuickProductImage(
 
   if (!productId || !(file instanceof File)) {
     return { ok: false, message: "No se recibio la imagen para subir." };
+  }
+
+  if (!ALLOWED_QUICK_PRODUCT_IMAGE_TYPES.has(file.type)) {
+    return { ok: false, message: "Solo se permiten imagenes WebP, JPG o PNG." };
+  }
+
+  if (file.size > MAX_QUICK_PRODUCT_IMAGE_BYTES) {
+    return {
+      ok: false,
+      message: "La imagen optimizada supera 900KB. Reduce la foto antes de subirla para proteger el almacenamiento.",
+    };
   }
 
   const supabase = await createSupabaseServerClient();

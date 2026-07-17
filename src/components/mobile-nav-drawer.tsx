@@ -108,10 +108,10 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
         >
           <div className="flex items-center justify-between border-b border-black/5 px-4 py-4">
             <div>
-              <p id={titleId} className="text-lg font-black tracking-tight">
+              <p id={titleId} className="text-lg font-medium tracking-tight">
                 ATRES
               </p>
-              <p className="text-xs font-semibold text-stone-500">Moda colombiana del taller al cliente</p>
+              <p className="text-xs font-normal text-stone-500">Moda colombiana del taller al cliente</p>
             </div>
             <button
               ref={closeRef}
@@ -125,7 +125,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
           </div>
 
           <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Menu de categorias">
-            <p className="px-2 text-[11px] font-black uppercase tracking-wide text-stone-400">Categorias</p>
+            <p className="px-2 text-[11px] font-medium text-stone-400">Categorias</p>
             <ul className="mt-2 grid gap-1">
               {links.map((link) => {
                 const active =
@@ -138,7 +138,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
                     <Link
                       href={link.href}
                       className={cn(
-                        "flex min-h-11 items-center rounded-lg px-3 text-sm font-black transition",
+                        "flex min-h-11 items-center rounded-lg px-3 text-sm font-normal transition",
                         active ? "bg-black text-white" : "text-ink hover:bg-stone-100",
                       )}
                       aria-current={active ? "page" : undefined}
@@ -156,7 +156,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
           <div className="border-t border-black/5 p-4">
             <Link
               href="/ofertas"
-              className="flex min-h-11 items-center justify-center rounded-full bg-brand px-4 text-sm font-black text-white"
+              className="flex min-h-11 items-center justify-center rounded-full bg-brand px-4 text-sm font-medium text-white"
               onClick={() => setOpen(false)}
               tabIndex={open ? undefined : -1}
             >

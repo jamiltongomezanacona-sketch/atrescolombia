@@ -12,7 +12,7 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 bg-[#080808]/96 text-white shadow-[0_8px_22px_rgba(0,0,0,0.12)]">
       <div className="hidden border-b border-white/10 bg-white/[0.04] lg:block">
-        <div className="catalog-container flex items-center justify-between gap-3 py-2 text-[11px] font-black uppercase tracking-wide text-white/75">
+        <div className="catalog-container flex items-center justify-between gap-3 py-2 text-[11px] font-normal text-white/70">
           <span>100% producto colombiano</span>
           <span className="hidden md:inline">Del taller al cliente</span>
           <Link href="/ofertas" className="text-amber-200 hover:text-white">
@@ -44,7 +44,7 @@ export async function SiteHeader() {
               aria-label="Buscar"
             >
               <SearchIcon />
-              <span className="hidden text-sm font-black sm:inline">Buscar</span>
+              <span className="hidden text-sm font-medium sm:inline">Buscar</span>
             </button>
           </form>
 

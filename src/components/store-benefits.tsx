@@ -21,8 +21,8 @@ export function StoreBenefits() {
   return (
     <section className="store-container py-5 md:py-6" aria-labelledby="beneficios-titulo">
       <div className="mb-3">
-        <p className="text-xs font-black uppercase tracking-wide text-brand">Vision ATRES</p>
-        <h2 id="beneficios-titulo" className="mt-1 text-xl font-black tracking-tight text-ink md:text-2xl">
+        <p className="text-xs font-medium text-brand">Vision ATRES</p>
+        <h2 id="beneficios-titulo" className="mt-1 text-xl font-medium tracking-tight text-ink md:text-2xl">
           Moda colombiana directa
         </h2>
       </div>
@@ -32,8 +32,8 @@ export function StoreBenefits() {
             key={benefit.title}
             className="rounded-lg bg-white/88 p-4 shadow-soft ring-1 ring-black/5 transition duration-300 hover:-translate-y-0.5 hover:shadow-lift"
           >
-            <h3 className="text-base font-black text-ink">{benefit.title}</h3>
-            <p className="mt-2 text-sm font-semibold leading-6 text-stone-600">{benefit.description}</p>
+            <h3 className="text-base font-medium text-ink">{benefit.title}</h3>
+            <p className="mt-2 text-sm font-normal leading-6 text-stone-600">{benefit.description}</p>
           </article>
         ))}
       </div>

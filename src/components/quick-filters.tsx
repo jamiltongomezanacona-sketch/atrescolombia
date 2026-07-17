@@ -35,7 +35,7 @@ export function QuickFilters({ items, className }: QuickFiltersProps) {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "inline-flex min-h-11 shrink-0 items-center rounded-full px-4 text-xs font-black transition sm:text-sm",
+                "inline-flex min-h-11 shrink-0 items-center rounded-full px-4 text-xs font-medium transition sm:text-sm",
                 active
                   ? "bg-black text-white shadow-sm"
                   : "bg-white text-stone-800 ring-1 ring-black/5 hover:bg-stone-100",

@@ -79,8 +79,8 @@ export function PwaInstallPrompt() {
           <img src="/icon-192.png" alt="" className="h-full w-full object-contain" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-black">Instala ATRES</p>
-          <p className="mt-1 text-xs font-bold leading-5 text-white/70">
+          <p className="text-sm font-medium">Instala ATRES</p>
+          <p className="mt-1 text-xs font-normal leading-5 text-white/70">
             {showIosHint
               ? "En iPhone toca Compartir y luego Agregar a pantalla de inicio."
               : "Agrega la tienda a tu pantalla de inicio para entrar mas rapido."}
@@ -91,7 +91,7 @@ export function PwaInstallPrompt() {
                 type="button"
                 onClick={install}
                 aria-label="Instalar aplicacion ATRES"
-                className="rounded-full bg-white px-4 py-2 text-xs font-black text-black"
+                className="rounded-full bg-white px-4 py-2 text-xs font-medium text-black"
               >
                 Instalar
               </button>
@@ -100,7 +100,7 @@ export function PwaInstallPrompt() {
               type="button"
               onClick={dismiss}
               aria-label="Cerrar aviso de instalacion"
-              className="rounded-full bg-white/10 px-4 py-2 text-xs font-black text-white"
+              className="rounded-full bg-white/10 px-4 py-2 text-xs font-medium text-white"
             >
               Ahora no
             </button>

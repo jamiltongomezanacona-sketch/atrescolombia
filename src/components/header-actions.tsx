@@ -55,7 +55,7 @@ export function HeaderActions({ compact = false }: HeaderActionsProps) {
         >
           <HeaderIcon type="bag" />
           {count > 0 ? (
-            <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[9px] font-black text-white">
+            <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[9px] font-medium text-white">
               {count}
             </span>
           ) : null}
@@ -65,7 +65,7 @@ export function HeaderActions({ compact = false }: HeaderActionsProps) {
   }
 
   return (
-    <nav className="hidden items-center justify-end gap-2 text-sm font-black lg:flex" aria-label="Acciones">
+    <nav className="hidden items-center justify-end gap-2 text-sm font-medium lg:flex" aria-label="Acciones">
       <Link
         href="/favoritos"
         className="inline-flex h-11 items-center gap-2 rounded-full px-3 text-white/90 transition hover:bg-white/10 hover:text-white"
@@ -80,7 +80,7 @@ export function HeaderActions({ compact = false }: HeaderActionsProps) {
         <HeaderIcon type="bag" />
         Carrito
         {count > 0 ? (
-          <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[10px] font-black text-white">
+          <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[10px] font-medium text-white">
             {count}
           </span>
         ) : null}

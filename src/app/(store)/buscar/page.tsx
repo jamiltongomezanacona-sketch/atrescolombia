@@ -55,13 +55,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
         {!query ? (
           <div className="space-y-4">
-            <p className="text-sm font-semibold text-stone-500">Categorias sugeridas:</p>
+            <p className="text-sm font-normal text-stone-500">Categorias sugeridas:</p>
             <div className="flex flex-wrap gap-2">
               {displayCategories.slice(0, 8).map((category) => (
                 <Link
                   key={category.slug}
                   href={`/categoria/${category.slug}`}
-                  className="rounded-full bg-white px-4 py-2 text-xs font-black text-stone-800 ring-1 ring-black/5 transition hover:bg-black hover:text-white"
+                  className="rounded-full bg-white px-4 py-2 text-xs font-medium text-stone-800 ring-1 ring-black/5 transition hover:bg-black hover:text-white"
                 >
                   {category.shortName}
                 </Link>

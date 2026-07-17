@@ -36,7 +36,7 @@ export function BrandLogo({
       </span>
       <span className="min-w-0">
         <span
-          className={`block font-black leading-none tracking-[0.18em] ${compact ? "text-lg" : "text-2xl"} ${
+          className={`block font-medium leading-none tracking-[0.08em] ${compact ? "text-lg" : "text-2xl"} ${
             dark ? "text-white" : "text-black"
           }`}
         >
@@ -44,7 +44,7 @@ export function BrandLogo({
         </span>
         {sublabel ? (
           <span
-            className={`mt-1 block text-[10px] font-black uppercase tracking-wide ${
+            className={`mt-1 block text-[10px] font-medium tracking-wide ${
               dark ? "text-white/60" : "text-stone-500"
             }`}
           >

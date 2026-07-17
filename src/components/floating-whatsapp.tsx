@@ -83,14 +83,14 @@ export function FloatingWhatsApp() {
         <WhatsAppIcon />
       </span>
       <span className="relative hidden min-w-0 pr-1 text-left sm:block">
-        <span className="block text-[11px] font-black uppercase tracking-wide text-white/72">
+        <span className="block text-[11px] font-normal text-white/72">
           WhatsApp
         </span>
-        <span className="block max-w-[148px] truncate text-xs font-black leading-tight md:text-sm">
+        <span className="block max-w-[148px] truncate text-xs font-medium leading-tight md:text-sm">
           {product ? "Preguntar por esta prenda" : "Te asesoramos ahora"}
         </span>
       </span>
-      <span className="relative hidden rounded-full bg-white/18 px-2 py-1 text-[10px] font-black text-white/88 lg:inline-flex">
+      <span className="relative hidden rounded-full bg-white/18 px-2 py-1 text-[10px] font-medium text-white/88 lg:inline-flex">
         323 212 2486
       </span>
     </a>

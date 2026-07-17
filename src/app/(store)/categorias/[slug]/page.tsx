@@ -70,13 +70,13 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
       {subcategories.length > 0 ? (
         <section className="catalog-container pb-3" aria-label="Subcategorias">
-          <p className="mb-2 text-xs font-black uppercase tracking-wide text-stone-500">
+          <p className="mb-2 text-xs font-medium text-stone-500">
             Subcategorias
           </p>
           <div className="flex flex-wrap gap-2">
             <Link
               href={`/categoria/${category.slug}`}
-              className="rounded-full bg-black px-4 py-2 text-xs font-black text-white"
+              className="rounded-full bg-black px-4 py-2 text-xs font-medium text-white"
             >
               Todo {category.shortName}
             </Link>
@@ -84,7 +84,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               <Link
                 key={child.slug}
                 href={`/categoria/${child.slug}`}
-                className="rounded-full bg-white px-4 py-2 text-xs font-black text-stone-800 ring-1 ring-black/5 transition hover:bg-black hover:text-white"
+                className="rounded-full bg-white px-4 py-2 text-xs font-medium text-stone-800 ring-1 ring-black/5 transition hover:bg-black hover:text-white"
               >
                 {child.shortName}
               </Link>
@@ -95,7 +95,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
       <section className="catalog-container py-4 md:py-5">
         {categoryProducts.length === 0 ? (
-          <p className="text-sm font-semibold text-stone-500">
+          <p className="text-sm font-normal text-stone-500">
             No hay productos en esta categoria por ahora. Explora otras colecciones ATRES.
           </p>
         ) : (

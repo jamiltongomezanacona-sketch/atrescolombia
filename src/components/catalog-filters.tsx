@@ -120,7 +120,7 @@ export function CatalogFiltersForm({
       {(options.priceMin > 0 || options.priceMax > 0) && options.priceMax > options.priceMin ? (
         <FilterGroup title="Precio">
           <div className="grid grid-cols-2 gap-2">
-            <label className="grid gap-1 text-xs font-bold text-stone-500">
+            <label className="grid gap-1 text-xs font-normal text-stone-500">
               Min
               <input
                 type="number"
@@ -131,7 +131,7 @@ export function CatalogFiltersForm({
                 className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-semibold"
               />
             </label>
-            <label className="grid gap-1 text-xs font-bold text-stone-500">
+            <label className="grid gap-1 text-xs font-normal text-stone-500">
               Max
               <input
                 type="number"
@@ -147,28 +147,28 @@ export function CatalogFiltersForm({
       ) : null}
 
       <FilterGroup title="Estado">
-        <label className="flex min-h-11 items-center gap-2 text-sm font-bold">
+        <label className="flex min-h-11 items-center gap-2 text-sm font-normal">
           <input type="checkbox" name="novedades" value="1" defaultChecked={filters.novedades} />
           Solo novedades
         </label>
-        <label className="flex min-h-11 items-center gap-2 text-sm font-bold">
+        <label className="flex min-h-11 items-center gap-2 text-sm font-normal">
           <input type="checkbox" name="ofertas" value="1" defaultChecked={filters.ofertas} />
           Solo ofertas
         </label>
-        <label className="flex min-h-11 items-center gap-2 text-sm font-bold">
+        <label className="flex min-h-11 items-center gap-2 text-sm font-normal">
           <input type="checkbox" name="disponible" value="1" defaultChecked={filters.disponible} />
           Solo disponibles
         </label>
       </FilterGroup>
 
       <div className="grid gap-2">
-        <button type="submit" className="inline-flex h-11 items-center justify-center rounded-full bg-black px-4 text-sm font-black text-white">
+        <button type="submit" className="inline-flex h-11 items-center justify-center rounded-full bg-black px-4 text-sm font-medium text-white">
           Aplicar filtros
         </button>
         {activeCount > 0 ? (
           <Link
             href={clearHref}
-            className="inline-flex h-11 items-center justify-center rounded-full bg-stone-100 px-4 text-sm font-black text-stone-700"
+            className="inline-flex h-11 items-center justify-center rounded-full bg-stone-100 px-4 text-sm font-medium text-stone-700"
           >
             Limpiar ({activeCount})
           </Link>
@@ -181,7 +181,7 @@ export function CatalogFiltersForm({
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <fieldset className="grid gap-2">
-      <legend className="text-xs font-black uppercase tracking-wide text-stone-500">{title}</legend>
+      <legend className="text-xs font-medium text-stone-500">{title}</legend>
       {children}
     </fieldset>
   );

@@ -56,7 +56,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </Link>
 
         {ribbon ? (
-          <div className="absolute inset-x-0 top-0 flex h-6 items-center bg-[#ff4d00] px-2 text-[10px] font-black uppercase text-white shadow-sm sm:h-7 sm:text-[11px]">
+          <div className="absolute inset-x-0 top-0 flex h-6 items-center bg-[#ff4d00] px-2 text-[10px] font-medium text-white shadow-sm sm:h-7 sm:text-[11px]">
             <span className="truncate">{ribbon}</span>
           </div>
         ) : null}
@@ -82,7 +82,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         ) : null}
 
         {sizeLabel ? (
-          <div className="absolute bottom-2 right-2 rounded-full bg-white/90 px-2 py-1 text-[10px] font-black text-stone-700 shadow-sm ring-1 ring-black/5">
+          <div className="absolute bottom-2 right-2 rounded-full bg-white/90 px-2 py-1 text-[10px] font-medium text-stone-700 shadow-sm ring-1 ring-black/5">
             {sizeLabel}
           </div>
         ) : null}
@@ -97,18 +97,18 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       </div>
 
       <div className="flex flex-1 flex-col p-2.5 sm:p-3">
-        <p className="hidden truncate text-[10px] font-black uppercase tracking-[0.14em] text-stone-400 sm:block">
+        <p className="hidden truncate text-[10px] font-medium text-stone-400 sm:block">
           {product.categoryName}
         </p>
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="mt-1 line-clamp-2 min-h-9 text-[13px] font-black leading-4 text-ink transition group-hover:text-black sm:min-h-10 sm:leading-5 md:text-sm">
+          <h3 className="mt-1 line-clamp-2 min-h-9 text-[13px] font-medium leading-4 text-ink transition group-hover:text-black sm:min-h-10 sm:leading-5 md:text-sm">
             {product.name}
           </h3>
         </Link>
 
         <div className="mt-1.5 flex min-h-4 items-center justify-between gap-2">
           {sizes.length > 0 ? (
-            <p className="truncate text-[10px] font-bold text-stone-500/90 sm:text-[11px]">
+            <p className="truncate text-[10px] font-normal text-stone-500/90 sm:text-[11px]">
               Tallas: {sizes.join(" / ")}
               {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
             </p>
@@ -129,7 +129,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           ) : null}
         </div>
 
-        <div className="mt-1.5 flex items-center gap-1 text-[10px] font-bold text-stone-500 sm:text-[11px]">
+        <div className="mt-1.5 flex items-center gap-1 text-[10px] font-normal text-stone-500 sm:text-[11px]">
           <span className="text-amber-500" aria-hidden="true">
             &#9733;
           </span>
@@ -142,13 +142,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           <ProductPrice price={product.price} previousPrice={previousPrice} size="md" />
           <Link
             href={`/productos/${product.slug}`}
-            className="hidden shrink-0 rounded-full bg-stone-100/80 px-2.5 py-1.5 text-[10px] font-black uppercase text-stone-600 transition hover:bg-black hover:text-white sm:inline-flex"
+            className="hidden shrink-0 rounded-full bg-stone-100/80 px-2.5 py-1.5 text-[10px] font-medium text-stone-600 transition hover:bg-black hover:text-white sm:inline-flex"
           >
             Ver
           </Link>
         </div>
 
-        <p className={`mt-1 hidden text-[11px] font-bold sm:block ${inStock ? "text-emerald-700" : "text-stone-400"}`}>
+        <p className={`mt-1 hidden text-[11px] font-normal sm:block ${inStock ? "text-emerald-700" : "text-stone-400"}`}>
           {sellingLine}
         </p>
       </div>

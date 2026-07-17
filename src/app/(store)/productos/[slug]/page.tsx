@@ -63,7 +63,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const visibleDetails = getVisibleProductDetails(product);
   const sizes = product.sizes.filter((size) => {
     const value = size.trim().toLowerCase();
-    return value && value !== "unica" && value !== "única";
+    return value && value !== "unica" && value !== "unico";
   });
 
   return (
@@ -111,14 +111,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </Badge>
           </div>
 
-          <p className="mt-4 text-xs font-black uppercase tracking-wide text-stone-500">
+          <p className="mt-4 text-xs font-medium text-stone-500">
             <Link href={`/categoria/${product.categorySlug}`} className="hover:text-brand">
               {product.categoryName}
             </Link>
             {product.collection ? ` / ${product.collection}` : ""}
           </p>
 
-          <h1 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-5xl">{product.name}</h1>
+          <h1 className="mt-2 text-3xl font-medium tracking-tight text-ink sm:text-5xl">{product.name}</h1>
 
           <ProductPrice
             price={product.price}
@@ -127,19 +127,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
             className="mt-5 flex items-end gap-3"
           />
 
-          <p className="mt-5 text-base font-semibold leading-7 text-stone-700">{product.description}</p>
-          <p className="mt-2 text-sm font-black text-[#ff4d00]">{commercialLine}</p>
+          <p className="mt-5 text-base font-normal leading-7 text-stone-700">{product.description}</p>
+          <p className="mt-2 text-sm font-medium text-[#ff4d00]">{commercialLine}</p>
 
           {sizes.length > 0 ? (
-            <p className="mt-3 text-sm font-semibold text-stone-500">
+            <p className="mt-3 text-sm font-normal text-stone-500">
               Tallas: {product.sizes.join(" / ")}
             </p>
           ) : null}
 
           <ProductActions product={product} whatsapp={settings?.whatsapp} />
 
-          <div className="mt-5 grid gap-2 rounded-lg bg-white/70 p-4 text-sm font-semibold text-stone-700 ring-1 ring-black/5">
-            <p className="font-black text-ink">Guia rapida</p>
+          <div className="mt-5 grid gap-2 rounded-lg bg-white/70 p-4 text-sm font-normal text-stone-700 ring-1 ring-black/5">
+            <p className="font-medium text-ink">Guia rapida</p>
             <p>Disponibilidad: {product.stock} unidades</p>
             {settings?.shippingText ? <p>{settings.shippingText}</p> : (
               <p>Guia de tallas: elige tu talla habitual; fit regular salvo indicacion.</p>
@@ -148,8 +148,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
 
           <div className="mt-5">
-            <p className="mb-2 text-xs font-black uppercase text-stone-500">Detalles</p>
-            <ul className="grid gap-2 text-sm font-semibold text-stone-700">
+            <p className="mb-2 text-xs font-medium text-stone-500">Detalles</p>
+            <ul className="grid gap-2 text-sm font-normal text-stone-700">
               {visibleDetails.map((detail) => (
                 <li key={detail} className="rounded-lg bg-white/70 px-3 py-2 ring-1 ring-black/5">
                   {detail}

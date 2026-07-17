@@ -88,7 +88,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
           )}
         >
           <div className="flex items-center justify-between border-b border-black/5 px-4 py-4">
-            <h2 id={titleId} className="text-lg font-black">
+            <h2 id={titleId} className="text-lg font-medium">
               Filtros
             </h2>
             <button
@@ -122,7 +122,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-black px-3.5 text-xs font-black text-white shadow-sm transition hover:bg-stone-800"
+        className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-black px-3.5 text-xs font-medium text-white shadow-sm transition hover:bg-stone-800"
         aria-label={
           open ? "Cerrar filtros" : activeCount > 0 ? `Abrir filtros (${activeCount})` : "Abrir filtros"
         }

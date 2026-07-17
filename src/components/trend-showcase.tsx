@@ -60,24 +60,24 @@ export function TrendShowcase({
               theme.panelClass,
             )}
           >
-            <p className={cn("text-sm font-black uppercase tracking-[0.18em]", theme.accentClass)}>
+            <p className={cn("text-sm font-medium", theme.accentClass)}>
               {theme.eyebrow}
             </p>
             <h2
               className={cn(
-                "mt-4 font-black leading-none tracking-tight",
+                "mt-4 font-medium leading-none tracking-tight",
                 theme.textClass,
                 title ? "text-3xl md:text-4xl lg:text-5xl" : "text-3xl md:text-4xl",
               )}
             >
               {headline}
             </h2>
-            <p className={cn("mt-3 max-w-sm text-sm font-bold leading-6", theme.mutedTextClass)}>{body}</p>
+            <p className={cn("mt-3 max-w-sm text-sm font-normal leading-6", theme.mutedTextClass)}>{body}</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {theme.chips.slice(0, compact ? 3 : 4).map((chip) => (
                 <span
                   key={chip}
-                  className="rounded-full bg-white/25 px-3 py-1 text-[11px] font-black uppercase ring-1 ring-current/10"
+                  className="rounded-full bg-white/25 px-3 py-1 text-[11px] font-medium ring-1 ring-current/10"
                 >
                   {chip}
                 </span>
@@ -88,8 +88,8 @@ export function TrendShowcase({
           {showStats ? (
             <div className="grid content-end gap-3">
               <div className={cn("rounded-lg p-4 ring-1", theme.panelClass)}>
-                <p className={cn("text-xs font-black uppercase tracking-[0.18em]", theme.accentClass)}>Trends</p>
-                <p className={cn("mt-2 text-3xl font-black leading-none", theme.textClass)}>{theme.trendTag}</p>
+                <p className={cn("text-xs font-medium", theme.accentClass)}>Tendencias</p>
+                <p className={cn("mt-2 text-3xl font-medium leading-none", theme.textClass)}>{theme.trendTag}</p>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <Stat label="Productos" value={showStats.products} theme={theme} />
@@ -137,8 +137,8 @@ function Stat({
 }) {
   return (
     <div className={cn("rounded-lg p-3 text-center ring-1", theme.panelClass)}>
-      <p className={cn("text-2xl font-black", theme.textClass)}>{value}</p>
-      <p className={cn("mt-1 text-[10px] font-black uppercase", theme.mutedTextClass)}>{label}</p>
+      <p className={cn("text-2xl font-medium", theme.textClass)}>{value}</p>
+      <p className={cn("mt-1 text-[10px] font-normal", theme.mutedTextClass)}>{label}</p>
     </div>
   );
 }

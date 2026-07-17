@@ -62,7 +62,7 @@ export function FavoriteButton({
       className={
         compact
           ? "grid size-9 place-items-center rounded-full bg-white/95 text-black shadow-sm ring-1 ring-black/10 transition hover:scale-105 hover:bg-white"
-          : "inline-flex h-11 items-center gap-2 rounded-full bg-white px-4 text-sm font-black text-black shadow-sm ring-1 ring-black/10 transition hover:bg-amber-100"
+          : "inline-flex h-11 items-center gap-2 rounded-full bg-white px-4 text-sm font-medium text-black shadow-sm ring-1 ring-black/10 transition hover:bg-amber-100"
       }
     >
       <HeartIcon filled={active} />

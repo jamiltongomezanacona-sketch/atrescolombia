@@ -20,10 +20,10 @@ export default async function CategoriesIndexPage() {
         <PageHeader
           eyebrow="ATRES"
           title="Departamentos"
-          description="Hombre, Mujer, Niños y Hogar. Entra a cada uno para ver sus subcategorias."
+          description="Hombre, Mujer, Ninos y Hogar. Entra a cada uno para ver sus subcategorias."
         />
         {categories.length === 0 ? (
-          <p className="text-sm font-semibold text-stone-500">No hay categorias con productos disponibles.</p>
+          <p className="text-sm font-normal text-stone-500">No hay categorias con productos disponibles.</p>
         ) : (
           <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
             {categories.map((category) => {
@@ -46,12 +46,12 @@ export default async function CategoriesIndexPage() {
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-b from-black/58 via-black/28 to-black/48" />
                   <div className="relative flex h-full min-h-[152px] flex-col justify-between sm:min-h-[178px]">
-                    <p className={`text-xs font-black uppercase ${theme.accentClass}`}>{theme.eyebrow}</p>
+                    <p className={`text-xs font-medium ${theme.accentClass}`}>{theme.eyebrow}</p>
                     <div>
-                      <h2 className="text-[1.7rem] font-black leading-none tracking-tight text-white sm:text-3xl">
+                      <h2 className="text-[1.7rem] font-medium leading-none tracking-tight text-white sm:text-3xl">
                         {category.shortName}
                       </h2>
-                      <p className="mt-2 line-clamp-3 text-sm font-bold leading-5 text-white/82">
+                      <p className="mt-2 line-clamp-3 text-sm font-normal leading-5 text-white/82">
                         {category.description || theme.description}
                       </p>
                     </div>

@@ -135,10 +135,10 @@ export function CartView({ products, whatsapp }: CartViewProps) {
               <Image src={product.image} alt={product.name} fill sizes="96px" className="object-cover" />
             </Link>
             <div className="min-w-0">
-              <Link href={`/productos/${product.slug}`} className="line-clamp-2 text-base font-black text-ink">
+              <Link href={`/productos/${product.slug}`} className="line-clamp-2 text-base font-medium text-ink">
                 {product.name}
               </Link>
-              <p className="mt-1 text-xs font-bold text-stone-500">
+              <p className="mt-1 text-xs font-normal text-stone-500">
                 {item.color} / {item.size}
               </p>
               <ProductPrice price={product.price * item.quantity} className="mt-3" />
@@ -148,18 +148,18 @@ export function CartView({ products, whatsapp }: CartViewProps) {
                     type="button"
                     aria-label={`Reducir cantidad de ${product.name}`}
                     onClick={() => updateQuantity(item, item.quantity - 1)}
-                    className="h-11 min-w-9 font-black"
+                    className="h-11 min-w-9 font-medium"
                   >
                     -
                   </button>
-                  <span className="flex h-11 items-center justify-center bg-white text-sm font-black">
+                  <span className="flex h-11 items-center justify-center bg-white text-sm font-medium">
                     {item.quantity}
                   </span>
                   <button
                     type="button"
                     aria-label={`Aumentar cantidad de ${product.name}`}
                     onClick={() => updateQuantity(item, item.quantity + 1)}
-                    className="h-11 min-w-9 font-black"
+                    className="h-11 min-w-9 font-medium"
                   >
                     +
                   </button>
@@ -167,7 +167,7 @@ export function CartView({ products, whatsapp }: CartViewProps) {
                 <button
                   type="button"
                   onClick={() => removeItem(item)}
-                  className="h-11 rounded-full bg-stone-100 px-3 text-xs font-black text-stone-700"
+                  className="h-11 rounded-full bg-stone-100 px-3 text-xs font-medium text-stone-700"
                 >
                   Eliminar
                 </button>
@@ -177,17 +177,17 @@ export function CartView({ products, whatsapp }: CartViewProps) {
         ))}
       </div>
       <GlassPanel as="aside" className="p-5">
-        <h2 className="text-2xl font-black text-ink">Resumen</h2>
+        <h2 className="text-2xl font-medium text-ink">Resumen</h2>
         <div className="mt-4 flex items-center justify-between border-t border-black/10 pt-4">
-          <span className="text-sm font-bold text-stone-500">Subtotal</span>
-          <span className="text-xl font-black">{formatCOP(subtotal)}</span>
+          <span className="text-sm font-normal text-stone-500">Subtotal</span>
+          <span className="text-xl font-medium">{formatCOP(subtotal)}</span>
         </div>
         {whatsappUrl ? (
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-5 inline-flex h-12 w-full items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-black text-white transition hover:bg-[#1ebe57]"
+            className="mt-5 inline-flex h-12 w-full items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-medium text-white transition hover:bg-[#1ebe57]"
           >
             Continuar por WhatsApp
           </a>

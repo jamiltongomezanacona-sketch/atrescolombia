@@ -53,6 +53,7 @@ body {
     linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 244, 239, 0.98) 36%, rgba(240, 234, 225, 0.88) 100%);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-weight: 420;
   overflow-x: hidden;
 }
 
@@ -79,6 +80,39 @@ select:focus-visible {
 ::selection {
   background: #fcd34d;
   color: #1c1917;
+}
+
+/* Refinamiento premium ATRES: tipografia mas editorial, menos ruido visual. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 520;
+  letter-spacing: 0;
+}
+
+.font-black {
+  font-weight: 560;
+}
+
+.font-bold {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 460;
+}
+
+.uppercase {
+  text-transform: none;
+}
+
+.tracking-tight,
+.tracking-wide,
+[class*="tracking-["] {
+  letter-spacing: 0;
 }
 
 .store-surface {

@@ -98,10 +98,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </nav>
 
         <div className="mb-1.5">
-          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-brand lg:text-xs">
-            ATRES edit
+          <p className="text-[10px] font-medium text-brand lg:text-xs">
+            Seleccion ATRES
           </p>
-          <h1 className="mt-0.5 text-xl font-black tracking-tight text-ink sm:text-3xl">
+          <h1 className="mt-0.5 text-xl font-medium tracking-tight text-ink sm:text-3xl">
             Comprar por estilo
           </h1>
         </div>
@@ -135,7 +135,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 key={tab.label}
                 href={tab.href}
                 aria-current={tab.active ? "page" : undefined}
-                className={`inline-flex h-8 shrink-0 items-center rounded-full px-3 text-xs font-black transition ${
+                className={`inline-flex h-8 shrink-0 items-center rounded-full px-3 text-xs font-medium transition ${
                   tab.active
                     ? "bg-black text-white shadow-sm"
                     : "bg-white text-stone-700 ring-1 ring-black/5 hover:bg-stone-100"
@@ -151,11 +151,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           <aside className="sticky top-[8.25rem] hidden max-h-[calc(100vh-9rem)] overflow-y-auto rounded-xl bg-white/88 p-3 shadow-soft ring-1 ring-black/5 lg:block">
             <div className="mb-3 flex items-center justify-between gap-2">
               <div>
-                <p className="text-[11px] font-black uppercase tracking-wide text-brand">Filtros</p>
-                <p className="text-sm font-black text-ink">Refina tu busqueda</p>
+                <p className="text-[11px] font-medium text-brand">Filtros</p>
+                <p className="text-sm font-medium text-ink">Refina tu busqueda</p>
               </div>
               {activeFilters > 0 ? (
-                <span className="rounded-full bg-black px-2 py-1 text-[10px] font-black text-white">
+                <span className="rounded-full bg-black px-2 py-1 text-[10px] font-medium text-white">
                   {activeFilters}
                 </span>
               ) : null}
@@ -166,10 +166,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           <div className="min-w-0">
             <div className="mb-2 grid gap-2 rounded-xl bg-white/82 p-2 shadow-sm ring-1 ring-black/5 sm:flex sm:flex-wrap sm:items-center sm:justify-between">
               <div className="flex items-center justify-between gap-2 sm:justify-start">
-                <p className="text-sm font-black text-stone-700">
+                <p className="text-sm font-medium text-stone-700">
                   {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
                   {activeFilters > 0 ? (
-                    <span className="ml-2 text-xs font-bold text-stone-500">
+                    <span className="ml-2 text-xs font-normal text-stone-500">
                       {activeFilters} filtro{activeFilters === 1 ? "" : "s"}
                     </span>
                   ) : null}
@@ -179,7 +179,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 </div>
               </div>
               <div className="flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0">
-                <span className="hidden shrink-0 items-center px-1 text-[11px] font-black uppercase tracking-wide text-stone-400 md:inline-flex">
+                <span className="hidden shrink-0 items-center px-1 text-[11px] font-medium text-stone-400 md:inline-flex">
                   Ordenar
                 </span>
                 {orderLinks.map((link) => {
@@ -188,7 +188,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     <Link
                       key={link.value}
                       href={buildCatalogQuery({ ...filters, orden: link.value })}
-                      className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-black transition ${
+                      className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition ${
                         active
                           ? "bg-black text-white shadow-sm"
                           : "bg-white/75 text-stone-700 ring-1 ring-black/5 hover:bg-white"

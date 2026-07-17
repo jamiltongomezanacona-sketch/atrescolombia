@@ -40,7 +40,7 @@ type ButtonAsLink = CommonProps & {
 export type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 const baseClass =
-  "inline-flex items-center justify-center rounded-full font-black transition disabled:opacity-50";
+  "inline-flex items-center justify-center rounded-full font-medium transition disabled:opacity-50";
 
 export function Button({ variant = "primary", size = "md", className, children, ...props }: ButtonProps) {
   const classes = cn(baseClass, variants[variant], sizes[size], className);

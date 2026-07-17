@@ -15,7 +15,7 @@ export function HeaderNav({ items }: HeaderNavProps) {
 
   return (
     <nav className="border-t border-white/10 bg-white/[0.03]" aria-label="Categorias ATRES">
-      <div className="catalog-container flex gap-1.5 overflow-x-auto py-2 text-sm font-bold [scrollbar-width:none]">
+      <div className="catalog-container flex gap-1.5 overflow-x-auto py-2 text-sm font-normal [scrollbar-width:none]">
         {links.map((link) => {
           const active =
             link.href === "/productos"

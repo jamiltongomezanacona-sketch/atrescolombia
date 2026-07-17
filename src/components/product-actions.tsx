@@ -92,12 +92,12 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
       <OptionGroup title="Talla" value={size} items={product.sizes} onChange={setSize} />
 
       <div>
-        <p className="mb-2 text-xs font-black uppercase text-stone-500">Cantidad</p>
+        <p className="mb-2 text-xs font-medium text-stone-500">Cantidad</p>
         <div className="inline-grid grid-cols-[44px_54px_44px] rounded-full bg-stone-100 text-center" role="group" aria-label="Cantidad">
           <button
             type="button"
             aria-label="Reducir cantidad"
-            className="h-11 font-black"
+            className="h-11 font-medium"
             onClick={() => setQuantity((current) => Math.max(1, current - 1))}
           >
             -
@@ -105,14 +105,14 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
           <span
             aria-live="polite"
             aria-atomic="true"
-            className="flex h-11 items-center justify-center bg-white text-sm font-black"
+            className="flex h-11 items-center justify-center bg-white text-sm font-medium"
           >
             {quantity}
           </span>
           <button
             type="button"
             aria-label="Aumentar cantidad"
-            className="h-11 font-black"
+            className="h-11 font-medium"
             onClick={() => setQuantity((current) => Math.min(9, current + 1))}
           >
             +
@@ -150,7 +150,7 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-black text-white transition hover:bg-[#1ebe57]"
+          className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-medium text-white transition hover:bg-[#1ebe57]"
         >
           Consultar por WhatsApp
         </a>
@@ -161,7 +161,7 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
       </Button>
 
       {message ? (
-        <p className="text-sm font-bold text-emerald-700" role="status" aria-live="polite">
+        <p className="text-sm font-normal text-emerald-700" role="status" aria-live="polite">
           {message}
         </p>
       ) : null}
@@ -182,7 +182,7 @@ function OptionGroup({
 }) {
   return (
     <div>
-      <p className="mb-2 text-xs font-black uppercase text-stone-500">{title}</p>
+      <p className="mb-2 text-xs font-medium text-stone-500">{title}</p>
       <div className="flex flex-wrap gap-2" role="group" aria-label={title}>
         {items.map((item) => (
           <button
@@ -190,7 +190,7 @@ function OptionGroup({
             type="button"
             aria-pressed={value === item}
             onClick={() => onChange(item)}
-            className={`min-h-11 rounded-full border px-3 py-2 text-sm font-bold transition ${
+            className={`min-h-11 rounded-full border px-3 py-2 text-sm font-normal transition ${
               value === item
                 ? "border-black bg-black text-white"
                 : "border-black/10 bg-white text-stone-700 hover:border-black"

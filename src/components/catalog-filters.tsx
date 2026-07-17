@@ -27,7 +27,7 @@ export function CatalogFiltersForm({
   const activeCount = countActiveFilters(filters);
 
   return (
-    <form method="get" action={action} className={cn("grid gap-5", className)}>
+    <form method="get" action={action} className={cn("grid gap-4", className)}>
       {filters.q ? <input type="hidden" name="q" value={filters.q} /> : null}
       {filters.orden && filters.orden !== "relevancia" ? (
         <input type="hidden" name="orden" value={filters.orden} />
@@ -42,7 +42,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-categoria`}
             name="categoria"
             defaultValue={filters.categoria ?? ""}
-            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-semibold"
+            className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
           >
             <option value="">Todas</option>
             {options.categories.map((category) => (
@@ -63,7 +63,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-talla`}
             name="talla"
             defaultValue={filters.talla ?? ""}
-            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-semibold"
+            className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
           >
             <option value="">Todas</option>
             {options.sizes.map((size) => (
@@ -84,7 +84,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-color`}
             name="color"
             defaultValue={filters.color ?? ""}
-            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-semibold"
+            className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
           >
             <option value="">Todos</option>
             {options.colors.map((color) => (
@@ -105,7 +105,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-coleccion`}
             name="coleccion"
             defaultValue={filters.coleccion ?? ""}
-            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-semibold"
+            className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
           >
             <option value="">Todas</option>
             {options.collections.map((collection) => (
@@ -128,7 +128,7 @@ export function CatalogFiltersForm({
                 min={0}
                 defaultValue={filters.precioMin ?? ""}
                 placeholder={formatCOP(options.priceMin)}
-                className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-semibold"
+                className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
               />
             </label>
             <label className="grid gap-1 text-xs font-normal text-stone-500">
@@ -139,7 +139,7 @@ export function CatalogFiltersForm({
                 min={0}
                 defaultValue={filters.precioMax ?? ""}
                 placeholder={formatCOP(options.priceMax)}
-                className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-semibold"
+                className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
               />
             </label>
           </div>
@@ -147,28 +147,28 @@ export function CatalogFiltersForm({
       ) : null}
 
       <FilterGroup title="Estado">
-        <label className="flex min-h-11 items-center gap-2 text-sm font-normal">
+        <label className="flex min-h-9 items-center gap-2 text-sm font-normal text-stone-700">
           <input type="checkbox" name="novedades" value="1" defaultChecked={filters.novedades} />
           Solo novedades
         </label>
-        <label className="flex min-h-11 items-center gap-2 text-sm font-normal">
+        <label className="flex min-h-9 items-center gap-2 text-sm font-normal text-stone-700">
           <input type="checkbox" name="ofertas" value="1" defaultChecked={filters.ofertas} />
           Solo ofertas
         </label>
-        <label className="flex min-h-11 items-center gap-2 text-sm font-normal">
+        <label className="flex min-h-9 items-center gap-2 text-sm font-normal text-stone-700">
           <input type="checkbox" name="disponible" value="1" defaultChecked={filters.disponible} />
           Solo disponibles
         </label>
       </FilterGroup>
 
       <div className="grid gap-2">
-        <button type="submit" className="inline-flex h-11 items-center justify-center rounded-full bg-black px-4 text-sm font-medium text-white">
+        <button type="submit" className="inline-flex h-10 items-center justify-center rounded-full bg-black px-4 text-sm font-medium text-white">
           Aplicar filtros
         </button>
         {activeCount > 0 ? (
           <Link
             href={clearHref}
-            className="inline-flex h-11 items-center justify-center rounded-full bg-stone-100 px-4 text-sm font-medium text-stone-700"
+            className="inline-flex h-10 items-center justify-center rounded-full bg-stone-100 px-4 text-sm font-medium text-stone-700"
           >
             Limpiar ({activeCount})
           </Link>
@@ -180,7 +180,7 @@ export function CatalogFiltersForm({
 
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <fieldset className="grid gap-2">
+    <fieldset className="grid gap-2 border-b border-black/5 pb-3 last:border-b-0 last:pb-0">
       <legend className="text-xs font-medium text-stone-500">{title}</legend>
       {children}
     </fieldset>

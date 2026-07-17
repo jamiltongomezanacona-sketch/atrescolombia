@@ -10,8 +10,8 @@ type ProductPriceProps = {
 
 const sizeClass = {
   sm: "text-base sm:text-lg",
-  md: "text-xl sm:text-2xl",
-  lg: "text-3xl sm:text-4xl",
+  md: "text-lg sm:text-xl",
+  lg: "text-2xl sm:text-3xl",
 } as const;
 
 export function ProductPrice({ price, previousPrice, size = "sm", className }: ProductPriceProps) {
@@ -19,7 +19,7 @@ export function ProductPrice({ price, previousPrice, size = "sm", className }: P
 
   return (
     <div className={cn("min-w-0", className)}>
-      <p className={cn("font-semibold leading-none tracking-tight text-[#ff4d00]", sizeClass[size])}>{formatCOP(price)}</p>
+      <p className={cn("font-medium leading-none tracking-tight text-[#ff4d00]", sizeClass[size])}>{formatCOP(price)}</p>
       {showPrevious ? (
         <p className="mt-1 text-xs font-medium text-stone-400 line-through">{formatCOP(previousPrice)}</p>
       ) : null}

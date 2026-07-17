@@ -5,8 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { ProductPrice } from "@/components/ui/product-price";
 import {
   getCommercialBadge,
-  getCommercialLine,
-  getCommercialMeta,
   getCommercialTone,
   getToneClass,
   getTopRibbon,
@@ -31,16 +29,15 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     product.previousPrice && product.previousPrice > product.price ? product.previousPrice : null;
   const sizes = meaningfulSizes(product.sizes).slice(0, 4);
   const inStock = product.stock > 0;
-  const metaCopy = getCommercialMeta(product);
-  const sellingLine = getCommercialLine(product, inStock);
   const ribbon = getTopRibbon(product);
   const visualTag = ribbon ? null : getCommercialBadge(product);
   const visualTone = getCommercialTone(product);
   const sizeLabel = getCompactSizeLabel(meaningfulSizes(product.sizes));
   const swatches = product.colors.filter(Boolean).slice(0, 4);
+  const showDiscount = discount && !ribbon?.includes("%");
 
   return (
-    <article className="group flex h-full min-h-[286px] flex-col overflow-hidden rounded-md bg-white shadow-[0_10px_28px_rgba(18,18,18,0.045)] ring-1 ring-black/[0.04] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft sm:min-h-[346px]">
+    <article className="group flex h-full min-h-[254px] flex-col overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft sm:min-h-[314px]">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
           <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
@@ -56,24 +53,24 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </Link>
 
         {ribbon ? (
-          <div className="absolute inset-x-0 top-0 flex h-6 items-center bg-[#ff4d00] px-2 text-[10px] font-medium text-white shadow-sm sm:h-7 sm:text-[11px]">
+          <div className="absolute left-2 top-2 max-w-[72%] rounded-full bg-[#ff4d00]/95 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm ring-1 ring-white/30 sm:text-[11px]">
             <span className="truncate">{ribbon}</span>
           </div>
         ) : null}
 
-        <div className={`absolute right-2 ${ribbon ? "top-8" : "top-2"}`}>
+        <div className="absolute right-2 top-2">
           <FavoriteButton productSlug={product.slug} compact />
         </div>
 
         {visualTag ? (
-          <div className={`absolute left-2 ${ribbon ? "top-8" : "top-2"}`}>
+          <div className="absolute left-2 top-2">
             <Badge tone="black" className={`text-[10px] ${getToneClass(visualTone)}`}>
               {visualTag}
             </Badge>
           </div>
         ) : null}
 
-        {discount ? (
+        {showDiscount ? (
           <div className="absolute bottom-2 left-2">
             <Badge tone="brand" className="bg-[#ff4d00] text-[10px] text-white ring-1 ring-black/10">
               -{discount}%
@@ -101,7 +98,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           {product.categoryName}
         </p>
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="mt-1 line-clamp-2 min-h-9 text-[13px] font-medium leading-4 text-ink transition group-hover:text-black sm:min-h-10 sm:leading-5 md:text-sm">
+          <h3 className="mt-1 line-clamp-2 min-h-9 text-[13px] font-normal leading-4 text-ink transition group-hover:text-black sm:min-h-10 sm:leading-5 md:text-sm">
             {product.name}
           </h3>
         </Link>
@@ -129,16 +126,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           ) : null}
         </div>
 
-        <div className="mt-1.5 flex items-center gap-1 text-[10px] font-normal text-stone-500 sm:text-[11px]">
-          <span className="text-amber-500" aria-hidden="true">
-            &#9733;
-          </span>
-          <span>{product.rating.toFixed(1)}</span>
-          <span className="text-stone-300">|</span>
-          <span className="truncate">{metaCopy}</span>
-        </div>
-
-        <div className="mt-auto flex min-h-11 items-end justify-between gap-2 pt-2 sm:min-h-12">
+        <div className="mt-auto flex min-h-10 items-end justify-between gap-2 pt-2 sm:min-h-11">
           <ProductPrice price={product.price} previousPrice={previousPrice} size="md" />
           <Link
             href={`/productos/${product.slug}`}
@@ -147,10 +135,6 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             Ver
           </Link>
         </div>
-
-        <p className={`mt-1 hidden text-[11px] font-normal sm:block ${inStock ? "text-emerald-700" : "text-stone-400"}`}>
-          {sellingLine}
-        </p>
       </div>
     </article>
   );

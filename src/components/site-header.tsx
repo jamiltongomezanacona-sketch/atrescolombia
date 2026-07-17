@@ -12,7 +12,7 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 bg-[#080808]/96 text-white shadow-[0_8px_22px_rgba(0,0,0,0.12)]">
       <div className="hidden border-b border-white/10 bg-white/[0.04] lg:block">
-        <div className="catalog-container flex items-center justify-between gap-3 py-2 text-[11px] font-normal text-white/70">
+        <div className="catalog-container flex items-center justify-between gap-3 py-1.5 text-[11px] font-normal text-white/70">
           <span>100% producto colombiano</span>
           <span className="hidden md:inline">Del taller al cliente</span>
           <Link href="/ofertas" className="text-amber-200 hover:text-white">
@@ -21,7 +21,7 @@ export async function SiteHeader() {
         </div>
       </div>
 
-      <div className="catalog-container py-1.5 lg:py-3">
+      <div className="catalog-container py-1.5 lg:py-2">
         <div className="flex items-center gap-2 lg:grid lg:grid-cols-[220px_1fr_300px] lg:gap-3">
           <div className="flex min-w-0 items-center gap-1.5">
             <MobileNavDrawer items={navItems} />
@@ -30,13 +30,13 @@ export async function SiteHeader() {
 
           <form
             action="/buscar"
-            className="hidden h-11 w-full max-w-3xl overflow-hidden rounded-full bg-white/94 text-black shadow-soft ring-1 ring-white/25 lg:mx-auto lg:flex"
+            className="hidden h-10 w-full max-w-3xl overflow-hidden rounded-full bg-white/94 text-black shadow-soft ring-1 ring-white/25 lg:mx-auto lg:flex"
           >
             <input
               name="q"
               aria-label="Buscar productos"
               placeholder="Buscar vestidos, jeans, pijamas..."
-              className="min-w-0 flex-1 bg-transparent px-5 text-sm font-semibold placeholder:text-stone-400"
+              className="min-w-0 flex-1 bg-transparent px-5 text-sm font-normal placeholder:text-stone-400"
             />
             <button
               className="inline-flex min-w-14 items-center justify-center bg-white/70 px-3 text-black ring-1 ring-black/10 transition hover:bg-amber-100 sm:min-w-28 sm:gap-2"

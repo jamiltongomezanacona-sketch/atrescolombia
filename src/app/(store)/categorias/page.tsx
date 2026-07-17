@@ -20,7 +20,7 @@ export default async function CategoriesIndexPage() {
         <PageHeader
           eyebrow="ATRES"
           title="Departamentos"
-          description="Hombre, Mujer, Ninos y Hogar. Entra a cada uno para ver sus subcategorias."
+          description="Hombre, Mujer, Niños y Hogar. Entra a cada uno para ver sus subcategorias."
         />
         {categories.length === 0 ? (
           <p className="text-sm font-normal text-stone-500">No hay categorias con productos disponibles.</p>

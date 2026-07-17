@@ -72,7 +72,7 @@ export function FloatingWhatsApp() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={product ? `Consultar ${product.name} por WhatsApp` : "Consultar por WhatsApp"}
-      className={`group fixed z-50 flex items-center gap-2 rounded-full border border-white/70 bg-[#0f2f22]/90 text-white shadow-[0_12px_28px_rgba(15,47,34,0.2)] backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 hover:bg-[#103b28] active:scale-95 md:bottom-5 md:right-5 md:px-3 ${
+      className={`group fixed z-50 flex items-center gap-2 overflow-hidden rounded-full border border-white/70 bg-[#0f2f22]/90 text-white shadow-[0_12px_28px_rgba(15,47,34,0.2)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:bg-[#103b28] active:scale-95 md:bottom-5 md:right-5 md:px-2 lg:h-12 lg:w-12 lg:px-1 lg:hover:w-[268px] lg:hover:px-2 ${
         compactCatalog
           ? "bottom-[calc(6.75rem+env(safe-area-inset-bottom))] right-2 p-0.5 sm:px-2.5 sm:py-2"
           : "bottom-[calc(5.7rem+env(safe-area-inset-bottom))] right-3 p-1 sm:px-2.5 sm:py-2"
@@ -82,7 +82,7 @@ export function FloatingWhatsApp() {
       <span className={`relative grid place-items-center rounded-full bg-white text-[#128C4A] shadow-inner md:size-10 ${compactCatalog ? "size-9" : "size-10"}`}>
         <WhatsAppIcon />
       </span>
-      <span className="relative hidden min-w-0 pr-1 text-left sm:block">
+      <span className="relative hidden min-w-0 pr-1 text-left transition duration-300 sm:block lg:w-0 lg:opacity-0 lg:group-hover:w-[150px] lg:group-hover:opacity-100">
         <span className="block text-[11px] font-normal text-white/72">
           WhatsApp
         </span>
@@ -90,7 +90,7 @@ export function FloatingWhatsApp() {
           {product ? "Preguntar por esta prenda" : "Te asesoramos ahora"}
         </span>
       </span>
-      <span className="relative hidden rounded-full bg-white/18 px-2 py-1 text-[10px] font-medium text-white/88 lg:inline-flex">
+      <span className="relative hidden rounded-full bg-white/18 px-2 py-1 text-[10px] font-medium text-white/88 opacity-0 transition duration-300 lg:inline-flex lg:group-hover:opacity-100">
         323 212 2486
       </span>
     </a>

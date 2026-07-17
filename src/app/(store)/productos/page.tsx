@@ -41,6 +41,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const options = collectFilterOptions(products, categories);
   const filteredProducts = applyCatalogFilters(products, filters, categories);
   const activeFilters = countActiveFilters(filters);
+  const activeCategory = filters.categoria
+    ? displayCategories.find(
+        (category) => normalizeNavSlug(category.slug) === normalizeNavSlug(filters.categoria ?? ""),
+      )
+    : null;
+  const pageTitle = activeCategory?.shortName ?? (filters.ofertas ? "Ofertas" : filters.novedades ? "Novedades" : "Productos");
 
   const orderLinks = [
     { label: "Para ti", value: "relevancia" },
@@ -82,35 +88,35 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <main>
-      <section className="catalog-container pt-1 pb-[calc(8.75rem+env(safe-area-inset-bottom))] md:py-3">
-        <nav className="mb-1 hidden text-xs font-bold text-stone-500 md:block" aria-label="Ruta de navegacion">
+      <section className="catalog-container pb-[calc(8.75rem+env(safe-area-inset-bottom))] pt-2 md:py-3">
+        <nav className="mb-1 hidden text-xs font-normal text-stone-400 md:block" aria-label="Ruta de navegacion">
           <Link href="/" className="hover:text-black">
             Inicio
           </Link>
           <span className="mx-2 text-stone-300">/</span>
           <span className="text-stone-700">Productos</span>
-          {filters.categoria ? (
+          {activeCategory ? (
             <>
               <span className="mx-2 text-stone-300">/</span>
-              <span className="capitalize text-stone-700">{filters.categoria.replaceAll("-", " ")}</span>
+              <span className="text-stone-700">{activeCategory.shortName}</span>
             </>
           ) : null}
         </nav>
 
-        <div className="mb-1.5">
-          <p className="text-[10px] font-medium text-brand lg:text-xs">
-            Seleccion ATRES
-          </p>
-          <h1 className="mt-0.5 text-xl font-medium tracking-tight text-ink sm:text-3xl">
-            Comprar por estilo
+        <div className="mb-2 flex items-end justify-between gap-3">
+          <h1 className="text-2xl font-medium tracking-tight text-ink sm:text-3xl">
+            {pageTitle}
           </h1>
+          <p className="hidden text-sm font-normal text-stone-500 md:block">
+            {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
+          </p>
         </div>
 
-        <div className="sticky top-[3.45rem] z-30 -mx-3 mb-2 border-y border-black/5 bg-background/95 px-3 py-1.5 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:top-[7.25rem]">
+        <div className="sticky top-[3.45rem] z-30 -mx-3 mb-2 border-y border-black/5 bg-background/95 px-3 py-1.5 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:top-[7.25rem] lg:static lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
           <form
             action="/productos"
             method="get"
-            className="flex h-9 overflow-hidden rounded-full bg-white text-black shadow-sm ring-1 ring-black/10"
+            className="flex h-9 overflow-hidden rounded-full bg-white text-black shadow-sm ring-1 ring-black/10 lg:hidden"
           >
             {hiddenFilterInputs(filters, ["q"])}
             <input
@@ -129,7 +135,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </button>
           </form>
 
-          <nav className="mt-1.5 flex gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" aria-label="Departamentos del catalogo">
+          <nav className="mt-1.5 flex gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] lg:mt-0 [&::-webkit-scrollbar]:hidden" aria-label="Departamentos del catalogo">
             {categoryTabs.map((tab) => (
               <Link
                 key={tab.label}

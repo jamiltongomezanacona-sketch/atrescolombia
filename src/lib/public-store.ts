@@ -234,7 +234,7 @@ export async function getPublicProducts(): Promise<Product[]> {
       getVariantsByProductId(productIds),
     ]);
 
-    const supabaseProducts = products.map((row) =>
+    return products.map((row) =>
       mapProductRow(
         row,
         row.category_id ? categoriesById.get(row.category_id) ?? null : null,
@@ -242,11 +242,9 @@ export async function getPublicProducts(): Promise<Product[]> {
         variantsByProductId.get(row.id) ?? [],
       ),
     );
-
-    return mergeProducts(supabaseProducts, curatedAtresProducts);
   } catch (error) {
     console.error("ATRES public products unexpected failure:", error);
-    return curatedAtresProducts;
+    return [];
   }
 }
 
@@ -318,7 +316,7 @@ export async function getPublicPromos(): Promise<Promo[]> {
       .limit(3);
 
     if (error || !data?.length) {
-      return curatedAtresPromos;
+      return [];
     }
 
     const supabasePromos = data.map((banner, index) => ({
@@ -329,9 +327,9 @@ export async function getPublicPromos(): Promise<Promo[]> {
       tone: index === 0 ? "bg-promo text-black" : index === 1 ? "bg-black text-white" : "bg-white text-black",
     }));
 
-    return [...supabasePromos, ...curatedAtresPromos];
+    return supabasePromos;
   } catch {
-    return curatedAtresPromos;
+    return [];
   }
 }
 

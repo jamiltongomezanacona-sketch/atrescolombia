@@ -21,7 +21,7 @@ type ProductCardProps = {
 function meaningfulSizes(sizes: string[]) {
   return sizes.filter((size) => {
     const value = size.trim().toLowerCase();
-    return value && value !== "unica" && value !== "unica" && value !== "u";
+    return value && value !== "unica" && value !== "unico" && value !== "u";
   });
 }
 
@@ -31,14 +31,16 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     product.previousPrice && product.previousPrice > product.price ? product.previousPrice : null;
   const sizes = meaningfulSizes(product.sizes).slice(0, 4);
   const inStock = product.stock > 0;
-  const visualTag = getCommercialBadge(product);
-  const visualTone = getCommercialTone(product);
   const metaCopy = getCommercialMeta(product);
   const sellingLine = getCommercialLine(product, inStock);
   const ribbon = getTopRibbon(product);
+  const visualTag = ribbon ? null : getCommercialBadge(product);
+  const visualTone = getCommercialTone(product);
+  const sizeLabel = getCompactSizeLabel(meaningfulSizes(product.sizes));
+  const swatches = product.colors.filter(Boolean).slice(0, 4);
 
   return (
-    <article className="group flex h-full min-h-[304px] flex-col overflow-hidden rounded-md bg-white shadow-[0_10px_28px_rgba(18,18,18,0.045)] ring-1 ring-black/[0.04] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft sm:min-h-[358px]">
+    <article className="group flex h-full min-h-[286px] flex-col overflow-hidden rounded-md bg-white shadow-[0_10px_28px_rgba(18,18,18,0.045)] ring-1 ring-black/[0.04] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft sm:min-h-[346px]">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
           <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
@@ -54,7 +56,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </Link>
 
         {ribbon ? (
-          <div className="absolute inset-x-0 top-0 flex h-7 items-center bg-[#ff4d00] px-2 text-[11px] font-black uppercase text-white shadow-sm">
+          <div className="absolute inset-x-0 top-0 flex h-6 items-center bg-[#ff4d00] px-2 text-[10px] font-black uppercase text-white shadow-sm sm:h-7 sm:text-[11px]">
             <span className="truncate">{ribbon}</span>
           </div>
         ) : null}
@@ -79,6 +81,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </div>
         ) : null}
 
+        {sizeLabel ? (
+          <div className="absolute bottom-2 right-2 rounded-full bg-white/90 px-2 py-1 text-[10px] font-black text-stone-700 shadow-sm ring-1 ring-black/5">
+            {sizeLabel}
+          </div>
+        ) : null}
+
         {!inStock ? (
           <div className="absolute inset-x-2.5 bottom-2.5">
             <Badge tone="black" className="text-[11px] ring-1 ring-black/25">
@@ -98,14 +106,30 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </h3>
         </Link>
 
-        {sizes.length > 0 ? (
-          <p className="mt-2 hidden truncate text-[11px] font-semibold text-stone-500/90 sm:block">
-            Tallas: {sizes.join(" / ")}
-            {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
-          </p>
-        ) : null}
+        <div className="mt-1.5 flex min-h-4 items-center justify-between gap-2">
+          {sizes.length > 0 ? (
+            <p className="truncate text-[10px] font-bold text-stone-500/90 sm:text-[11px]">
+              Tallas: {sizes.join(" / ")}
+              {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
+            </p>
+          ) : (
+            <span />
+          )}
+          {swatches.length > 0 ? (
+            <div className="hidden shrink-0 items-center -space-x-1 sm:flex" aria-label="Colores disponibles">
+              {swatches.map((color) => (
+                <span
+                  key={color}
+                  title={color}
+                  className="size-3 rounded-full border border-white shadow ring-1 ring-black/10"
+                  style={{ backgroundColor: colorToHex(color) }}
+                />
+              ))}
+            </div>
+          ) : null}
+        </div>
 
-        <div className="mt-2 flex items-center gap-1 text-[11px] font-bold text-stone-500">
+        <div className="mt-1.5 flex items-center gap-1 text-[10px] font-bold text-stone-500 sm:text-[11px]">
           <span className="text-amber-500" aria-hidden="true">
             &#9733;
           </span>
@@ -120,7 +144,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             href={`/productos/${product.slug}`}
             className="hidden shrink-0 rounded-full bg-stone-100/80 px-2.5 py-1.5 text-[10px] font-black uppercase text-stone-600 transition hover:bg-black hover:text-white sm:inline-flex"
           >
-            Shop
+            Ver
           </Link>
         </div>
 
@@ -130,4 +154,38 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       </div>
     </article>
   );
+}
+
+function getCompactSizeLabel(sizes: string[]) {
+  if (!sizes.length) return null;
+  const numeric = sizes
+    .map((size) => Number(size))
+    .filter((size) => Number.isFinite(size))
+    .sort((a, b) => a - b);
+
+  if (numeric.length >= 2 && numeric.length === sizes.length) {
+    return `${numeric[0]}-${numeric[numeric.length - 1]}`;
+  }
+
+  return sizes.slice(0, 2).join("/");
+}
+
+function colorToHex(color: string) {
+  const normalized = color
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+  if (normalized.includes("azul")) return "#2563eb";
+  if (normalized.includes("rosa")) return "#f9a8d4";
+  if (normalized.includes("lila") || normalized.includes("morado")) return "#a78bfa";
+  if (normalized.includes("blanco")) return "#f8fafc";
+  if (normalized.includes("negro")) return "#111827";
+  if (normalized.includes("rojo")) return "#ef4444";
+  if (normalized.includes("verde")) return "#22c55e";
+  if (normalized.includes("amarillo")) return "#facc15";
+  if (normalized.includes("beige") || normalized.includes("crema")) return "#e7d8bd";
+  if (normalized.includes("gris")) return "#9ca3af";
+  if (normalized.includes("denim")) return "#1d4ed8";
+  return "#d6d3d1";
 }

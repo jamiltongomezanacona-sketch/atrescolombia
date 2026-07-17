@@ -83,7 +83,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
           aria-modal="true"
           aria-labelledby={titleId}
           className={cn(
-            "absolute flex bg-white shadow-lift transition-transform duration-300 max-sm:inset-x-0 max-sm:bottom-0 max-sm:max-h-[88vh] max-sm:rounded-t-3xl sm:inset-y-0 sm:right-0 sm:w-[min(92vw,420px)]",
+            "absolute flex flex-col bg-white shadow-lift transition-transform duration-300 max-sm:inset-x-0 max-sm:bottom-0 max-sm:max-h-[88vh] max-sm:rounded-t-3xl sm:inset-y-0 sm:right-0 sm:w-[min(92vw,420px)]",
             open ? "translate-x-0 translate-y-0" : "max-sm:translate-y-full sm:translate-x-full",
           )}
         >

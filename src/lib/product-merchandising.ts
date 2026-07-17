@@ -9,15 +9,15 @@ export function getCommercialBadge(product: Product) {
   if (custom) return custom;
 
   const discount = getDiscountPercent(product);
-  if (discount && discount >= 30) return "Mega sale";
+  if (discount && discount >= 30) return "Mega oferta";
   if (discount && discount >= 15) return "Precio wow";
   if (product.isPromo || discount) return "Oferta flash";
   if (product.stock > 0 && product.stock <= 3) return "Ultimas piezas";
-  if (product.isNew && product.isTrending) return "Nuevo trend";
-  if (product.isNew) return "New in";
+  if (product.isNew && product.isTrending) return "Nuevo top";
+  if (product.isNew) return "Nuevo";
   if (product.isTrending) return "Top ventas";
   if (product.badge === "Oferta") return "Precio wow";
-  if (product.badge === "Nuevo") return "New in";
+  if (product.badge === "Nuevo") return "Nuevo";
   if (product.badge === "Tendencia" || product.badge === "Top") return "Top ventas";
   return product.badge;
 }
@@ -84,7 +84,7 @@ export function getTopRibbon(product: Product) {
     : 0;
 
   if (savings >= 5000) return `Ahorra ${formatShortCOP(savings)}`;
-  if (discount && discount >= 20) return `Top sale -${discount}%`;
+  if (discount && discount >= 20) return `Oferta top -${discount}%`;
   if (product.isTrending) return "Top ventas";
   return null;
 }

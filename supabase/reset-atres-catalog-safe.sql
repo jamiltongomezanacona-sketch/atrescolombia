@@ -7,11 +7,15 @@
 -- 2. Paste this full file.
 -- 3. Run it only when you are sure you want to erase catalog content.
 --
--- This script deletes:
+-- This script deletes from database:
 -- - products and related product rows
 -- - product images table rows
--- - files inside Storage bucket product-images
 -- - banners and promotions
+--
+-- Important:
+-- Supabase blocks direct SQL deletion from storage.objects.
+-- After running this SQL, delete files from the product-images bucket using:
+-- Storage -> product-images -> select folders/files -> Delete.
 --
 -- This script keeps:
 -- - auth.users
@@ -90,13 +94,8 @@ begin
     raise notice 'banners eliminados: %', deleted_count;
   end if;
 
-  if to_regclass('storage.objects') is not null then
-    execute 'delete from storage.objects where bucket_id = ''product-images''';
-    get diagnostics deleted_count = row_count;
-    raise notice 'archivos eliminados de storage.product-images: %', deleted_count;
-  end if;
-
   raise notice 'ATRES reset: catalogo limpio. Admins, negocio, configuracion y categorias se conservaron.';
+  raise notice 'Storage no se borra por SQL. Borra archivos manualmente en Storage > product-images o usa la Storage API.';
 end $$;
 
 commit;

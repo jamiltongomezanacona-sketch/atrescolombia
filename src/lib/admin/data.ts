@@ -37,6 +37,17 @@ export async function getAdminProductImages(productId: string) {
   return (data ?? []) as AdminProductImage[];
 }
 
+export async function getAdminProductImagesByProductIds(productIds: string[]) {
+  if (!hasSupabaseEnv() || !productIds.length) return [] as AdminProductImage[];
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from("product_images")
+    .select("*")
+    .in("product_id", productIds)
+    .order("display_order", { ascending: true });
+  return (data ?? []) as AdminProductImage[];
+}
+
 export async function getAdminCategories() {
   if (!hasSupabaseEnv()) return [] as AdminCategory[];
   const supabase = await createSupabaseServerClient();

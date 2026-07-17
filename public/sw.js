@@ -1,7 +1,8 @@
-const CACHE_NAME = "atres-pwa-v1";
+const CACHE_NAME = "atres-pwa-v2";
 const STATIC_CACHE = [
   "/",
   "/productos",
+  "/offline.html",
   "/icono.png",
   "/icon-192.png",
   "/icon-512.png",
@@ -12,7 +13,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
-      .then((cache) => cache.addAll(STATIC_CACHE))
+      .then((cache) => Promise.allSettled(STATIC_CACHE.map((url) => cache.add(url))))
       .then(() => self.skipWaiting()),
   );
 });
@@ -41,11 +42,13 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          }
           return response;
         })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match("/"))),
+        .catch(() => caches.match(request).then((cached) => cached || caches.match("/offline.html"))),
     );
     return;
   }

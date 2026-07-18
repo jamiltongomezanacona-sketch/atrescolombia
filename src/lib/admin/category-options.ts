@@ -14,6 +14,19 @@ export function getCategoryChildren(categories: AdminCategory[], parentId: strin
     .sort((a, b) => a.display_order - b.display_order || a.name.localeCompare(b.name, "es"));
 }
 
+export function getSubcategoryOptions(categories: AdminCategory[], categoryId: string) {
+  const children = getCategoryChildren(categories, categoryId);
+  if (children.length) {
+    return { options: children, mode: "children" as const };
+  }
+
+  const related = categories
+    .filter((category) => category.id !== categoryId)
+    .sort((a, b) => a.display_order - b.display_order || a.name.localeCompare(b.name, "es"));
+
+  return { options: related, mode: "related" as const };
+}
+
 function collectDescendantIds(categories: AdminCategory[], rootId: string) {
   const childrenByParent = new Map<string | null, string[]>();
   for (const category of categories) {

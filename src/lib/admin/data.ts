@@ -5,6 +5,7 @@ import type {
   AdminCategory,
   AdminProduct,
   AdminProductImage,
+  AdminProductVariant,
   AdminPromotion,
   StoreSettings,
 } from "@/lib/admin/types";
@@ -46,6 +47,18 @@ export async function getAdminProductImagesByProductIds(productIds: string[]) {
     .in("product_id", productIds)
     .order("display_order", { ascending: true });
   return (data ?? []) as AdminProductImage[];
+}
+
+export async function getAdminProductVariants(productId: string) {
+  if (!hasSupabaseEnv()) return [] as AdminProductVariant[];
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from("product_variants")
+    .select("id,product_id,sku,size,color,inventory,price,status,created_at,updated_at")
+    .eq("product_id", productId)
+    .order("color", { ascending: true })
+    .order("size", { ascending: true });
+  return (data ?? []) as AdminProductVariant[];
 }
 
 export async function getAdminCategories() {

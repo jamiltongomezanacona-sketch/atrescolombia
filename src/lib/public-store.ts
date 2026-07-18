@@ -72,6 +72,7 @@ type SupabaseVariantRow = {
   size: string;
   color: string;
   inventory: number;
+  status?: string | null;
 };
 
 export async function getPublicCategories(): Promise<StoreCategory[]> {
@@ -401,7 +402,7 @@ async function getVariantsByProductId(productIds: string[]) {
     const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase
       .from("product_variants")
-      .select("product_id,size,color,inventory")
+      .select("product_id,size,color,inventory,status")
       .in("product_id", productIds);
 
     if (error) {
@@ -410,6 +411,7 @@ async function getVariantsByProductId(productIds: string[]) {
     }
 
     for (const variant of (data ?? []) as SupabaseVariantRow[]) {
+      if (variant.status === "hidden") continue;
       const current = variantsByProductId.get(variant.product_id) ?? [];
       current.push(variant);
       variantsByProductId.set(variant.product_id, current);

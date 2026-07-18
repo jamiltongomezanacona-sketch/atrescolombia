@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ImageManager } from "@/components/admin/image-manager";
 import { ProductForm } from "@/components/admin/product-form";
+import { ProductVariantsEditor } from "@/components/admin/product-variants-editor";
 import { requireAdmin } from "@/lib/admin/auth";
-import { getAdminCategories, getAdminProduct, getAdminProductImages } from "@/lib/admin/data";
+import { getAdminCategories, getAdminProduct, getAdminProductImages, getAdminProductVariants } from "@/lib/admin/data";
 
 type EditProductPageProps = {
   params: Promise<{ id: string }>;
@@ -13,10 +14,11 @@ type EditProductPageProps = {
 export default async function EditProductPage({ params, searchParams }: EditProductPageProps) {
   await requireAdmin();
   const { id } = await params;
-  const [product, categories, images, query] = await Promise.all([
+  const [product, categories, images, variants, query] = await Promise.all([
     getAdminProduct(id),
     getAdminCategories(),
     getAdminProductImages(id),
+    getAdminProductVariants(id),
     searchParams,
   ]);
 
@@ -51,8 +53,16 @@ export default async function EditProductPage({ params, searchParams }: EditProd
           </p>
         ) : null}
         <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_420px] xl:items-start">
-          <div className="rounded-2xl bg-white/95 p-3 shadow-sm ring-1 ring-[#d8e7f5] md:p-5">
-            <ProductForm product={product} categories={categories} />
+          <div className="grid gap-4">
+            <div className="rounded-2xl bg-white/95 p-3 shadow-sm ring-1 ring-[#d8e7f5] md:p-5">
+              <ProductForm product={product} categories={categories} />
+            </div>
+            <ProductVariantsEditor
+              productId={product.id}
+              baseSku={product.sku}
+              basePrice={product.price}
+              initialVariants={variants}
+            />
           </div>
           <div className="xl:sticky xl:top-6">
             <ImageManager productId={product.id} images={images} />

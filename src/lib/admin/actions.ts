@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import type { ProductVariantStatus } from "@/lib/admin/types";
 
 type ActionState = {
   ok: boolean;
@@ -12,6 +13,7 @@ type ActionState = {
 
 const MAX_QUICK_PRODUCT_IMAGE_BYTES = 900 * 1024;
 const ALLOWED_QUICK_PRODUCT_IMAGE_TYPES = new Set(["image/webp", "image/jpeg", "image/png"]);
+const PRODUCT_VARIANT_STATUSES: ProductVariantStatus[] = ["available", "sold_out", "hidden", "coming_soon"];
 
 export type QuickProductImageInput = {
   storage_path: string;
@@ -20,6 +22,16 @@ export type QuickProductImageInput = {
   aspect_ratio: string;
   display_order: number;
   is_primary: boolean;
+};
+
+export type ProductVariantInput = {
+  id?: string;
+  sku: string;
+  size: string;
+  color: string;
+  inventory: number;
+  price: number | null;
+  status: ProductVariantStatus;
 };
 
 export type QuickProductInput = {
@@ -44,6 +56,7 @@ export type QuickProductInput = {
   display_order: number;
   primary_image_url: string;
   images: QuickProductImageInput[];
+  variants?: ProductVariantInput[];
 };
 
 export async function signInAdmin(_: ActionState, formData: FormData): Promise<ActionState> {
@@ -210,6 +223,8 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
   } = await supabase.auth.getUser();
 
   const businessId = await resolveLegacyBusinessId();
+  const normalizedVariants = normalizeProductVariants(input.variants ?? []);
+  const inventoryTotal = normalizedVariants.length ? sumVariantInventory(normalizedVariants) : input.inventory_total;
   const corePayload = {
     id: input.id,
     name: input.name,
@@ -219,7 +234,7 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
     previous_price: input.previous_price,
     discount_percent: input.discount_percent,
     sku: input.sku,
-    inventory_total: input.inventory_total,
+    inventory_total: inventoryTotal,
     status: input.status,
   };
   const textPayload = {
@@ -247,7 +262,7 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
     { image_url: input.primary_image_url, main_image_url: input.primary_image_url },
   ];
 
-  const variants = [
+  const payloadAttempts = [
     fullPayload,
     textPayload,
     corePayload,
@@ -261,7 +276,7 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
 
   const errors: string[] = [];
 
-  for (const payload of variants) {
+  for (const payload of payloadAttempts) {
     const { error } = await supabase.from("products").insert(payload).select("id").single();
 
     if (!error) {
@@ -269,6 +284,13 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
       if (!imageResult.ok) {
         await supabase.from("products").delete().eq("id", input.id);
         return imageResult;
+      }
+      if (normalizedVariants.length) {
+        const variantsResult = await replaceProductVariants(input.id, normalizedVariants);
+        if (!variantsResult.ok) {
+          await supabase.from("products").delete().eq("id", input.id);
+          return variantsResult;
+        }
       }
       revalidateStore();
       revalidatePath("/admin");
@@ -330,6 +352,108 @@ async function insertQuickProductImages(productId: string, images: QuickProductI
   }
 
   return { ok: true, message: "Imagenes guardadas." };
+}
+
+export async function saveProductVariants(productId: string, variants: ProductVariantInput[]): Promise<ActionState> {
+  const guard = ensureSupabase();
+  if (guard) return guard;
+
+  if (!productId) {
+    return { ok: false, message: "Producto no encontrado para guardar variantes." };
+  }
+
+  const normalizedVariants = normalizeProductVariants(variants);
+  if (!normalizedVariants.length) {
+    return { ok: false, message: "Activa variantes y genera al menos una combinacion antes de guardar." };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const replaceResult = await replaceProductVariants(productId, normalizedVariants);
+  if (!replaceResult.ok) return replaceResult;
+
+  const { error } = await supabase
+    .from("products")
+    .update({ inventory_total: sumVariantInventory(normalizedVariants), updated_by: user?.id ?? null })
+    .eq("id", productId);
+
+  if (error) {
+    return { ok: false, message: `Variantes guardadas, pero no se pudo actualizar inventario total. Detalle: ${error.message}` };
+  }
+
+  revalidateStore();
+  revalidatePath("/admin");
+  revalidatePath("/admin/productos");
+  revalidatePath(`/admin/productos/${productId}/editar`);
+  return { ok: true, message: "Variantes guardadas correctamente." };
+}
+
+async function replaceProductVariants(productId: string, variants: ProductVariantInput[]): Promise<ActionState> {
+  const supabase = await createSupabaseServerClient();
+  const normalizedVariants = normalizeProductVariants(variants);
+  const { error: deleteError } = await supabase.from("product_variants").delete().eq("product_id", productId);
+
+  if (deleteError) {
+    return { ok: false, message: `No se pudieron reemplazar variantes. Tabla: product_variants. Detalle: ${deleteError.message}` };
+  }
+
+  if (!normalizedVariants.length) {
+    return { ok: true, message: "Sin variantes para guardar." };
+  }
+
+  const payload = normalizedVariants.map((variant) => ({
+    product_id: productId,
+    sku: variant.sku,
+    size: variant.size,
+    color: variant.color,
+    inventory: variant.inventory,
+    price: variant.price,
+    status: variant.status,
+  }));
+  const { error } = await supabase.from("product_variants").insert(payload);
+
+  if (error) {
+    const sample = payload[0];
+    return {
+      ok: false,
+      message: `No se pudieron guardar variantes. Tabla: product_variants. Columnas: product_id, sku, size, color, inventory, price, status. Registro: ${sample.sku} ${sample.color}/${sample.size}. Detalle: ${error.message}. Sugerencia: ejecuta la migracion 0003_product_variants_admin.sql en Supabase.`,
+    };
+  }
+
+  return { ok: true, message: "Variantes guardadas." };
+}
+
+function normalizeProductVariants(variants: ProductVariantInput[]) {
+  const seen = new Set<string>();
+  const normalized: ProductVariantInput[] = [];
+
+  for (const variant of variants) {
+    const color = variant.color.trim();
+    const size = variant.size.trim();
+    if (!color || !size) continue;
+
+    const key = `${color.toLowerCase()}::${size.toLowerCase()}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    const inventory = Number.isFinite(Number(variant.inventory)) ? Math.max(0, Math.round(Number(variant.inventory))) : 0;
+    const price = variant.price === null || variant.price === undefined || Number(variant.price) <= 0
+      ? null
+      : Math.round(Number(variant.price));
+    const status = PRODUCT_VARIANT_STATUSES.includes(variant.status) ? variant.status : "available";
+    const sku = variant.sku.trim() || `ATRES-${color}-${size}`.replace(/\s+/g, "-").toUpperCase();
+
+    normalized.push({ sku, size, color, inventory, price, status });
+  }
+
+  return normalized;
+}
+
+function sumVariantInventory(variants: ProductVariantInput[]) {
+  return variants.reduce((total, variant) => total + Math.max(0, Math.round(Number(variant.inventory) || 0)), 0);
 }
 
 async function resolveLegacyBusinessId() {

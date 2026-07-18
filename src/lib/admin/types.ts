@@ -1,4 +1,5 @@
 export type ContentStatus = "active" | "hidden" | "archived";
+export type ProductVariantStatus = "available" | "sold_out" | "hidden" | "coming_soon";
 
 export type AdminCategory = {
   id: string;
@@ -47,6 +48,19 @@ export type AdminProductImage = {
   display_order: number;
   is_primary: boolean;
   created_at: string;
+};
+
+export type AdminProductVariant = {
+  id: string;
+  product_id: string;
+  sku: string;
+  size: string;
+  color: string;
+  inventory: number;
+  price: number | null;
+  status: ProductVariantStatus;
+  created_at: string;
+  updated_at: string;
 };
 
 export type AdminBanner = {

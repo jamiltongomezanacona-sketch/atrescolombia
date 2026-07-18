@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import { CategoryPickers } from "@/components/admin/category-pickers";
+import { ProductVariantsEditor, type ProductVariantsEditorValue } from "@/components/admin/product-variants-editor";
 import type { AdminCategory } from "@/lib/admin/types";
 import { cleanupQuickProductUploads, createQuickProduct, uploadQuickProductImage } from "@/lib/admin/actions";
 import type { QuickProductImageInput } from "@/lib/admin/actions";
@@ -51,6 +52,8 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
   const [previousPrice, setPreviousPrice] = useState("");
   const [inventory, setInventory] = useState("1");
   const [status, setStatus] = useState<Status>("hidden");
+  const [variantValue, setVariantValue] = useState<ProductVariantsEditorValue>({ enabled: false, variants: [], inventoryTotal: 0 });
+  const [variantResetKey, setVariantResetKey] = useState(0);
   const [advanced, setAdvanced] = useState(initialAdvanced);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -140,6 +143,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
     const saveStatus = mode === "draft" ? "hidden" : mode === "publish" ? "active" : status;
     const parsedPrice = Number(price);
     const parsedInventory = inventory.trim() ? Number(inventory) : 1;
+    const variantInventory = variantValue.enabled ? variantValue.inventoryTotal : null;
 
     if (!images.length) {
       failAndFocus("Sube al menos una imagen del producto.");
@@ -161,6 +165,10 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
       setMessage({ type: "error", text: "El precio anterior no es valido." });
       return;
     }
+    if (variantValue.enabled && !variantValue.variants.length) {
+      setMessage({ type: "error", text: "Genera al menos una variante o desactiva colores y tallas." });
+      return;
+    }
 
     setSaving(true);
 
@@ -178,7 +186,12 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         previous_price: previousPrice.trim() ? Math.round(Number(previousPrice)) : null,
         discount_percent: discountPercent,
         sku: advanced.sku.trim() || buildSku(name),
-        inventory_total: Number.isFinite(parsedInventory) && parsedInventory >= 0 ? Math.round(parsedInventory) : 1,
+        inventory_total:
+          variantInventory !== null
+            ? variantInventory
+            : Number.isFinite(parsedInventory) && parsedInventory >= 0
+              ? Math.round(parsedInventory)
+              : 1,
         status: saveStatus,
       };
       const productPayload = {
@@ -228,6 +241,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         ...productPayload,
         primary_image_url: primaryImage.public_url,
         images: uploadedImages,
+        variants: variantValue.enabled ? variantValue.variants : [],
       });
 
       if (!result.ok) {
@@ -275,6 +289,8 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
     setPrice("");
     setPreviousPrice("");
     setInventory("1");
+    setVariantValue({ enabled: false, variants: [], inventoryTotal: 0 });
+    setVariantResetKey((current) => current + 1);
     setAdvanced(initialAdvanced);
     setShowAdvanced(false);
     window.setTimeout(() => {
@@ -422,6 +438,13 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
           </Field>
         </div>
 
+        <ProductVariantsEditor
+          key={variantResetKey}
+          baseSku={skuPreview}
+          basePrice={Number.isFinite(parsedNumber(price)) ? Math.round(parsedNumber(price)) : 0}
+          onChange={setVariantValue}
+        />
+
         <details open={showAdvanced} onToggle={(event) => setShowAdvanced(event.currentTarget.open)} className="rounded-2xl border border-[#d8e7f5]">
           <summary className="cursor-pointer rounded-2xl bg-[#eef6ff] px-4 py-3 text-sm font-black text-[#0b1f3a]">Opciones avanzadas</summary>
           <div className="grid gap-4 p-4">
@@ -541,6 +564,11 @@ function buildSkuPreview(name: string) {
 
 function uniqueSlug(slug: string) {
   return `${slug || "producto"}-${Date.now().toString().slice(-5)}`;
+}
+
+function parsedNumber(value: string) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : 0;
 }
 
 function slugify(value: string) {

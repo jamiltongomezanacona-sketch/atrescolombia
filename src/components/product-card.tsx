@@ -126,7 +126,7 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
       <div
         className={cn(
           "flex min-w-0 flex-1 flex-col",
-          compact ? "px-1.5 pb-1.5 pt-1.5 sm:px-1.5 sm:pb-1.5" : "px-2 pb-2 pt-2 sm:px-2.5 sm:pb-2.5",
+          compact ? "px-1.5 pb-1.5 pt-1 sm:px-1.5 sm:pb-1.5" : "px-2 pb-2 pt-2 sm:px-2.5 sm:pb-2.5",
         )}
       >
         {!compact ? (
@@ -196,16 +196,11 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
           />
         </div>
 
-        <div
-          className={cn(
-            "mt-auto hidden sm:block [&_a]:rounded-[var(--radius-card)] [&_a]:bg-transparent [&_a]:shadow-none [&_button]:rounded-[var(--radius-card)] [&_button]:font-medium [&_button]:shadow-none [&_button]:hover:bg-ink [&_div]:mt-0 [&_div]:gap-1 lg:[&_div]:grid-cols-1",
-            compact
-              ? "pt-1 [&_button]:min-h-7 [&_button]:bg-ink/80 [&_button]:text-[9px] [&_button]:hover:bg-ink"
-              : "pt-1.5 [&_button]:min-h-8 [&_button]:bg-ink/90 [&_button]:text-[10px]",
-          )}
-        >
-          <ProductCardActions product={product} compact={compact} />
-        </div>
+        {!compact ? (
+          <div className="mt-auto hidden pt-1.5 sm:block [&_a]:rounded-[var(--radius-card)] [&_a]:bg-transparent [&_a]:shadow-none [&_button]:min-h-8 [&_button]:rounded-[var(--radius-card)] [&_button]:bg-ink/90 [&_button]:text-[10px] [&_button]:font-medium [&_button]:shadow-none [&_button]:hover:bg-ink [&_div]:mt-0 [&_div]:gap-1 lg:[&_div]:grid-cols-1">
+            <ProductCardActions product={product} />
+          </div>
+        ) : null}
       </div>
     </article>
   );

@@ -507,6 +507,68 @@ export async function setProductStatus(productId: string, status: "active" | "hi
   return { ok: true, message: "Estado actualizado." };
 }
 
+/** Hard-delete only archived products (DB row + storage images). Cascades variants/images. */
+export async function deleteArchivedProduct(productId: string): Promise<ActionState> {
+  const guard = ensureSupabase();
+  if (guard) return guard;
+
+  const supabase = await createSupabaseServerClient();
+  const { data: product, error: productError } = await supabase
+    .from("products")
+    .select("id, status, name")
+    .eq("id", productId)
+    .maybeSingle();
+
+  if (productError) {
+    return { ok: false, message: productError.message };
+  }
+  if (!product) {
+    return { ok: false, message: "Producto no encontrado." };
+  }
+  if (product.status !== "archived") {
+    return {
+      ok: false,
+      message: "Solo se pueden eliminar productos archivados. Archivalo primero.",
+    };
+  }
+
+  const { data: images, error: imagesError } = await supabase
+    .from("product_images")
+    .select("storage_path")
+    .eq("product_id", productId);
+
+  if (imagesError) {
+    return { ok: false, message: imagesError.message };
+  }
+
+  const storagePaths = (images ?? [])
+    .map((image) => (typeof image.storage_path === "string" ? image.storage_path.trim() : ""))
+    .filter((path) => path.length > 0 && !/^https?:\/\//i.test(path));
+
+  if (storagePaths.length) {
+    const { error: storageError } = await supabase.storage.from("product-images").remove(storagePaths);
+    if (storageError) {
+      return {
+        ok: false,
+        message: `No se pudieron borrar las imagenes del storage. Detalle: ${storageError.message}`,
+      };
+    }
+  }
+
+  const { error: deleteError } = await supabase.from("products").delete().eq("id", productId);
+  if (deleteError) {
+    return { ok: false, message: deleteError.message };
+  }
+
+  revalidateStore();
+  revalidatePath("/admin");
+  revalidatePath("/admin/productos");
+  return {
+    ok: true,
+    message: `Producto eliminado de la base de datos${product.name ? `: ${product.name}` : "."}`,
+  };
+}
+
 export async function duplicateProduct(productId: string) {
   const guard = ensureSupabase();
   if (guard) return guard;

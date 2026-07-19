@@ -1,13 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { duplicateProduct, setProductStatus } from "@/lib/admin/actions";
+import { deleteArchivedProduct, duplicateProduct, setProductStatus } from "@/lib/admin/actions";
 
-export function ProductRowActions({ productId, status }: { productId: string; status: string }) {
+type ProductRowActionsProps = {
+  productId: string;
+  status: string;
+  productName?: string;
+};
+
+export function ProductRowActions({ productId, status, productName = "este producto" }: ProductRowActionsProps) {
   const [message, setMessage] = useState("");
   const [pending, startTransition] = useTransition();
+  const isArchived = status === "archived";
 
   function run(action: "active" | "hidden" | "archived" | "duplicate") {
     if (action === "archived" && !window.confirm("Archivar este producto?")) {
@@ -16,15 +22,34 @@ export function ProductRowActions({ productId, status }: { productId: string; st
 
     startTransition(async () => {
       setMessage("");
-      const result = action === "duplicate"
-        ? await duplicateProduct(productId)
-        : await setProductStatus(productId, action);
+      const result =
+        action === "duplicate" ? await duplicateProduct(productId) : await setProductStatus(productId, action);
 
       if (!result.ok) {
         setMessage(result.message);
         return;
       }
 
+      window.location.reload();
+    });
+  }
+
+  function runDelete() {
+    const confirmed = window.confirm(
+      `Eliminar permanentemente "${productName}"?\n\nSe borrara de la base de datos junto con sus variantes e imagenes. Esta accion no se puede deshacer.`,
+    );
+    if (!confirmed) return;
+
+    const doubleCheck = window.confirm("Confirmacion final: ¿borrar de verdad este producto archivado?");
+    if (!doubleCheck) return;
+
+    startTransition(async () => {
+      setMessage("");
+      const result = await deleteArchivedProduct(productId);
+      if (!result.ok) {
+        setMessage(result.message);
+        return;
+      }
       window.location.reload();
     });
   }
@@ -60,16 +85,29 @@ export function ProductRowActions({ productId, status }: { productId: string; st
         >
           Duplicar
         </Button>
-        <Button
-          type="button"
-          disabled={pending}
-          onClick={() => run("archived")}
-          variant="ghost"
-          size="sm"
-          className="h-10 rounded-full bg-red-50 px-3 text-red-700 hover:bg-red-100"
-        >
-          Archivar
-        </Button>
+        {isArchived ? (
+          <Button
+            type="button"
+            disabled={pending}
+            onClick={runDelete}
+            variant="ghost"
+            size="sm"
+            className="h-10 rounded-full bg-red-600 px-3 text-white hover:bg-red-700 hover:text-white"
+          >
+            Eliminar
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            disabled={pending}
+            onClick={() => run("archived")}
+            variant="ghost"
+            size="sm"
+            className="h-10 rounded-full bg-red-50 px-3 text-red-700 hover:bg-red-100"
+          >
+            Archivar
+          </Button>
+        )}
       </div>
       {message ? <p className="text-xs font-bold text-red-700">{message}</p> : null}
     </div>

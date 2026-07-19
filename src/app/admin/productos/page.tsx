@@ -110,7 +110,11 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
                 </div>
               </dl>
               <div className="mt-3">
-                <ProductRowActions productId={product.id} status={safeText(product.status) || "hidden"} />
+                <ProductRowActions
+                  productId={product.id}
+                  status={safeText(product.status) || "hidden"}
+                  productName={safeText(product.name) || "Producto sin nombre"}
+                />
               </div>
             </article>
           ))}
@@ -158,7 +162,11 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
                   <td className="p-3">{safeNumber(product.inventory_total)}</td>
                   <td className="p-3">{formatDate(product.created_at)}</td>
                   <td className="p-3">
-                    <ProductRowActions productId={product.id} status={safeText(product.status) || "hidden"} />
+                    <ProductRowActions
+                  productId={product.id}
+                  status={safeText(product.status) || "hidden"}
+                  productName={safeText(product.name) || "Producto sin nombre"}
+                />
                   </td>
                 </tr>
               ))}

@@ -105,7 +105,7 @@ function HeroSection({
         <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(10,10,10,0.92)_0%,rgba(10,10,10,0.55)_48%,rgba(10,10,10,0.28)_100%)]" />
       </div>
 
-      <div className="catalog-container relative flex min-h-[72vh] max-h-[820px] flex-col justify-end pb-10 pt-24 sm:min-h-[68vh] sm:pb-14 sm:pt-28 lg:min-h-[78vh] lg:pb-16">
+      <div className="catalog-container relative flex min-h-[62vh] max-h-[820px] flex-col justify-end pb-10 pt-24 sm:min-h-[68vh] sm:pb-14 sm:pt-28 lg:min-h-[78vh] lg:pb-16">
         <div className="max-w-2xl">
           <p className="text-[11px] font-medium tracking-[0.18em] text-white/65">MODA COLOMBIANA</p>
           <h1 className="mt-3 text-5xl font-medium leading-[0.92] tracking-tight text-white sm:text-6xl lg:text-7xl">

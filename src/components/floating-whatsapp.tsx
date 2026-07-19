@@ -97,7 +97,7 @@ export function FloatingWhatsApp() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={product ? `Consultar ${product.name} por WhatsApp` : "Consultar por WhatsApp"}
-      className={`atres-interactive group fixed z-50 flex items-center overflow-hidden text-white transition duration-300 ease-out hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] ${
+      className={`atres-interactive group fixed z-20 flex items-center overflow-hidden text-white transition duration-300 ease-out hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] ${
         compactCatalog
           ? "bottom-[calc(4.85rem+env(safe-area-inset-bottom))] right-3 md:bottom-6 md:right-6"
           : "bottom-[calc(5.7rem+env(safe-area-inset-bottom))] right-3 md:bottom-6 md:right-6"

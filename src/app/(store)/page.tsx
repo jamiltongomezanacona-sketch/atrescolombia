@@ -47,7 +47,6 @@ export default async function Home() {
 
   return (
     <main>
-      <HeroSection product={heroProduct} promo={heroPromo} productCount={products.length} />
       <CategoryStrip
         categories={[
           { label: "Todo", href: "/productos" },
@@ -59,8 +58,9 @@ export default async function Home() {
           { label: "Ofertas", href: "/ofertas" },
         ]}
       />
-      <PromoGrid promos={promos} fallbackProducts={promoProducts} />
       <FlashSection products={promoProducts.length ? promoProducts : products} />
+      <HeroSection product={heroProduct} promo={heroPromo} productCount={products.length} />
+      <PromoGrid promos={promos} fallbackProducts={promoProducts} />
       <ProductRail title="Mas vendidos" href="/productos?orden=tendencias" products={bestSellers} priorityCount={4} />
       <ProductRail title="Novedades" href="/novedades" products={newProducts.length ? newProducts : products} />
       <CollectionGrid products={collections} />
@@ -95,29 +95,29 @@ function HeroSection({
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.58)_42%,rgba(0,0,0,0.2)_100%)]" />
       </div>
 
-      <div className="catalog-container relative grid min-h-[420px] content-end gap-6 pb-8 pt-20 sm:min-h-[460px] md:grid-cols-[1fr_340px] md:items-end md:pb-10 lg:min-h-[500px]">
+      <div className="catalog-container relative grid min-h-[260px] content-end gap-4 pb-5 pt-14 sm:min-h-[340px] sm:gap-6 sm:pb-8 sm:pt-20 md:grid-cols-[1fr_340px] md:items-end md:pb-10 lg:min-h-[500px]">
         <div className="max-w-2xl">
-          <div className="mb-4 flex flex-wrap gap-2">
+          <div className="mb-3 flex flex-wrap gap-1.5 sm:mb-4 sm:gap-2">
             <Badge tone="brand">Oferta Flash</Badge>
             <Badge tone="amber">Nuevo drop</Badge>
             <Badge tone="emerald">{productCount} productos</Badge>
           </div>
-          <h1 className="max-w-3xl text-4xl font-medium leading-none text-white sm:text-5xl lg:text-6xl">
+          <h1 className="max-w-3xl text-3xl font-medium leading-none text-white sm:text-5xl lg:text-6xl">
             ATRES
           </h1>
-          <p className="mt-4 max-w-xl text-base font-normal leading-7 text-white/80 sm:text-lg">
+          <p className="mt-3 max-w-xl text-sm font-normal leading-6 text-white/82 sm:mt-4 sm:text-lg sm:leading-7">
             Moda colombiana directa, colecciones listas para comprar y precios visibles para decidir rapido.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-4 flex flex-wrap gap-2 sm:mt-6 sm:gap-3">
             <Link
               href="/productos"
-              className="atres-interactive inline-flex min-h-12 items-center justify-center rounded-full bg-white px-5 text-sm font-medium !text-black hover:bg-amber-100"
+              className="atres-interactive inline-flex min-h-10 items-center justify-center rounded-full bg-white px-4 text-xs font-medium !text-black hover:bg-amber-100 sm:min-h-12 sm:px-5 sm:text-sm"
             >
               <span className="text-current">Comprar ahora</span>
             </Link>
             <Link
               href="/ofertas"
-              className="atres-interactive inline-flex min-h-12 items-center justify-center rounded-full bg-white/10 px-5 text-sm font-medium text-white ring-1 ring-white/25 hover:bg-white/20"
+              className="atres-interactive inline-flex min-h-10 items-center justify-center rounded-full bg-white/10 px-4 text-xs font-medium text-white ring-1 ring-white/25 hover:bg-white/20 sm:min-h-12 sm:px-5 sm:text-sm"
             >
               Ver ofertas
             </Link>
@@ -155,15 +155,15 @@ function CategoryStrip({
 }) {
   return (
     <nav className="sticky top-[3.5rem] z-30 border-y border-black/5 bg-white/94 shadow-sm backdrop-blur-xl lg:top-[7.9rem]" aria-label="Categorias destacadas">
-      <div className="atres-scroll catalog-container flex gap-2 overflow-x-auto py-2">
+      <div className="atres-scroll catalog-container flex gap-1.5 overflow-x-auto py-1.5 sm:gap-2 sm:py-2">
         {categories.map((category, index) => (
           <Link
             key={`${category.href}-${category.label}`}
             href={category.href}
             className={
               index === 0
-                ? "atres-interactive inline-flex min-h-9 shrink-0 items-center rounded-full bg-black px-4 text-xs font-medium !text-white"
-                : "atres-interactive inline-flex min-h-9 shrink-0 items-center rounded-full bg-stone-100 px-4 text-xs font-medium text-stone-800 hover:bg-black hover:text-white"
+                ? "atres-interactive inline-flex min-h-8 shrink-0 items-center rounded-full bg-black px-3 text-xs font-medium !text-white sm:min-h-9 sm:px-4"
+                : "atres-interactive inline-flex min-h-8 shrink-0 items-center rounded-full bg-stone-100 px-3 text-xs font-medium text-stone-800 hover:bg-black hover:text-white sm:min-h-9 sm:px-4"
             }
           >
             <span className="text-current">{category.label}</span>
@@ -199,12 +199,12 @@ function PromoGrid({
   if (!tiles.length) return null;
 
   return (
-    <section className="catalog-container grid gap-3 py-4 sm:grid-cols-3 md:py-5">
+    <section className="catalog-container grid gap-2 py-3 sm:grid-cols-3 md:gap-3 md:py-5">
       {tiles.map((tile) => (
         <Link
           key={`${tile.href}-${tile.title}`}
           href={tile.href}
-          className="group relative min-h-[132px] overflow-hidden rounded-lg bg-black p-4 text-white shadow-soft ring-1 ring-black/5"
+          className="group relative min-h-[104px] overflow-hidden rounded-lg bg-black p-3 text-white shadow-soft ring-1 ring-black/5 sm:min-h-[132px] sm:p-4"
         >
           <SafeProductImage
             src={tile.image}
@@ -214,8 +214,8 @@ function PromoGrid({
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/10" />
           <div className="relative max-w-[78%]">
-            <p className="text-lg font-medium leading-tight">{tile.title}</p>
-            <p className="mt-2 line-clamp-2 text-xs font-normal leading-5 text-white/80">{tile.subtitle}</p>
+            <p className="text-base font-medium leading-tight sm:text-lg">{tile.title}</p>
+            <p className="mt-1.5 line-clamp-2 text-xs font-normal leading-5 text-white/80 sm:mt-2">{tile.subtitle}</p>
           </div>
         </Link>
       ))}
@@ -229,11 +229,11 @@ function FlashSection({ products }: { products: Product[] }) {
   if (!flashProducts.length) return null;
 
   return (
-    <section className="catalog-container py-4">
-      <div className="mb-3 flex items-end justify-between gap-3">
+    <section className="catalog-container py-3 md:py-4">
+      <div className="mb-2.5 flex items-end justify-between gap-3 md:mb-3">
         <div>
           <p className="text-xs font-medium text-brand">Oferta Flash</p>
-          <h2 className="mt-1 text-2xl font-medium leading-none text-ink">Precios para comprar hoy</h2>
+          <h2 className="mt-1 text-xl font-medium leading-none text-ink md:text-2xl">Precios para comprar hoy</h2>
         </div>
         <Link href="/ofertas" className="text-sm font-medium text-ink underline-offset-4 hover:underline">
           Ver todo

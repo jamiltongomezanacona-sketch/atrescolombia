@@ -73,11 +73,11 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
 
   return (
     <>
-      <div className="grid gap-3 sm:grid-cols-[1fr_116px]">
+      <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_88px] lg:grid-cols-[minmax(0,1fr)_96px] lg:gap-4">
         <button
           type="button"
           onClick={() => setLightboxOpen(true)}
-          className="group relative aspect-[4/5] overflow-hidden rounded-lg bg-surface-muted text-left shadow-soft ring-1 ring-white/60"
+          className="group relative aspect-[3/4] overflow-hidden rounded-[var(--radius-card)] bg-surface-muted text-left"
           aria-label="Abrir galeria de imagenes"
         >
           <SafeProductImage
@@ -85,19 +85,20 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
             alt={productName}
             priority
             sizes="(max-width: 1024px) 100vw, 55vw"
-            className="object-cover transition duration-300 group-hover:scale-[1.015]"
+            className="object-cover transition duration-500 ease-out group-hover:scale-[1.03]"
           />
-          <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-black/72 px-3 py-1.5 text-xs font-medium text-white opacity-0 backdrop-blur transition group-hover:opacity-100">
-            Ver galeria
+          <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+          <span className="pointer-events-none absolute bottom-3 right-3 rounded-[var(--radius-card)] bg-ink/80 px-2.5 py-1 text-[11px] font-medium text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100">
+            Ampliar
           </span>
           {selectedImages.length > 1 ? (
-            <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-black shadow-sm">
-              {selectedImageIndex + 1}/{selectedImages.length}
+            <span className="pointer-events-none absolute left-3 top-3 rounded-[var(--radius-card)] bg-white/92 px-2 py-0.5 text-[11px] font-medium text-ink backdrop-blur-sm">
+              {selectedImageIndex + 1} / {selectedImages.length}
             </span>
           ) : null}
         </button>
 
-        <div className="atres-scroll grid grid-cols-5 gap-2 overflow-x-auto sm:grid-cols-1 sm:gap-3 sm:overflow-visible">
+        <div className="atres-scroll grid grid-cols-5 gap-2 overflow-x-auto sm:grid-cols-1 sm:gap-2.5 sm:overflow-visible">
           {selectedImages.map((image, index) => {
             const active = index === selectedImageIndex;
             return (
@@ -107,16 +108,16 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
                 onClick={() => setSelectedImageIndex(index)}
                 aria-label={`Ver imagen ${index + 1} de ${selectedImages.length}`}
                 aria-current={active ? "true" : undefined}
-                className={`relative aspect-square overflow-hidden rounded-lg bg-surface-muted shadow-soft transition ${
+                className={`relative aspect-square overflow-hidden rounded-[var(--radius-card)] bg-surface-muted transition ${
                   active
-                    ? "ring-2 ring-black ring-offset-2 ring-offset-white"
-                    : "ring-1 ring-white/70 hover:ring-black/35"
+                    ? "ring-2 ring-ink ring-offset-2 ring-offset-background"
+                    : "ring-1 ring-black/8 hover:ring-black/25"
                 }`}
               >
                 <SafeProductImage
                   src={image}
                   alt={`${productName} imagen ${index + 1}`}
-                  sizes="116px"
+                  sizes="96px"
                   className="object-cover"
                 />
               </button>
@@ -127,7 +128,7 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
 
       {lightboxOpen ? (
         <div
-          className="fixed inset-0 z-[90] grid place-items-center bg-black/92 p-3 text-white backdrop-blur-sm"
+          className="fixed inset-0 z-[90] grid place-items-center bg-ink/94 p-3 text-white backdrop-blur-sm"
           role="dialog"
           aria-modal="true"
           aria-label="Galeria de producto"
@@ -144,26 +145,26 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
               setLightboxOpen(false);
               setZoomed(false);
             }}
-            className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-full bg-white text-xl font-medium text-black"
+            className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-[var(--radius-card)] bg-white text-xl font-medium text-ink"
             aria-label="Cerrar galeria"
           >
-            x
+            ×
           </button>
 
           <button
             type="button"
             onClick={previousImage}
-            className="absolute left-3 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-2xl font-medium text-black md:left-6"
+            className="absolute left-3 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-[var(--radius-card)] bg-white/92 text-2xl font-medium text-ink md:left-6"
             aria-label="Imagen anterior"
           >
-            &lt;
+            ‹
           </button>
 
-          <div className="absolute left-1/2 top-4 z-10 flex -translate-x-1/2 gap-2 rounded-full bg-black/55 p-1 backdrop-blur">
+          <div className="absolute left-1/2 top-4 z-10 flex -translate-x-1/2 gap-1 rounded-[var(--radius-card)] bg-black/55 p-1 backdrop-blur">
             <button
               type="button"
               onClick={() => setZoomed(false)}
-              className={`h-9 rounded-full px-3 text-xs font-medium ${!zoomed ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
+              className={`h-9 rounded-[var(--radius-card)] px-3 text-xs font-medium ${!zoomed ? "bg-white text-ink" : "text-white hover:bg-white/10"}`}
               aria-pressed={!zoomed}
             >
               Ajustar
@@ -171,7 +172,7 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
             <button
               type="button"
               onClick={() => setZoomed(true)}
-              className={`h-9 rounded-full px-3 text-xs font-medium ${zoomed ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
+              className={`h-9 rounded-[var(--radius-card)] px-3 text-xs font-medium ${zoomed ? "bg-white text-ink" : "text-white hover:bg-white/10"}`}
               aria-pressed={zoomed}
             >
               Zoom
@@ -181,7 +182,7 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
           <button
             type="button"
             onClick={() => setZoomed((current) => !current)}
-            className={`relative h-[82vh] w-full max-w-5xl overflow-hidden rounded-xl bg-black ${zoomed ? "cursor-zoom-out overflow-auto" : "cursor-zoom-in"}`}
+            className={`relative h-[82vh] w-full max-w-5xl overflow-hidden rounded-[var(--radius-card)] bg-black ${zoomed ? "cursor-zoom-out overflow-auto" : "cursor-zoom-in"}`}
             aria-label={zoomed ? "Quitar zoom" : "Ampliar imagen"}
           >
             <SafeProductImage
@@ -195,13 +196,13 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
           <button
             type="button"
             onClick={nextImage}
-            className="absolute right-3 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-2xl font-medium text-black md:right-6"
+            className="absolute right-3 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-[var(--radius-card)] bg-white/92 text-2xl font-medium text-ink md:right-6"
             aria-label="Imagen siguiente"
           >
-            &gt;
+            ›
           </button>
 
-          <div className="atres-scroll absolute bottom-4 left-1/2 flex max-w-[92vw] -translate-x-1/2 gap-2 overflow-x-auto rounded-full bg-black/55 px-3 py-2 backdrop-blur">
+          <div className="atres-scroll absolute bottom-4 left-1/2 flex max-w-[92vw] -translate-x-1/2 gap-2 overflow-x-auto rounded-[var(--radius-card)] bg-black/55 px-2.5 py-2 backdrop-blur">
             {selectedImages.map((image, index) => (
               <button
                 key={`lightbox-${image}-${index}`}
@@ -210,12 +211,12 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
                   setSelectedImageIndex(index);
                   setZoomed(false);
                 }}
-                className={`relative size-12 shrink-0 overflow-hidden rounded-full bg-white/10 ${
+                className={`relative size-11 shrink-0 overflow-hidden rounded-[var(--radius-card)] bg-white/10 ${
                   index === selectedImageIndex ? "ring-2 ring-white" : "ring-1 ring-white/30"
                 }`}
                 aria-label={`Ver imagen ${index + 1}`}
               >
-                <SafeProductImage src={image} alt="" sizes="48px" className="object-cover" />
+                <SafeProductImage src={image} alt="" sizes="44px" className="object-cover" />
               </button>
             ))}
           </div>

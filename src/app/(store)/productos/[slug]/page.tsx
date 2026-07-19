@@ -85,68 +85,74 @@ export default async function ProductPage({ params }: ProductPageProps) {
         colors={product.colors}
         sizes={product.sizes}
       >
-        <section className="store-container grid gap-5 py-6 md:py-8 lg:grid-cols-[1.08fr_0.92fr]">
+        <section className="store-container grid gap-6 py-6 md:gap-8 md:py-8 lg:grid-cols-[1.12fr_0.88fr] lg:items-start lg:gap-10">
           <ProductGallery productName={product.name} images={product.images} />
 
-          <GlassPanel className="self-start p-5 lg:sticky lg:top-28">
-          <div className="flex flex-wrap gap-2">
-            {commercialBadge ? (
-              <Badge tone="black" className={getToneClass(commercialTone)}>
-                {commercialBadge}
-              </Badge>
-            ) : null}
-            {discount ? <Badge tone="brand" className="bg-[#ff4d00] text-white">-{discount}%</Badge> : null}
-            <Badge tone={inStock ? "metal" : "soft"}>
-              {inStock ? "Disponible" : "Agotado"}
-            </Badge>
-          </div>
+          <GlassPanel className="self-start p-5 sm:p-6 lg:sticky lg:top-28 lg:p-7">
+            <div className="flex flex-wrap gap-1.5">
+              {commercialBadge ? (
+                <Badge tone="black" className={getToneClass(commercialTone)}>
+                  {commercialBadge}
+                </Badge>
+              ) : null}
+              {discount ? <Badge tone="brand">-{discount}%</Badge> : null}
+              <Badge tone={inStock ? "metal" : "soft"}>{inStock ? "Disponible" : "Agotado"}</Badge>
+            </div>
 
-          <p className="mt-4 text-xs font-medium text-stone-500">
-            <Link href={`/categoria/${product.categorySlug}`} className="hover:text-brand">
-              {product.categoryName}
-            </Link>
-            {product.collection ? ` / ${product.collection}` : ""}
-          </p>
-
-          <h1 className="mt-2 text-3xl font-medium tracking-tight text-ink sm:text-5xl">{product.name}</h1>
-
-          <ProductPrice
-            price={product.price}
-            previousPrice={product.previousPrice}
-            size="lg"
-            className="mt-5 flex items-end gap-3"
-          />
-
-          <p className="mt-5 text-base font-normal leading-7 text-stone-700">{product.description}</p>
-          <p className="mt-2 text-sm font-medium text-[#ff4d00]">{commercialLine}</p>
-
-          {sizes.length > 0 ? (
-            <p className="mt-3 text-sm font-normal text-stone-500">
-              Tallas: {product.sizes.join(" / ")}
+            <p className="mt-4 text-[11px] font-medium tracking-wide text-ink-muted">
+              <Link href={`/categoria/${product.categorySlug}`} className="transition hover:text-brand">
+                {product.categoryName}
+              </Link>
+              {product.collection ? ` / ${product.collection}` : ""}
             </p>
-          ) : null}
 
-          <ProductActions product={product} whatsapp={settings?.whatsapp} />
+            <h1 className="mt-2 text-3xl font-medium tracking-tight text-ink sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
+              {product.name}
+            </h1>
 
-          <div className="mt-5 grid gap-2 rounded-lg bg-white/70 p-4 text-sm font-normal text-stone-700 ring-1 ring-black/5">
-            <p className="font-medium text-ink">Guia rapida</p>
-            <p>Disponibilidad: {product.stock} unidades</p>
-            {settings?.shippingText ? <p>{settings.shippingText}</p> : (
-              <p>Guia de tallas: elige tu talla habitual; fit regular salvo indicacion.</p>
-            )}
-            {settings?.promoMessage ? <p className="text-brand">{settings.promoMessage}</p> : null}
-          </div>
+            <ProductPrice
+              price={product.price}
+              previousPrice={product.previousPrice}
+              size="lg"
+              className="mt-4 flex items-end gap-3"
+            />
 
-          <div className="mt-5">
-            <p className="mb-2 text-xs font-medium text-stone-500">Detalles</p>
-            <ul className="grid gap-2 text-sm font-normal text-stone-700">
-              {visibleDetails.map((detail) => (
-                <li key={detail} className="rounded-lg bg-white/70 px-3 py-2 ring-1 ring-black/5">
-                  {detail}
-                </li>
-              ))}
-            </ul>
-          </div>
+            <p className="mt-5 text-sm font-normal leading-7 text-ink-muted sm:text-base sm:leading-7">
+              {product.description}
+            </p>
+            <p className="mt-2 text-sm font-medium text-brand">{commercialLine}</p>
+
+            {sizes.length > 0 ? (
+              <p className="mt-3 text-sm font-normal text-ink-muted">
+                Tallas disponibles: {product.sizes.join(" · ")}
+              </p>
+            ) : null}
+
+            <ProductActions product={product} whatsapp={settings?.whatsapp} />
+
+            <div className="mt-6 border-t border-black/[0.06] pt-5 text-sm font-normal text-ink-muted">
+              <p className="text-[11px] font-medium tracking-wide text-ink">Guia rapida</p>
+              <div className="mt-2.5 grid gap-1.5">
+                <p>Disponibilidad: {product.stock} unidades</p>
+                {settings?.shippingText ? (
+                  <p>{settings.shippingText}</p>
+                ) : (
+                  <p>Guia de tallas: elige tu talla habitual; fit regular salvo indicacion.</p>
+                )}
+                {settings?.promoMessage ? <p className="font-medium text-brand">{settings.promoMessage}</p> : null}
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <p className="mb-2.5 text-[11px] font-medium tracking-wide text-ink-muted">Detalles</p>
+              <ul className="grid gap-1.5 text-sm font-normal text-ink-muted">
+                {visibleDetails.map((detail) => (
+                  <li key={detail} className="border-b border-black/[0.05] py-2 last:border-b-0">
+                    {detail}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </GlassPanel>
         </section>
       </ProductSelectionProvider>

@@ -98,32 +98,36 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
   }
 
   return (
-    <div className="mt-5 space-y-5">
+    <div className="mt-6 space-y-6">
       <OptionGroup title="Color" value={color} items={product.colors} onChange={setColor} />
       <OptionGroup title="Talla" value={size} items={product.sizes} onChange={setSize} />
 
       <div>
-        <p className="mb-2 text-xs font-medium text-stone-500">Cantidad</p>
-        <div className="inline-grid grid-cols-[44px_54px_44px] rounded-full bg-stone-100 text-center" role="group" aria-label="Cantidad">
+        <p className="mb-2 text-[11px] font-medium tracking-wide text-ink-muted">Cantidad</p>
+        <div
+          className="inline-grid grid-cols-[44px_52px_44px] overflow-hidden rounded-[var(--radius-card)] bg-surface-muted text-center ring-1 ring-black/8"
+          role="group"
+          aria-label="Cantidad"
+        >
           <button
             type="button"
             aria-label="Reducir cantidad"
-            className="h-11 font-medium"
+            className="h-11 font-medium text-ink transition hover:bg-white"
             onClick={() => setQuantity((current) => Math.max(1, current - 1))}
           >
-            -
+            −
           </button>
           <span
             aria-live="polite"
             aria-atomic="true"
-            className="flex h-11 items-center justify-center bg-white text-sm font-medium"
+            className="flex h-11 items-center justify-center bg-surface text-sm font-medium text-ink"
           >
             {quantity}
           </span>
           <button
             type="button"
             aria-label="Aumentar cantidad"
-            className="h-11 font-medium"
+            className="h-11 font-medium text-ink transition hover:bg-white"
             onClick={() => setQuantity((current) => Math.min(9, current + 1))}
           >
             +
@@ -131,22 +135,11 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
         </div>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
-        <Button
-          type="button"
-          onClick={() => addToCart(false)}
-          className="rounded-full"
-          disabled={outOfStock}
-        >
+      <div className="grid gap-2.5 sm:grid-cols-[1fr_1fr_auto]">
+        <Button type="button" onClick={() => addToCart(false)} disabled={outOfStock}>
           Agregar al carrito
         </Button>
-        <Button
-          type="button"
-          variant="brand"
-          onClick={() => addToCart(true)}
-          className="rounded-full"
-          disabled={outOfStock}
-        >
+        <Button type="button" variant="brand" onClick={() => addToCart(true)} disabled={outOfStock}>
           Comprar
         </Button>
         <FavoriteButton
@@ -161,7 +154,7 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-medium text-white transition hover:bg-[#1ebe57]"
+          className="inline-flex h-12 w-full items-center justify-center rounded-[var(--radius-card)] bg-[#25D366] px-4 text-sm font-medium text-white transition hover:bg-[#1ebe57]"
         >
           Consultar por WhatsApp
         </a>
@@ -216,7 +209,7 @@ function OptionGroup({
 }) {
   return (
     <div>
-      <p className="mb-2 text-xs font-medium text-stone-500">{title}</p>
+      <p className="mb-2 text-[11px] font-medium tracking-wide text-ink-muted">{title}</p>
       <div className="flex flex-wrap gap-2" role="group" aria-label={title}>
         {items.map((item) => (
           <button
@@ -224,10 +217,10 @@ function OptionGroup({
             type="button"
             aria-pressed={value === item}
             onClick={() => onChange(item)}
-            className={`min-h-11 rounded-full border px-3 py-2 text-sm font-normal transition ${
+            className={`min-h-10 min-w-10 rounded-[var(--radius-card)] px-3 py-2 text-sm font-normal transition ${
               value === item
-                ? "border-black bg-black text-white"
-                : "border-black/10 bg-white text-stone-700 hover:border-black"
+                ? "bg-ink text-white"
+                : "bg-surface text-ink-muted ring-1 ring-black/10 hover:bg-surface-muted hover:text-ink"
             }`}
           >
             {item}

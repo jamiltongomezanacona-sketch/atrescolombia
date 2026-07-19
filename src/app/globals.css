@@ -295,7 +295,7 @@ h6 {
   width: 100%;
   max-width: none;
   margin-inline: 0;
-  padding-inline: 0.75rem;
+  padding-inline: 0.5rem;
 }
 
 .catalog-container {
@@ -315,7 +315,7 @@ h6 {
   }
 
   .header-container {
-    padding-inline: 1rem;
+    padding-inline: 0.75rem;
   }
 
   .catalog-container {
@@ -325,7 +325,7 @@ h6 {
 
 @media (min-width: 1024px) {
   .header-container {
-    padding-inline: 1.25rem;
+    padding-inline: 0.75rem;
   }
 
   .catalog-container {

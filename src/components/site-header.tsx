@@ -41,8 +41,8 @@ export async function SiteHeader() {
       </div>
 
       <div className="hidden header-container py-1.5 lg:block lg:py-2">
-        <div className="flex items-center gap-2 lg:grid lg:grid-cols-[auto_minmax(420px,1fr)_auto] lg:gap-5">
-          <div className="flex min-w-0 items-center gap-2">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 xl:gap-4">
+          <div className="flex shrink-0 items-center gap-2">
             <Suspense fallback={<div className="h-9 w-9 rounded-[var(--radius-card)] bg-white/10 lg:hidden" />}>
               <MobileNavDrawer items={navItems} />
             </Suspense>
@@ -50,11 +50,11 @@ export async function SiteHeader() {
           </div>
 
           <SearchBox
-            className="hidden w-full max-w-4xl lg:mx-auto lg:block"
+            className="hidden min-w-0 w-full lg:block"
             placeholder="Buscar vestidos, jeans, pijamas, uniformes..."
           />
 
-          <div className="ml-auto flex items-center gap-1">
+          <div className="flex shrink-0 items-center justify-end">
             <HeaderActions />
           </div>
         </div>

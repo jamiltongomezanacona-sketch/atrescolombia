@@ -87,33 +87,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <main>
-      <section className="catalog-container products-catalog-container pb-3 pt-0.5 md:pb-3 md:pt-1 lg:pb-4 lg:pt-1">
-        <nav className="mb-0.5 hidden text-[11px] font-normal text-ink-muted md:block" aria-label="Ruta de navegacion">
-          <Link href="/" className="hover:text-ink">
-            Inicio
-          </Link>
-          <span className="mx-1.5 text-stone-300">/</span>
-          <span className="text-ink">Productos</span>
-          {activeCategory ? (
-            <>
-              <span className="mx-1.5 text-stone-300">/</span>
-              <span className="text-ink">{activeCategory.shortName}</span>
-            </>
-          ) : null}
-        </nav>
-
-        <div className="sr-only md:not-sr-only md:mb-1.5 md:flex md:items-baseline md:justify-between md:gap-2">
-          <h1 className="text-lg font-medium tracking-tight text-ink sm:text-xl lg:text-[1.35rem]">
-            {pageTitle}
-          </h1>
-          <p className="hidden text-xs font-normal text-ink-muted md:block lg:hidden">
-            {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
-          </p>
-        </div>
-
-        <div className="sticky top-[3.5rem] z-30 -mx-4 mb-1.5 border-y border-black/[0.06] bg-background/95 px-4 py-1 backdrop-blur-xl sm:mx-0 sm:rounded-[var(--radius-card)] sm:border sm:bg-surface/90 sm:py-1 sm:shadow-soft lg:static lg:mb-1.5 lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
+      <section className="catalog-container products-catalog-container pb-3 pt-1 md:pb-4 md:pt-1.5 lg:pb-5 lg:pt-2">
+        {/* Mobile/tablet only: desktop already has HeaderNav departments */}
+        <div className="sticky top-[3.5rem] z-30 -mx-4 mb-1.5 border-y border-black/[0.06] bg-background/95 px-4 py-1 backdrop-blur-xl sm:mx-0 sm:mb-2 sm:rounded-[var(--radius-card)] sm:border sm:bg-surface/90 sm:py-1 sm:shadow-soft lg:hidden">
           <nav
-            className="flex gap-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] lg:gap-1 [&::-webkit-scrollbar]:hidden"
+            className="flex gap-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Departamentos del catalogo"
           >
             {categoryTabs.map((tab) => (
@@ -121,7 +99,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 key={tab.label}
                 href={tab.href}
                 aria-current={tab.active ? "page" : undefined}
-                className={`inline-flex h-7 shrink-0 items-center rounded-[var(--radius-card)] px-2.5 text-[11px] font-medium transition sm:h-7 sm:text-xs lg:h-7 lg:px-2.5 lg:text-[12px] ${
+                className={`inline-flex h-7 shrink-0 items-center rounded-[var(--radius-card)] px-2.5 text-[11px] font-medium transition sm:h-7 sm:text-xs ${
                   tab.active
                     ? "bg-ink text-white"
                     : "bg-surface text-ink-muted ring-1 ring-black/8 hover:bg-surface-muted hover:text-ink"
@@ -134,8 +112,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
 
         <div className="min-w-0">
-          <div className="mb-1.5 flex flex-wrap items-center justify-between gap-1.5 border-b border-black/[0.06] pb-1.5 sm:mb-2">
-            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+          {/* Single chrome band: title + filters + sort */}
+          <div className="mb-2 flex flex-col gap-1.5 border-b border-black/[0.06] pb-2 sm:mb-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3 lg:mb-3 lg:pb-2.5">
+            <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-2.5">
+              <h1 className="shrink-0 text-base font-medium tracking-tight text-ink sm:text-lg lg:text-xl">
+                {pageTitle}
+              </h1>
               <FilterDrawer filters={filters} options={options} />
               <p className="text-xs font-medium text-ink-muted">
                 {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
@@ -146,8 +128,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 ) : null}
               </p>
             </div>
-            <div className="flex gap-1.5 overflow-x-auto pb-0 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible">
-              <span className="hidden h-7 shrink-0 items-center px-1 text-[10px] font-medium text-ink-muted md:inline-flex">
+
+            <div
+              className="flex items-center gap-0.5 overflow-x-auto pb-0 [scrollbar-width:none] sm:overflow-visible [&::-webkit-scrollbar]:hidden"
+              aria-label="Ordenar catalogo"
+            >
+              <span className="hidden shrink-0 pr-1.5 text-[10px] font-medium uppercase tracking-wide text-ink-muted/70 md:inline">
                 Ordenar
               </span>
               {orderLinks.map((link) => {
@@ -156,10 +142,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   <Link
                     key={link.value}
                     href={buildCatalogQuery({ ...filters, orden: link.value })}
-                    className={`inline-flex h-7 shrink-0 items-center rounded-[var(--radius-card)] px-2 text-[10px] font-medium transition sm:px-2.5 sm:text-[11px] ${
+                    className={`inline-flex h-7 shrink-0 items-center px-2 text-[11px] font-medium transition sm:h-8 sm:px-2.5 sm:text-xs ${
                       active
-                        ? "bg-ink text-white"
-                        : "bg-transparent text-ink-muted ring-1 ring-black/8 hover:bg-surface-muted hover:text-ink"
+                        ? "text-ink underline decoration-brand decoration-2 underline-offset-4"
+                        : "text-ink-muted hover:text-ink"
                     }`}
                     aria-current={active ? "page" : undefined}
                   >

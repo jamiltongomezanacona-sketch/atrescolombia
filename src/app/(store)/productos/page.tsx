@@ -143,11 +143,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 aria-current={tab.active ? "page" : undefined}
                 className={`inline-flex h-8 shrink-0 items-center rounded-full px-3 text-xs font-medium transition ${
                   tab.active
-                    ? "bg-black text-white shadow-sm"
+                    ? "bg-black !text-white shadow-sm"
                     : "bg-white text-stone-700 ring-1 ring-black/5 hover:bg-stone-100"
                 }`}
               >
-                {tab.label}
+                <span className="text-current">{tab.label}</span>
               </Link>
             ))}
           </nav>
@@ -196,12 +196,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                       href={buildCatalogQuery({ ...filters, orden: link.value })}
                       className={`shrink-0 rounded-full px-2.5 py-1.5 text-[11px] font-medium transition sm:px-3 sm:text-xs ${
                         active
-                          ? "bg-black text-white shadow-sm"
+                          ? "bg-black !text-white shadow-sm"
                           : "bg-white/75 text-stone-700 ring-1 ring-black/5 hover:bg-white"
                       }`}
                       aria-current={active ? "page" : undefined}
                     >
-                      {link.label}
+                      <span className="text-current">{link.label}</span>
                     </Link>
                   );
                 })}

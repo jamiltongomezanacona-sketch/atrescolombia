@@ -37,11 +37,11 @@ export function QuickFilters({ items, className }: QuickFiltersProps) {
               className={cn(
                 "inline-flex min-h-9 shrink-0 items-center rounded-full px-3 text-xs font-medium transition sm:min-h-11 sm:px-4 sm:text-sm",
                 active
-                  ? "bg-black text-white shadow-sm"
+                  ? "bg-black !text-white shadow-sm"
                   : "bg-white text-stone-800 ring-1 ring-black/5 hover:bg-stone-100",
               )}
             >
-              {item.label}
+              <span className="text-current">{item.label}</span>
             </Link>
           );
         })}

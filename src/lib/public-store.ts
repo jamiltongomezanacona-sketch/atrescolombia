@@ -68,10 +68,12 @@ type SupabaseProductRow = {
 
 type SupabaseImageRow = {
   product_id: string;
-  public_url: string;
-  alt: string;
-  display_order: number;
-  is_primary: boolean;
+  public_url?: string | null;
+  image_url?: string | null;
+  storage_path?: string | null;
+  alt?: string | null;
+  display_order?: number | null;
+  is_primary?: boolean | null;
 };
 
 type SupabaseVariantRow = {
@@ -388,11 +390,23 @@ async function getImagesByProductId(productIds: string[]) {
 
   try {
     const supabase = await createSupabaseServerClient();
-    const { data, error } = await supabase
+    const imageResult = await supabase
       .from("product_images")
-      .select("product_id,public_url,alt,display_order,is_primary")
+      .select("product_id,public_url,image_url,storage_path,alt,display_order,is_primary")
       .in("product_id", productIds)
       .order("display_order", { ascending: true });
+    let data: unknown[] | null = imageResult.data;
+    let error = imageResult.error;
+
+    if (error && /column .* does not exist/i.test(error.message)) {
+      const fallback = await supabase
+        .from("product_images")
+        .select("product_id,public_url,alt,display_order,is_primary")
+        .in("product_id", productIds)
+        .order("display_order", { ascending: true });
+      data = fallback.data;
+      error = fallback.error;
+    }
 
     if (error) {
       console.error("ATRES public product images query failed:", error.message);
@@ -479,9 +493,9 @@ function mapProductRow(
   const sortedImages = [...images].sort((a, b) => {
     if (a.is_primary) return -1;
     if (b.is_primary) return 1;
-    return a.display_order - b.display_order;
+    return (a.display_order ?? 0) - (b.display_order ?? 0);
   });
-  const imageUrls = sortedImages.map((image) => image.public_url);
+  const imageUrls = sortedImages.map(resolveProductImageUrl).filter((image): image is string => Boolean(image));
   const legacyImageUrls = [
     row.image_url,
     row.main_image_url,
@@ -513,6 +527,22 @@ function mapProductRow(
     details: row.tags?.length ? row.tags : ["Producto ATRES", "Disponible en tienda"],
     collection: row.collection || "ATRES",
   };
+}
+
+function resolveProductImageUrl(image: SupabaseImageRow) {
+  const directUrl = image.public_url?.trim() || image.image_url?.trim();
+  if (directUrl) return directUrl;
+
+  const storagePath = image.storage_path?.trim();
+  if (!storagePath) return null;
+  if (/^https?:\/\//i.test(storagePath)) return storagePath;
+
+  const encodedPath = storagePath
+    .split("/")
+    .map((part) => encodeURIComponent(part))
+    .join("/");
+
+  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/product-images/${encodedPath}`;
 }
 
 function categoryMatches(requestedSlug: string, productSlug: string, productName: string) {

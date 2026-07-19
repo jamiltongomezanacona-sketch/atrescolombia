@@ -226,6 +226,15 @@ h6 {
   }
 }
 
+@keyframes atres-reel-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .atres-skeleton {
   position: relative;
   overflow: hidden;
@@ -245,6 +254,16 @@ h6 {
   animation: atres-pop 320ms ease;
 }
 
+.atres-photo-reel-track {
+  animation: atres-reel-scroll 34s linear infinite;
+  will-change: transform;
+}
+
+.atres-photo-reel-track:hover,
+.atres-photo-reel-track:focus-within {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -258,6 +277,11 @@ h6 {
   .atres-interactive:hover,
   .atres-interactive:active {
     transform: none;
+  }
+
+  .atres-photo-reel-track {
+    animation: none !important;
+    transform: none !important;
   }
 }
 

@@ -103,7 +103,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           ) : null}
         </nav>
 
-        <div className="mb-2 flex items-end justify-between gap-3">
+        <div className="sr-only md:not-sr-only md:mb-2 md:flex md:items-end md:justify-between md:gap-3">
           <h1 className="text-2xl font-medium tracking-tight text-ink sm:text-3xl">
             {pageTitle}
           </h1>
@@ -112,7 +112,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </p>
         </div>
 
-        <div className="sticky top-[3.45rem] z-30 -mx-3 mb-2 border-y border-black/5 bg-background/95 px-3 py-1.5 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:top-[7.25rem] lg:static lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
+        <div className="sticky top-[4.35rem] z-30 -mx-3 mb-2 border-y border-black/5 bg-background/95 px-3 py-1.5 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:top-[7.25rem] lg:static lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
           <form
             action="/productos"
             method="get"

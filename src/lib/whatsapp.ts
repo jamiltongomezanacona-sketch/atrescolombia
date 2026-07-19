@@ -1,5 +1,13 @@
+/** Fallback used when store_settings.whatsapp is empty (matches public floating CTA). */
+export const DEFAULT_STORE_WHATSAPP = "573232122486";
+
 export function normalizeWhatsappNumber(value: string) {
   return value.replace(/\D/g, "");
+}
+
+export function resolveStoreWhatsapp(value?: string | null) {
+  const trimmed = value?.trim();
+  return trimmed || DEFAULT_STORE_WHATSAPP;
 }
 
 export function buildWhatsAppUrl(phone: string, message: string) {

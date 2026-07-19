@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FavoriteButton } from "@/components/favorite-button";
 import { useProductSelection } from "@/components/product-selection-context";
 import { Button } from "@/components/ui/button";
-import { buildProductWhatsAppMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
+import { buildProductWhatsAppMessage, buildWhatsAppUrl, resolveStoreWhatsapp } from "@/lib/whatsapp";
 import type { Product } from "@/lib/store-data";
 
 type ProductActionsProps = {
@@ -39,15 +39,13 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
   const [message, setMessage] = useState("");
   const productUrl = getProductUrl(product.slug);
   const effectiveSelectedImage = getEffectiveProductImage(selectedImage, product);
-  const whatsappUrl = whatsapp
-    ? buildWhatsAppUrl(
-        whatsapp,
-        buildProductWhatsAppMessage(product, size, color, {
-          productUrl,
-          imageUrl: effectiveSelectedImage,
-        }),
-      )
-    : null;
+  const whatsappUrl = buildWhatsAppUrl(
+    resolveStoreWhatsapp(whatsapp),
+    buildProductWhatsAppMessage(product, size, color, {
+      productUrl,
+      imageUrl: effectiveSelectedImage,
+    }),
+  );
   const outOfStock = product.stock <= 0;
 
   function addToCart(goToCart = false) {

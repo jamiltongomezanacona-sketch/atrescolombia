@@ -2,9 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import { buildWhatsAppUrl } from "@/lib/whatsapp";
-
-const ATRES_WHATSAPP_PHONE = "573232122486";
+import { buildWhatsAppUrl, resolveStoreWhatsapp } from "@/lib/whatsapp";
 
 type ProductContext = {
   name: string;
@@ -82,10 +80,13 @@ export function FloatingWhatsApp() {
     };
   }, [pathname]);
 
-  const whatsappUrl = useMemo(
-    () => buildWhatsAppUrl(ATRES_WHATSAPP_PHONE, buildMessage(product)) ?? "#",
-    [product],
-  );
+  const whatsappUrl = useMemo(() => {
+    const configured =
+      typeof document !== "undefined"
+        ? document.querySelector<HTMLElement>("[data-atres-whatsapp]")?.dataset.atresWhatsapp
+        : undefined;
+    return buildWhatsAppUrl(resolveStoreWhatsapp(configured), buildMessage(product)) ?? "#";
+  }, [product]);
 
   return (
     <a

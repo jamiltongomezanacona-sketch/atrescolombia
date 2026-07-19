@@ -17,6 +17,7 @@ import {
 import { getPublicStoreSettings } from "@/lib/public-settings";
 import { products, getDiscountPercent } from "@/lib/store-data";
 import { getPublicProduct, getPublicProducts, getPublicRelatedProducts } from "@/lib/public-store";
+import { resolveStoreWhatsapp } from "@/lib/whatsapp";
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
@@ -128,7 +129,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </p>
             ) : null}
 
-            <ProductActions product={product} whatsapp={settings?.whatsapp} />
+            <ProductActions product={product} whatsapp={resolveStoreWhatsapp(settings?.whatsapp)} />
 
             <div className="mt-6 border-t border-black/[0.06] pt-5 text-sm font-normal text-ink-muted">
               <p className="text-[11px] font-medium tracking-wide text-ink">Guia rapida</p>

@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { MouseEvent } from "react";
-import { buildProductWhatsAppMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
+import { buildProductWhatsAppMessage, buildWhatsAppUrl, resolveStoreWhatsapp } from "@/lib/whatsapp";
 import type { Product } from "@/lib/store-data";
 
 type ProductCardActionsProps = {
   product: Pick<Product, "slug" | "name" | "price" | "image" | "images" | "colors" | "sizes" | "stock">;
   whatsapp?: string;
+  compact?: boolean;
 };
 
 type CartItem = {
@@ -32,36 +33,33 @@ function firstMeaningful(values: string[], fallback: string) {
   return values.find((value) => value.trim()) ?? fallback;
 }
 
-export function ProductCardActions({ product, whatsapp }: ProductCardActionsProps) {
+export function ProductCardActions({ product, whatsapp, compact = false }: ProductCardActionsProps) {
   const [added, setAdded] = useState(false);
   const outOfStock = product.stock <= 0;
   const color = firstMeaningful(product.colors, "Unico");
   const size = firstMeaningful(product.sizes, "Unica");
   const productHref = `/productos/${product.slug}`;
   const imageUrl = product.image || product.images.find(Boolean) || "";
-  const whatsappUrl = whatsapp
-    ? buildWhatsAppUrl(
-        whatsapp,
-        buildProductWhatsAppMessage(product, size, color, {
-          imageUrl,
-        }),
-      )
-    : null;
+  const resolvedWhatsapp = resolveStoreWhatsapp(whatsapp);
+  const whatsappUrl = buildWhatsAppUrl(
+    resolvedWhatsapp,
+    buildProductWhatsAppMessage(product, size, color, {
+      imageUrl,
+    }),
+  );
 
   function openWhatsapp(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     event.stopPropagation();
 
     const source = document.querySelector<HTMLElement>("[data-atres-whatsapp]");
-    const phone = source?.dataset.atresWhatsapp ?? "";
-    const url = phone
-      ? buildWhatsAppUrl(
-          phone,
-          buildProductWhatsAppMessage(product, size, color, {
-            imageUrl,
-          }),
-        )
-      : null;
+    const phone = resolveStoreWhatsapp(source?.dataset.atresWhatsapp ?? whatsapp);
+    const url = buildWhatsAppUrl(
+      phone,
+      buildProductWhatsAppMessage(product, size, color, {
+        imageUrl,
+      }),
+    );
 
     if (url) {
       window.open(url, "_blank", "noopener,noreferrer");
@@ -95,14 +93,20 @@ export function ProductCardActions({ product, whatsapp }: ProductCardActionsProp
   }
 
   return (
-    <div className="mt-2 grid grid-cols-[38px_1fr] gap-1.5 sm:grid-cols-[36px_36px_1fr] lg:mt-2 lg:grid-cols-[32px_minmax(0,1fr)] lg:gap-1.5">
+    <div
+      className={
+        compact
+          ? "mt-0 grid grid-cols-[28px_minmax(0,1fr)] gap-1 lg:grid-cols-1"
+          : "mt-2 grid grid-cols-[38px_1fr] gap-1.5 sm:grid-cols-[36px_36px_1fr] lg:mt-2 lg:grid-cols-[32px_minmax(0,1fr)] lg:gap-1.5"
+      }
+    >
       {whatsappUrl ? (
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Consultar ${product.name} por WhatsApp`}
-          className="atres-interactive grid min-h-9 place-items-center rounded-full bg-[#25D366] text-white shadow-sm hover:bg-[#1ebe57] lg:hidden"
+          className={`atres-interactive grid place-items-center rounded-full bg-[#25D366] text-white shadow-sm hover:bg-[#1ebe57] lg:hidden ${compact ? "min-h-7" : "min-h-9"}`}
           onClick={(event) => event.stopPropagation()}
         >
           <WhatsAppIcon />
@@ -112,19 +116,21 @@ export function ProductCardActions({ product, whatsapp }: ProductCardActionsProp
           type="button"
           aria-label={`Ver consulta por WhatsApp para ${product.name}`}
           onClick={openWhatsapp}
-          className="atres-interactive grid min-h-9 place-items-center rounded-full bg-[#25D366] text-white shadow-sm hover:bg-[#1ebe57] lg:hidden"
+          className={`atres-interactive grid place-items-center rounded-full bg-[#25D366] text-white shadow-sm hover:bg-[#1ebe57] lg:hidden ${compact ? "min-h-7" : "min-h-9"}`}
         >
           <WhatsAppIcon />
         </button>
       )}
 
-      <Link
-        href={productHref}
-        aria-label={`Ver detalles de ${product.name}`}
-        className="atres-interactive hidden min-h-9 place-items-center rounded-full bg-stone-100 text-stone-700 hover:bg-black hover:text-white sm:grid lg:min-h-9"
-      >
-        <EyeIcon />
-      </Link>
+      {!compact ? (
+        <Link
+          href={productHref}
+          aria-label={`Ver detalles de ${product.name}`}
+          className="atres-interactive hidden min-h-9 place-items-center rounded-full bg-stone-100 text-stone-700 hover:bg-black hover:text-white sm:grid lg:min-h-9"
+        >
+          <EyeIcon />
+        </Link>
+      ) : null}
 
       <button
         type="button"
@@ -132,7 +138,9 @@ export function ProductCardActions({ product, whatsapp }: ProductCardActionsProp
         aria-label={outOfStock ? `${product.name} agotado` : `Agregar ${product.name} al carrito`}
         aria-live="polite"
         onClick={addToCart}
-        className={`atres-interactive inline-flex min-h-9 items-center justify-center rounded-full px-2 text-[10px] font-medium text-white hover:bg-stone-800 disabled:bg-stone-300 disabled:text-stone-500 sm:text-[11px] lg:min-h-9 lg:px-3 lg:text-[11px] ${added ? "atres-pop bg-emerald-600" : "bg-black"}`}
+        className={`atres-interactive inline-flex items-center justify-center rounded-full px-2 font-medium text-white hover:bg-stone-800 disabled:bg-stone-300 disabled:text-stone-500 ${
+          compact ? "min-h-7 text-[9px] lg:min-h-7 lg:px-2 lg:text-[10px]" : "min-h-9 text-[10px] sm:text-[11px] lg:min-h-9 lg:px-3 lg:text-[11px]"
+        } ${added ? "atres-pop bg-emerald-600" : "bg-black"}`}
       >
         {outOfStock ? "Agotado" : added ? "Agregado" : "Agregar"}
       </button>

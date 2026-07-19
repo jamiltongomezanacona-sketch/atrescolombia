@@ -4,6 +4,7 @@ import { ProductCardActions } from "@/components/product-card-actions";
 import { SafeProductImage } from "@/components/safe-product-image";
 import { Badge } from "@/components/ui/badge";
 import { ProductPrice } from "@/components/ui/product-price";
+import { cn } from "@/lib/cn";
 import {
   getCommercialBadge,
   getCommercialTone,
@@ -15,6 +16,8 @@ import { getDiscountPercent, type Product } from "@/lib/store-data";
 type ProductCardProps = {
   product: Product;
   priority?: boolean;
+  /** Denser commercial layout for catalog grids only. */
+  compact?: boolean;
 };
 
 function meaningfulSizes(sizes: string[]) {
@@ -24,7 +27,7 @@ function meaningfulSizes(sizes: string[]) {
   });
 }
 
-export function ProductCard({ product, priority = false }: ProductCardProps) {
+export function ProductCard({ product, priority = false, compact = false }: ProductCardProps) {
   const discount = getDiscountPercent(product);
   const previousPrice =
     product.previousPrice && product.previousPrice > product.price ? product.previousPrice : null;
@@ -39,7 +42,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const salesCount = getSalesCount(product);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface transition duration-300 hover:-translate-y-0.5 hover:shadow-soft">
+    <article
+      className={cn(
+        "group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface transition duration-300",
+        compact ? "hover:shadow-soft" : "hover:-translate-y-0.5 hover:shadow-soft",
+      )}
+    >
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
           <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
@@ -55,100 +63,148 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </Link>
 
         {ribbon ? (
-          <div className="absolute left-2 top-2 max-w-[70%] rounded-[var(--radius-card)] bg-brand px-2 py-0.5 text-[10px] font-medium text-white sm:text-[11px]">
+          <div
+            className={cn(
+              "absolute left-1.5 top-1.5 max-w-[72%] rounded-[var(--radius-card)] bg-brand font-medium text-white",
+              compact ? "px-1.5 py-px text-[9px] sm:text-[10px]" : "left-2 top-2 px-2 py-0.5 text-[10px] sm:text-[11px]",
+            )}
+          >
             <span className="truncate">{ribbon}</span>
           </div>
         ) : null}
 
-        <div className="absolute right-1.5 top-1.5 opacity-90 transition group-hover:opacity-100">
+        <div
+          className={cn(
+            "absolute opacity-90 transition group-hover:opacity-100",
+            compact ? "right-1 top-1" : "right-1.5 top-1.5",
+          )}
+        >
           <FavoriteButton productSlug={product.slug} compact />
         </div>
 
         {visualTag ? (
-          <div className="absolute left-2 top-2">
-            <Badge tone="black" className={`text-[10px] ${getToneClass(visualTone)}`}>
+          <div className={cn("absolute", compact ? "left-1.5 top-1.5" : "left-2 top-2")}>
+            <Badge
+              tone="black"
+              className={cn(getToneClass(visualTone), compact ? "px-1.5 py-px text-[9px]" : "text-[10px]")}
+            >
               {visualTag}
             </Badge>
           </div>
         ) : null}
 
         {showDiscount ? (
-          <div className="absolute bottom-2 left-2">
-            <Badge tone="brand" className="text-[10px]">
+          <div className={cn("absolute", compact ? "bottom-1.5 left-1.5" : "bottom-2 left-2")}>
+            <Badge tone="brand" className={compact ? "px-1.5 py-px text-[9px]" : "text-[10px]"}>
               -{discount}%
             </Badge>
           </div>
         ) : null}
 
         {sizeLabel ? (
-          <div className="absolute bottom-2 right-2 hidden rounded-[var(--radius-card)] bg-white/92 px-1.5 py-0.5 text-[10px] font-medium text-ink-muted backdrop-blur-sm sm:block">
+          <div
+            className={cn(
+              "absolute hidden rounded-[var(--radius-card)] bg-white/92 font-medium text-ink-muted backdrop-blur-sm sm:block",
+              compact
+                ? "bottom-1.5 right-1.5 px-1 py-px text-[9px]"
+                : "bottom-2 right-2 px-1.5 py-0.5 text-[10px]",
+            )}
+          >
             {sizeLabel}
           </div>
         ) : null}
 
         {!inStock ? (
-          <div className="absolute inset-x-2 bottom-2">
-            <Badge tone="black" className="text-[10px]">
+          <div className={cn("absolute inset-x-1.5", compact ? "bottom-1.5" : "inset-x-2 bottom-2")}>
+            <Badge tone="black" className={compact ? "px-1.5 py-px text-[9px]" : "text-[10px]"}>
               Agotado
             </Badge>
           </div>
         ) : null}
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col px-2 pb-2 pt-2 sm:px-2.5 sm:pb-2.5">
-        <div className="mb-1 hidden items-center justify-between gap-2 sm:flex">
-          <p className="truncate text-[10px] font-medium tracking-wide text-ink-muted">{product.categoryName}</p>
-          <div className="flex shrink-0 items-center gap-1 text-[10px] font-medium text-ink-muted">
-            <StarIcon />
-            <span>{product.rating.toFixed(1)}</span>
-            <span className="hidden text-stone-300 sm:inline">·</span>
-            <span className="hidden text-ink-muted/80 lg:inline">{salesCount}</span>
+      <div
+        className={cn(
+          "flex min-w-0 flex-1 flex-col",
+          compact ? "px-1.5 pb-1.5 pt-1.5 sm:px-1.5 sm:pb-1.5" : "px-2 pb-2 pt-2 sm:px-2.5 sm:pb-2.5",
+        )}
+      >
+        {!compact ? (
+          <div className="mb-1 hidden items-center justify-between gap-2 sm:flex">
+            <p className="truncate text-[10px] font-medium tracking-wide text-ink-muted">{product.categoryName}</p>
+            <div className="flex shrink-0 items-center gap-1 text-[10px] font-medium text-ink-muted">
+              <StarIcon />
+              <span>{product.rating.toFixed(1)}</span>
+              <span className="hidden text-stone-300 sm:inline">·</span>
+              <span className="hidden text-ink-muted/80 lg:inline">{salesCount}</span>
+            </div>
           </div>
-        </div>
+        ) : null}
 
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="line-clamp-2 text-[13px] font-medium leading-[1.25] text-ink transition group-hover:text-ink sm:min-h-10 sm:text-sm sm:leading-5">
+          <h3
+            className={cn(
+              "line-clamp-2 font-medium text-ink transition group-hover:text-ink",
+              compact
+                ? "text-[12px] leading-[1.2] sm:text-[13px] sm:leading-[1.25]"
+                : "text-[13px] leading-[1.25] sm:min-h-10 sm:text-sm sm:leading-5",
+            )}
+          >
             {product.name}
           </h3>
         </Link>
 
-        <div className="mt-1 flex items-center justify-between gap-2">
-          {sizes.length > 0 ? (
-            <p className="truncate text-[10px] font-normal text-ink-muted/90 sm:text-[11px]">
-              {sizes.join(" · ")}
-              {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
-            </p>
-          ) : (
-            <span />
-          )}
-          {swatches.length > 0 ? (
-            <div className="hidden shrink-0 items-center gap-1 sm:flex" aria-label="Colores disponibles">
-              {swatches.map((color) => (
-                <span
-                  key={color}
-                  title={color}
-                  className="size-2.5 rounded-full ring-1 ring-black/10"
-                  style={{ backgroundColor: colorToHex(color) }}
-                />
-              ))}
-            </div>
-          ) : null}
-        </div>
+        {!compact ? (
+          <div className="mt-1 flex items-center justify-between gap-2">
+            {sizes.length > 0 ? (
+              <p className="truncate text-[10px] font-normal text-ink-muted/90 sm:text-[11px]">
+                {sizes.join(" · ")}
+                {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
+              </p>
+            ) : (
+              <span />
+            )}
+            {swatches.length > 0 ? (
+              <div className="hidden shrink-0 items-center gap-1 sm:flex" aria-label="Colores disponibles">
+                {swatches.map((color) => (
+                  <span
+                    key={color}
+                    title={color}
+                    className="size-2.5 rounded-full ring-1 ring-black/10"
+                    style={{ backgroundColor: colorToHex(color) }}
+                  />
+                ))}
+              </div>
+            ) : null}
+          </div>
+        ) : sizes.length > 0 ? (
+          <p className="mt-0.5 truncate text-[9px] font-normal text-ink-muted/85 sm:text-[10px]">
+            {sizes.join(" · ")}
+            {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
+          </p>
+        ) : null}
 
-        <div className="mt-1.5 flex items-end justify-between gap-2 sm:mt-2">
+        <div className={cn("flex items-end justify-between gap-1.5", compact ? "mt-0.5" : "mt-1.5 sm:mt-2")}>
           <ProductPrice
             price={product.price}
             previousPrice={previousPrice}
             size="md"
-            currentClassName="text-lg sm:text-xl lg:text-[1.15rem]"
-            previousClassName="mt-0.5 text-[10px] sm:text-[11px]"
+            currentClassName={
+              compact ? "text-[0.95rem] sm:text-base lg:text-[1.05rem]" : "text-lg sm:text-xl lg:text-[1.15rem]"
+            }
+            previousClassName={compact ? "mt-0 text-[9px] sm:text-[10px]" : "mt-0.5 text-[10px] sm:text-[11px]"}
           />
         </div>
 
         <div
-          className="mt-auto hidden pt-1.5 sm:block [&_a]:rounded-[var(--radius-card)] [&_a]:bg-transparent [&_a]:shadow-none [&_button]:min-h-8 [&_button]:rounded-[var(--radius-card)] [&_button]:bg-ink/90 [&_button]:text-[10px] [&_button]:font-medium [&_button]:shadow-none [&_button]:hover:bg-ink [&_div]:mt-0 [&_div]:gap-1 lg:[&_div]:grid-cols-1"
+          className={cn(
+            "mt-auto hidden sm:block [&_a]:rounded-[var(--radius-card)] [&_a]:bg-transparent [&_a]:shadow-none [&_button]:rounded-[var(--radius-card)] [&_button]:font-medium [&_button]:shadow-none [&_button]:hover:bg-ink [&_div]:mt-0 [&_div]:gap-1 lg:[&_div]:grid-cols-1",
+            compact
+              ? "pt-1 [&_button]:min-h-7 [&_button]:bg-ink/80 [&_button]:text-[9px] [&_button]:hover:bg-ink"
+              : "pt-1.5 [&_button]:min-h-8 [&_button]:bg-ink/90 [&_button]:text-[10px]",
+          )}
         >
-          <ProductCardActions product={product} />
+          <ProductCardActions product={product} compact={compact} />
         </div>
       </div>
     </article>

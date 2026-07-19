@@ -43,8 +43,13 @@ export function ProductSelectionProvider({
   const [rawSelectedImageIndex, setSelectedImageIndexState] = useState(0);
 
   const selectedImages = useMemo(() => {
-    const colorImages = color ? sanitizeImages(colorGalleries[color] ?? []) : [];
-    return colorImages.length ? colorImages : allImages;
+    const colorGallery = color ? colorGalleries[color] : undefined;
+    // Only switch gallery when the color has real images. sanitizeImages([]) returns
+    // the icon fallback and must not override the product gallery.
+    if (colorGallery?.some((image) => image.trim())) {
+      return sanitizeImages(colorGallery);
+    }
+    return allImages;
   }, [allImages, color, colorGalleries]);
 
   const selectedImageIndex = selectedImages.length ? wrapIndex(rawSelectedImageIndex, selectedImages.length) : 0;

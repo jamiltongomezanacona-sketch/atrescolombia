@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { ProductPrice } from "@/components/ui/product-price";
-import { buildCartWhatsAppMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
+import { buildCartWhatsAppMessage, buildWhatsAppUrl, resolveStoreWhatsapp } from "@/lib/whatsapp";
 import { formatCOP, type Product } from "@/lib/store-data";
 
 type CartItem = {
@@ -64,9 +64,9 @@ export function CartView({ products, whatsapp }: CartViewProps) {
   const subtotal = rows.reduce((sum, row) => sum + row.product.price * row.item.quantity, 0);
 
   const whatsappUrl =
-    whatsapp && rows.length
+    rows.length > 0
       ? buildWhatsAppUrl(
-          whatsapp,
+          resolveStoreWhatsapp(whatsapp),
           buildCartWhatsAppMessage(
             rows.map(({ item, product }) => ({
               name: product.name,

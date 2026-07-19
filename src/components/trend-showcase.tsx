@@ -35,7 +35,7 @@ export function TrendShowcase({
   if (!featured.length && !title) return null;
 
   return (
-    <section className="store-container py-3 md:py-4">
+    <section className={cn("store-container md:py-4", compact ? "py-2" : "py-3")}>
       <div className={cn("relative overflow-hidden rounded-lg shadow-soft ring-1 ring-white/55", theme.washClass)}>
         <div className="pointer-events-none absolute inset-0">
           <SafeProductImage
@@ -48,7 +48,8 @@ export function TrendShowcase({
         <div className="absolute inset-0 bg-gradient-to-r from-black/15 via-white/10 to-white/40" />
         <div
           className={cn(
-            "relative grid gap-4 p-3 md:p-5",
+            "relative grid md:p-5",
+            compact ? "gap-2 p-2 md:gap-4" : "gap-4 p-3",
             showStats ? "md:grid-cols-[1fr_0.85fr]" : "md:grid-cols-[0.75fr_1.55fr]",
             compact && "lg:p-6",
           )}
@@ -56,24 +57,25 @@ export function TrendShowcase({
           <Link
             href={href}
             className={cn(
-              "flex min-h-[148px] flex-col justify-center rounded-lg p-4 ring-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] md:min-h-[168px]",
+              "flex flex-col justify-center rounded-lg ring-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] md:min-h-[168px]",
+              compact ? "min-h-[116px] p-3 md:p-4" : "min-h-[148px] p-4",
               theme.panelClass,
             )}
           >
-            <p className={cn("text-sm font-medium", theme.accentClass)}>
+            <p className={cn("font-medium", compact ? "text-xs md:text-sm" : "text-sm", theme.accentClass)}>
               {theme.eyebrow}
             </p>
             <h2
               className={cn(
-                "mt-4 font-medium leading-none tracking-tight",
+                "font-medium leading-none tracking-tight",
                 theme.textClass,
-                title ? "text-3xl md:text-4xl lg:text-5xl" : "text-3xl md:text-4xl",
+                compact ? "mt-2 text-3xl md:mt-4 md:text-4xl lg:text-5xl" : title ? "mt-4 text-3xl md:text-4xl lg:text-5xl" : "mt-4 text-3xl md:text-4xl",
               )}
             >
               {headline}
             </h2>
-            <p className={cn("mt-3 max-w-sm text-sm font-normal leading-6", theme.mutedTextClass)}>{body}</p>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <p className={cn("max-w-sm text-sm font-normal", compact ? "mt-2 line-clamp-2 leading-5 md:mt-3 md:leading-6" : "mt-3 leading-6", theme.mutedTextClass)}>{body}</p>
+            <div className={cn("mt-3 flex-wrap gap-2", compact ? "hidden sm:flex" : "flex")}>
               {theme.chips.slice(0, compact ? 3 : 4).map((chip) => (
                 <span
                   key={chip}
@@ -86,15 +88,15 @@ export function TrendShowcase({
           </Link>
 
           {showStats ? (
-            <div className="grid content-end gap-3">
-              <div className={cn("rounded-lg p-4 ring-1", theme.panelClass)}>
+            <div className={cn("grid content-end", compact ? "gap-2" : "gap-3")}>
+              <div className={cn("rounded-lg ring-1", compact ? "hidden p-3 sm:block md:p-4" : "p-4", theme.panelClass)}>
                 <p className={cn("text-xs font-medium", theme.accentClass)}>Tendencias</p>
-                <p className={cn("mt-2 text-3xl font-medium leading-none", theme.textClass)}>{theme.trendTag}</p>
+                <p className={cn("mt-2 font-medium leading-none", compact ? "text-2xl md:text-3xl" : "text-3xl", theme.textClass)}>{theme.trendTag}</p>
               </div>
-              <div className="grid grid-cols-3 gap-2">
-                <Stat label="Productos" value={showStats.products} theme={theme} />
-                <Stat label="Nuevos" value={showStats.news} theme={theme} />
-                <Stat label="Ofertas" value={showStats.promos} theme={theme} />
+              <div className={cn("grid grid-cols-3", compact ? "gap-1.5 md:gap-2" : "gap-2")}>
+                <Stat label="Productos" value={showStats.products} theme={theme} compact={compact} />
+                <Stat label="Nuevos" value={showStats.news} theme={theme} compact={compact} />
+                <Stat label="Ofertas" value={showStats.promos} theme={theme} compact={compact} />
               </div>
             </div>
           ) : (
@@ -130,15 +132,17 @@ function Stat({
   label,
   value,
   theme,
+  compact = false,
 }: {
   label: string;
   value: number;
   theme: CategoryVisualTheme;
+  compact?: boolean;
 }) {
   return (
-    <div className={cn("rounded-lg p-3 text-center ring-1", theme.panelClass)}>
-      <p className={cn("text-2xl font-medium", theme.textClass)}>{value}</p>
-      <p className={cn("mt-1 text-[10px] font-normal", theme.mutedTextClass)}>{label}</p>
+    <div className={cn("rounded-lg text-center ring-1", compact ? "p-2 md:p-3" : "p-3", theme.panelClass)}>
+      <p className={cn("font-medium", compact ? "text-xl md:text-2xl" : "text-2xl", theme.textClass)}>{value}</p>
+      <p className={cn("mt-0.5 text-[10px] font-normal md:mt-1", theme.mutedTextClass)}>{label}</p>
     </div>
   );
 }

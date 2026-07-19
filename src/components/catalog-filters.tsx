@@ -16,6 +16,9 @@ type CatalogFiltersFormProps = {
   className?: string;
 };
 
+const fieldClass =
+  "h-9 w-full rounded-[var(--radius-card)] border border-black/10 bg-surface px-2.5 text-sm font-normal text-ink outline-none transition focus:border-ink focus-visible:ring-2 focus-visible:ring-ring/30";
+
 export function CatalogFiltersForm({
   filters,
   options,
@@ -27,7 +30,7 @@ export function CatalogFiltersForm({
   const activeCount = countActiveFilters(filters);
 
   return (
-    <form method="get" action={action} className={cn("grid gap-4", className)}>
+    <form method="get" action={action} className={cn("grid gap-3", className)}>
       {filters.q ? <input type="hidden" name="q" value={filters.q} /> : null}
       {filters.orden && filters.orden !== "relevancia" ? (
         <input type="hidden" name="orden" value={filters.orden} />
@@ -42,7 +45,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-categoria`}
             name="categoria"
             defaultValue={filters.categoria ?? ""}
-            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
+            className={fieldClass}
           >
             <option value="">Todas</option>
             {options.categories.map((category) => (
@@ -63,7 +66,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-talla`}
             name="talla"
             defaultValue={filters.talla ?? ""}
-            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
+            className={fieldClass}
           >
             <option value="">Todas</option>
             {options.sizes.map((size) => (
@@ -84,7 +87,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-color`}
             name="color"
             defaultValue={filters.color ?? ""}
-            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
+            className={fieldClass}
           >
             <option value="">Todos</option>
             {options.colors.map((color) => (
@@ -105,7 +108,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-coleccion`}
             name="coleccion"
             defaultValue={filters.coleccion ?? ""}
-            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
+            className={fieldClass}
           >
             <option value="">Todas</option>
             {options.collections.map((collection) => (
@@ -119,8 +122,8 @@ export function CatalogFiltersForm({
 
       {(options.priceMin > 0 || options.priceMax > 0) && options.priceMax > options.priceMin ? (
         <FilterGroup title="Precio">
-          <div className="grid grid-cols-2 gap-2">
-            <label className="grid gap-1 text-xs font-normal text-stone-500">
+          <div className="grid grid-cols-2 gap-1.5">
+            <label className="grid gap-1 text-[11px] font-normal text-ink-muted">
               Min
               <input
                 type="number"
@@ -128,10 +131,10 @@ export function CatalogFiltersForm({
                 min={0}
                 defaultValue={filters.precioMin ?? ""}
                 placeholder={formatCOP(options.priceMin)}
-                className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
+                className={fieldClass}
               />
             </label>
-            <label className="grid gap-1 text-xs font-normal text-stone-500">
+            <label className="grid gap-1 text-[11px] font-normal text-ink-muted">
               Max
               <input
                 type="number"
@@ -139,7 +142,7 @@ export function CatalogFiltersForm({
                 min={0}
                 defaultValue={filters.precioMax ?? ""}
                 placeholder={formatCOP(options.priceMax)}
-                className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
+                className={fieldClass}
               />
             </label>
           </div>
@@ -147,21 +150,24 @@ export function CatalogFiltersForm({
       ) : null}
 
       <FilterGroup title="Estado">
-        <div className="grid gap-2">
+        <div className="grid gap-1">
           <FilterToggle name="novedades" label="Novedades" checked={filters.novedades} />
           <FilterToggle name="ofertas" label="Ofertas" checked={filters.ofertas} />
           <FilterToggle name="disponible" label="Disponibles" checked={filters.disponible} />
         </div>
       </FilterGroup>
 
-      <div className="grid gap-2">
-        <button type="submit" className="atres-interactive inline-flex h-11 items-center justify-center rounded-full bg-black px-4 text-sm font-medium text-white">
+      <div className="grid gap-1.5 pt-0.5">
+        <button
+          type="submit"
+          className="atres-interactive inline-flex h-9 items-center justify-center rounded-[var(--radius-card)] bg-ink px-3 text-sm font-medium text-white hover:bg-stone-800"
+        >
           Aplicar filtros
         </button>
         {activeCount > 0 ? (
           <Link
             href={clearHref}
-            className="atres-interactive inline-flex h-11 items-center justify-center rounded-full bg-stone-100 px-4 text-sm font-medium text-stone-700 hover:bg-stone-200"
+            className="atres-interactive inline-flex h-9 items-center justify-center rounded-[var(--radius-card)] bg-surface-muted px-3 text-sm font-medium text-ink-muted hover:bg-stone-200 hover:text-ink"
           >
             Limpiar ({activeCount})
           </Link>
@@ -173,8 +179,8 @@ export function CatalogFiltersForm({
 
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <fieldset className="grid gap-2 border-b border-black/5 pb-4 last:border-b-0 last:pb-0">
-      <legend className="mb-1 text-xs font-medium text-stone-500">{title}</legend>
+    <fieldset className="grid gap-1.5 border-b border-black/[0.06] pb-3 last:border-b-0 last:pb-0">
+      <legend className="mb-0.5 text-[11px] font-medium tracking-wide text-ink-muted">{title}</legend>
       {children}
     </fieldset>
   );
@@ -190,18 +196,12 @@ function FilterToggle({
   checked?: boolean;
 }) {
   return (
-    <label className="group relative flex min-h-10 cursor-pointer items-center gap-2 rounded-lg bg-white px-3 text-sm font-normal text-stone-700 shadow-sm ring-1 ring-black/10 transition hover:ring-black/15">
-      <input
-        type="checkbox"
-        name={name}
-        value="1"
-        defaultChecked={checked}
-        className="peer sr-only"
-      />
-      <span className="grid size-5 place-items-center rounded-full bg-stone-100 text-transparent ring-1 ring-black/10 transition peer-checked:bg-black peer-checked:text-white">
+    <label className="group relative flex min-h-9 cursor-pointer items-center gap-2 rounded-[var(--radius-card)] px-1.5 text-sm font-normal text-ink-muted transition hover:bg-surface-muted hover:text-ink">
+      <input type="checkbox" name={name} value="1" defaultChecked={checked} className="peer sr-only" />
+      <span className="grid size-4 place-items-center rounded-[3px] bg-surface text-transparent ring-1 ring-black/15 transition peer-checked:bg-ink peer-checked:text-white peer-checked:ring-ink">
         <CheckIcon />
       </span>
-      <span className="peer-checked:text-black">{label}</span>
+      <span className="peer-checked:text-ink">{label}</span>
     </label>
   );
 }
@@ -211,7 +211,7 @@ function CheckIcon() {
     <svg
       aria-hidden="true"
       viewBox="0 0 24 24"
-      className="size-3 fill-none"
+      className="size-2.5 fill-none"
       stroke="currentColor"
       strokeWidth="3"
       strokeLinecap="round"

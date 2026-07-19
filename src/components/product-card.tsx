@@ -34,33 +34,33 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const visualTag = ribbon ? null : getCommercialBadge(product);
   const visualTone = getCommercialTone(product);
   const sizeLabel = getCompactSizeLabel(meaningfulSizes(product.sizes));
-  const swatches = product.colors.filter(Boolean).slice(0, 4);
+  const swatches = product.colors.filter(Boolean).slice(0, 3);
   const showDiscount = discount && !ribbon?.includes("%");
   const salesCount = getSalesCount(product);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft lg:rounded-[7px]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface transition duration-300 hover:-translate-y-0.5 hover:shadow-soft">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
-          <div className="relative aspect-[4/5] overflow-hidden bg-surface-muted sm:aspect-[3/4] lg:aspect-[4/5]">
+          <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
             <SafeProductImage
               src={product.image}
               alt={product.name}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 30vw, (max-width: 1500px) 24vw, (max-width: 1800px) 19vw, 15vw"
               priority={priority}
-              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              className="h-full w-full object-cover transition duration-500 ease-out group-hover:scale-[1.04]"
             />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/15 via-black/5 to-transparent opacity-0 transition group-hover:opacity-100" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
           </div>
         </Link>
 
         {ribbon ? (
-          <div className="absolute left-2 top-2 max-w-[72%] rounded-full bg-[#ff4d00]/95 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm ring-1 ring-white/30 sm:text-[11px]">
+          <div className="absolute left-2 top-2 max-w-[70%] rounded-[var(--radius-card)] bg-brand px-2 py-0.5 text-[10px] font-medium text-white sm:text-[11px]">
             <span className="truncate">{ribbon}</span>
           </div>
         ) : null}
 
-        <div className="absolute right-2 top-2">
+        <div className="absolute right-1.5 top-1.5 opacity-90 transition group-hover:opacity-100">
           <FavoriteButton productSlug={product.slug} compact />
         </div>
 
@@ -74,61 +74,60 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
         {showDiscount ? (
           <div className="absolute bottom-2 left-2">
-            <Badge tone="brand" className="bg-[#ff4d00] text-[10px] text-white ring-1 ring-black/10">
+            <Badge tone="brand" className="text-[10px]">
               -{discount}%
             </Badge>
           </div>
         ) : null}
 
         {sizeLabel ? (
-          <div className="absolute bottom-2 right-2 hidden rounded-full bg-white/90 px-2 py-1 text-[10px] font-medium text-stone-700 shadow-sm ring-1 ring-black/5 sm:block">
+          <div className="absolute bottom-2 right-2 hidden rounded-[var(--radius-card)] bg-white/92 px-1.5 py-0.5 text-[10px] font-medium text-ink-muted backdrop-blur-sm sm:block">
             {sizeLabel}
           </div>
         ) : null}
 
         {!inStock ? (
-          <div className="absolute inset-x-2.5 bottom-2.5">
-            <Badge tone="black" className="text-[11px] ring-1 ring-black/25">
+          <div className="absolute inset-x-2 bottom-2">
+            <Badge tone="black" className="text-[10px]">
               Agotado
             </Badge>
           </div>
         ) : null}
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col px-2 pb-2 pt-1.5 sm:p-3 lg:px-2.5 lg:pb-2.5 lg:pt-2">
-        <div className="hidden min-h-4 items-center justify-between gap-2 sm:flex">
-          <p className="hidden truncate text-[10px] font-medium text-stone-400 sm:block lg:text-[9.5px]">
-            {product.categoryName}
-          </p>
-          <div className="ml-auto flex shrink-0 items-center gap-1 text-[10px] font-medium text-stone-500 lg:text-[9.5px]">
+      <div className="flex min-w-0 flex-1 flex-col px-2 pb-2 pt-2 sm:px-2.5 sm:pb-2.5">
+        <div className="mb-1 hidden items-center justify-between gap-2 sm:flex">
+          <p className="truncate text-[10px] font-medium tracking-wide text-ink-muted">{product.categoryName}</p>
+          <div className="flex shrink-0 items-center gap-1 text-[10px] font-medium text-ink-muted">
             <StarIcon />
             <span>{product.rating.toFixed(1)}</span>
-            <span className="text-stone-300">|</span>
-            <span className="max-[380px]:hidden">{salesCount} vendidos</span>
+            <span className="hidden text-stone-300 sm:inline">·</span>
+            <span className="hidden text-ink-muted/80 lg:inline">{salesCount}</span>
           </div>
         </div>
+
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="line-clamp-2 text-[12.5px] font-normal leading-[15px] text-ink transition group-hover:text-black sm:mt-1 sm:text-[13px] sm:leading-5 md:text-sm lg:min-h-9 lg:text-[13px] lg:leading-[18px]">
+          <h3 className="line-clamp-2 text-[13px] font-medium leading-[1.25] text-ink transition group-hover:text-ink sm:min-h-10 sm:text-sm sm:leading-5">
             {product.name}
           </h3>
         </Link>
 
-        <div className="mt-0.5 flex items-center justify-between gap-2 sm:mt-1.5 lg:mt-1.5">
+        <div className="mt-1 flex items-center justify-between gap-2">
           {sizes.length > 0 ? (
-            <p className="truncate text-[10px] font-normal leading-none text-stone-500/90 sm:text-[11px] sm:leading-normal lg:text-[10.5px]">
-              Tallas: {sizes.join(" / ")}
+            <p className="truncate text-[10px] font-normal text-ink-muted/90 sm:text-[11px]">
+              {sizes.join(" · ")}
               {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
             </p>
           ) : (
             <span />
           )}
           {swatches.length > 0 ? (
-            <div className="hidden shrink-0 items-center -space-x-1 sm:flex" aria-label="Colores disponibles">
+            <div className="hidden shrink-0 items-center gap-1 sm:flex" aria-label="Colores disponibles">
               {swatches.map((color) => (
                 <span
                   key={color}
                   title={color}
-                  className="size-3 rounded-full border border-white shadow ring-1 ring-black/10"
+                  className="size-2.5 rounded-full ring-1 ring-black/10"
                   style={{ backgroundColor: colorToHex(color) }}
                 />
               ))}
@@ -136,22 +135,19 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           ) : null}
         </div>
 
-        <div className="mt-0.5 flex items-end justify-between gap-2 sm:mt-2 lg:mt-2">
+        <div className="mt-1.5 flex items-end justify-between gap-2 sm:mt-2">
           <ProductPrice
             price={product.price}
             previousPrice={previousPrice}
             size="md"
-            currentClassName="text-[1.28rem] sm:text-xl lg:text-[1.18rem]"
-            previousClassName="mt-0 text-[11px] sm:mt-1 sm:text-xs lg:text-[11px]"
+            currentClassName="text-lg sm:text-xl lg:text-[1.15rem]"
+            previousClassName="mt-0.5 text-[10px] sm:text-[11px]"
           />
-          <Link
-            href={`/productos/${product.slug}`}
-            className="hidden shrink-0 rounded-full bg-stone-100/80 px-2.5 py-1.5 text-[10px] font-medium text-stone-600 transition hover:bg-black hover:text-white sm:inline-flex lg:hidden"
-          >
-            Ver
-          </Link>
         </div>
-        <div className="hidden sm:block lg:pt-0.5">
+
+        <div
+          className="mt-auto hidden pt-1.5 sm:block [&_a]:rounded-[var(--radius-card)] [&_a]:bg-transparent [&_a]:shadow-none [&_button]:min-h-8 [&_button]:rounded-[var(--radius-card)] [&_button]:bg-ink/90 [&_button]:text-[10px] [&_button]:font-medium [&_button]:shadow-none [&_button]:hover:bg-ink [&_div]:mt-0 [&_div]:gap-1 lg:[&_div]:grid-cols-1"
+        >
           <ProductCardActions product={product} />
         </div>
       </div>

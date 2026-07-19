@@ -88,41 +88,44 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <main>
-      <section className="catalog-container products-catalog-container pb-3 pt-1 md:pb-4 md:pt-2 lg:pb-5 lg:pt-2">
-        <nav className="mb-1 hidden text-xs font-normal text-stone-400 md:block" aria-label="Ruta de navegacion">
-          <Link href="/" className="hover:text-black">
+      <section className="catalog-container products-catalog-container pb-4 pt-1 md:pb-5 md:pt-2 lg:pb-6 lg:pt-2">
+        <nav className="mb-1.5 hidden text-xs font-normal text-ink-muted md:block" aria-label="Ruta de navegacion">
+          <Link href="/" className="hover:text-ink">
             Inicio
           </Link>
           <span className="mx-2 text-stone-300">/</span>
-          <span className="text-stone-700">Productos</span>
+          <span className="text-ink">Productos</span>
           {activeCategory ? (
             <>
               <span className="mx-2 text-stone-300">/</span>
-              <span className="text-stone-700">{activeCategory.shortName}</span>
+              <span className="text-ink">{activeCategory.shortName}</span>
             </>
           ) : null}
         </nav>
 
-        <div className="sr-only md:not-sr-only md:mb-2 md:flex md:items-end md:justify-between md:gap-3">
+        <div className="sr-only md:not-sr-only md:mb-3 md:flex md:items-end md:justify-between md:gap-3">
           <h1 className="text-2xl font-medium tracking-tight text-ink sm:text-[1.7rem] lg:text-[1.85rem]">
             {pageTitle}
           </h1>
-          <p className="hidden text-sm font-normal text-stone-500 md:block lg:hidden">
+          <p className="hidden text-sm font-normal text-ink-muted md:block lg:hidden">
             {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
           </p>
         </div>
 
-        <div className="sticky top-[3.5rem] z-30 -mx-4 mb-2 border-y border-black/5 bg-background/95 px-4 py-2 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:static lg:mb-2 lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
-          <nav className="flex gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] lg:gap-1.5 [&::-webkit-scrollbar]:hidden" aria-label="Departamentos del catalogo">
+        <div className="sticky top-[3.5rem] z-30 -mx-4 mb-3 border-y border-black/[0.06] bg-background/95 px-4 py-2 backdrop-blur-xl sm:mx-0 sm:rounded-[var(--radius-card)] sm:border sm:bg-surface/90 sm:shadow-soft lg:static lg:mb-3 lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
+          <nav
+            className="flex gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] lg:gap-1.5 [&::-webkit-scrollbar]:hidden"
+            aria-label="Departamentos del catalogo"
+          >
             {categoryTabs.map((tab) => (
               <Link
                 key={tab.label}
                 href={tab.href}
                 aria-current={tab.active ? "page" : undefined}
-                className={`inline-flex h-9 shrink-0 items-center rounded-full px-3.5 text-xs font-medium transition sm:h-10 sm:text-sm lg:h-8 lg:px-3.5 lg:text-[13px] ${
+                className={`inline-flex h-9 shrink-0 items-center rounded-[var(--radius-card)] px-3 text-xs font-medium transition sm:h-9 sm:text-sm lg:h-8 lg:px-3 lg:text-[13px] ${
                   tab.active
-                    ? "bg-black !text-white shadow-sm"
-                    : "bg-white text-stone-700 ring-1 ring-black/5 hover:bg-stone-100"
+                    ? "bg-ink text-white"
+                    : "bg-surface text-ink-muted ring-1 ring-black/8 hover:bg-surface-muted hover:text-ink"
                 }`}
               >
                 <span className="text-current">{tab.label}</span>
@@ -131,15 +134,15 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </nav>
         </div>
 
-        <div className="lg:grid lg:grid-cols-[204px_minmax(0,1fr)] lg:items-start lg:gap-3 xl:grid-cols-[212px_minmax(0,1fr)] xl:gap-4">
-          <aside className="sticky top-[6.75rem] hidden max-h-[calc(100vh-7.25rem)] overflow-y-auto rounded-lg bg-white/88 p-2.5 shadow-soft ring-1 ring-black/5 lg:block lg:[&_fieldset]:pb-2.5 lg:[&_input]:h-9 lg:[&_select]:h-9">
-            <div className="mb-2 flex items-center justify-between gap-2">
+        <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:items-start lg:gap-4 xl:grid-cols-[220px_minmax(0,1fr)] xl:gap-5">
+          <aside className="sticky top-[6.75rem] hidden max-h-[calc(100vh-7.25rem)] overflow-y-auto border-r border-black/[0.06] pr-4 lg:block">
+            <div className="mb-3 flex items-baseline justify-between gap-2">
               <div>
-                <p className="text-[11px] font-medium text-brand">Filtros</p>
-                <p className="text-sm font-medium text-ink">Refina tu busqueda</p>
+                <p className="text-[11px] font-medium tracking-wide text-brand">Filtros</p>
+                <p className="mt-0.5 text-sm font-medium text-ink">Refina</p>
               </div>
               {activeFilters > 0 ? (
-                <span className="rounded-full bg-black px-2 py-1 text-[10px] font-medium text-white">
+                <span className="rounded-[var(--radius-card)] bg-ink px-1.5 py-0.5 text-[10px] font-medium text-white">
                   {activeFilters}
                 </span>
               ) : null}
@@ -153,12 +156,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </aside>
 
           <div className="min-w-0">
-            <div className="mb-2 grid gap-2 rounded-lg bg-white/88 p-1.5 shadow-sm ring-1 ring-black/5 sm:mb-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-2 sm:rounded-xl sm:p-2 lg:mb-2 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none lg:ring-0">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-black/[0.06] pb-2.5 sm:mb-3.5">
               <div className="flex items-center justify-between gap-2 sm:justify-start">
-                <p className="text-sm font-medium text-stone-700 lg:text-stone-500">
+                <p className="text-sm font-medium text-ink-muted">
                   {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
                   {activeFilters > 0 ? (
-                    <span className="ml-2 text-xs font-normal text-stone-500">
+                    <span className="ml-2 text-xs font-normal text-ink-muted/80">
                       {activeFilters} filtro{activeFilters === 1 ? "" : "s"}
                     </span>
                   ) : null}
@@ -167,8 +170,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   <FilterDrawer filters={filters} options={options} />
                 </div>
               </div>
-              <div className="flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0 lg:gap-1.5">
-                <span className="hidden h-8 shrink-0 items-center px-1 text-[11px] font-medium text-stone-400 md:inline-flex">
+              <div className="flex gap-1 overflow-x-auto pb-0.5 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0">
+                <span className="hidden h-8 shrink-0 items-center px-1 text-[11px] font-medium text-ink-muted md:inline-flex">
                   Ordenar
                 </span>
                 {orderLinks.map((link) => {
@@ -177,10 +180,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     <Link
                       key={link.value}
                       href={buildCatalogQuery({ ...filters, orden: link.value })}
-                      className={`inline-flex h-8 shrink-0 items-center rounded-full px-2.5 text-[11px] font-medium transition sm:px-3 sm:text-xs lg:h-8 lg:px-3 ${
+                      className={`inline-flex h-8 shrink-0 items-center rounded-[var(--radius-card)] px-2.5 text-[11px] font-medium transition sm:px-3 sm:text-xs ${
                         active
-                          ? "bg-black !text-white shadow-sm"
-                          : "bg-white/75 text-stone-700 ring-1 ring-black/5 hover:bg-white"
+                          ? "bg-ink text-white"
+                          : "bg-transparent text-ink-muted ring-1 ring-black/8 hover:bg-surface-muted hover:text-ink"
                       }`}
                       aria-current={active ? "page" : undefined}
                     >

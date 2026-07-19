@@ -18,10 +18,7 @@ export function QuickFilters({ items, className }: QuickFiltersProps) {
   ];
 
   return (
-    <nav
-      aria-label="Filtros rapidos"
-      className={cn("store-container", className)}
-    >
+    <nav aria-label="Filtros rapidos" className={cn("store-container", className)}>
       <div className="flex gap-1.5 overflow-x-auto py-1 [scrollbar-width:none] [-ms-overflow-style:none] sm:gap-2 [&::-webkit-scrollbar]:hidden">
         {filters.map((item) => {
           const active =
@@ -35,10 +32,10 @@ export function QuickFilters({ items, className }: QuickFiltersProps) {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "inline-flex min-h-9 shrink-0 items-center rounded-full px-3 text-xs font-medium transition sm:min-h-11 sm:px-4 sm:text-sm",
+                "inline-flex min-h-9 shrink-0 items-center rounded-[var(--radius-card)] px-3 text-xs font-medium transition sm:min-h-10 sm:px-3.5 sm:text-sm",
                 active
-                  ? "bg-black !text-white shadow-sm"
-                  : "bg-white text-stone-800 ring-1 ring-black/5 hover:bg-stone-100",
+                  ? "bg-ink text-white"
+                  : "bg-surface text-ink-muted ring-1 ring-black/8 hover:bg-surface-muted hover:text-ink",
               )}
             >
               <span className="text-current">{item.label}</span>

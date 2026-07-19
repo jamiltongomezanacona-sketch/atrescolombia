@@ -128,7 +128,7 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
 
       {lightboxOpen ? (
         <div
-          className="fixed inset-0 z-[90] grid place-items-center bg-ink/94 p-3 text-white backdrop-blur-sm"
+          className="fixed inset-0 z-[90] flex items-start justify-center bg-ink/94 p-0 text-white backdrop-blur-sm md:items-center md:p-6"
           role="dialog"
           aria-modal="true"
           aria-label="Galeria de producto"
@@ -145,10 +145,10 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
               setLightboxOpen(false);
               setZoomed(false);
             }}
-            className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-[var(--radius-card)] bg-white text-xl font-medium text-ink"
+            className="absolute right-3 top-3 z-20 grid size-11 place-items-center rounded-[var(--radius-card)] bg-white text-xl font-medium text-ink shadow-sm md:right-6 md:top-6"
             aria-label="Cerrar galeria"
           >
-            ×
+            &times;
           </button>
 
           <button
@@ -157,32 +157,13 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
             className="absolute left-3 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-[var(--radius-card)] bg-white/92 text-2xl font-medium text-ink md:left-6"
             aria-label="Imagen anterior"
           >
-            ‹
+            &lsaquo;
           </button>
-
-          <div className="absolute left-1/2 top-4 z-10 flex -translate-x-1/2 gap-1 rounded-[var(--radius-card)] bg-black/55 p-1 backdrop-blur">
-            <button
-              type="button"
-              onClick={() => setZoomed(false)}
-              className={`h-9 rounded-[var(--radius-card)] px-3 text-xs font-medium ${!zoomed ? "bg-white text-ink" : "text-white hover:bg-white/10"}`}
-              aria-pressed={!zoomed}
-            >
-              Ajustar
-            </button>
-            <button
-              type="button"
-              onClick={() => setZoomed(true)}
-              className={`h-9 rounded-[var(--radius-card)] px-3 text-xs font-medium ${zoomed ? "bg-white text-ink" : "text-white hover:bg-white/10"}`}
-              aria-pressed={zoomed}
-            >
-              Zoom
-            </button>
-          </div>
 
           <button
             type="button"
             onClick={() => setZoomed((current) => !current)}
-            className={`relative h-[82vh] w-full max-w-5xl overflow-hidden rounded-[var(--radius-card)] bg-black ${zoomed ? "cursor-zoom-out overflow-auto" : "cursor-zoom-in"}`}
+            className={`relative aspect-[3/4] w-full overflow-hidden bg-black md:h-[86vh] md:max-w-5xl md:aspect-auto md:rounded-[var(--radius-card)] ${zoomed ? "cursor-zoom-out overflow-auto" : "cursor-zoom-in"}`}
             aria-label={zoomed ? "Quitar zoom" : "Ampliar imagen"}
           >
             <SafeProductImage
@@ -199,7 +180,7 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
             className="absolute right-3 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-[var(--radius-card)] bg-white/92 text-2xl font-medium text-ink md:right-6"
             aria-label="Imagen siguiente"
           >
-            ›
+            &rsaquo;
           </button>
 
           <div className="atres-scroll absolute bottom-4 left-1/2 flex max-w-[92vw] -translate-x-1/2 gap-2 overflow-x-auto rounded-[var(--radius-card)] bg-black/55 px-2.5 py-2 backdrop-blur">

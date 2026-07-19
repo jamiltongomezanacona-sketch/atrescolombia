@@ -39,7 +39,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const salesCount = getSalesCount(product);
 
   return (
-    <article className="group flex h-full min-h-[304px] flex-col overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft sm:min-h-[374px]">
+    <article className="group flex flex-col overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
           <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
@@ -95,7 +95,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         ) : null}
       </div>
 
-      <div className="flex flex-1 flex-col p-2.5 sm:p-3">
+      <div className="flex flex-col p-2.5 sm:p-3">
         <div className="flex min-h-4 items-center justify-between gap-2">
           <p className="hidden truncate text-[10px] font-medium text-stone-400 sm:block">
             {product.categoryName}
@@ -108,7 +108,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </div>
         </div>
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="mt-1 line-clamp-2 min-h-9 text-[13px] font-normal leading-4 text-ink transition group-hover:text-black sm:min-h-10 sm:leading-5 md:text-sm">
+          <h3 className="mt-1 line-clamp-2 text-[13px] font-normal leading-4 text-ink transition group-hover:text-black sm:leading-5 md:text-sm">
             {product.name}
           </h3>
         </Link>
@@ -136,7 +136,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           ) : null}
         </div>
 
-        <div className="mt-auto flex min-h-10 items-end justify-between gap-2 pt-2 sm:min-h-11">
+        <div className="mt-2 flex items-end justify-between gap-2">
           <ProductPrice price={product.price} previousPrice={previousPrice} size="md" />
           <Link
             href={`/productos/${product.slug}`}

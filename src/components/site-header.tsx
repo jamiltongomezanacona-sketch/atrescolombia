@@ -12,21 +12,23 @@ export async function SiteHeader() {
   const navItems = await getStoreNavigation();
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-[#080808]/96 text-white shadow-[0_10px_28px_rgba(0,0,0,0.16)] backdrop-blur-xl lg:sticky">
-      <div className="hidden border-b border-white/10 bg-white/[0.045] lg:block">
-        <div className="catalog-container flex items-center justify-between gap-3 py-1 text-[11px] font-normal text-white/70">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0a0a0a]/95 text-white shadow-soft backdrop-blur-xl lg:sticky lg:border-b-0 lg:shadow-none">
+      <div className="hidden border-b border-white/10 bg-white/[0.03] lg:block">
+        <div className="catalog-container flex items-center justify-between gap-3 py-1 text-[11px] font-normal tracking-wide text-white/60">
           <span>100% producto colombiano</span>
           <span className="hidden md:inline">Compra por prenda o al por mayor</span>
-          <Link href="/ofertas" className="text-amber-200 transition hover:text-white">
-            Ofertas activas y novedades ATRES
+          <Link href="/ofertas" className="text-white/80 transition hover:text-white">
+            Ofertas y novedades
           </Link>
         </div>
       </div>
 
+      {/* Mobile: keep py-2 + h-10 row ≈ 3.5rem (matches layout pt / sticky offsets) */}
       <div className="catalog-container py-2 lg:hidden">
-        <div className="grid grid-cols-[2.25rem_minmax(0,1fr)_4.75rem] items-center gap-2">
+        <div className="grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-1.5">
           <MobileNavDrawer items={navItems} />
-          <Suspense fallback={<div className="h-10 rounded-full bg-white/12" />}>
+          <BrandLogo dark compact />
+          <Suspense fallback={<div className="h-10 rounded-[var(--radius-card)] bg-white/10" />}>
             <HeaderMobileSearch />
           </Suspense>
           <HeaderActions compact minimal />
@@ -34,14 +36,14 @@ export async function SiteHeader() {
       </div>
 
       <div className="hidden catalog-container py-1.5 lg:block lg:py-2">
-        <div className="flex items-center gap-2 lg:grid lg:grid-cols-[220px_minmax(420px,1fr)_auto] lg:gap-3">
-          <div className="flex min-w-0 items-center gap-1.5">
+        <div className="flex items-center gap-2 lg:grid lg:grid-cols-[200px_minmax(420px,1fr)_auto] lg:gap-4">
+          <div className="flex min-w-0 items-center gap-2">
             <MobileNavDrawer items={navItems} />
             <BrandLogo dark compact />
           </div>
 
           <SearchBox
-            className="hidden w-full max-w-4xl lg:mx-auto lg:block"
+            className="hidden w-full max-w-3xl lg:mx-auto lg:block"
             placeholder="Buscar vestidos, jeans, pijamas, uniformes..."
           />
 

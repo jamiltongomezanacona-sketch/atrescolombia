@@ -88,7 +88,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
         <button
           type="button"
           className={cn(
-            "absolute inset-0 bg-black/55 transition-opacity",
+            "absolute inset-0 bg-ink/50 transition-opacity",
             open ? "opacity-100" : "opacity-0",
           )}
           aria-label="Cerrar menu"
@@ -102,21 +102,21 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
           aria-modal="true"
           aria-labelledby={titleId}
           className={cn(
-            "absolute inset-y-0 left-0 flex w-[min(88vw,320px)] flex-col bg-white text-ink shadow-lift transition-transform duration-300",
+            "absolute inset-y-0 left-0 flex w-[min(88vw,320px)] flex-col bg-surface text-ink shadow-lift transition-transform duration-300",
             open ? "translate-x-0" : "-translate-x-full",
           )}
         >
-          <div className="flex items-center justify-between border-b border-black/5 px-4 py-4">
+          <div className="flex items-center justify-between border-b border-black/6 px-4 py-4">
             <div>
-              <p id={titleId} className="text-lg font-medium tracking-tight">
+              <p id={titleId} className="text-lg font-medium tracking-[0.12em]">
                 ATRES
               </p>
-              <p className="text-xs font-normal text-stone-500">Moda colombiana del taller al cliente</p>
+              <p className="mt-0.5 text-xs font-normal text-ink-muted">Moda colombiana del taller al cliente</p>
             </div>
             <button
               ref={closeRef}
               type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full hover:bg-stone-100"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-card)] hover:bg-surface-muted"
               aria-label="Cerrar menu"
               onClick={() => setOpen(false)}
             >
@@ -125,8 +125,8 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
           </div>
 
           <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Menu de categorias">
-            <p className="px-2 text-[11px] font-medium text-stone-400">Categorias</p>
-            <ul className="mt-2 grid gap-1">
+            <p className="px-2 text-[11px] font-medium tracking-wide text-ink-muted">Categorias</p>
+            <ul className="mt-2 grid gap-0.5">
               {links.map((link) => {
                 const active =
                   link.href === "/productos"
@@ -138,8 +138,8 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
                     <Link
                       href={link.href}
                       className={cn(
-                        "flex min-h-11 items-center rounded-lg px-3 text-sm font-normal transition",
-                        active ? "bg-black !text-white" : "text-ink hover:bg-stone-100",
+                        "flex min-h-11 items-center rounded-[var(--radius-card)] px-3 text-sm font-normal transition",
+                        active ? "bg-ink text-white" : "text-ink hover:bg-surface-muted",
                       )}
                       aria-current={active ? "page" : undefined}
                       onClick={() => setOpen(false)}
@@ -153,10 +153,10 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
             </ul>
           </nav>
 
-          <div className="border-t border-black/5 p-4">
+          <div className="border-t border-black/6 p-4">
             <Link
               href="/ofertas"
-              className="flex min-h-11 items-center justify-center rounded-full bg-brand px-4 text-sm font-medium text-white"
+              className="flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-brand px-4 text-sm font-medium text-white hover:bg-brand-hover"
               onClick={() => setOpen(false)}
               tabIndex={open ? undefined : -1}
             >
@@ -173,7 +173,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
       <button
         ref={triggerRef}
         type="button"
-        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white transition hover:bg-white/10 lg:hidden"
+        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-card)] text-white transition hover:bg-white/10 lg:hidden"
         aria-expanded={open}
         aria-controls="atres-mobile-drawer"
         aria-haspopup="dialog"

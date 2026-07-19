@@ -14,8 +14,8 @@ export function HeaderNav({ items }: HeaderNavProps) {
   const links: NavItem[] = [{ key: "todo", label: "Todo", href: "/productos", kind: "category" }, ...items];
 
   return (
-    <nav className="border-t border-white/10 bg-white/[0.04]" aria-label="Categorias ATRES">
-      <div className="atres-scroll catalog-container flex gap-1.5 overflow-x-auto py-1.5 text-sm font-normal">
+    <nav className="border-t border-white/10 bg-white/[0.03]" aria-label="Categorias ATRES">
+      <div className="atres-scroll catalog-container flex gap-1 overflow-x-auto py-1.5 text-sm font-normal">
         {links.map((link) => {
           const active =
             link.href === "/productos"
@@ -28,8 +28,10 @@ export function HeaderNav({ items }: HeaderNavProps) {
               href={link.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "atres-interactive shrink-0 rounded-full px-3.5 py-1.5",
-                active ? "bg-white !text-black shadow-sm" : "text-white/90 hover:bg-white/10 hover:text-white",
+                "atres-interactive shrink-0 rounded-[var(--radius-card)] px-3 py-1.5 transition",
+                active
+                  ? "bg-white text-ink"
+                  : "text-white/75 hover:bg-white/8 hover:text-white",
               )}
             >
               <span className="text-current">{link.label}</span>

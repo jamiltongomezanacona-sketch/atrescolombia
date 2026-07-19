@@ -47,11 +47,11 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
         <Link
           href="/carrito"
           aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
-          className="atres-interactive relative inline-flex h-9 w-9 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
+          className="atres-interactive relative inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-white"
         >
           <HeaderIcon type="bag" />
           {count > 0 ? (
-            <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[9px] font-medium text-white">
+            <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-card)] bg-brand px-1 text-[9px] font-medium text-white">
               {count}
             </span>
           ) : null}
@@ -61,17 +61,17 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
   }
 
   return (
-    <nav className="hidden items-center justify-end gap-1.5 text-sm font-medium lg:flex" aria-label="Acciones">
+    <nav className="hidden items-center justify-end gap-1 text-sm font-medium lg:flex" aria-label="Acciones">
       <ActionLink href="/promociones" label="Notificaciones" icon="bell" iconOnly />
       <ActionLink href="/favoritos" label="Favoritos" icon="heart" />
       <Link
         href="/carrito"
-        className="atres-interactive relative inline-flex h-10 items-center gap-2 rounded-full px-3 text-white/90 hover:bg-white/10 hover:text-white"
+        className="atres-interactive relative inline-flex h-10 items-center gap-2 rounded-[var(--radius-card)] px-3 text-white/85 hover:bg-white/10 hover:text-white"
       >
         <HeaderIcon type="bag" />
         Carrito
         {count > 0 ? (
-          <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[10px] font-medium text-white">
+          <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-[var(--radius-card)] bg-brand px-1 text-[10px] font-medium text-white">
             {count}
           </span>
         ) : null}
@@ -80,13 +80,13 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
         type="button"
         aria-label="Perfil"
         title="Perfil"
-        className="atres-interactive inline-flex h-10 w-10 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
+        className="atres-interactive inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-white"
       >
         <HeaderIcon type="user" />
       </button>
       <Link
         href="/ofertas"
-        className="atres-interactive inline-flex h-10 items-center rounded-full bg-white px-3.5 text-black shadow-sm hover:bg-amber-100"
+        className="atres-interactive inline-flex h-10 items-center rounded-[var(--radius-card)] bg-white px-3.5 text-ink shadow-sm hover:bg-surface-muted"
       >
         Ofertas
       </Link>
@@ -113,10 +113,10 @@ function ActionLink({
       aria-label={label}
       className={
         compact
-          ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
+          ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-white"
           : iconOnly
-            ? "atres-interactive inline-flex h-10 w-10 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
-          : "atres-interactive inline-flex h-10 items-center gap-2 rounded-full px-3 text-white/90 hover:bg-white/10 hover:text-white"
+            ? "atres-interactive inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-white"
+            : "atres-interactive inline-flex h-10 items-center gap-2 rounded-[var(--radius-card)] px-3 text-white/85 hover:bg-white/10 hover:text-white"
       }
     >
       <HeaderIcon type={icon} />

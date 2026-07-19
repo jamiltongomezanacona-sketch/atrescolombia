@@ -80,15 +80,21 @@ export function SearchBox({
         onSubmit={submitSearch}
         className={
           compact
-            ? "flex h-10 w-full items-center overflow-hidden rounded-full bg-white text-black shadow-[0_10px_26px_rgba(0,0,0,0.14)] ring-1 ring-white/35"
-            : "flex h-11 w-full items-center overflow-hidden rounded-full bg-white text-black shadow-[0_12px_30px_rgba(0,0,0,0.14)] ring-1 ring-white/40"
+            ? "flex h-10 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-white text-ink shadow-soft ring-1 ring-white/30"
+            : "flex h-11 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-white text-ink shadow-soft ring-1 ring-white/35"
         }
         role="search"
       >
         {hiddenInputs.map((input) => (
           <input key={`${input.name}:${input.value}`} type="hidden" name={input.name} value={input.value} />
         ))}
-        <span className={compact ? "ml-3 text-stone-500" : "ml-3 grid size-7 shrink-0 place-items-center rounded-full bg-stone-100 text-stone-600"}>
+        <span
+          className={
+            compact
+              ? "ml-2.5 text-ink-muted"
+              : "ml-2.5 grid size-7 shrink-0 place-items-center rounded-[var(--radius-card)] bg-surface-muted text-ink-muted"
+          }
+        >
           <SearchIcon />
         </span>
         <input
@@ -104,20 +110,32 @@ export function SearchBox({
           autoComplete="off"
           placeholder={placeholder}
           role="combobox"
-          className={compact ? "min-w-0 flex-1 bg-transparent px-2 text-sm font-normal outline-none placeholder:text-stone-400" : "min-w-0 flex-1 bg-transparent px-3 text-sm font-normal outline-none placeholder:text-stone-400"}
+          className={
+            compact
+              ? "min-w-0 flex-1 bg-transparent px-2 text-sm font-normal outline-none placeholder:text-stone-400"
+              : "min-w-0 flex-1 bg-transparent px-3 text-sm font-normal outline-none placeholder:text-stone-400"
+          }
         />
         <Link
           href="/buscar"
           aria-label="Buscar por imagen"
           title="Buscar por imagen"
-          className={compact ? "grid h-10 w-10 shrink-0 place-items-center text-stone-600" : "atres-interactive mr-1 grid size-9 shrink-0 place-items-center rounded-full text-stone-600 hover:bg-stone-100 hover:text-black"}
+          className={
+            compact
+              ? "grid h-10 w-9 shrink-0 place-items-center text-ink-muted"
+              : "atres-interactive mr-1 grid size-9 shrink-0 place-items-center rounded-[var(--radius-card)] text-ink-muted hover:bg-surface-muted hover:text-ink"
+          }
         >
           <CameraIcon />
         </Link>
         <button
           type="submit"
           aria-label="Buscar"
-          className={compact ? "mr-1 inline-flex h-8 w-12 items-center justify-center rounded-full bg-black text-white" : "mr-1 inline-flex h-9 min-w-20 items-center justify-center rounded-full bg-black px-4 text-sm font-medium text-white transition hover:bg-stone-800"}
+          className={
+            compact
+              ? "mr-1 inline-flex h-8 w-11 items-center justify-center rounded-[var(--radius-card)] bg-ink text-white"
+              : "mr-1 inline-flex h-9 min-w-20 items-center justify-center rounded-[var(--radius-card)] bg-ink px-4 text-sm font-medium text-white transition hover:bg-stone-800"
+          }
         >
           {compact ? <SearchIcon /> : buttonLabel}
         </button>
@@ -126,16 +144,16 @@ export function SearchBox({
       {open && suggestions.length > 0 ? (
         <div
           id={listId}
-          className="absolute inset-x-0 top-[calc(100%+0.45rem)] z-50 overflow-hidden rounded-lg bg-white p-2 text-black shadow-lift ring-1 ring-black/10"
+          className="absolute inset-x-0 top-[calc(100%+0.45rem)] z-50 overflow-hidden rounded-[var(--radius-card)] bg-surface p-2 text-ink shadow-lift ring-1 ring-black/8"
         >
           <div className="mb-1 flex items-center justify-between px-2">
-            <p className="text-[11px] font-medium text-stone-500">
+            <p className="text-[11px] font-medium text-ink-muted">
               {history.length ? "Historial y sugerencias" : "Sugerencias"}
             </p>
             {history.length ? (
               <button
                 type="button"
-                className="text-[11px] font-medium text-stone-500 hover:text-black"
+                className="text-[11px] font-medium text-ink-muted hover:text-ink"
                 onMouseDown={(event) => {
                   event.preventDefault();
                   window.localStorage.removeItem(HISTORY_KEY);
@@ -146,13 +164,13 @@ export function SearchBox({
               </button>
             ) : null}
           </div>
-          <div className="grid gap-1">
+          <div className="grid gap-0.5">
             {suggestions.map((item) => (
               <Link
                 key={item}
                 href={`/buscar?q=${encodeURIComponent(item)}`}
                 onMouseDown={() => persistSearch(item)}
-                className="flex min-h-9 items-center gap-2 rounded-md px-2 text-sm text-stone-700 hover:bg-stone-100 hover:text-black"
+                className="flex min-h-10 items-center gap-2 rounded-[var(--radius-card)] px-2 text-sm text-ink-muted hover:bg-surface-muted hover:text-ink"
               >
                 <SearchIcon />
                 <span className="truncate">{item}</span>

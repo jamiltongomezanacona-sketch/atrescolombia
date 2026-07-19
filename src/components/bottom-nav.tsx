@@ -17,10 +17,10 @@ export function BottomNav() {
 
   return (
     <nav
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-2 pb-[max(0.35rem,env(safe-area-inset-bottom))] md:hidden"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-2.5 pb-[max(0.35rem,env(safe-area-inset-bottom))] md:hidden"
       aria-label="Navegacion principal"
     >
-      <div className="pointer-events-auto mx-auto grid max-w-[23rem] grid-cols-5 rounded-full border border-white/80 bg-white/94 px-1 py-1.5 shadow-[0_-6px_20px_rgba(20,34,30,0.1)] backdrop-blur-xl">
+      <div className="pointer-events-auto mx-auto grid max-w-[23rem] grid-cols-5 rounded-[var(--radius-card)] border border-black/8 bg-surface/95 px-1 py-1.5 shadow-soft backdrop-blur-xl">
         {items.map((item) => {
           const active =
             item.href === "/"
@@ -33,10 +33,10 @@ export function BottomNav() {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex min-h-9 flex-col items-center justify-center gap-0.5 rounded-full px-1 text-[9px] font-medium leading-none transition duration-200 active:scale-95",
+                "flex min-h-9 flex-col items-center justify-center gap-0.5 rounded-[var(--radius-card)] px-1 text-[10px] font-medium leading-none transition duration-200 active:scale-95",
                 active
-                  ? "bg-stone-950 text-white shadow-[0_4px_12px_rgba(0,0,0,0.14)] [&_svg]:text-white [&_span]:text-white"
-                  : "text-stone-700 hover:bg-stone-100/80 hover:text-black",
+                  ? "bg-ink text-white [&_svg]:text-white [&_span]:text-white"
+                  : "text-ink-muted hover:bg-surface-muted hover:text-ink",
               )}
             >
               <NavIcon type={item.icon} active={active} />

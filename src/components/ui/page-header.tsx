@@ -22,7 +22,7 @@ export function PageHeader({
     return (
       <div
         className={cn(
-          "mb-5 overflow-hidden rounded-[var(--radius-card)] bg-[linear-gradient(145deg,#111111_0%,#1c1917_58%,#2a211c_100%)] p-5 text-white shadow-soft ring-1 ring-white/10 md:p-7",
+          "atres-rise mb-5 overflow-hidden rounded-[var(--radius-card)] bg-[linear-gradient(145deg,#111111_0%,#1c1917_58%,#2a211c_100%)] p-5 text-white shadow-soft ring-1 ring-white/10 md:p-7",
           className,
         )}
       >
@@ -42,7 +42,7 @@ export function PageHeader({
     return (
       <div
         className={cn(
-          "mb-5 overflow-hidden rounded-[var(--radius-card)] bg-[linear-gradient(135deg,var(--promo)_0%,#fff8d6_55%,#ffffff_100%)] p-5 text-ink shadow-soft ring-1 ring-black/5 md:p-7",
+          "atres-rise mb-5 overflow-hidden rounded-[var(--radius-card)] bg-[linear-gradient(135deg,var(--promo)_0%,#fff8d6_55%,#ffffff_100%)] p-5 text-ink shadow-soft ring-1 ring-black/5 md:p-7",
           className,
         )}
       >
@@ -59,7 +59,7 @@ export function PageHeader({
   }
 
   return (
-    <GlassPanel className={cn("mb-5 p-5 md:p-6", className)}>
+    <GlassPanel className={cn("atres-rise mb-5 p-5 md:p-6", className)}>
       <p className="text-xs font-medium tracking-wide text-ink-muted">{eyebrow}</p>
       <h1 className="mt-1.5 text-2xl font-medium tracking-tight text-ink sm:text-3xl">{title}</h1>
       {description ? (

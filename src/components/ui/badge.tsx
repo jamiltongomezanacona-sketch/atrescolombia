@@ -20,7 +20,7 @@ export function Badge({ children, tone = "black", className }: BadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-[var(--radius-card)] px-2 py-0.5 text-[10px] font-medium tracking-wide",
+        "inline-flex items-center rounded-[var(--radius-card)] px-2 py-0.5 text-[10px] font-medium tracking-wide transition duration-200",
         "ring-1",
         tones[tone],
         className,

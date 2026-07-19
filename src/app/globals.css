@@ -167,8 +167,8 @@ h6 {
 
 .atres-interactive {
   transition:
-    transform 180ms ease,
-    box-shadow 180ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
     background-color 180ms ease,
     border-color 180ms ease,
     color 180ms ease,
@@ -181,6 +181,14 @@ h6 {
 
 .atres-interactive:active {
   transform: translateY(0) scale(0.985);
+}
+
+.atres-fade-in {
+  animation: atres-fade-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.atres-rise {
+  animation: atres-rise 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .atres-scroll {
@@ -216,10 +224,31 @@ h6 {
   }
 }
 
+@keyframes atres-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes atres-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .atres-skeleton {
   position: relative;
   overflow: hidden;
-  background: var(--surface-muted);
+  background: color-mix(in srgb, var(--surface-muted) 88%, #d6d3d1);
+  border-radius: calc(var(--radius-card) - 1px);
 }
 
 .atres-skeleton::after {
@@ -227,12 +256,17 @@ h6 {
   position: absolute;
   inset: 0;
   transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.68), transparent);
-  animation: atres-shimmer 1.25s ease-in-out infinite;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.55),
+    transparent
+  );
+  animation: atres-shimmer 1.4s ease-in-out infinite;
 }
 
 .atres-pop {
-  animation: atres-pop 320ms ease;
+  animation: atres-pop 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -248,6 +282,12 @@ h6 {
   .atres-interactive:hover,
   .atres-interactive:active {
     transform: none;
+  }
+
+  .atres-fade-in,
+  .atres-rise,
+  .atres-pop {
+    animation: none !important;
   }
 }
 

@@ -42,3 +42,5 @@ next-env.d.ts
 
 # local asset curation workbench
 /asset-workbench/
+
+.codex-remote-attachments/

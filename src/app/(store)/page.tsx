@@ -37,12 +37,12 @@ export default async function Home() {
   const heroPromo = promos[0];
   const bestSellers = trendingProducts.length ? trendingProducts : products;
   const recommended = products.filter((product) => product.stock > 0).slice(0, 12);
-  const visualProducts = uniqueProducts([
+  const editorialProducts = uniqueProducts([
     ...trendingProducts,
     ...promoProducts,
     ...newProducts,
     ...products,
-  ]).slice(0, 10);
+  ]).slice(0, 5);
   const collections = Array.from(
     new Map(
       products
@@ -65,7 +65,7 @@ export default async function Home() {
         ]}
       />
       <FlashSection products={promoProducts.length ? promoProducts : products} />
-      <PhotoReel products={visualProducts} />
+      <EditorialGallery products={editorialProducts} />
       <HeroSection product={heroProduct} promo={heroPromo} productCount={products.length} />
       <PromoGrid promos={promos} fallbackProducts={promoProducts} />
       <ProductRail title="Mas vendidos" href="/productos?orden=tendencias" products={bestSellers} priorityCount={4} />
@@ -234,17 +234,17 @@ function PromoGrid({
   );
 }
 
-function PhotoReel({ products }: { products: Product[] }) {
+function EditorialGallery({ products }: { products: Product[] }) {
   if (!products.length) return null;
-  const reelGroups = [products, products];
+  const [featured, ...supporting] = products;
 
   return (
-    <section className="catalog-container py-3 md:py-4" aria-labelledby="photo-reel-title">
+    <section className="catalog-container py-3 md:py-4" aria-labelledby="editorial-gallery-title">
       <div className="mb-2.5 flex items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-medium text-stone-500">Reel ATRES</p>
-          <h2 id="photo-reel-title" className="mt-1 text-xl font-medium leading-none text-ink md:text-2xl">
-            Fotos para elegir rapido
+          <p className="text-xs font-medium text-stone-500">Editorial ATRES</p>
+          <h2 id="editorial-gallery-title" className="mt-1 text-xl font-medium leading-none text-ink md:text-2xl">
+            Comprar por foto
           </h2>
         </div>
         <Link href="/productos" className="shrink-0 text-sm font-medium text-ink underline-offset-4 hover:underline">
@@ -252,56 +252,65 @@ function PhotoReel({ products }: { products: Product[] }) {
         </Link>
       </div>
 
-      <div className="-mx-3 overflow-hidden px-3 md:mx-0 md:px-0">
-        <div className="atres-photo-reel-track flex w-max gap-2 md:gap-3">
-          {reelGroups.map((group, groupIndex) => (
-            <div
-              key={`reel-group-${groupIndex}`}
-              className="flex gap-2 md:gap-3"
-              aria-hidden={groupIndex === 1}
-            >
-              {group.map((product, index) => (
-                <Link
-                  key={`reel-${groupIndex}-${product.slug}`}
-                  href={`/productos/${product.slug}`}
-                  tabIndex={groupIndex === 1 ? -1 : undefined}
-                  className={`group relative h-48 shrink-0 overflow-hidden rounded-lg bg-black shadow-soft ring-1 ring-black/5 md:h-56 ${
-                    index % 5 === 0 ? "w-[58vw] max-w-[240px] md:w-[22rem]" : "w-[38vw] max-w-[168px] md:w-[13rem]"
-                  }`}
-                >
-                  <SafeProductImage
-                    src={product.image}
-                    alt={product.name}
-                    sizes="(max-width: 768px) 58vw, 22rem"
-                    className="object-cover opacity-90 transition duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/10 to-transparent" />
-                  {product.isPromo ? (
-                    <span className="absolute left-2 top-2 rounded-full bg-[#ff4d00] px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
-                      Oferta
-                    </span>
-                  ) : product.isNew ? (
-                    <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-medium text-black shadow-sm">
-                      Nuevo
-                    </span>
-                  ) : null}
-                  <div className="absolute inset-x-0 bottom-0 p-2.5 text-white">
-                    <p className="line-clamp-2 text-sm font-medium leading-4">{product.name}</p>
-                    <ProductPrice
-                      price={product.price}
-                      previousPrice={product.previousPrice}
-                      className="mt-1 rounded-full bg-white/92 px-2 py-1 text-black shadow-sm backdrop-blur"
-                      currentClassName="text-sm"
-                      previousClassName="mt-0 text-[10px]"
-                    />
-                  </div>
-                </Link>
-              ))}
-            </div>
+      <div className="grid gap-2 md:grid-cols-[1.15fr_0.85fr] md:gap-3">
+        {featured ? <EditorialTile product={featured} featured /> : null}
+        <div className="grid grid-cols-2 gap-2 md:gap-3">
+          {supporting.map((product) => (
+            <EditorialTile key={`editorial-${product.slug}`} product={product} />
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function EditorialTile({ product, featured = false }: { product: Product; featured?: boolean }) {
+  return (
+    <Link
+      href={`/productos/${product.slug}`}
+      className={`group relative overflow-hidden rounded-lg bg-black shadow-soft ring-1 ring-black/5 ${
+        featured ? "min-h-[260px] md:min-h-[430px]" : "min-h-[158px] md:min-h-[208px]"
+      }`}
+    >
+      <SafeProductImage
+        src={product.image}
+        alt={product.name}
+        sizes={featured ? "(max-width: 768px) 100vw, 52vw" : "(max-width: 768px) 50vw, 22vw"}
+        className="object-cover opacity-92 transition duration-500 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/12 to-transparent" />
+      <div className="absolute left-2 top-2 flex flex-wrap gap-1.5">
+        {product.isPromo ? (
+          <span className="rounded-full bg-[#ff4d00] px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
+            Oferta
+          </span>
+        ) : null}
+        {product.isNew ? (
+          <span className="rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-medium text-black shadow-sm">
+            Nuevo
+          </span>
+        ) : null}
+      </div>
+      <div className="absolute inset-x-0 bottom-0 p-3 text-white">
+        <p className={`${featured ? "text-lg leading-5" : "text-sm leading-4"} line-clamp-2 font-medium`}>
+          {product.name}
+        </p>
+        <div className="mt-2 flex items-end justify-between gap-2">
+          <ProductPrice
+            price={product.price}
+            previousPrice={product.previousPrice}
+            className="rounded-full bg-white/92 px-2 py-1 text-black shadow-sm backdrop-blur"
+            currentClassName={featured ? "text-base" : "text-sm"}
+            previousClassName="mt-0 text-[10px]"
+          />
+          {featured ? (
+            <span className="hidden shrink-0 rounded-full bg-white/14 px-3 py-1.5 text-xs font-medium text-white ring-1 ring-white/24 sm:inline-flex">
+              Ver prenda
+            </span>
+          ) : null}
+        </div>
+      </div>
+    </Link>
   );
 }
 

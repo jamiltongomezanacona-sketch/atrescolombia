@@ -1,24 +1,42 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SafeProductImage } from "@/components/safe-product-image";
-import { useProductSelection } from "@/components/product-selection-context";
 
 type ProductGalleryProps = {
   productName: string;
+  images: string[];
 };
 
-export function ProductGallery({ productName }: ProductGalleryProps) {
-  const {
-    selectedImage,
-    selectedImageIndex,
-    selectedImages,
-    setSelectedImageIndex,
-    nextImage,
-    previousImage,
-  } = useProductSelection();
+const FALLBACK_IMAGES = ["/icono.png"];
+
+export function ProductGallery({ productName, images }: ProductGalleryProps) {
+  const selectedImages = useMemo(() => sanitizeImages(images), [images]);
+  const [rawSelectedImageIndex, setRawSelectedImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const touchStartX = useRef<number | null>(null);
+  const selectedImageIndex = wrapIndex(rawSelectedImageIndex, selectedImages.length);
+  const selectedImage = selectedImages[selectedImageIndex] ?? selectedImages[0] ?? FALLBACK_IMAGES[0];
+
+  const setSelectedImageIndex = useCallback((index: number) => {
+    setRawSelectedImageIndex(wrapIndex(index, selectedImages.length));
+  }, [selectedImages.length]);
+
+  const nextImage = useCallback(() => {
+    setSelectedImageIndex(selectedImageIndex + 1);
+  }, [selectedImageIndex, setSelectedImageIndex]);
+
+  const previousImage = useCallback(() => {
+    setSelectedImageIndex(selectedImageIndex - 1);
+  }, [selectedImageIndex, setSelectedImageIndex]);
+
+  useEffect(() => {
+    const element = document.querySelector<HTMLElement>("[data-whatsapp-product-name]");
+    if (!element) return;
+
+    element.dataset.whatsappProductImage = selectedImage;
+    window.dispatchEvent(new Event("atres:product-selection-changed"));
+  }, [selectedImage]);
 
   useEffect(() => {
     if (!lightboxOpen) return;
@@ -165,4 +183,14 @@ export function ProductGallery({ productName }: ProductGalleryProps) {
       ) : null}
     </>
   );
+}
+
+function sanitizeImages(images: string[]) {
+  const unique = Array.from(new Set(images.map((image) => image.trim()).filter(Boolean)));
+  return unique.length ? unique : FALLBACK_IMAGES;
+}
+
+function wrapIndex(index: number, length: number) {
+  if (length <= 0) return 0;
+  return ((index % length) + length) % length;
 }

@@ -86,7 +86,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         sizes={product.sizes}
       >
         <section className="store-container grid gap-5 py-6 md:py-8 lg:grid-cols-[1.08fr_0.92fr]">
-          <ProductGallery productName={product.name} />
+          <ProductGallery productName={product.name} images={product.images} />
 
           <GlassPanel className="self-start p-5 lg:sticky lg:top-28">
           <div className="flex flex-wrap gap-2">

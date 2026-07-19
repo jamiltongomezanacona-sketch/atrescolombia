@@ -38,12 +38,13 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
   const productUrl = getProductUrl(product.slug);
+  const effectiveSelectedImage = getEffectiveProductImage(selectedImage, product);
   const whatsappUrl = whatsapp
     ? buildWhatsAppUrl(
         whatsapp,
         buildProductWhatsAppMessage(product, size, color, {
           productUrl,
-          imageUrl: selectedImage,
+          imageUrl: effectiveSelectedImage,
         }),
       )
     : null;
@@ -78,9 +79,9 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
   }
 
   async function shareProduct() {
-    const url = buildSelectedImageShareUrl(product.slug, selectedImage);
-    const text = selectedImage
-      ? `${product.description}\nImagen seleccionada: ${selectedImage}`
+    const url = buildSelectedImageShareUrl(product.slug, effectiveSelectedImage);
+    const text = effectiveSelectedImage
+      ? `${product.description}\nImagen seleccionada: ${effectiveSelectedImage}`
       : product.description;
 
     try {
@@ -89,7 +90,7 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
         return;
       }
 
-      await navigator.clipboard.writeText(`${url}${selectedImage ? `\nImagen: ${selectedImage}` : ""}`);
+      await navigator.clipboard.writeText(`${url}${effectiveSelectedImage ? `\nImagen: ${effectiveSelectedImage}` : ""}`);
       setMessage("Enlace copiado para compartir.");
     } catch {
       setMessage("No se pudo compartir en este navegador.");
@@ -177,6 +178,12 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
       ) : null}
     </div>
   );
+}
+
+function getEffectiveProductImage(selectedImage: string, product: Product) {
+  if (selectedImage && selectedImage !== "/icono.png") return selectedImage;
+  if (product.image && product.image !== "/icono.png") return product.image;
+  return product.images.find((image) => image && image !== "/icono.png") ?? selectedImage;
 }
 
 function getProductUrl(slug: string) {

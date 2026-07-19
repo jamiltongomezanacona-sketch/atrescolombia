@@ -6,6 +6,8 @@ type ProductPriceProps = {
   previousPrice?: number | null;
   size?: "sm" | "md" | "lg";
   className?: string;
+  currentClassName?: string;
+  previousClassName?: string;
 };
 
 const sizeClass = {
@@ -14,14 +16,25 @@ const sizeClass = {
   lg: "text-2xl sm:text-3xl",
 } as const;
 
-export function ProductPrice({ price, previousPrice, size = "sm", className }: ProductPriceProps) {
+export function ProductPrice({
+  price,
+  previousPrice,
+  size = "sm",
+  className,
+  currentClassName,
+  previousClassName,
+}: ProductPriceProps) {
   const showPrevious = previousPrice != null && previousPrice > price;
 
   return (
     <div className={cn("min-w-0", className)}>
-      <p className={cn("font-medium leading-none tracking-tight text-brand", sizeClass[size])}>{formatCOP(price)}</p>
+      <p className={cn("font-medium leading-none tracking-tight text-brand", sizeClass[size], currentClassName)}>
+        {formatCOP(price)}
+      </p>
       {showPrevious ? (
-        <p className="mt-1 text-xs font-medium text-stone-400 line-through decoration-stone-400/80">{formatCOP(previousPrice)}</p>
+        <p className={cn("mt-1 text-xs font-medium text-stone-400 line-through decoration-stone-400/80", previousClassName)}>
+          {formatCOP(previousPrice)}
+        </p>
       ) : null}
     </div>
   );

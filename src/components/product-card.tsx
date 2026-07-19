@@ -141,7 +141,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             price={product.price}
             previousPrice={previousPrice}
             size="md"
-            className="[&>p:first-child]:text-[1.25rem] [&>p:last-child]:mt-0 [&>p:last-child]:text-[11px] sm:[&>p:first-child]:text-xl sm:[&>p:last-child]:mt-1 sm:[&>p:last-child]:text-xs"
+            currentClassName="text-[1.28rem] sm:text-xl"
+            previousClassName="mt-0 text-[11px] sm:mt-1 sm:text-xs"
           />
           <Link
             href={`/productos/${product.slug}`}

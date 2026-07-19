@@ -20,7 +20,7 @@ export function BottomNav() {
       className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-2 pb-[max(0.35rem,env(safe-area-inset-bottom))] md:hidden"
       aria-label="Navegacion principal"
     >
-      <div className="pointer-events-auto mx-auto grid max-w-[23rem] grid-cols-5 rounded-full border border-white/80 bg-white/94 px-1 py-1 shadow-[0_-6px_20px_rgba(20,34,30,0.1)] backdrop-blur-xl">
+      <div className="pointer-events-auto mx-auto grid max-w-[23rem] grid-cols-5 rounded-full border border-white/80 bg-white/94 px-1 py-1.5 shadow-[0_-6px_20px_rgba(20,34,30,0.1)] backdrop-blur-xl">
         {items.map((item) => {
           const active =
             item.href === "/"
@@ -33,12 +33,14 @@ export function BottomNav() {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex min-h-9 flex-col items-center justify-center gap-0.5 rounded-full px-1 text-[8.5px] font-medium leading-none transition duration-200 active:scale-95",
-                active ? "bg-stone-950 text-white shadow-[0_4px_12px_rgba(0,0,0,0.14)]" : "text-stone-700 hover:bg-stone-100/80 hover:text-black",
+                "flex min-h-9 flex-col items-center justify-center gap-0.5 rounded-full px-1 text-[9px] font-medium leading-none transition duration-200 active:scale-95",
+                active
+                  ? "bg-stone-950 text-white shadow-[0_4px_12px_rgba(0,0,0,0.14)] [&_svg]:text-white [&_span]:text-white"
+                  : "text-stone-700 hover:bg-stone-100/80 hover:text-black",
               )}
             >
-              <NavIcon type={item.icon} />
-              <span>{item.label}</span>
+              <NavIcon type={item.icon} active={active} />
+              <span className="block">{item.label}</span>
             </Link>
           );
         })}
@@ -47,8 +49,8 @@ export function BottomNav() {
   );
 }
 
-function NavIcon({ type }: { type: "home" | "grid" | "search" | "heart" | "bag" }) {
-  const className = "size-3.5";
+function NavIcon({ type, active }: { type: "home" | "grid" | "search" | "heart" | "bag"; active: boolean }) {
+  const className = cn("size-3.5", active ? "text-white" : "text-current");
 
   if (type === "home") {
     return (

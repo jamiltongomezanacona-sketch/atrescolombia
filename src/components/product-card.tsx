@@ -113,9 +113,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </h3>
         </Link>
 
-        <div className="mt-1.5 hidden min-h-4 items-center justify-between gap-2 sm:flex">
+        <div className="mt-0.5 flex items-center justify-between gap-2 sm:mt-1.5">
           {sizes.length > 0 ? (
-            <p className="truncate text-[10px] font-normal text-stone-500/90 sm:text-[11px]">
+            <p className="truncate text-[10px] font-normal leading-none text-stone-500/90 sm:text-[11px] sm:leading-normal">
               Tallas: {sizes.join(" / ")}
               {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
             </p>
@@ -136,7 +136,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           ) : null}
         </div>
 
-        <div className="mt-1 flex items-end justify-between gap-2 sm:mt-2">
+        <div className="mt-0.5 flex items-end justify-between gap-2 sm:mt-2">
           <ProductPrice
             price={product.price}
             previousPrice={previousPrice}

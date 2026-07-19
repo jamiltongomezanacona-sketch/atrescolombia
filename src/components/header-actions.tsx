@@ -9,6 +9,7 @@ type CartItem = {
 
 type HeaderActionsProps = {
   compact?: boolean;
+  minimal?: boolean;
 };
 
 function readCount() {
@@ -20,7 +21,7 @@ function readCount() {
   }
 }
 
-export function HeaderActions({ compact = false }: HeaderActionsProps) {
+export function HeaderActions({ compact = false, minimal = false }: HeaderActionsProps) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -41,7 +42,7 @@ export function HeaderActions({ compact = false }: HeaderActionsProps) {
   if (compact) {
     return (
       <nav className="flex items-center justify-end gap-0.5 lg:hidden" aria-label="Acciones rapidas">
-        <ActionLink href="/promociones" label="Notificaciones" icon="bell" compact />
+        {minimal ? null : <ActionLink href="/promociones" label="Notificaciones" icon="bell" compact />}
         <ActionLink href="/favoritos" label="Favoritos" icon="heart" compact />
         <Link
           href="/carrito"

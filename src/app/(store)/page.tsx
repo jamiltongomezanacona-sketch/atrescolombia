@@ -154,7 +154,7 @@ function CategoryStrip({
   categories: Array<{ label: string; href: string }>;
 }) {
   return (
-    <nav className="sticky top-[6.85rem] z-30 border-y border-black/5 bg-white/94 shadow-sm backdrop-blur-xl lg:top-[7.9rem]" aria-label="Categorias destacadas">
+    <nav className="sticky top-[3.5rem] z-30 border-y border-black/5 bg-white/94 shadow-sm backdrop-blur-xl lg:top-[7.9rem]" aria-label="Categorias destacadas">
       <div className="atres-scroll catalog-container flex gap-2 overflow-x-auto py-2">
         {categories.map((category, index) => (
           <Link

@@ -23,7 +23,17 @@ export async function SiteHeader() {
         </div>
       </div>
 
-      <div className="catalog-container py-1.5 lg:py-2.5">
+      <div className="catalog-container py-2 lg:hidden">
+        <div className="grid grid-cols-[2.25rem_minmax(0,1fr)_4.75rem] items-center gap-2">
+          <MobileNavDrawer items={navItems} />
+          <Suspense fallback={<div className="h-10 rounded-full bg-white/12" />}>
+            <HeaderMobileSearch />
+          </Suspense>
+          <HeaderActions compact minimal />
+        </div>
+      </div>
+
+      <div className="hidden catalog-container py-1.5 lg:block lg:py-2.5">
         <div className="flex items-center gap-2 lg:grid lg:grid-cols-[230px_minmax(360px,1fr)_360px] lg:gap-3">
           <div className="flex min-w-0 items-center gap-1.5">
             <MobileNavDrawer items={navItems} />
@@ -36,14 +46,9 @@ export async function SiteHeader() {
           />
 
           <div className="ml-auto flex items-center gap-1">
-            <HeaderActions compact />
             <HeaderActions />
           </div>
         </div>
-
-        <Suspense fallback={<div className="mt-1.5 h-10 rounded-full bg-white/12 lg:hidden" />}>
-          <HeaderMobileSearch />
-        </Suspense>
       </div>
 
       <div className="hidden lg:block">

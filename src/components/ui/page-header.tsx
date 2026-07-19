@@ -22,7 +22,7 @@ export function PageHeader({
     return (
       <div
         className={cn(
-          "mb-5 overflow-hidden rounded-lg bg-black/88 p-5 text-white shadow-soft ring-1 ring-white/10 md:p-7",
+          "mb-5 overflow-hidden rounded-lg bg-[linear-gradient(135deg,#09090b_0%,#172033_54%,#0f766e_100%)] p-5 text-white shadow-soft ring-1 ring-white/10 md:p-7",
           className,
         )}
       >
@@ -38,7 +38,7 @@ export function PageHeader({
     return (
       <div
         className={cn(
-          "mb-5 overflow-hidden rounded-lg bg-[linear-gradient(135deg,var(--promo)_0%,#fff7cc_54%,#ffffff_100%)] p-5 text-ink shadow-[0_18px_45px_rgba(164,117,0,0.12)] ring-1 ring-black/5 md:p-7",
+          "mb-5 overflow-hidden rounded-lg bg-[linear-gradient(135deg,var(--promo)_0%,#fff7cc_48%,#ecfeff_100%)] p-5 text-ink shadow-[0_18px_45px_rgba(164,117,0,0.12)] ring-1 ring-black/5 md:p-7",
           className,
         )}
       >

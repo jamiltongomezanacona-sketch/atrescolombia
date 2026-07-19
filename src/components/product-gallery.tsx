@@ -14,6 +14,7 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
   const selectedImages = useMemo(() => sanitizeImages(images), [images]);
   const [rawSelectedImageIndex, setRawSelectedImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [zoomed, setZoomed] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const selectedImageIndex = wrapIndex(rawSelectedImageIndex, selectedImages.length);
   const selectedImage = selectedImages[selectedImageIndex] ?? selectedImages[0] ?? FALLBACK_IMAGES[0];
@@ -24,10 +25,12 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
 
   const nextImage = useCallback(() => {
     setSelectedImageIndex(selectedImageIndex + 1);
+    setZoomed(false);
   }, [selectedImageIndex, setSelectedImageIndex]);
 
   const previousImage = useCallback(() => {
     setSelectedImageIndex(selectedImageIndex - 1);
+    setZoomed(false);
   }, [selectedImageIndex, setSelectedImageIndex]);
 
   useEffect(() => {
@@ -45,6 +48,8 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
       if (event.key === "Escape") setLightboxOpen(false);
       if (event.key === "ArrowRight") nextImage();
       if (event.key === "ArrowLeft") previousImage();
+      if (event.key === "+" || event.key === "=") setZoomed(true);
+      if (event.key === "-" || event.key === "0") setZoomed(false);
     }
 
     document.body.style.overflow = "hidden";
@@ -82,12 +87,17 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
             sizes="(max-width: 1024px) 100vw, 55vw"
             className="object-cover transition duration-300 group-hover:scale-[1.015]"
           />
-          <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-black/70 px-3 py-1.5 text-xs font-medium text-white opacity-0 backdrop-blur transition group-hover:opacity-100">
+          <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-black/72 px-3 py-1.5 text-xs font-medium text-white opacity-0 backdrop-blur transition group-hover:opacity-100">
             Ver galeria
           </span>
+          {selectedImages.length > 1 ? (
+            <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-black shadow-sm">
+              {selectedImageIndex + 1}/{selectedImages.length}
+            </span>
+          ) : null}
         </button>
 
-        <div className="grid grid-cols-5 gap-2 sm:grid-cols-1 sm:gap-3">
+        <div className="atres-scroll grid grid-cols-5 gap-2 overflow-x-auto sm:grid-cols-1 sm:gap-3 sm:overflow-visible">
           {selectedImages.map((image, index) => {
             const active = index === selectedImageIndex;
             return (
@@ -130,7 +140,10 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
         >
           <button
             type="button"
-            onClick={() => setLightboxOpen(false)}
+            onClick={() => {
+              setLightboxOpen(false);
+              setZoomed(false);
+            }}
             className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-full bg-white text-xl font-medium text-black"
             aria-label="Cerrar galeria"
           >
@@ -146,14 +159,38 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
             &lt;
           </button>
 
-          <div className="relative h-[82vh] w-full max-w-5xl overflow-hidden rounded-xl bg-black">
+          <div className="absolute left-1/2 top-4 z-10 flex -translate-x-1/2 gap-2 rounded-full bg-black/55 p-1 backdrop-blur">
+            <button
+              type="button"
+              onClick={() => setZoomed(false)}
+              className={`h-9 rounded-full px-3 text-xs font-medium ${!zoomed ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
+              aria-pressed={!zoomed}
+            >
+              Ajustar
+            </button>
+            <button
+              type="button"
+              onClick={() => setZoomed(true)}
+              className={`h-9 rounded-full px-3 text-xs font-medium ${zoomed ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
+              aria-pressed={zoomed}
+            >
+              Zoom
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setZoomed((current) => !current)}
+            className={`relative h-[82vh] w-full max-w-5xl overflow-hidden rounded-xl bg-black ${zoomed ? "cursor-zoom-out overflow-auto" : "cursor-zoom-in"}`}
+            aria-label={zoomed ? "Quitar zoom" : "Ampliar imagen"}
+          >
             <SafeProductImage
               src={selectedImage}
               alt={productName}
               sizes="100vw"
-              className="object-contain"
+              className={`transition duration-300 ${zoomed ? "scale-150 object-contain" : "object-contain"}`}
             />
-          </div>
+          </button>
 
           <button
             type="button"
@@ -164,12 +201,15 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
             &gt;
           </button>
 
-          <div className="absolute bottom-4 left-1/2 flex max-w-[92vw] -translate-x-1/2 gap-2 overflow-x-auto rounded-full bg-black/55 px-3 py-2 backdrop-blur">
+          <div className="atres-scroll absolute bottom-4 left-1/2 flex max-w-[92vw] -translate-x-1/2 gap-2 overflow-x-auto rounded-full bg-black/55 px-3 py-2 backdrop-blur">
             {selectedImages.map((image, index) => (
               <button
                 key={`lightbox-${image}-${index}`}
                 type="button"
-                onClick={() => setSelectedImageIndex(index)}
+                onClick={() => {
+                  setSelectedImageIndex(index);
+                  setZoomed(false);
+                }}
                 className={`relative size-12 shrink-0 overflow-hidden rounded-full bg-white/10 ${
                   index === selectedImageIndex ? "ring-2 ring-white" : "ring-1 ring-white/30"
                 }`}

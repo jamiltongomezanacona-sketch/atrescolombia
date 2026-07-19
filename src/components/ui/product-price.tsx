@@ -19,9 +19,9 @@ export function ProductPrice({ price, previousPrice, size = "sm", className }: P
 
   return (
     <div className={cn("min-w-0", className)}>
-      <p className={cn("font-medium leading-none tracking-tight text-[#ff4d00]", sizeClass[size])}>{formatCOP(price)}</p>
+      <p className={cn("font-medium leading-none tracking-tight text-brand", sizeClass[size])}>{formatCOP(price)}</p>
       {showPrevious ? (
-        <p className="mt-1 text-xs font-medium text-stone-400 line-through">{formatCOP(previousPrice)}</p>
+        <p className="mt-1 text-xs font-medium text-stone-400 line-through decoration-stone-400/80">{formatCOP(previousPrice)}</p>
       ) : null}
     </div>
   );

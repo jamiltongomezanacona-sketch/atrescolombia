@@ -3,10 +3,16 @@ import { FloatingWhatsApp } from "@/components/floating-whatsapp";
 import { SiteHeader } from "@/components/site-header";
 import { SkipLink } from "@/components/skip-link";
 import { StoreFooter } from "@/components/store-footer";
+import { getPublicStoreSettings } from "@/lib/public-settings";
 
-export default function StoreLayout({ children }: { children: React.ReactNode }) {
+export default async function StoreLayout({ children }: { children: React.ReactNode }) {
+  const settings = await getPublicStoreSettings();
+
   return (
-    <div className="store-surface flex min-h-screen flex-col overflow-x-hidden text-ink">
+    <div
+      className="store-surface flex min-h-screen flex-col overflow-x-hidden text-ink"
+      data-atres-whatsapp={settings?.whatsapp || undefined}
+    >
       <SkipLink />
       <SiteHeader />
       <div

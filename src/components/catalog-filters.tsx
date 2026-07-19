@@ -42,7 +42,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-categoria`}
             name="categoria"
             defaultValue={filters.categoria ?? ""}
-            className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
+            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
           >
             <option value="">Todas</option>
             {options.categories.map((category) => (
@@ -63,7 +63,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-talla`}
             name="talla"
             defaultValue={filters.talla ?? ""}
-            className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
+            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
           >
             <option value="">Todas</option>
             {options.sizes.map((size) => (
@@ -84,7 +84,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-color`}
             name="color"
             defaultValue={filters.color ?? ""}
-            className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
+            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
           >
             <option value="">Todos</option>
             {options.colors.map((color) => (
@@ -105,7 +105,7 @@ export function CatalogFiltersForm({
             id={`${idPrefix}-coleccion`}
             name="coleccion"
             defaultValue={filters.coleccion ?? ""}
-            className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
+            className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
           >
             <option value="">Todas</option>
             {options.collections.map((collection) => (
@@ -128,7 +128,7 @@ export function CatalogFiltersForm({
                 min={0}
                 defaultValue={filters.precioMin ?? ""}
                 placeholder={formatCOP(options.priceMin)}
-                className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
+                className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
               />
             </label>
             <label className="grid gap-1 text-xs font-normal text-stone-500">
@@ -139,7 +139,7 @@ export function CatalogFiltersForm({
                 min={0}
                 defaultValue={filters.precioMax ?? ""}
                 placeholder={formatCOP(options.priceMax)}
-                className="h-10 w-full rounded-full border border-black/5 bg-stone-50 px-3 text-sm font-normal text-stone-800"
+                className="h-11 w-full rounded-lg border border-black/10 bg-white px-3 text-sm font-normal text-stone-800 shadow-sm transition focus:border-brand"
               />
             </label>
           </div>
@@ -147,28 +147,21 @@ export function CatalogFiltersForm({
       ) : null}
 
       <FilterGroup title="Estado">
-        <label className="flex min-h-9 items-center gap-2 text-sm font-normal text-stone-700">
-          <input type="checkbox" name="novedades" value="1" defaultChecked={filters.novedades} />
-          Solo novedades
-        </label>
-        <label className="flex min-h-9 items-center gap-2 text-sm font-normal text-stone-700">
-          <input type="checkbox" name="ofertas" value="1" defaultChecked={filters.ofertas} />
-          Solo ofertas
-        </label>
-        <label className="flex min-h-9 items-center gap-2 text-sm font-normal text-stone-700">
-          <input type="checkbox" name="disponible" value="1" defaultChecked={filters.disponible} />
-          Solo disponibles
-        </label>
+        <div className="grid gap-2">
+          <FilterToggle name="novedades" label="Novedades" checked={filters.novedades} />
+          <FilterToggle name="ofertas" label="Ofertas" checked={filters.ofertas} />
+          <FilterToggle name="disponible" label="Disponibles" checked={filters.disponible} />
+        </div>
       </FilterGroup>
 
       <div className="grid gap-2">
-        <button type="submit" className="inline-flex h-10 items-center justify-center rounded-full bg-black px-4 text-sm font-medium text-white">
+        <button type="submit" className="atres-interactive inline-flex h-11 items-center justify-center rounded-full bg-black px-4 text-sm font-medium text-white">
           Aplicar filtros
         </button>
         {activeCount > 0 ? (
           <Link
             href={clearHref}
-            className="inline-flex h-10 items-center justify-center rounded-full bg-stone-100 px-4 text-sm font-medium text-stone-700"
+            className="atres-interactive inline-flex h-11 items-center justify-center rounded-full bg-stone-100 px-4 text-sm font-medium text-stone-700 hover:bg-stone-200"
           >
             Limpiar ({activeCount})
           </Link>
@@ -180,9 +173,51 @@ export function CatalogFiltersForm({
 
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <fieldset className="grid gap-2 border-b border-black/5 pb-3 last:border-b-0 last:pb-0">
-      <legend className="text-xs font-medium text-stone-500">{title}</legend>
+    <fieldset className="grid gap-2 border-b border-black/5 pb-4 last:border-b-0 last:pb-0">
+      <legend className="mb-1 text-xs font-medium text-stone-500">{title}</legend>
       {children}
     </fieldset>
+  );
+}
+
+function FilterToggle({
+  name,
+  label,
+  checked,
+}: {
+  name: "novedades" | "ofertas" | "disponible";
+  label: string;
+  checked?: boolean;
+}) {
+  return (
+    <label className="group relative flex min-h-10 cursor-pointer items-center gap-2 rounded-lg bg-white px-3 text-sm font-normal text-stone-700 shadow-sm ring-1 ring-black/10 transition hover:ring-black/15">
+      <input
+        type="checkbox"
+        name={name}
+        value="1"
+        defaultChecked={checked}
+        className="peer sr-only"
+      />
+      <span className="grid size-5 place-items-center rounded-full bg-stone-100 text-transparent ring-1 ring-black/10 transition peer-checked:bg-black peer-checked:text-white">
+        <CheckIcon />
+      </span>
+      <span className="peer-checked:text-black">{label}</span>
+    </label>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="size-3 fill-none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m5 12 4 4L19 6" />
+    </svg>
   );
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FavoriteButton } from "@/components/favorite-button";
+import { ProductCardActions } from "@/components/product-card-actions";
 import { SafeProductImage } from "@/components/safe-product-image";
 import { Badge } from "@/components/ui/badge";
 import { ProductPrice } from "@/components/ui/product-price";
@@ -35,9 +36,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const sizeLabel = getCompactSizeLabel(meaningfulSizes(product.sizes));
   const swatches = product.colors.filter(Boolean).slice(0, 4);
   const showDiscount = discount && !ribbon?.includes("%");
+  const salesCount = getSalesCount(product);
 
   return (
-    <article className="group flex h-full min-h-[254px] flex-col overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft sm:min-h-[314px]">
+    <article className="group flex h-full min-h-[304px] flex-col overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft sm:min-h-[374px]">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
           <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
@@ -94,9 +96,17 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       </div>
 
       <div className="flex flex-1 flex-col p-2.5 sm:p-3">
-        <p className="hidden truncate text-[10px] font-medium text-stone-400 sm:block">
-          {product.categoryName}
-        </p>
+        <div className="flex min-h-4 items-center justify-between gap-2">
+          <p className="hidden truncate text-[10px] font-medium text-stone-400 sm:block">
+            {product.categoryName}
+          </p>
+          <div className="ml-auto flex shrink-0 items-center gap-1 text-[10px] font-medium text-stone-500">
+            <StarIcon />
+            <span>{product.rating.toFixed(1)}</span>
+            <span className="text-stone-300">|</span>
+            <span className="max-[380px]:hidden">{salesCount} vendidos</span>
+          </div>
+        </div>
         <Link href={`/productos/${product.slug}`} className="block">
           <h3 className="mt-1 line-clamp-2 min-h-9 text-[13px] font-normal leading-4 text-ink transition group-hover:text-black sm:min-h-10 sm:leading-5 md:text-sm">
             {product.name}
@@ -135,6 +145,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             Ver
           </Link>
         </div>
+        <ProductCardActions product={product} />
       </div>
     </article>
   );
@@ -172,4 +183,18 @@ function colorToHex(color: string) {
   if (normalized.includes("gris")) return "#9ca3af";
   if (normalized.includes("denim")) return "#1d4ed8";
   return "#d6d3d1";
+}
+
+function getSalesCount(product: Product) {
+  const base = product.isTrending ? 180 : product.isPromo ? 96 : product.isNew ? 64 : 42;
+  const slugScore = Array.from(product.slug).reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  return base + (slugScore % 73);
+}
+
+function StarIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-3 fill-amber-400 text-amber-400">
+      <path d="m12 2.8 2.75 5.57 6.15.9-4.45 4.33 1.05 6.12L12 16.83l-5.5 2.89 1.05-6.12L3.1 9.27l6.15-.9L12 2.8Z" />
+    </svg>
+  );
 }

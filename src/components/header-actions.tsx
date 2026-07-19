@@ -40,18 +40,13 @@ export function HeaderActions({ compact = false }: HeaderActionsProps) {
 
   if (compact) {
     return (
-      <nav className="flex items-center justify-end gap-1 lg:hidden" aria-label="Acciones rapidas">
-        <Link
-          href="/favoritos"
-          aria-label="Favoritos"
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white/86 transition hover:bg-white/10 hover:text-white"
-        >
-          <HeaderIcon type="heart" />
-        </Link>
+      <nav className="flex items-center justify-end gap-0.5 lg:hidden" aria-label="Acciones rapidas">
+        <ActionLink href="/promociones" label="Notificaciones" icon="bell" compact />
+        <ActionLink href="/favoritos" label="Favoritos" icon="heart" compact />
         <Link
           href="/carrito"
           aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
-          className="relative inline-flex h-9 w-9 items-center justify-center rounded-full text-white/86 transition hover:bg-white/10 hover:text-white"
+          className="atres-interactive relative inline-flex h-9 w-9 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
         >
           <HeaderIcon type="bag" />
           {count > 0 ? (
@@ -65,17 +60,12 @@ export function HeaderActions({ compact = false }: HeaderActionsProps) {
   }
 
   return (
-    <nav className="hidden items-center justify-end gap-2 text-sm font-medium lg:flex" aria-label="Acciones">
-      <Link
-        href="/favoritos"
-        className="inline-flex h-11 items-center gap-2 rounded-full px-3 text-white/90 transition hover:bg-white/10 hover:text-white"
-      >
-        <HeaderIcon type="heart" />
-        Favoritos
-      </Link>
+    <nav className="hidden items-center justify-end gap-1.5 text-sm font-medium lg:flex" aria-label="Acciones">
+      <ActionLink href="/promociones" label="Notificaciones" icon="bell" iconOnly />
+      <ActionLink href="/favoritos" label="Favoritos" icon="heart" />
       <Link
         href="/carrito"
-        className="relative inline-flex h-11 items-center gap-2 rounded-full px-3 text-white/90 transition hover:bg-white/10 hover:text-white"
+        className="atres-interactive relative inline-flex h-11 items-center gap-2 rounded-full px-3 text-white/90 hover:bg-white/10 hover:text-white"
       >
         <HeaderIcon type="bag" />
         Carrito
@@ -85,9 +75,17 @@ export function HeaderActions({ compact = false }: HeaderActionsProps) {
           </span>
         ) : null}
       </Link>
+      <button
+        type="button"
+        aria-label="Perfil"
+        title="Perfil"
+        className="atres-interactive inline-flex h-11 w-11 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
+      >
+        <HeaderIcon type="user" />
+      </button>
       <Link
         href="/ofertas"
-        className="inline-flex h-11 items-center rounded-full bg-white px-3 text-black transition hover:bg-amber-100"
+        className="atres-interactive inline-flex h-11 items-center rounded-full bg-white px-4 text-black shadow-sm hover:bg-amber-100"
       >
         Ofertas
       </Link>
@@ -95,7 +93,40 @@ export function HeaderActions({ compact = false }: HeaderActionsProps) {
   );
 }
 
-function HeaderIcon({ type }: { type: "heart" | "bag" }) {
+function ActionLink({
+  href,
+  label,
+  icon,
+  compact = false,
+  iconOnly = false,
+}: {
+  href: string;
+  label: string;
+  icon: HeaderIconType;
+  compact?: boolean;
+  iconOnly?: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-label={label}
+      className={
+        compact
+          ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
+          : iconOnly
+            ? "atres-interactive inline-flex h-11 w-11 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
+          : "atres-interactive inline-flex h-11 items-center gap-2 rounded-full px-3 text-white/90 hover:bg-white/10 hover:text-white"
+      }
+    >
+      <HeaderIcon type={icon} />
+      {compact || iconOnly ? null : label}
+    </Link>
+  );
+}
+
+type HeaderIconType = "heart" | "bag" | "bell" | "user";
+
+function HeaderIcon({ type }: { type: HeaderIconType }) {
   if (type === "heart") {
     return (
       <svg
@@ -112,6 +143,40 @@ function HeaderIcon({ type }: { type: "heart" | "bag" }) {
     );
   }
 
+  if (type === "bag") {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="size-[18px] fill-none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M6 8h12l-1 13H7L6 8Z" />
+        <path d="M9 8a3 3 0 0 1 6 0" />
+      </svg>
+    );
+  }
+
+  if (type === "bell") {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="size-[18px] fill-none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+        <path d="M10 21h4" />
+      </svg>
+    );
+  }
+
   return (
     <svg
       aria-hidden="true"
@@ -122,8 +187,8 @@ function HeaderIcon({ type }: { type: "heart" | "bag" }) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M6 8h12l-1 13H7L6 8Z" />
-      <path d="M9 8a3 3 0 0 1 6 0" />
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21a8 8 0 0 1 16 0" />
     </svg>
   );
 }

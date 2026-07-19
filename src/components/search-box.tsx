@@ -116,18 +116,6 @@ export function SearchBox({
               : "min-w-0 flex-1 bg-transparent px-3 text-sm font-normal outline-none placeholder:text-stone-400"
           }
         />
-        <Link
-          href="/buscar"
-          aria-label="Buscar por imagen"
-          title="Buscar por imagen"
-          className={
-            compact
-              ? "grid h-10 w-9 shrink-0 place-items-center text-ink-muted"
-              : "atres-interactive mr-1 grid size-9 shrink-0 place-items-center rounded-[var(--radius-card)] text-ink-muted hover:bg-surface-muted hover:text-ink"
-          }
-        >
-          <CameraIcon />
-        </Link>
         <button
           type="submit"
           aria-label="Buscar"
@@ -196,23 +184,6 @@ function SearchIcon() {
     >
       <path d="m21 21-4.3-4.3" />
       <circle cx="11" cy="11" r="7" />
-    </svg>
-  );
-}
-
-function CameraIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="size-5 fill-none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M4 8h3l1.5-2h7L17 8h3v11H4z" />
-      <circle cx="12" cy="13.5" r="3.2" />
     </svg>
   );
 }

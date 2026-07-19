@@ -139,13 +139,13 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
                       href={link.href}
                       className={cn(
                         "flex min-h-11 items-center rounded-lg px-3 text-sm font-normal transition",
-                        active ? "bg-black text-white" : "text-ink hover:bg-stone-100",
+                        active ? "bg-black !text-white" : "text-ink hover:bg-stone-100",
                       )}
                       aria-current={active ? "page" : undefined}
                       onClick={() => setOpen(false)}
                       tabIndex={open ? undefined : -1}
                     >
-                      {link.label}
+                      <span className="text-current">{link.label}</span>
                     </Link>
                   </li>
                 );

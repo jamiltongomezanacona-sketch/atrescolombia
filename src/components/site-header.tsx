@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { BrandLogo } from "@/components/brand-logo";
 import { HeaderActions } from "@/components/header-actions";
 import { HeaderMobileSearch } from "@/components/header-mobile-search";
@@ -40,7 +41,9 @@ export async function SiteHeader() {
           </div>
         </div>
 
-        <HeaderMobileSearch />
+        <Suspense fallback={<div className="mt-1.5 h-10 rounded-full bg-white/12 lg:hidden" />}>
+          <HeaderMobileSearch />
+        </Suspense>
       </div>
 
       <div className="hidden lg:block">

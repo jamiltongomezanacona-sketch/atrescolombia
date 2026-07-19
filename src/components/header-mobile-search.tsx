@@ -1,20 +1,44 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { SearchBox } from "@/components/search-box";
+
+const PRODUCT_FILTER_KEYS = [
+  "categoria",
+  "talla",
+  "color",
+  "coleccion",
+  "precio_min",
+  "precio_max",
+  "orden",
+  "novedades",
+  "ofertas",
+  "disponible",
+];
 
 export function HeaderMobileSearch() {
   const pathname = usePathname();
-
-  if (pathname === "/productos" || pathname.startsWith("/productos?")) {
-    return null;
-  }
+  const searchParams = useSearchParams();
+  const catalogMode = pathname === "/productos";
+  const query = searchParams.get("q") ?? "";
+  const hiddenInputs = catalogMode
+    ? PRODUCT_FILTER_KEYS.flatMap((key) =>
+        searchParams
+          .getAll(key)
+          .filter(Boolean)
+          .map((value) => ({ name: key, value })),
+      )
+    : [];
 
   return (
     <SearchBox
+      key={`${pathname}:${query}`}
       compact
+      action={catalogMode ? "/productos" : "/buscar"}
+      initialQuery={query}
+      hiddenInputs={hiddenInputs}
       className="mt-1.5 lg:hidden"
-      placeholder="Buscar ropa ATRES..."
+      placeholder={catalogMode ? "Buscar en productos..." : "Buscar ropa ATRES..."}
     />
   );
 }

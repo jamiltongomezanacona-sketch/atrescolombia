@@ -8,6 +8,9 @@ type SearchBoxProps = {
   compact?: boolean;
   className?: string;
   buttonLabel?: string;
+  action?: string;
+  initialQuery?: string;
+  hiddenInputs?: Array<{ name: string; value: string }>;
 };
 
 const HISTORY_KEY = "atres:search-history";
@@ -42,8 +45,11 @@ export function SearchBox({
   compact = false,
   className,
   buttonLabel = "Buscar",
+  action = "/buscar",
+  initialQuery = "",
+  hiddenInputs = [],
 }: SearchBoxProps) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [history, setHistory] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const listId = useId();
@@ -70,7 +76,7 @@ export function SearchBox({
   return (
     <div className={`relative ${className ?? ""}`}>
       <form
-        action="/buscar"
+        action={action}
         onSubmit={submitSearch}
         className={
           compact
@@ -79,6 +85,9 @@ export function SearchBox({
         }
         role="search"
       >
+        {hiddenInputs.map((input) => (
+          <input key={`${input.name}:${input.value}`} type="hidden" name={input.name} value={input.value} />
+        ))}
         <span className={compact ? "ml-3 text-stone-500" : "ml-4 grid size-8 shrink-0 place-items-center rounded-full bg-stone-100 text-stone-600"}>
           <SearchIcon />
         </span>

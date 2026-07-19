@@ -112,30 +112,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </p>
         </div>
 
-        <div className="sticky top-[4.35rem] z-30 -mx-3 mb-2 border-y border-black/5 bg-background/95 px-3 py-1.5 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:top-[7.25rem] lg:static lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
-          <form
-            action="/productos"
-            method="get"
-            className="flex h-9 overflow-hidden rounded-full bg-white text-black shadow-sm ring-1 ring-black/10 lg:hidden"
-          >
-            {hiddenFilterInputs(filters, ["q"])}
-            <input
-              name="q"
-              defaultValue={filters.q ?? ""}
-              aria-label="Buscar productos"
-              placeholder="Buscar jeans, sets, hogar..."
-              className="min-w-0 flex-1 bg-transparent px-4 text-sm font-semibold placeholder:text-stone-400"
-            />
-            <button
-              type="submit"
-              aria-label="Buscar"
-              className="inline-flex w-12 items-center justify-center text-black ring-1 ring-black/5"
-            >
-              <SearchIcon />
-            </button>
-          </form>
-
-          <nav className="mt-1.5 flex gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] lg:mt-0 [&::-webkit-scrollbar]:hidden" aria-label="Departamentos del catalogo">
+        <div className="sticky top-[5.8rem] z-30 -mx-3 mb-2 border-y border-black/5 bg-background/95 px-3 py-1.5 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:top-[7.25rem] lg:static lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
+          <nav className="flex gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" aria-label="Departamentos del catalogo">
             {categoryTabs.map((tab) => (
               <Link
                 key={tab.label}
@@ -236,39 +214,4 @@ function clearDepartmentFilters(filters: CatalogFilterState): CatalogFilterState
     ofertas: false,
     novedades: false,
   };
-}
-
-function hiddenFilterInputs(filters: CatalogFilterState, omit: Array<keyof CatalogFilterState> = []) {
-  const omitted = new Set<keyof CatalogFilterState>(omit);
-  const inputs: Array<[string, string | number | undefined]> = [
-    ["categoria", filters.categoria],
-    ["talla", filters.talla],
-    ["color", filters.color],
-    ["coleccion", filters.coleccion],
-    ["precio_min", filters.precioMin],
-    ["precio_max", filters.precioMax],
-    ["orden", filters.orden && filters.orden !== "relevancia" ? filters.orden : undefined],
-    ["novedades", filters.novedades ? "1" : undefined],
-    ["ofertas", filters.ofertas ? "1" : undefined],
-    ["disponible", filters.disponible ? "1" : undefined],
-  ];
-
-  return inputs
-    .filter(([name, value]) => value != null && value !== "" && !omitted.has(nameToFilterKey(name)))
-    .map(([name, value]) => <input key={name} type="hidden" name={name} value={String(value)} />);
-}
-
-function nameToFilterKey(name: string): keyof CatalogFilterState {
-  if (name === "precio_min") return "precioMin";
-  if (name === "precio_max") return "precioMax";
-  return name as keyof CatalogFilterState;
-}
-
-function SearchIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5 fill-none" stroke="currentColor" strokeWidth="2">
-      <path d="m21 21-4.3-4.3" />
-      <circle cx="11" cy="11" r="7" />
-    </svg>
-  );
 }

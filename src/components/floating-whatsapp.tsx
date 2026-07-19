@@ -60,7 +60,13 @@ function buildMessage(product: ProductContext | null) {
 export function FloatingWhatsApp() {
   const pathname = usePathname();
   const [product, setProduct] = useState<ProductContext | null>(null);
-  const compactCatalog = pathname === "/productos" || pathname.startsWith("/productos?");
+  const compactCatalog =
+    pathname === "/productos" ||
+    pathname === "/buscar" ||
+    pathname === "/ofertas" ||
+    pathname === "/novedades" ||
+    pathname.startsWith("/categoria/") ||
+    pathname.startsWith("/categorias/");
 
   useEffect(() => {
     function syncProduct() {
@@ -89,12 +95,12 @@ export function FloatingWhatsApp() {
       aria-label={product ? `Consultar ${product.name} por WhatsApp` : "Consultar por WhatsApp"}
       className={`group fixed z-50 flex items-center gap-2 overflow-hidden rounded-full border border-white/70 bg-[#0f2f22]/90 text-white shadow-[0_12px_28px_rgba(15,47,34,0.2)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:bg-[#103b28] active:scale-95 md:bottom-5 md:right-5 md:px-2 lg:h-12 lg:w-12 lg:px-1 lg:hover:w-[268px] lg:hover:px-2 ${
         compactCatalog
-          ? "bottom-[calc(6.75rem+env(safe-area-inset-bottom))] right-2 p-0.5 sm:px-2.5 sm:py-2"
+          ? "bottom-[calc(4.85rem+env(safe-area-inset-bottom))] right-3 p-0 sm:px-2.5 sm:py-2"
           : "bottom-[calc(5.7rem+env(safe-area-inset-bottom))] right-3 p-1 sm:px-2.5 sm:py-2"
       }`}
     >
       <span className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_25%_20%,rgba(255,255,255,0.32),transparent_34%),linear-gradient(135deg,rgba(37,211,102,0.95),rgba(12,126,64,0.92))] opacity-100 transition group-hover:opacity-95" />
-      <span className={`relative grid place-items-center rounded-full bg-white text-[#128C4A] shadow-inner md:size-10 ${compactCatalog ? "size-9" : "size-10"}`}>
+      <span className="relative grid size-10 place-items-center rounded-full bg-white text-[#128C4A] shadow-inner">
         <WhatsAppIcon />
       </span>
       <span className="relative hidden min-w-0 pr-1 text-left transition duration-300 sm:block lg:w-0 lg:opacity-0 lg:group-hover:w-[150px] lg:group-hover:opacity-100">

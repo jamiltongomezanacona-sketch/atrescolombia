@@ -88,7 +88,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <main>
-      <section className="catalog-container pb-[calc(8.75rem+env(safe-area-inset-bottom))] pt-2 md:py-3">
+      <section className="catalog-container pb-3 pt-2 md:py-3">
         <nav className="mb-1 hidden text-xs font-normal text-stone-400 md:block" aria-label="Ruta de navegacion">
           <Link href="/" className="hover:text-black">
             Inicio
@@ -170,7 +170,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </aside>
 
           <div className="min-w-0">
-            <div className="mb-2 grid gap-2 rounded-xl bg-white/82 p-2 shadow-sm ring-1 ring-black/5 sm:flex sm:flex-wrap sm:items-center sm:justify-between">
+            <div className="mb-1.5 grid gap-1.5 rounded-lg bg-white/88 p-1.5 shadow-sm ring-1 ring-black/5 sm:mb-2 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-2 sm:rounded-xl sm:p-2">
               <div className="flex items-center justify-between gap-2 sm:justify-start">
                 <p className="text-sm font-medium text-stone-700">
                   {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
@@ -194,7 +194,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     <Link
                       key={link.value}
                       href={buildCatalogQuery({ ...filters, orden: link.value })}
-                      className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition ${
+                      className={`shrink-0 rounded-full px-2.5 py-1.5 text-[11px] font-medium transition sm:px-3 sm:text-xs ${
                         active
                           ? "bg-black text-white shadow-sm"
                           : "bg-white/75 text-stone-700 ring-1 ring-black/5 hover:bg-white"

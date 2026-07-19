@@ -83,18 +83,18 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
           aria-modal="true"
           aria-labelledby={titleId}
           className={cn(
-            "absolute flex flex-col bg-white shadow-lift transition-transform duration-300 max-sm:inset-x-0 max-sm:bottom-0 max-sm:max-h-[88vh] max-sm:rounded-t-3xl sm:inset-y-0 sm:right-0 sm:w-[min(92vw,420px)]",
+            "absolute flex flex-col bg-white shadow-lift transition-transform duration-300 max-sm:inset-x-0 max-sm:bottom-0 max-sm:max-h-[84vh] max-sm:rounded-t-2xl sm:inset-y-0 sm:right-0 sm:w-[min(92vw,420px)]",
             open ? "translate-x-0 translate-y-0" : "max-sm:translate-y-full sm:translate-x-full",
           )}
         >
-          <div className="flex items-center justify-between border-b border-black/5 px-4 py-4">
+          <div className="flex items-center justify-between border-b border-black/5 px-4 py-3 sm:py-4">
             <h2 id={titleId} className="text-lg font-medium">
               Filtros
             </h2>
             <button
               ref={closeRef}
               type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full hover:bg-stone-100"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-stone-100 sm:h-11 sm:w-11"
               aria-label="Cerrar filtros"
               onClick={() => setOpen(false)}
             >
@@ -103,7 +103,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
               </span>
             </button>
           </div>
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4">
             <CatalogFiltersForm
               filters={filters}
               options={options}
@@ -122,7 +122,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-black px-3.5 text-xs font-medium text-white shadow-sm transition hover:bg-stone-800"
+        className="inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-black px-3 text-xs font-medium text-white shadow-sm transition hover:bg-stone-800 sm:h-9 sm:gap-2 sm:px-3.5"
         aria-label={
           open ? "Cerrar filtros" : activeCount > 0 ? `Abrir filtros (${activeCount})` : "Abrir filtros"
         }

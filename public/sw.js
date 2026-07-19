@@ -1,7 +1,5 @@
-const CACHE_NAME = "atres-pwa-v2";
+const CACHE_NAME = "atres-pwa-v3";
 const STATIC_CACHE = [
-  "/",
-  "/productos",
   "/offline.html",
   "/icono.png",
   "/icon-192.png",
@@ -40,16 +38,16 @@ self.addEventListener("fetch", (event) => {
 
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request)
-        .then((response) => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match("/offline.html"))),
+      fetch(request).catch(() => caches.match("/offline.html")),
     );
+    return;
+  }
+
+  if (url.pathname.startsWith("/_next/image")) {
+    return;
+  }
+
+  if (!STATIC_CACHE.includes(url.pathname) && !url.pathname.startsWith("/_next/static/")) {
     return;
   }
 

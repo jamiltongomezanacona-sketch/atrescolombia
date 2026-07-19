@@ -3,7 +3,7 @@ import { LoginForm } from "@/components/admin/login-form";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
 
 export const metadata = {
-  title: "Login admin | ATRES",
+  title: "Login admin",
 };
 
 export default function AdminLoginPage() {

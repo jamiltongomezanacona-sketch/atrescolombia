@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { getPublicPromoProducts } from "@/lib/public-store";
 
 export const metadata = {
-  title: "Ofertas | ATRES",
+  title: "Ofertas",
   description: "Promociones y precios especiales ATRES Colombia.",
 };
 

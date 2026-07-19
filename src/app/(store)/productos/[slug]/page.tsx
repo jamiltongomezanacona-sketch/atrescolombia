@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
   }
 
   return {
-    title: `${product.name} | ATRES`,
+    title: product.name,
     description: product.description,
   };
 }

@@ -5,7 +5,7 @@ import { getCategoryVisualTheme } from "@/lib/category-visuals";
 import { getPublicCategoriesForDisplay } from "@/lib/public-store";
 
 export const metadata = {
-  title: "Categorias | ATRES",
+  title: "Categorias",
   description: "Departamentos ATRES por categorias, hogar y colecciones.",
 };
 

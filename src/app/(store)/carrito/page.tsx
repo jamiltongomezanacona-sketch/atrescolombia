@@ -4,7 +4,8 @@ import { getPublicStoreSettings } from "@/lib/public-settings";
 import { getPublicProducts } from "@/lib/public-store";
 
 export const metadata = {
-  title: "Carrito | ATRES",
+  title: "Carrito",
+  robots: { index: false, follow: false },
 };
 
 export default async function CartPage() {

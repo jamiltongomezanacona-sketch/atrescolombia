@@ -18,12 +18,12 @@ export function StoreFooter() {
           <p className="mt-3 max-w-sm text-sm font-normal leading-6 text-white/70">
             Moda 100% colombiana. Del taller al cliente, con fabricantes grandes y pequenos en una vitrina directa.
           </p>
-          <p className="mt-3 max-w-sm text-xs font-normal leading-5 text-white/45">
+          <p className="mt-3 max-w-sm text-xs font-normal leading-5 text-white/60">
             Personaliza, compra por prenda o contacta al por mayor.
           </p>
         </div>
         <div>
-          <p className="text-[11px] font-medium tracking-wide text-white/45">Comprar</p>
+          <p className="text-[11px] font-medium tracking-wide text-white/60">Comprar</p>
           <ul className="mt-4 grid gap-2.5">
             <li>
               <Link href="/productos" className="text-sm font-normal text-white/85 transition hover:text-white">
@@ -40,7 +40,7 @@ export function StoreFooter() {
           </ul>
         </div>
         <div>
-          <p className="text-[11px] font-medium tracking-wide text-white/45">Ayuda</p>
+          <p className="text-[11px] font-medium tracking-wide text-white/60">Ayuda</p>
           <ul className="mt-4 grid gap-2.5">
             {helpLinks.map((link) => (
               <li key={link.href}>
@@ -53,7 +53,7 @@ export function StoreFooter() {
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="store-container flex flex-wrap items-center justify-between gap-2 py-4 text-xs font-normal text-white/50">
+        <div className="store-container flex flex-wrap items-center justify-between gap-2 py-4 text-xs font-normal text-white/60">
           <p>&copy; {new Date().getFullYear()} ATRES Colombia</p>
           <p>Producto colombiano directo</p>
         </div>

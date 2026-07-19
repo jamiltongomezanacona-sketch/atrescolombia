@@ -12,12 +12,15 @@ export async function SiteHeader() {
   const navItems = await getStoreNavigation();
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0a0a0a]/95 text-white shadow-soft backdrop-blur-xl lg:sticky lg:border-b-0 lg:shadow-none">
+    <header
+      className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0a0a0a]/95 text-white shadow-soft backdrop-blur-xl lg:sticky lg:border-b-0 lg:shadow-none"
+      aria-label="Cabecera ATRES"
+    >
       <div className="hidden border-b border-white/10 bg-white/[0.03] lg:block">
-        <div className="catalog-container flex items-center justify-between gap-3 py-1 text-[11px] font-normal tracking-wide text-white/60">
+        <div className="catalog-container flex items-center justify-between gap-3 py-1 text-[11px] font-normal tracking-wide text-white/70">
           <span>100% producto colombiano</span>
           <span className="hidden md:inline">Compra por prenda o al por mayor</span>
-          <Link href="/ofertas" className="text-white/80 transition hover:text-white">
+          <Link href="/ofertas" className="text-white/85 transition hover:text-white">
             Ofertas y novedades
           </Link>
         </div>

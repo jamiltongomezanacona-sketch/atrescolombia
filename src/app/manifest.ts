@@ -4,11 +4,12 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "ATRES Colombia",
     short_name: "ATRES",
-    description: "Tienda oficial de moda ATRES Colombia.",
+    description:
+      "Tienda oficial de moda ATRES Colombia. Moda 100% colombiana, del taller al cliente.",
     start_url: "/",
     display: "standalone",
-    background_color: "#f4f3f1",
-    theme_color: "#000000",
+    background_color: "#f7f6f4",
+    theme_color: "#121212",
     icons: [
       {
         src: "/icon-192.png",

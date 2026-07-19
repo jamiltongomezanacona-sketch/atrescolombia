@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   }
 
   return {
-    title: `${category.name} | ATRES`,
+    title: category.name,
     description: category.description,
   };
 }

@@ -9,19 +9,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     "",
     "/productos",
-    "/buscar",
     "/categorias",
     "/ofertas",
     "/promociones",
     "/novedades",
-    "/favoritos",
-    "/carrito",
+    "/buscar",
     ...categories.map((category) => `/categoria/${category.slug}`),
     ...products.map((product) => `/productos/${product.slug}`),
   ].map((path) => ({
     url: `${baseUrl}${path}`,
     lastModified: new Date(),
     changeFrequency: path.includes("/productos/") ? "weekly" : "daily",
-    priority: path === "" ? 1 : path.includes("/productos/") ? 0.8 : 0.7,
+    priority:
+      path === ""
+        ? 1
+        : path.includes("/productos/")
+          ? 0.8
+          : path === "/buscar"
+            ? 0.5
+            : 0.7,
   }));
 }

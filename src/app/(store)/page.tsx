@@ -17,7 +17,9 @@ import { getDiscountPercent, type Product, type Promo } from "@/lib/store-data";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "ATRES | Moda colombiana directa",
+  title: {
+    absolute: "ATRES | Moda colombiana directa",
+  },
   description:
     "Compra moda colombiana, novedades, ofertas y colecciones ATRES con una experiencia rapida tipo marketplace.",
 };

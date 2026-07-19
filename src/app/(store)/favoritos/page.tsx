@@ -3,7 +3,8 @@ import { PageHeader } from "@/components/ui/page-header";
 import { getPublicProducts } from "@/lib/public-store";
 
 export const metadata = {
-  title: "Favoritos | ATRES",
+  title: "Favoritos",
+  robots: { index: false, follow: false },
 };
 
 export default async function FavoritesPage() {

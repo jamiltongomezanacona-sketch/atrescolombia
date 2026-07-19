@@ -11,7 +11,7 @@ import {
 import { getPublicCategories, getPublicCategoriesForDisplay, getPublicProducts } from "@/lib/public-store";
 
 export const metadata = {
-  title: "Buscar | ATRES",
+  title: "Buscar",
 };
 
 type SearchPageProps = {

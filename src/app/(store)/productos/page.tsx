@@ -19,7 +19,7 @@ import {
 import { normalizeNavSlug } from "@/lib/store-navigation";
 
 export const metadata = {
-  title: "Productos | ATRES",
+  title: "Productos",
   description: "Catalogo completo de moda ATRES.",
 };
 

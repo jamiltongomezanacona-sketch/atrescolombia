@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { getPublicNewProducts } from "@/lib/public-store";
 
 export const metadata = {
-  title: "Novedades | ATRES",
+  title: "Novedades",
   description: "Las prendas mas nuevas de ATRES Colombia.",
 };
 

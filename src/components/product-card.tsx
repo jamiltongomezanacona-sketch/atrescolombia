@@ -39,14 +39,14 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const salesCount = getSalesCount(product);
 
   return (
-    <article className="group flex flex-col self-start overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft">
+    <article className="group flex h-full flex-col overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
-          <div className="relative aspect-[4/5] overflow-hidden bg-surface-muted sm:aspect-[3/4]">
+          <div className="relative aspect-[4/5] overflow-hidden bg-surface-muted sm:aspect-[3/4] lg:aspect-[4/5]">
             <SafeProductImage
               src={product.image}
               alt={product.name}
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, (max-width: 1700px) 17vw, 14vw"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 30vw, (max-width: 1500px) 24vw, 230px"
               priority={priority}
               className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
             />
@@ -95,7 +95,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         ) : null}
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col px-2 pb-2 pt-1.5 sm:p-3">
+      <div className="flex min-w-0 flex-1 flex-col px-2 pb-2 pt-1.5 sm:p-3 lg:p-3.5">
         <div className="hidden min-h-4 items-center justify-between gap-2 sm:flex">
           <p className="hidden truncate text-[10px] font-medium text-stone-400 sm:block">
             {product.categoryName}
@@ -108,14 +108,14 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </div>
         </div>
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="line-clamp-2 text-[12.5px] font-normal leading-[15px] text-ink transition group-hover:text-black sm:mt-1 sm:text-[13px] sm:leading-5 md:text-sm">
+          <h3 className="line-clamp-2 text-[12.5px] font-normal leading-[15px] text-ink transition group-hover:text-black sm:mt-1 sm:text-[13px] sm:leading-5 md:text-sm lg:min-h-10">
             {product.name}
           </h3>
         </Link>
 
-        <div className="mt-0.5 flex items-center justify-between gap-2 sm:mt-1.5">
+        <div className="mt-0.5 flex items-center justify-between gap-2 sm:mt-1.5 lg:mt-2">
           {sizes.length > 0 ? (
-            <p className="truncate text-[10px] font-normal leading-none text-stone-500/90 sm:text-[11px] sm:leading-normal">
+            <p className="truncate text-[10px] font-normal leading-none text-stone-500/90 sm:text-[11px] sm:leading-normal lg:text-xs">
               Tallas: {sizes.join(" / ")}
               {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
             </p>
@@ -136,22 +136,22 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           ) : null}
         </div>
 
-        <div className="mt-0.5 flex items-end justify-between gap-2 sm:mt-2">
+        <div className="mt-0.5 flex items-end justify-between gap-2 sm:mt-2 lg:mt-3">
           <ProductPrice
             price={product.price}
             previousPrice={previousPrice}
             size="md"
-            currentClassName="text-[1.28rem] sm:text-xl"
+            currentClassName="text-[1.28rem] sm:text-xl lg:text-[1.35rem]"
             previousClassName="mt-0 text-[11px] sm:mt-1 sm:text-xs"
           />
           <Link
             href={`/productos/${product.slug}`}
-            className="hidden shrink-0 rounded-full bg-stone-100/80 px-2.5 py-1.5 text-[10px] font-medium text-stone-600 transition hover:bg-black hover:text-white sm:inline-flex"
+            className="hidden shrink-0 rounded-full bg-stone-100/80 px-2.5 py-1.5 text-[10px] font-medium text-stone-600 transition hover:bg-black hover:text-white sm:inline-flex lg:hidden"
           >
             Ver
           </Link>
         </div>
-        <div className="hidden sm:block">
+        <div className="hidden sm:block lg:pt-1">
           <ProductCardActions product={product} />
         </div>
       </div>

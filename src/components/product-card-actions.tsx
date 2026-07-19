@@ -95,14 +95,14 @@ export function ProductCardActions({ product, whatsapp }: ProductCardActionsProp
   }
 
   return (
-    <div className="mt-2 grid grid-cols-[38px_1fr] gap-1.5 sm:grid-cols-[36px_36px_1fr]">
+    <div className="mt-2 grid grid-cols-[38px_1fr] gap-1.5 sm:grid-cols-[36px_36px_1fr] lg:mt-3 lg:grid-cols-[36px_minmax(0,1fr)] lg:gap-2">
       {whatsappUrl ? (
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Consultar ${product.name} por WhatsApp`}
-          className="atres-interactive grid min-h-9 place-items-center rounded-full bg-[#25D366] text-white shadow-sm hover:bg-[#1ebe57]"
+          className="atres-interactive grid min-h-9 place-items-center rounded-full bg-[#25D366] text-white shadow-sm hover:bg-[#1ebe57] lg:hidden"
           onClick={(event) => event.stopPropagation()}
         >
           <WhatsAppIcon />
@@ -112,7 +112,7 @@ export function ProductCardActions({ product, whatsapp }: ProductCardActionsProp
           type="button"
           aria-label={`Ver consulta por WhatsApp para ${product.name}`}
           onClick={openWhatsapp}
-          className="atres-interactive grid min-h-9 place-items-center rounded-full bg-[#25D366] text-white shadow-sm hover:bg-[#1ebe57]"
+          className="atres-interactive grid min-h-9 place-items-center rounded-full bg-[#25D366] text-white shadow-sm hover:bg-[#1ebe57] lg:hidden"
         >
           <WhatsAppIcon />
         </button>
@@ -121,7 +121,7 @@ export function ProductCardActions({ product, whatsapp }: ProductCardActionsProp
       <Link
         href={productHref}
         aria-label={`Ver detalles de ${product.name}`}
-        className="atres-interactive hidden min-h-9 place-items-center rounded-full bg-stone-100 text-stone-700 hover:bg-black hover:text-white sm:grid"
+        className="atres-interactive hidden min-h-9 place-items-center rounded-full bg-stone-100 text-stone-700 hover:bg-black hover:text-white sm:grid lg:min-h-10"
       >
         <EyeIcon />
       </Link>
@@ -132,7 +132,7 @@ export function ProductCardActions({ product, whatsapp }: ProductCardActionsProp
         aria-label={outOfStock ? `${product.name} agotado` : `Agregar ${product.name} al carrito`}
         aria-live="polite"
         onClick={addToCart}
-        className={`atres-interactive inline-flex min-h-9 items-center justify-center rounded-full px-2 text-[10px] font-medium text-white hover:bg-stone-800 disabled:bg-stone-300 disabled:text-stone-500 sm:text-[11px] ${added ? "atres-pop bg-emerald-600" : "bg-black"}`}
+        className={`atres-interactive inline-flex min-h-9 items-center justify-center rounded-full px-2 text-[10px] font-medium text-white hover:bg-stone-800 disabled:bg-stone-300 disabled:text-stone-500 sm:text-[11px] lg:min-h-10 lg:px-3 lg:text-xs ${added ? "atres-pop bg-emerald-600" : "bg-black"}`}
       >
         {outOfStock ? "Agotado" : added ? "Agregado" : "Agregar"}
       </button>

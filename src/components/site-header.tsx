@@ -14,7 +14,7 @@ export async function SiteHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-[#080808]/96 text-white shadow-[0_10px_28px_rgba(0,0,0,0.16)] backdrop-blur-xl lg:sticky">
       <div className="hidden border-b border-white/10 bg-white/[0.045] lg:block">
-        <div className="catalog-container flex items-center justify-between gap-3 py-1.5 text-[11px] font-normal text-white/70">
+        <div className="catalog-container flex items-center justify-between gap-3 py-1 text-[11px] font-normal text-white/70">
           <span>100% producto colombiano</span>
           <span className="hidden md:inline">Compra por prenda o al por mayor</span>
           <Link href="/ofertas" className="text-amber-200 transition hover:text-white">
@@ -33,8 +33,8 @@ export async function SiteHeader() {
         </div>
       </div>
 
-      <div className="hidden catalog-container py-1.5 lg:block lg:py-2.5">
-        <div className="flex items-center gap-2 lg:grid lg:grid-cols-[230px_minmax(360px,1fr)_360px] lg:gap-3">
+      <div className="hidden catalog-container py-1.5 lg:block lg:py-2">
+        <div className="flex items-center gap-2 lg:grid lg:grid-cols-[220px_minmax(420px,1fr)_auto] lg:gap-3">
           <div className="flex min-w-0 items-center gap-1.5">
             <MobileNavDrawer items={navItems} />
             <BrandLogo dark compact />

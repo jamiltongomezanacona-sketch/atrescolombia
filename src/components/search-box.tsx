@@ -81,14 +81,14 @@ export function SearchBox({
         className={
           compact
             ? "flex h-10 w-full items-center overflow-hidden rounded-full bg-white text-black shadow-[0_10px_26px_rgba(0,0,0,0.14)] ring-1 ring-white/35"
-            : "flex h-12 w-full items-center overflow-hidden rounded-full bg-white text-black shadow-[0_12px_34px_rgba(0,0,0,0.16)] ring-1 ring-white/40"
+            : "flex h-11 w-full items-center overflow-hidden rounded-full bg-white text-black shadow-[0_12px_30px_rgba(0,0,0,0.14)] ring-1 ring-white/40"
         }
         role="search"
       >
         {hiddenInputs.map((input) => (
           <input key={`${input.name}:${input.value}`} type="hidden" name={input.name} value={input.value} />
         ))}
-        <span className={compact ? "ml-3 text-stone-500" : "ml-4 grid size-8 shrink-0 place-items-center rounded-full bg-stone-100 text-stone-600"}>
+        <span className={compact ? "ml-3 text-stone-500" : "ml-3 grid size-7 shrink-0 place-items-center rounded-full bg-stone-100 text-stone-600"}>
           <SearchIcon />
         </span>
         <input
@@ -104,20 +104,20 @@ export function SearchBox({
           autoComplete="off"
           placeholder={placeholder}
           role="combobox"
-          className={compact ? "min-w-0 flex-1 bg-transparent px-2 text-sm font-normal outline-none placeholder:text-stone-400" : "min-w-0 flex-1 bg-transparent px-3 text-[15px] font-normal outline-none placeholder:text-stone-400"}
+          className={compact ? "min-w-0 flex-1 bg-transparent px-2 text-sm font-normal outline-none placeholder:text-stone-400" : "min-w-0 flex-1 bg-transparent px-3 text-sm font-normal outline-none placeholder:text-stone-400"}
         />
         <Link
           href="/buscar"
           aria-label="Buscar por imagen"
           title="Buscar por imagen"
-          className={compact ? "grid h-10 w-10 shrink-0 place-items-center text-stone-600" : "atres-interactive mr-1 grid size-10 shrink-0 place-items-center rounded-full text-stone-600 hover:bg-stone-100 hover:text-black"}
+          className={compact ? "grid h-10 w-10 shrink-0 place-items-center text-stone-600" : "atres-interactive mr-1 grid size-9 shrink-0 place-items-center rounded-full text-stone-600 hover:bg-stone-100 hover:text-black"}
         >
           <CameraIcon />
         </Link>
         <button
           type="submit"
           aria-label="Buscar"
-          className={compact ? "mr-1 inline-flex h-8 w-12 items-center justify-center rounded-full bg-black text-white" : "mr-1 inline-flex h-10 min-w-24 items-center justify-center rounded-full bg-black px-4 text-sm font-medium text-white transition hover:bg-stone-800"}
+          className={compact ? "mr-1 inline-flex h-8 w-12 items-center justify-center rounded-full bg-black text-white" : "mr-1 inline-flex h-9 min-w-20 items-center justify-center rounded-full bg-black px-4 text-sm font-medium text-white transition hover:bg-stone-800"}
         >
           {compact ? <SearchIcon /> : buttonLabel}
         </button>

@@ -271,9 +271,9 @@ h6 {
 
 .catalog-container {
   width: 100%;
-  max-width: 1840px;
+  max-width: 1500px;
   margin-inline: auto;
-  padding-inline: 0.75rem;
+  padding-inline: 1rem;
 }
 
 @media (min-width: 640px) {
@@ -282,25 +282,25 @@ h6 {
   }
 
   .catalog-container {
-    padding-inline: 1rem;
+    padding-inline: 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .catalog-container {
-    padding-inline: 1.25rem;
+    padding-inline: 2rem;
   }
 }
 
 @media (min-width: 1536px) {
   .catalog-container {
-    padding-inline: 1.5rem;
+    padding-inline: 2.5rem;
   }
 }
 
 @media (min-width: 1800px) {
   .catalog-container {
-    padding-inline: 2rem;
+    padding-inline: 2.5rem;
   }
 }
 
@@ -308,7 +308,7 @@ h6 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.625rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 @media (max-width: 380px) {
@@ -326,20 +326,20 @@ h6 {
 
 @media (min-width: 1024px) {
   .catalog-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 0.875rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
   }
 }
 
 @media (min-width: 1280px) {
   .catalog-grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 1700px) {
+@media (min-width: 1500px) {
   .catalog-grid {
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 1.25rem;
   }
 }
 
@@ -347,7 +347,7 @@ h6 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.625rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 @media (min-width: 640px) {
@@ -358,20 +358,21 @@ h6 {
 
 @media (min-width: 1024px) {
   .catalog-grid-with-sidebar {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.125rem;
   }
 }
 
 @media (min-width: 1280px) {
   .catalog-grid-with-sidebar {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
   }
 }
 
-@media (min-width: 1700px) {
+@media (min-width: 1500px) {
   .catalog-grid-with-sidebar {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 

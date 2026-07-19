@@ -66,7 +66,7 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
       <ActionLink href="/favoritos" label="Favoritos" icon="heart" />
       <Link
         href="/carrito"
-        className="atres-interactive relative inline-flex h-11 items-center gap-2 rounded-full px-3 text-white/90 hover:bg-white/10 hover:text-white"
+        className="atres-interactive relative inline-flex h-10 items-center gap-2 rounded-full px-3 text-white/90 hover:bg-white/10 hover:text-white"
       >
         <HeaderIcon type="bag" />
         Carrito
@@ -80,13 +80,13 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
         type="button"
         aria-label="Perfil"
         title="Perfil"
-        className="atres-interactive inline-flex h-11 w-11 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
+        className="atres-interactive inline-flex h-10 w-10 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
       >
         <HeaderIcon type="user" />
       </button>
       <Link
         href="/ofertas"
-        className="atres-interactive inline-flex h-11 items-center rounded-full bg-white px-4 text-black shadow-sm hover:bg-amber-100"
+        className="atres-interactive inline-flex h-10 items-center rounded-full bg-white px-3.5 text-black shadow-sm hover:bg-amber-100"
       >
         Ofertas
       </Link>
@@ -115,8 +115,8 @@ function ActionLink({
         compact
           ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
           : iconOnly
-            ? "atres-interactive inline-flex h-11 w-11 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
-          : "atres-interactive inline-flex h-11 items-center gap-2 rounded-full px-3 text-white/90 hover:bg-white/10 hover:text-white"
+            ? "atres-interactive inline-flex h-10 w-10 items-center justify-center rounded-full text-white/90 hover:bg-white/10 hover:text-white"
+          : "atres-interactive inline-flex h-10 items-center gap-2 rounded-full px-3 text-white/90 hover:bg-white/10 hover:text-white"
       }
     >
       <HeaderIcon type={icon} />

@@ -290,6 +290,14 @@ h6 {
   padding-inline: 0.75rem;
 }
 
+/* Full-bleed header rows: content hugs viewport edges (no centered max-width). */
+.header-container {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: 0.75rem;
+}
+
 .catalog-container {
   width: 100%;
   max-width: 1500px;
@@ -306,12 +314,20 @@ h6 {
     padding-inline: 1rem;
   }
 
+  .header-container {
+    padding-inline: 1rem;
+  }
+
   .catalog-container {
     padding-inline: 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
+  .header-container {
+    padding-inline: 1.25rem;
+  }
+
   .catalog-container {
     padding-inline: 2rem;
   }

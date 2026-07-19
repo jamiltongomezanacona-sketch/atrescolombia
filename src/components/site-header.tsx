@@ -17,7 +17,7 @@ export async function SiteHeader() {
       aria-label="Cabecera ATRES"
     >
       <div className="hidden border-b border-white/10 bg-white/[0.03] lg:block">
-        <div className="catalog-container flex items-center justify-between gap-3 py-1 text-[11px] font-normal tracking-wide text-white/70">
+        <div className="header-container flex items-center justify-between gap-3 py-1 text-[11px] font-normal tracking-wide text-white/70">
           <span>100% producto colombiano</span>
           <span className="hidden md:inline">Compra por prenda o al por mayor</span>
           <Link href="/ofertas" className="text-white/85 transition hover:text-white">
@@ -27,7 +27,7 @@ export async function SiteHeader() {
       </div>
 
       {/* Mobile: keep py-2 + h-10 row ≈ 3.5rem (matches layout pt / sticky offsets) */}
-      <div className="catalog-container py-2 lg:hidden">
+      <div className="header-container py-2 lg:hidden">
         <div className="grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-1.5">
           <Suspense fallback={<div className="h-9 w-9 rounded-[var(--radius-card)] bg-white/10" />}>
             <MobileNavDrawer items={navItems} />
@@ -40,8 +40,8 @@ export async function SiteHeader() {
         </div>
       </div>
 
-      <div className="hidden catalog-container py-1.5 lg:block lg:py-2">
-        <div className="flex items-center gap-2 lg:grid lg:grid-cols-[200px_minmax(420px,1fr)_auto] lg:gap-4">
+      <div className="hidden header-container py-1.5 lg:block lg:py-2">
+        <div className="flex items-center gap-2 lg:grid lg:grid-cols-[auto_minmax(420px,1fr)_auto] lg:gap-5">
           <div className="flex min-w-0 items-center gap-2">
             <Suspense fallback={<div className="h-9 w-9 rounded-[var(--radius-card)] bg-white/10 lg:hidden" />}>
               <MobileNavDrawer items={navItems} />
@@ -50,7 +50,7 @@ export async function SiteHeader() {
           </div>
 
           <SearchBox
-            className="hidden w-full max-w-3xl lg:mx-auto lg:block"
+            className="hidden w-full max-w-4xl lg:mx-auto lg:block"
             placeholder="Buscar vestidos, jeans, pijamas, uniformes..."
           />
 

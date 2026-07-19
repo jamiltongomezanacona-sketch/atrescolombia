@@ -23,7 +23,7 @@ export function HeaderNav({ items }: HeaderNavProps) {
 
   return (
     <nav className="border-t border-white/10 bg-white/[0.03]" aria-label="Categorias ATRES">
-      <div className="atres-scroll catalog-container flex gap-1 overflow-x-auto py-1.5 text-sm font-normal">
+      <div className="atres-scroll header-container flex gap-1 overflow-x-auto py-1.5 text-sm font-normal">
         {links.map((link) => {
           const active = isStoreNavActive(link, navContext);
 

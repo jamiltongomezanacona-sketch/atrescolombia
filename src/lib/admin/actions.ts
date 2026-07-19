@@ -11,6 +11,8 @@ type ActionState = {
   message: string;
 };
 
+type SupabaseServerClient = Awaited<ReturnType<typeof createSupabaseServerClient>>;
+
 const MAX_QUICK_PRODUCT_IMAGE_BYTES = 900 * 1024;
 const ALLOWED_QUICK_PRODUCT_IMAGE_TYPES = new Set(["image/webp", "image/jpeg", "image/png"]);
 const PRODUCT_VARIANT_STATUSES: ProductVariantStatus[] = ["available", "sold_out", "hidden", "coming_soon"];
@@ -100,6 +102,7 @@ export async function saveProduct(_: ActionState, formData: FormData): Promise<A
   const sku = stringValue(formData, "sku");
   const price = numberValue(formData, "price");
   const categoryId = stringValue(formData, "category_id") || null;
+  const subcategoryId = stringValue(formData, "subcategory_id") || null;
 
   if (!name || !slug || !sku || price < 0) {
     return { ok: false, message: "Nombre, slug, SKU y precio valido son obligatorios." };
@@ -107,13 +110,16 @@ export async function saveProduct(_: ActionState, formData: FormData): Promise<A
 
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
+  const categoryError = await validateCategorySelection(supabase, categoryId, subcategoryId);
+  if (categoryError) return categoryError;
+
   const payload = {
     name,
     slug,
     short_description: stringValue(formData, "short_description"),
     description: stringValue(formData, "description"),
     category_id: categoryId,
-    subcategory_id: stringValue(formData, "subcategory_id") || null,
+    subcategory_id: subcategoryId,
     price,
     previous_price: nullableNumberValue(formData, "previous_price"),
     discount_percent: nullableNumberValue(formData, "discount_percent"),
@@ -221,6 +227,8 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  const categoryError = await validateCategorySelection(supabase, input.category_id, input.subcategory_id);
+  if (categoryError) return categoryError;
 
   const businessId = await resolveLegacyBusinessId();
   const normalizedVariants = normalizeProductVariants(input.variants ?? []);
@@ -634,6 +642,58 @@ function ensureSupabase() {
   if (!hasSupabaseEnv()) {
     return { ok: false, message: "Supabase no esta configurado." };
   }
+  return null;
+}
+
+async function validateCategorySelection(
+  supabase: SupabaseServerClient,
+  categoryId: string | null,
+  subcategoryId: string | null,
+): Promise<ActionState | null> {
+  if (!categoryId) {
+    return { ok: false, message: "Selecciona una categoria principal." };
+  }
+
+  const { data: category, error: categoryError } = await supabase
+    .from("categories")
+    .select("id,parent_id")
+    .eq("id", categoryId)
+    .maybeSingle();
+
+  if (categoryError) {
+    return { ok: false, message: `No se pudo validar la categoria. Detalle: ${categoryError.message}` };
+  }
+
+  if (!category) {
+    return { ok: false, message: "La categoria seleccionada no existe." };
+  }
+
+  if (category.parent_id !== null) {
+    return { ok: false, message: "Selecciona una categoria principal, no una subcategoria." };
+  }
+
+  if (!subcategoryId) {
+    return null;
+  }
+
+  const { data: subcategory, error: subcategoryError } = await supabase
+    .from("categories")
+    .select("id,parent_id")
+    .eq("id", subcategoryId)
+    .maybeSingle();
+
+  if (subcategoryError) {
+    return { ok: false, message: `No se pudo validar la subcategoria. Detalle: ${subcategoryError.message}` };
+  }
+
+  if (!subcategory) {
+    return { ok: false, message: "La subcategoria seleccionada no existe." };
+  }
+
+  if (subcategory.parent_id !== categoryId) {
+    return { ok: false, message: "La subcategoria no pertenece a la categoria seleccionada." };
+  }
+
   return null;
 }
 

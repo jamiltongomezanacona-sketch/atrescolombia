@@ -3,8 +3,8 @@
 import { useMemo, useState } from "react";
 import { AdminSelect } from "@/components/admin/admin-select";
 import {
-  buildIndentedCategoryOptions,
-  getSubcategoryOptions,
+  getCategoryChildren,
+  getPrimaryCategoryOptions,
 } from "@/lib/admin/category-options";
 import type { AdminCategory } from "@/lib/admin/types";
 
@@ -39,15 +39,14 @@ export function CategoryPickers({
   const subcategoryId = controlled ? (controlledSubcategoryId ?? "") : internalSubcategoryId;
 
   const parentOptions = useMemo(
-    () => buildIndentedCategoryOptions(categories),
+    () => getPrimaryCategoryOptions(categories),
     [categories],
   );
 
-  const subcategoryState = useMemo(
-    () => (categoryId ? getSubcategoryOptions(categories, categoryId) : { options: [], mode: "children" as const }),
+  const childOptions = useMemo(
+    () => (categoryId ? getCategoryChildren(categories, categoryId) : []),
     [categories, categoryId],
   );
-  const childOptions = subcategoryState.options;
 
   function handleCategoryChange(value: string) {
     if (controlled) {
@@ -97,9 +96,7 @@ export function CategoryPickers({
             ? "Elige primero una categoria."
             : childOptions.length === 0
               ? "Esta categoria no tiene subcategorias."
-              : subcategoryState.mode === "children"
-                ? "Opcional: hijas de la categoria seleccionada."
-                : "Opcional: categorias disponibles mientras organizas subcategorias."
+              : "Opcional: hijas de la categoria seleccionada."
         }
       >
         <option value="">Sin subcategoria</option>

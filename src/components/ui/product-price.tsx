@@ -28,11 +28,22 @@ export function ProductPrice({
 
   return (
     <div className={cn("min-w-0", className)}>
-      <p className={cn("font-medium leading-none tracking-tight text-brand", sizeClass[size], currentClassName)}>
+      <p
+        className={cn(
+          "font-medium leading-none tracking-tight text-brand",
+          sizeClass[size],
+          currentClassName,
+        )}
+      >
         {formatCOP(price)}
       </p>
       {showPrevious ? (
-        <p className={cn("mt-1 text-xs font-medium text-stone-400 line-through decoration-stone-400/80", previousClassName)}>
+        <p
+          className={cn(
+            "mt-1 text-xs font-normal text-ink-muted/80 line-through decoration-ink-muted/50",
+            previousClassName,
+          )}
+        >
           {formatCOP(previousPrice)}
         </p>
       ) : null}

@@ -1,13 +1,13 @@
 import { cn } from "@/lib/cn";
 
 const tones = {
-  black: "bg-black/85 text-white ring-white/10",
-  metal: "bg-[#0b1f3a] text-white ring-white/10",
-  steel: "bg-[#dbeafe] text-[#0b1f3a] ring-[#9ec5fe]/35",
-  brand: "bg-brand/95 text-white ring-orange-200/40",
-  soft: "bg-white/90 text-stone-700 ring-black/10",
-  amber: "bg-amber-100 text-amber-900 ring-amber-200/70",
-  emerald: "bg-emerald-100 text-emerald-800 ring-emerald-200/70",
+  black: "bg-ink/90 text-white ring-white/10",
+  metal: "bg-[#161616] text-white ring-white/10",
+  steel: "bg-stone-100 text-stone-800 ring-stone-200/80",
+  brand: "bg-brand text-white ring-orange-200/35",
+  soft: "bg-white/92 text-stone-700 ring-black/10",
+  amber: "bg-[#fff3c4] text-[#7a5a00] ring-amber-200/80",
+  emerald: "bg-emerald-50 text-emerald-900 ring-emerald-200/70",
 } as const;
 
 type BadgeProps = {
@@ -20,7 +20,7 @@ export function Badge({ children, tone = "black", className }: BadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-medium shadow-sm",
+        "inline-flex items-center rounded-[var(--radius-card)] px-2 py-0.5 text-[10px] font-medium tracking-wide",
         "ring-1",
         tones[tone],
         className,

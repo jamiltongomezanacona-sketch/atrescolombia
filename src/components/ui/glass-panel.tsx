@@ -8,6 +8,13 @@ type GlassPanelProps = {
 
 export function GlassPanel({ children, className, as: Tag = "div" }: GlassPanelProps) {
   return (
-    <Tag className={cn("glass-surface rounded-lg ring-1 ring-white/70", className)}>{children}</Tag>
+    <Tag
+      className={cn(
+        "glass-surface rounded-[var(--radius-card)] ring-1 ring-black/[0.04]",
+        className,
+      )}
+    >
+      {children}
+    </Tag>
   );
 }

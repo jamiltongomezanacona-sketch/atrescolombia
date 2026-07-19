@@ -22,13 +22,17 @@ export function PageHeader({
     return (
       <div
         className={cn(
-          "mb-5 overflow-hidden rounded-lg bg-[linear-gradient(135deg,#09090b_0%,#172033_54%,#0f766e_100%)] p-5 text-white shadow-soft ring-1 ring-white/10 md:p-7",
+          "mb-5 overflow-hidden rounded-[var(--radius-card)] bg-[linear-gradient(145deg,#111111_0%,#1c1917_58%,#2a211c_100%)] p-5 text-white shadow-soft ring-1 ring-white/10 md:p-7",
           className,
         )}
       >
-        <p className="text-xs font-medium text-amber-200">{eyebrow}</p>
-        <h1 className="mt-1 text-2xl font-medium tracking-tight sm:text-3xl md:text-4xl">{title}</h1>
-        {description ? <p className="mt-2 max-w-2xl text-sm font-normal text-white/75">{description}</p> : null}
+        <p className="text-xs font-medium tracking-wide text-white/65">{eyebrow}</p>
+        <h1 className="mt-1.5 text-2xl font-medium tracking-tight text-white sm:text-3xl md:text-4xl">
+          {title}
+        </h1>
+        {description ? (
+          <p className="mt-2.5 max-w-2xl text-sm font-normal leading-6 text-white/72">{description}</p>
+        ) : null}
         {children}
       </div>
     );
@@ -38,13 +42,17 @@ export function PageHeader({
     return (
       <div
         className={cn(
-          "mb-5 overflow-hidden rounded-lg bg-[linear-gradient(135deg,var(--promo)_0%,#fff7cc_48%,#ecfeff_100%)] p-5 text-ink shadow-[0_18px_45px_rgba(164,117,0,0.12)] ring-1 ring-black/5 md:p-7",
+          "mb-5 overflow-hidden rounded-[var(--radius-card)] bg-[linear-gradient(135deg,var(--promo)_0%,#fff8d6_55%,#ffffff_100%)] p-5 text-ink shadow-soft ring-1 ring-black/5 md:p-7",
           className,
         )}
       >
-        <p className="text-xs font-medium text-stone-700">{eyebrow}</p>
-        <h1 className="mt-1 text-2xl font-medium tracking-tight sm:text-3xl md:text-4xl">{title}</h1>
-        {description ? <p className="mt-2 max-w-2xl text-sm font-normal text-stone-700">{description}</p> : null}
+        <p className="text-xs font-medium tracking-wide text-ink-muted">{eyebrow}</p>
+        <h1 className="mt-1.5 text-2xl font-medium tracking-tight text-ink sm:text-3xl md:text-4xl">
+          {title}
+        </h1>
+        {description ? (
+          <p className="mt-2.5 max-w-2xl text-sm font-normal leading-6 text-stone-700">{description}</p>
+        ) : null}
         {children}
       </div>
     );
@@ -52,9 +60,11 @@ export function PageHeader({
 
   return (
     <GlassPanel className={cn("mb-5 p-5 md:p-6", className)}>
-      <p className="text-xs font-medium text-stone-500">{eyebrow}</p>
-      <h1 className="mt-1 text-2xl font-medium tracking-tight text-ink sm:text-3xl">{title}</h1>
-      {description ? <p className="mt-2 max-w-2xl text-sm font-normal text-stone-500">{description}</p> : null}
+      <p className="text-xs font-medium tracking-wide text-ink-muted">{eyebrow}</p>
+      <h1 className="mt-1.5 text-2xl font-medium tracking-tight text-ink sm:text-3xl">{title}</h1>
+      {description ? (
+        <p className="mt-2.5 max-w-2xl text-sm font-normal leading-6 text-ink-muted">{description}</p>
+      ) : null}
       {children}
     </GlassPanel>
   );

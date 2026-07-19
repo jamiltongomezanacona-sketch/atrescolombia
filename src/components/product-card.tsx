@@ -81,7 +81,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         ) : null}
 
         {sizeLabel ? (
-          <div className="absolute bottom-2 right-2 rounded-full bg-white/90 px-2 py-1 text-[10px] font-medium text-stone-700 shadow-sm ring-1 ring-black/5">
+          <div className="absolute bottom-2 right-2 hidden rounded-full bg-white/90 px-2 py-1 text-[10px] font-medium text-stone-700 shadow-sm ring-1 ring-black/5 sm:block">
             {sizeLabel}
           </div>
         ) : null}
@@ -136,8 +136,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           ) : null}
         </div>
 
-        <div className="mt-2 flex items-end justify-between gap-2 sm:mt-2">
-          <ProductPrice price={product.price} previousPrice={previousPrice} size="md" />
+        <div className="mt-1.5 flex items-end justify-between gap-2 sm:mt-2">
+          <ProductPrice
+            price={product.price}
+            previousPrice={previousPrice}
+            size="md"
+            className="[&>p:first-child]:text-[1.35rem] [&>p:last-child]:mt-0.5 sm:[&>p:first-child]:text-xl"
+          />
           <Link
             href={`/productos/${product.slug}`}
             className="hidden shrink-0 rounded-full bg-stone-100/80 px-2.5 py-1.5 text-[10px] font-medium text-stone-600 transition hover:bg-black hover:text-white sm:inline-flex"

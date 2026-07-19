@@ -111,9 +111,9 @@ function HeroSection({
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/productos"
-              className="atres-interactive inline-flex min-h-12 items-center justify-center rounded-full bg-white px-5 text-sm font-medium text-black hover:bg-amber-100"
+              className="atres-interactive inline-flex min-h-12 items-center justify-center rounded-full bg-white px-5 text-sm font-medium !text-black hover:bg-amber-100"
             >
-              Comprar ahora
+              <span className="text-current">Comprar ahora</span>
             </Link>
             <Link
               href="/ofertas"
@@ -162,11 +162,11 @@ function CategoryStrip({
             href={category.href}
             className={
               index === 0
-                ? "atres-interactive inline-flex min-h-9 shrink-0 items-center rounded-full bg-black px-4 text-xs font-medium text-white"
+                ? "atres-interactive inline-flex min-h-9 shrink-0 items-center rounded-full bg-black px-4 text-xs font-medium !text-white"
                 : "atres-interactive inline-flex min-h-9 shrink-0 items-center rounded-full bg-stone-100 px-4 text-xs font-medium text-stone-800 hover:bg-black hover:text-white"
             }
           >
-            {category.label}
+            <span className="text-current">{category.label}</span>
           </Link>
         ))}
       </div>

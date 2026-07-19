@@ -201,7 +201,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             ) : (
               <div className="catalog-grid-with-sidebar">
                 {filteredProducts.map((product, index) => (
-                  <ProductCard key={product.slug} product={product} priority={index < 6} compact />
+                  <ProductCard key={product.slug} product={product} priority={index < 5} compact />
                 ))}
               </div>
             )}

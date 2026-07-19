@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { CatalogFiltersForm } from "@/components/catalog-filters";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FilterDrawer } from "@/components/filter-drawer";
 import { ProductCard } from "@/components/product-card";
@@ -134,73 +133,57 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </nav>
         </div>
 
-        <div className="lg:grid lg:grid-cols-[152px_minmax(0,1fr)] lg:items-start lg:gap-2.5 xl:grid-cols-[164px_minmax(0,1fr)] xl:gap-3">
-          <aside className="sticky top-[5.5rem] hidden max-h-[calc(100vh-6rem)] overflow-y-auto border-r border-black/[0.06] pr-2.5 lg:block">
-            <div className="mb-1.5 flex items-center justify-between gap-2">
-              <p className="text-[11px] font-medium tracking-wide text-ink">Filtros</p>
+        <div className="min-w-0">
+          <div className="mb-1.5 flex flex-wrap items-center justify-between gap-1.5 border-b border-black/[0.06] pb-1.5 sm:mb-2">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+              <FilterDrawer filters={filters} options={options} />
+              <p className="text-xs font-medium text-ink-muted">
+                {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
+                {activeFilters > 0 ? (
+                  <span className="ml-1.5 text-[11px] font-normal text-ink-muted/80">
+                    {activeFilters} filtro{activeFilters === 1 ? "" : "s"}
+                  </span>
+                ) : null}
+              </p>
             </div>
-            <CatalogFiltersForm
-              filters={filters}
-              options={options}
-              idPrefix="desktop-filter"
-              className="lg:gap-1.5"
-            />
-          </aside>
-
-          <div className="min-w-0">
-            <div className="mb-1.5 flex flex-wrap items-center justify-between gap-1.5 border-b border-black/[0.06] pb-1.5 sm:mb-2">
-              <div className="flex items-center justify-between gap-2 sm:justify-start">
-                <p className="text-xs font-medium text-ink-muted">
-                  {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
-                  {activeFilters > 0 ? (
-                    <span className="ml-1.5 text-[11px] font-normal text-ink-muted/80">
-                      {activeFilters} filtro{activeFilters === 1 ? "" : "s"}
-                    </span>
-                  ) : null}
-                </p>
-                <div className="lg:hidden">
-                  <FilterDrawer filters={filters} options={options} />
-                </div>
-              </div>
-              <div className="flex gap-1.5 overflow-x-auto pb-0 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible">
-                <span className="hidden h-7 shrink-0 items-center px-1 text-[10px] font-medium text-ink-muted md:inline-flex">
-                  Ordenar
-                </span>
-                {orderLinks.map((link) => {
-                  const active = (filters.orden ?? "relevancia") === link.value;
-                  return (
-                    <Link
-                      key={link.value}
-                      href={buildCatalogQuery({ ...filters, orden: link.value })}
-                      className={`inline-flex h-7 shrink-0 items-center rounded-[var(--radius-card)] px-2 text-[10px] font-medium transition sm:px-2.5 sm:text-[11px] ${
-                        active
-                          ? "bg-ink text-white"
-                          : "bg-transparent text-ink-muted ring-1 ring-black/8 hover:bg-surface-muted hover:text-ink"
-                      }`}
-                      aria-current={active ? "page" : undefined}
-                    >
-                      <span className="text-current">{link.label}</span>
-                    </Link>
-                  );
-                })}
-              </div>
+            <div className="flex gap-1.5 overflow-x-auto pb-0 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible">
+              <span className="hidden h-7 shrink-0 items-center px-1 text-[10px] font-medium text-ink-muted md:inline-flex">
+                Ordenar
+              </span>
+              {orderLinks.map((link) => {
+                const active = (filters.orden ?? "relevancia") === link.value;
+                return (
+                  <Link
+                    key={link.value}
+                    href={buildCatalogQuery({ ...filters, orden: link.value })}
+                    className={`inline-flex h-7 shrink-0 items-center rounded-[var(--radius-card)] px-2 text-[10px] font-medium transition sm:px-2.5 sm:text-[11px] ${
+                      active
+                        ? "bg-ink text-white"
+                        : "bg-transparent text-ink-muted ring-1 ring-black/8 hover:bg-surface-muted hover:text-ink"
+                    }`}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    <span className="text-current">{link.label}</span>
+                  </Link>
+                );
+              })}
             </div>
-
-            {filteredProducts.length === 0 ? (
-              <EmptyState
-                title="Sin resultados"
-                description="Prueba quitando algunos filtros o explora todo el catalogo ATRES."
-                actionHref="/productos"
-                actionLabel="Ver todo"
-              />
-            ) : (
-              <div className="catalog-grid-with-sidebar">
-                {filteredProducts.map((product, index) => (
-                  <ProductCard key={product.slug} product={product} priority={index < 5} compact />
-                ))}
-              </div>
-            )}
           </div>
+
+          {filteredProducts.length === 0 ? (
+            <EmptyState
+              title="Sin resultados"
+              description="Prueba quitando algunos filtros o explora todo el catalogo ATRES."
+              actionHref="/productos"
+              actionLabel="Ver todo"
+            />
+          ) : (
+            <div className="catalog-grid-with-sidebar">
+              {filteredProducts.map((product, index) => (
+                <ProductCard key={product.slug} product={product} priority={index < 5} compact />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </main>

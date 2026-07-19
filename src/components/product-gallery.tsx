@@ -163,14 +163,14 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
           <button
             type="button"
             onClick={() => setZoomed((current) => !current)}
-            className={`relative aspect-[3/4] w-full overflow-hidden bg-black md:h-[86vh] md:max-w-5xl md:aspect-auto md:rounded-[var(--radius-card)] ${zoomed ? "cursor-zoom-out overflow-auto" : "cursor-zoom-in"}`}
+            className={`relative h-dvh w-full overflow-hidden bg-black md:h-[86vh] md:max-w-5xl md:rounded-[var(--radius-card)] ${zoomed ? "cursor-zoom-out overflow-auto" : "cursor-zoom-in"}`}
             aria-label={zoomed ? "Quitar zoom" : "Ampliar imagen"}
           >
             <SafeProductImage
               src={selectedImage}
               alt={productName}
               sizes="100vw"
-              className={`transition duration-300 ${zoomed ? "scale-150 object-contain" : "object-contain"}`}
+              className={`transition duration-300 ${zoomed ? "scale-150 object-cover md:object-contain" : "object-cover md:object-contain"}`}
             />
           </button>
 

@@ -37,8 +37,8 @@ export function HeaderMobileSearch() {
       action={catalogMode ? "/productos" : "/buscar"}
       initialQuery={query}
       hiddenInputs={hiddenInputs}
-      className="lg:hidden"
-      placeholder={catalogMode ? "Buscar productos" : "Buscar prendas"}
+      className="min-w-0 lg:hidden"
+      placeholder={catalogMode ? "Buscar en el catalogo..." : "Buscar en ATRES..."}
     />
   );
 }

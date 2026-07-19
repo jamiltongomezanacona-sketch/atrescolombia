@@ -115,12 +115,12 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
           )}
         >
           <div className="flex items-center justify-between border-b border-black/6 px-4 py-4">
-            <div>
-              <p id={titleId} className="text-lg font-medium tracking-[0.12em]">
+            <Link href="/" className="min-w-0" onClick={() => setOpen(false)} tabIndex={open ? undefined : -1}>
+              <p id={titleId} className="text-lg font-medium tracking-[0.14em]">
                 ATRES
               </p>
-              <p className="mt-0.5 text-xs font-normal text-ink-muted">Moda colombiana del taller al cliente</p>
-            </div>
+              <p className="mt-0.5 text-xs font-normal text-ink-muted">Moda colombiana</p>
+            </Link>
             <button
               ref={closeRef}
               type="button"

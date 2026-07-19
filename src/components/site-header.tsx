@@ -26,13 +26,12 @@ export async function SiteHeader() {
         </div>
       </div>
 
-      {/* Mobile: keep py-2 + h-10 row ≈ 3.5rem (matches layout pt / sticky offsets) */}
+      {/* Mobile: search-first bar (brand lives in the menu drawer) */}
       <div className="header-container py-2 lg:hidden">
-        <div className="grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-1.5">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2">
           <Suspense fallback={<div className="h-9 w-9 rounded-[var(--radius-card)] bg-white/10" />}>
             <MobileNavDrawer items={navItems} />
           </Suspense>
-          <BrandLogo dark compact />
           <Suspense fallback={<div className="h-10 rounded-[var(--radius-card)] bg-white/10" />}>
             <HeaderMobileSearch />
           </Suspense>

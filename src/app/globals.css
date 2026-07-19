@@ -277,7 +277,7 @@ h6 {
 }
 
 .products-catalog-container {
-  max-width: 1500px;
+  max-width: none;
 }
 
 @media (min-width: 640px) {
@@ -302,8 +302,8 @@ h6 {
   }
 
   .products-catalog-container {
-    max-width: 1680px;
-    padding-inline: 2rem;
+    max-width: none;
+    padding-inline: 1.5rem;
   }
 }
 
@@ -313,7 +313,8 @@ h6 {
   }
 
   .products-catalog-container {
-    max-width: 1720px;
+    max-width: none;
+    padding-inline: 2rem;
   }
 }
 
@@ -371,21 +372,21 @@ h6 {
 
 @media (min-width: 1024px) {
   .catalog-grid-with-sidebar {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.125rem;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: 0.875rem;
   }
 }
 
 @media (min-width: 1280px) {
   .catalog-grid-with-sidebar {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(188px, 1fr));
+    gap: 1rem;
   }
 }
 
 @media (min-width: 1500px) {
   .catalog-grid-with-sidebar {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 }
 

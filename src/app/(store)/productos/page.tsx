@@ -88,8 +88,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <main>
-      <section className="catalog-container products-catalog-container pb-3 pt-2 md:py-3 lg:pb-6 lg:pt-3">
-        <nav className="mb-2 hidden text-xs font-normal text-stone-400 md:block" aria-label="Ruta de navegacion">
+      <section className="catalog-container products-catalog-container pb-3 pt-1 md:pb-4 md:pt-2 lg:pb-5 lg:pt-2">
+        <nav className="mb-1 hidden text-xs font-normal text-stone-400 md:block" aria-label="Ruta de navegacion">
           <Link href="/" className="hover:text-black">
             Inicio
           </Link>
@@ -103,8 +103,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           ) : null}
         </nav>
 
-        <div className="sr-only md:not-sr-only md:mb-3 md:flex md:items-end md:justify-between md:gap-3">
-          <h1 className="text-2xl font-medium tracking-tight text-ink sm:text-3xl lg:text-[2rem]">
+        <div className="sr-only md:not-sr-only md:mb-2 md:flex md:items-end md:justify-between md:gap-3">
+          <h1 className="text-2xl font-medium tracking-tight text-ink sm:text-[1.7rem] lg:text-[1.85rem]">
             {pageTitle}
           </h1>
           <p className="hidden text-sm font-normal text-stone-500 md:block lg:hidden">
@@ -112,7 +112,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </p>
         </div>
 
-        <div className="sticky top-[3.5rem] z-30 -mx-4 mb-3 border-y border-black/5 bg-background/95 px-4 py-2 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:static lg:mb-4 lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
+        <div className="sticky top-[3.5rem] z-30 -mx-4 mb-2 border-y border-black/5 bg-background/95 px-4 py-2 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:static lg:mb-3 lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
           <nav className="flex gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" aria-label="Departamentos del catalogo">
             {categoryTabs.map((tab) => (
               <Link
@@ -131,9 +131,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </nav>
         </div>
 
-        <div className="lg:grid lg:grid-cols-[230px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-7">
-          <aside className="sticky top-[7.75rem] hidden max-h-[calc(100vh-8.5rem)] overflow-y-auto rounded-lg bg-white/88 p-4 shadow-soft ring-1 ring-black/5 lg:block lg:[&_fieldset]:pb-3 lg:[&_input]:h-10 lg:[&_select]:h-10">
-            <div className="mb-3 flex items-center justify-between gap-2">
+        <div className="lg:grid lg:grid-cols-[216px_minmax(0,1fr)] lg:items-start lg:gap-4 xl:gap-5">
+          <aside className="sticky top-[7.25rem] hidden max-h-[calc(100vh-8rem)] overflow-y-auto rounded-lg bg-white/88 p-3 shadow-soft ring-1 ring-black/5 lg:block lg:[&_fieldset]:pb-2.5 lg:[&_input]:h-9 lg:[&_select]:h-9">
+            <div className="mb-2.5 flex items-center justify-between gap-2">
               <div>
                 <p className="text-[11px] font-medium text-brand">Filtros</p>
                 <p className="text-sm font-medium text-ink">Refina tu busqueda</p>
@@ -148,12 +148,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               filters={filters}
               options={options}
               idPrefix="desktop-filter"
-              className="lg:gap-3"
+              className="lg:gap-2.5"
             />
           </aside>
 
           <div className="min-w-0">
-            <div className="mb-3 grid gap-2 rounded-lg bg-white/88 p-1.5 shadow-sm ring-1 ring-black/5 sm:mb-4 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-2 sm:rounded-xl sm:p-2 lg:mb-4 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none lg:ring-0">
+            <div className="mb-2 grid gap-2 rounded-lg bg-white/88 p-1.5 shadow-sm ring-1 ring-black/5 sm:mb-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-2 sm:rounded-xl sm:p-2 lg:mb-3 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none lg:ring-0">
               <div className="flex items-center justify-between gap-2 sm:justify-start">
                 <p className="text-sm font-medium text-stone-700 lg:text-stone-500">
                   {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}

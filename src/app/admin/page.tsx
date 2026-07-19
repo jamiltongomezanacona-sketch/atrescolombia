@@ -19,17 +19,19 @@ export default async function AdminDashboardPage() {
   return (
     <AdminShell>
       <div className="grid gap-5">
-        <div className="relative overflow-hidden rounded-2xl bg-[#0b1f3a] p-5 text-white shadow-sm ring-1 ring-[#284a68] md:p-6">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[#6ea8d9]" />
-          <div className="relative flex flex-wrap items-end justify-between gap-4">
+        <div className="rounded-[var(--radius-card)] bg-ink p-5 text-white md:p-6">
+          <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#9fd2ff]">ATRES Studio</p>
-              <h1 className="mt-2 text-3xl font-black tracking-tight md:text-4xl">Dashboard creativo</h1>
-              <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-white/62">
+              <p className="text-[11px] font-medium tracking-wide text-white/55">ATRES Studio</p>
+              <h1 className="mt-2 text-3xl font-medium tracking-tight md:text-4xl">Dashboard</h1>
+              <p className="mt-2 max-w-xl text-sm font-normal leading-6 text-white/65">
                 Control rapido del catalogo, productos publicados, inventario y campanas activas.
               </p>
             </div>
-            <Link href="/admin/productos/nuevo" className="rounded-full bg-[#dbeafe] px-5 py-3 text-sm font-black text-[#07111f] transition hover:bg-white active:scale-[0.98]">
+            <Link
+              href="/admin/productos/nuevo"
+              className="rounded-[var(--radius-card)] bg-white px-4 py-2.5 text-sm font-medium text-ink transition hover:bg-surface-muted active:scale-[0.98]"
+            >
               Crear producto
             </Link>
           </div>
@@ -43,35 +45,44 @@ export default async function AdminDashboardPage() {
           <StatCard label="Promos activas" value={activePromotions.length} />
           <StatCard label="Banners" value={banners.length} />
         </div>
-        <section className="grid gap-4 lg:grid-cols-[1fr_360px]">
-          <div className="rounded-2xl bg-white/95 p-4 shadow-sm ring-1 ring-[#d8e7f5] md:p-5">
+        <section className="grid gap-4 lg:grid-cols-[1fr_320px]">
+          <div className="rounded-[var(--radius-card)] border border-black/[0.06] bg-surface p-4 md:p-5">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs font-black uppercase tracking-wide text-[#2f6f9f]">Edicion rapida</p>
-                <h2 className="text-xl font-black">Productos recientes</h2>
+                <p className="text-[11px] font-medium tracking-wide text-ink-muted">Edicion rapida</p>
+                <h2 className="mt-0.5 text-xl font-medium text-ink">Productos recientes</h2>
               </div>
-              <Link href="/admin/productos" className="rounded-full bg-zinc-100 px-3 py-2 text-xs font-black text-zinc-700 hover:bg-black hover:text-white">
+              <Link
+                href="/admin/productos"
+                className="rounded-[var(--radius-card)] bg-surface-muted px-3 py-2 text-xs font-medium text-ink-muted transition hover:bg-ink hover:text-white"
+              >
                 Ver todos
               </Link>
             </div>
-            <div className="mt-4 grid gap-2">
+            <div className="mt-4 grid gap-1.5">
               {products.slice(0, 6).map((product) => (
                 <Link
                   key={product.id}
                   href={`/admin/productos/${product.id}/editar`}
-                  className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-xl border border-[#d8e7f5] bg-[#eef6ff]/65 px-3 py-3 text-sm transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
+                  className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-[var(--radius-card)] px-3 py-3 text-sm transition hover:bg-surface-muted"
                 >
                   <span>
-                    <span className="block font-black">{product.name}</span>
-                    <span className="mt-1 block text-xs font-semibold text-zinc-500">{product.sku || "Sin SKU"}</span>
+                    <span className="block font-medium text-ink">{product.name}</span>
+                    <span className="mt-0.5 block text-xs font-normal text-ink-muted">
+                      {product.sku || "Sin SKU"}
+                    </span>
                   </span>
-                  <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-zinc-700 ring-1 ring-black/5">Editar</span>
+                  <span className="rounded-[var(--radius-card)] bg-surface-muted px-2.5 py-1 text-xs font-medium text-ink-muted">
+                    Editar
+                  </span>
                 </Link>
               ))}
-              {!products.length ? <p className="text-sm font-semibold text-zinc-500">No hay productos.</p> : null}
+              {!products.length ? (
+                <p className="text-sm font-normal text-ink-muted">No hay productos.</p>
+              ) : null}
             </div>
           </div>
-          <div className="grid gap-3">
+          <div className="grid gap-2">
             {[
               ["Productos", "/admin/productos"],
               ["Categorias", "/admin/categorias"],
@@ -79,9 +90,13 @@ export default async function AdminDashboardPage() {
               ["Promociones", "/admin/promociones"],
               ["Configuracion", "/admin/configuracion"],
             ].map(([label, href]) => (
-              <Link key={href} href={href} className="rounded-2xl bg-white/92 p-4 text-sm font-black shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-md">
-                <span className="block">{label}</span>
-                <span className="mt-1 block text-xs font-semibold text-[#2f6f9f]">Gestionar modulo</span>
+              <Link
+                key={href}
+                href={href}
+                className="rounded-[var(--radius-card)] border border-black/[0.06] bg-surface p-4 text-sm font-medium transition hover:border-black/10 hover:shadow-soft"
+              >
+                <span className="block text-ink">{label}</span>
+                <span className="mt-1 block text-xs font-normal text-ink-muted">Gestionar modulo</span>
               </Link>
             ))}
           </div>

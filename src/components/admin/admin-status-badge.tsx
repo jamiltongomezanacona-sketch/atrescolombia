@@ -17,7 +17,7 @@ export function AdminStatusBadge({ status }: { status: string }) {
   const label = STATUS_LABELS[status] ?? status;
 
   return (
-    <Badge tone={tone} className="rounded-full shadow-none">
+    <Badge tone={tone} className="shadow-none">
       {label}
     </Badge>
   );

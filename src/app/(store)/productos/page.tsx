@@ -88,7 +88,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <main>
-      <section className="catalog-container pb-3 pt-2 md:py-3 lg:pb-7 lg:pt-4">
+      <section className="catalog-container products-catalog-container pb-3 pt-2 md:py-3 lg:pb-6 lg:pt-3">
         <nav className="mb-2 hidden text-xs font-normal text-stone-400 md:block" aria-label="Ruta de navegacion">
           <Link href="/" className="hover:text-black">
             Inicio
@@ -103,7 +103,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           ) : null}
         </nav>
 
-        <div className="sr-only md:not-sr-only md:mb-3 md:flex md:items-end md:justify-between md:gap-3 lg:mb-4">
+        <div className="sr-only md:not-sr-only md:mb-3 md:flex md:items-end md:justify-between md:gap-3">
           <h1 className="text-2xl font-medium tracking-tight text-ink sm:text-3xl lg:text-[2rem]">
             {pageTitle}
           </h1>
@@ -112,7 +112,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </p>
         </div>
 
-        <div className="sticky top-[3.5rem] z-30 -mx-4 mb-3 border-y border-black/5 bg-background/95 px-4 py-2 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:static lg:mb-5 lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
+        <div className="sticky top-[3.5rem] z-30 -mx-4 mb-3 border-y border-black/5 bg-background/95 px-4 py-2 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:static lg:mb-4 lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
           <nav className="flex gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" aria-label="Departamentos del catalogo">
             {categoryTabs.map((tab) => (
               <Link
@@ -153,7 +153,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </aside>
 
           <div className="min-w-0">
-            <div className="mb-3 grid gap-2 rounded-lg bg-white/88 p-1.5 shadow-sm ring-1 ring-black/5 sm:mb-4 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-2 sm:rounded-xl sm:p-2 lg:mb-5 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none lg:ring-0">
+            <div className="mb-3 grid gap-2 rounded-lg bg-white/88 p-1.5 shadow-sm ring-1 ring-black/5 sm:mb-4 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-2 sm:rounded-xl sm:p-2 lg:mb-4 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none lg:ring-0">
               <div className="flex items-center justify-between gap-2 sm:justify-start">
                 <p className="text-sm font-medium text-stone-700 lg:text-stone-500">
                   {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}

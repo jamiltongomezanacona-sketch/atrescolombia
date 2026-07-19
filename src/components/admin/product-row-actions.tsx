@@ -90,9 +90,9 @@ export function ProductRowActions({ productId, status, productName = "este produ
             type="button"
             disabled={pending}
             onClick={runDelete}
-            variant="ghost"
+            variant="brand"
             size="sm"
-            className="h-10 rounded-full bg-red-600 px-3 text-white hover:bg-red-700 hover:text-white"
+            className="h-10 rounded-full !bg-red-600 px-3 !text-white hover:!bg-red-700"
           >
             Eliminar
           </Button>
@@ -101,9 +101,9 @@ export function ProductRowActions({ productId, status, productName = "este produ
             type="button"
             disabled={pending}
             onClick={() => run("archived")}
-            variant="ghost"
+            variant="secondary"
             size="sm"
-            className="h-10 rounded-full bg-red-50 px-3 text-red-700 hover:bg-red-100"
+            className="h-10 rounded-full !bg-red-50 px-3 !text-red-700 hover:!bg-red-100"
           >
             Archivar
           </Button>

@@ -56,77 +56,79 @@
   box-sizing: border-box;
 }
 
-html {
-  background: var(--background);
-  color: var(--foreground);
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-  text-rendering: optimizeLegibility;
-  -webkit-text-size-adjust: 100%;
-  accent-color: var(--brand);
-}
+@layer base {
+  html {
+    background: var(--background);
+    color: var(--foreground);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+    accent-color: var(--brand);
+  }
 
-body {
-  min-width: 320px;
-  background:
-    linear-gradient(180deg, #ffffff 0%, var(--background) 52%, #f3f1ed 100%);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  font-weight: 400;
-  line-height: 1.5;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+  body {
+    min-width: 320px;
+    background:
+      linear-gradient(180deg, #ffffff 0%, var(--background) 52%, #f3f1ed 100%);
+    color: var(--foreground);
+    font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible,
-summary:focus-visible,
-[role="button"]:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  summary:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button,
+  a {
+    touch-action: manipulation;
+  }
+
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--promo) 72%, white);
+    color: var(--ink);
+  }
 }
 
 .skip-link:focus-visible {
   outline: 2px solid var(--brand);
   outline-offset: 2px;
-}
-
-button,
-a,
-input,
-select,
-textarea {
-  -webkit-tap-highlight-color: transparent;
-}
-
-button,
-a {
-  touch-action: manipulation;
-}
-
-button:disabled,
-[aria-disabled="true"] {
-  cursor: not-allowed;
-}
-
-::selection {
-  background: color-mix(in srgb, var(--promo) 72%, white);
-  color: var(--ink);
 }
 
 /* Editorial heading weight — does not override Tailwind utility classes */

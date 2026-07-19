@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductActions } from "@/components/product-actions";
+import { ProductGallery } from "@/components/product-gallery";
 import { ProductRail } from "@/components/product-rail";
-import { SafeProductImage } from "@/components/safe-product-image";
+import { ProductSelectionProvider } from "@/components/product-selection-context";
 import { Badge } from "@/components/ui/badge";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { ProductPrice } from "@/components/ui/product-price";
@@ -74,31 +75,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
         currency: "COP",
         maximumFractionDigits: 0,
       }).format(product.price)}
+      data-whatsapp-product-color={product.colors[0] ?? ""}
+      data-whatsapp-product-size={product.sizes[0] ?? ""}
+      data-whatsapp-product-image={product.images[0] ?? product.image}
     >
-      <section className="store-container grid gap-5 py-6 md:py-8 lg:grid-cols-[1.08fr_0.92fr]">
-        <div className="grid gap-3 sm:grid-cols-[1fr_116px]">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-surface-muted shadow-soft ring-1 ring-white/60">
-            <SafeProductImage
-              src={product.images[0]}
-              alt={product.name}
-              priority
-              sizes="(max-width: 1024px) 100vw, 55vw"
-              className="object-cover"
-            />
-          </div>
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-1">
-            {product.images.slice(1).map((image) => (
-              <div
-                key={image}
-                className="relative aspect-square overflow-hidden rounded-lg bg-surface-muted shadow-soft ring-1 ring-white/60"
-              >
-                <SafeProductImage src={image} alt={product.name} sizes="116px" className="object-cover" />
-              </div>
-            ))}
-          </div>
-        </div>
+      <ProductSelectionProvider
+        productName={product.name}
+        images={product.images}
+        colors={product.colors}
+        sizes={product.sizes}
+      >
+        <section className="store-container grid gap-5 py-6 md:py-8 lg:grid-cols-[1.08fr_0.92fr]">
+          <ProductGallery productName={product.name} />
 
-        <GlassPanel className="self-start p-5 lg:sticky lg:top-28">
+          <GlassPanel className="self-start p-5 lg:sticky lg:top-28">
           <div className="flex flex-wrap gap-2">
             {commercialBadge ? (
               <Badge tone="black" className={getToneClass(commercialTone)}>
@@ -157,8 +147,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
               ))}
             </ul>
           </div>
-        </GlassPanel>
-      </section>
+          </GlassPanel>
+        </section>
+      </ProductSelectionProvider>
 
       <ProductRail title="Productos similares" href={`/categoria/${product.categorySlug}`} products={related} />
       <ProductRail title="Vistos recientemente" href="/productos" products={recentlyViewed} />

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FavoriteButton } from "@/components/favorite-button";
+import { useProductSelection } from "@/components/product-selection-context";
 import { Button } from "@/components/ui/button";
 import { buildProductWhatsAppMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
 import type { Product } from "@/lib/store-data";
@@ -33,12 +34,18 @@ function readCart() {
 }
 
 export function ProductActions({ product, whatsapp }: ProductActionsProps) {
-  const [color, setColor] = useState(product.colors[0] ?? "");
-  const [size, setSize] = useState(product.sizes[0] ?? "");
+  const { color, setColor, size, setSize, selectedImage } = useProductSelection();
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
+  const productUrl = getProductUrl(product.slug);
   const whatsappUrl = whatsapp
-    ? buildWhatsAppUrl(whatsapp, buildProductWhatsAppMessage(product, size, color))
+    ? buildWhatsAppUrl(
+        whatsapp,
+        buildProductWhatsAppMessage(product, size, color, {
+          productUrl,
+          imageUrl: selectedImage,
+        }),
+      )
     : null;
   const outOfStock = product.stock <= 0;
 
@@ -71,15 +78,18 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
   }
 
   async function shareProduct() {
-    const url = window.location.href;
+    const url = buildSelectedImageShareUrl(product.slug, selectedImage);
+    const text = selectedImage
+      ? `${product.description}\nImagen seleccionada: ${selectedImage}`
+      : product.description;
 
     try {
       if (navigator.share) {
-        await navigator.share({ title: product.name, text: product.description, url });
+        await navigator.share({ title: product.name, text, url });
         return;
       }
 
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(`${url}${selectedImage ? `\nImagen: ${selectedImage}` : ""}`);
       setMessage("Enlace copiado para compartir.");
     } catch {
       setMessage("No se pudo compartir en este navegador.");
@@ -167,6 +177,23 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
       ) : null}
     </div>
   );
+}
+
+function getProductUrl(slug: string) {
+  if (typeof window !== "undefined") {
+    return new URL(`/productos/${slug}`, window.location.origin).toString();
+  }
+
+  return `https://atrescolombia.com/productos/${slug}`;
+}
+
+function buildSelectedImageShareUrl(slug: string, imageUrl: string) {
+  const productUrl = getProductUrl(slug);
+  if (!imageUrl) return productUrl;
+
+  const url = new URL(productUrl);
+  url.searchParams.set("imagen", imageUrl);
+  return url.toString();
 }
 
 function OptionGroup({

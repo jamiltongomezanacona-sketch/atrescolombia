@@ -16,6 +16,10 @@ export function buildProductWhatsAppMessage(
   },
   size?: string,
   color?: string,
+  options?: {
+    productUrl?: string;
+    imageUrl?: string;
+  },
 ) {
   const lines = [
     "Hola ATRES, quiero informacion de este producto:",
@@ -25,7 +29,8 @@ export function buildProductWhatsAppMessage(
 
   if (color) lines.push(`Color: ${color}`);
   if (size) lines.push(`Talla: ${size}`);
-  lines.push(`Link: https://atrescolombia.com/productos/${product.slug}`);
+  lines.push(`Link: ${options?.productUrl ?? `https://atrescolombia.com/productos/${product.slug}`}`);
+  if (options?.imageUrl) lines.push(`Imagen: ${options.imageUrl}`);
 
   return lines.join("\n");
 }

@@ -10,6 +10,9 @@ type ProductContext = {
   name: string;
   price: string;
   url: string;
+  color: string;
+  size: string;
+  image: string;
 };
 
 function readProductContext(): ProductContext | null {
@@ -25,6 +28,9 @@ function readProductContext(): ProductContext | null {
     name,
     price: element.dataset.whatsappProductPrice?.trim() ?? "",
     url: window.location.href,
+    color: element.dataset.whatsappProductColor?.trim() ?? "",
+    size: element.dataset.whatsappProductSize?.trim() ?? "",
+    image: element.dataset.whatsappProductImage?.trim() ?? "",
   };
 }
 
@@ -36,7 +42,10 @@ function buildMessage(product: ProductContext | null) {
     ];
 
     if (product.price) lines.push(`Precio: ${product.price}`);
+    if (product.color) lines.push(`Color: ${product.color}`);
+    if (product.size) lines.push(`Talla: ${product.size}`);
     lines.push(`Link: ${product.url}`);
+    if (product.image) lines.push(`Imagen: ${product.image}`);
     return lines.join("\n");
   }
 
@@ -54,11 +63,17 @@ export function FloatingWhatsApp() {
   const compactCatalog = pathname === "/productos" || pathname.startsWith("/productos?");
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
+    function syncProduct() {
       setProduct(readProductContext());
-    }, 80);
+    }
 
-    return () => window.clearTimeout(timer);
+    const timer = window.setTimeout(syncProduct, 80);
+    window.addEventListener("atres:product-selection-changed", syncProduct);
+
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("atres:product-selection-changed", syncProduct);
+    };
   }, [pathname]);
 
   const whatsappUrl = useMemo(

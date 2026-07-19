@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import type { NavItem } from "@/lib/store-navigation";
+import { isStoreNavActive } from "@/lib/store-navigation";
 import { cn } from "@/lib/cn";
 
 type MobileNavDrawerProps = {
@@ -27,6 +28,13 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
   const [open, setOpen] = useState(false);
   const mounted = useSyncExternalStore(subscribe, () => true, () => false);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const navContext = {
+    pathname,
+    categoria: searchParams.get("categoria"),
+    ofertas: searchParams.get("ofertas"),
+    novedades: searchParams.get("novedades"),
+  };
   const [prevPathname, setPrevPathname] = useState(pathname);
   const titleId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -128,10 +136,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
             <p className="px-2 text-[11px] font-medium tracking-wide text-ink-muted">Categorias</p>
             <ul className="mt-2 grid gap-0.5">
               {links.map((link) => {
-                const active =
-                  link.href === "/productos"
-                    ? pathname === "/productos"
-                    : pathname === link.href || pathname.startsWith(`${link.href}/`);
+                const active = isStoreNavActive(link, navContext);
 
                 return (
                   <li key={link.key}>

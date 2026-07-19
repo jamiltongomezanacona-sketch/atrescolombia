@@ -282,3 +282,52 @@ export function getDescendantCategorySlugs(categories: StoreCategory[], rootSlug
 
   return Array.from(slugs);
 }
+
+/** Active state for header/drawer links, including /productos?categoria=… filters. */
+export function isStoreNavActive(
+  link: NavItem,
+  context: {
+    pathname: string;
+    categoria?: string | null;
+    ofertas?: string | null;
+    novedades?: string | null;
+  },
+) {
+  const pathname = context.pathname;
+  const categoria = context.categoria ?? null;
+  const ofertas = context.ofertas ?? null;
+  const novedades = context.novedades ?? null;
+  const hasCatalogFilter = Boolean(categoria || ofertas || novedades);
+
+  if (link.href === "/productos" || link.key === "todo") {
+    return pathname === "/productos" && !hasCatalogFilter;
+  }
+
+  if (link.key === "novedades" || link.href === "/novedades") {
+    return pathname === "/novedades" || (pathname === "/productos" && Boolean(novedades));
+  }
+
+  if (link.key === "ofertas" || link.href === "/ofertas" || link.href === "/promociones") {
+    return (
+      pathname === "/ofertas" ||
+      pathname === "/promociones" ||
+      (pathname === "/productos" && Boolean(ofertas))
+    );
+  }
+
+  if (pathname === link.href || pathname.startsWith(`${link.href}/`)) {
+    return true;
+  }
+
+  if (pathname === "/productos" && categoria && link.href.startsWith("/categoria/")) {
+    const linkSlug = link.href.replace(/^\/categoria\//, "");
+    const departmentSlugs = DEPARTMENT_SLUGS[link.key] ?? [linkSlug];
+    return (
+      categorySlugMatches(categoria, departmentSlugs) ||
+      normalizeNavSlug(categoria) === normalizeNavSlug(linkSlug)
+    );
+  }
+
+  return false;
+}
+

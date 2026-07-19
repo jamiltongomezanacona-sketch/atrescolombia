@@ -29,7 +29,9 @@ export async function SiteHeader() {
       {/* Mobile: keep py-2 + h-10 row ≈ 3.5rem (matches layout pt / sticky offsets) */}
       <div className="catalog-container py-2 lg:hidden">
         <div className="grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-center gap-1.5">
-          <MobileNavDrawer items={navItems} />
+          <Suspense fallback={<div className="h-9 w-9 rounded-[var(--radius-card)] bg-white/10" />}>
+            <MobileNavDrawer items={navItems} />
+          </Suspense>
           <BrandLogo dark compact />
           <Suspense fallback={<div className="h-10 rounded-[var(--radius-card)] bg-white/10" />}>
             <HeaderMobileSearch />
@@ -41,7 +43,9 @@ export async function SiteHeader() {
       <div className="hidden catalog-container py-1.5 lg:block lg:py-2">
         <div className="flex items-center gap-2 lg:grid lg:grid-cols-[200px_minmax(420px,1fr)_auto] lg:gap-4">
           <div className="flex min-w-0 items-center gap-2">
-            <MobileNavDrawer items={navItems} />
+            <Suspense fallback={<div className="h-9 w-9 rounded-[var(--radius-card)] bg-white/10 lg:hidden" />}>
+              <MobileNavDrawer items={navItems} />
+            </Suspense>
             <BrandLogo dark compact />
           </div>
 
@@ -57,7 +61,9 @@ export async function SiteHeader() {
       </div>
 
       <div className="hidden lg:block">
-        <HeaderNav items={navItems} />
+        <Suspense fallback={<div className="h-10 border-t border-white/10 bg-white/[0.03]" />}>
+          <HeaderNav items={navItems} />
+        </Suspense>
       </div>
     </header>
   );

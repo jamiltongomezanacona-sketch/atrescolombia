@@ -138,11 +138,6 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           <aside className="sticky top-[5.5rem] hidden max-h-[calc(100vh-6rem)] overflow-y-auto border-r border-black/[0.06] pr-2.5 lg:block">
             <div className="mb-1.5 flex items-center justify-between gap-2">
               <p className="text-[11px] font-medium tracking-wide text-ink">Filtros</p>
-              {activeFilters > 0 ? (
-                <span className="rounded-[var(--radius-card)] bg-ink px-1.5 py-0.5 text-[10px] font-medium text-white">
-                  {activeFilters}
-                </span>
-              ) : null}
             </div>
             <CatalogFiltersForm
               filters={filters}
@@ -167,7 +162,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   <FilterDrawer filters={filters} options={options} />
                 </div>
               </div>
-              <div className="flex gap-1 overflow-x-auto pb-0 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible">
+              <div className="flex gap-1.5 overflow-x-auto pb-0 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible">
                 <span className="hidden h-7 shrink-0 items-center px-1 text-[10px] font-medium text-ink-muted md:inline-flex">
                   Ordenar
                 </span>

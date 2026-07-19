@@ -247,7 +247,7 @@ function FlashSection({ products }: { products: Product[] }) {
             <Link
               key={`flash-${product.slug}`}
               href={`/productos/${product.slug}`}
-              className="atres-interactive grid grid-cols-[96px_1fr] gap-3 rounded-lg bg-white/92 p-2 shadow-soft ring-1 ring-black/5"
+              className="atres-interactive grid grid-cols-[82px_1fr] gap-2 rounded-lg bg-white/92 p-1.5 shadow-soft ring-1 ring-black/5 sm:grid-cols-[96px_1fr] sm:gap-3 sm:p-2"
             >
               <div className="relative aspect-square overflow-hidden rounded-md bg-surface-muted">
                 <SafeProductImage
@@ -257,13 +257,15 @@ function FlashSection({ products }: { products: Product[] }) {
                   className="object-cover"
                 />
               </div>
-              <div className="min-w-0 py-1">
+              <div className="min-w-0 py-0.5 sm:py-1">
                 <div className="flex gap-1.5">
                   <Badge tone="brand">Flash</Badge>
                   {discount ? <Badge tone="amber">-{discount}%</Badge> : null}
                 </div>
-                <p className="mt-2 line-clamp-2 text-sm font-normal leading-5 text-ink">{product.name}</p>
-                <ProductPrice price={product.price} previousPrice={product.previousPrice} className="mt-2" />
+                <p className="mt-1.5 line-clamp-1 text-sm font-normal leading-5 text-ink sm:mt-2 sm:line-clamp-2">
+                  {product.name}
+                </p>
+                <ProductPrice price={product.price} previousPrice={product.previousPrice} className="mt-1 sm:mt-2" />
               </div>
             </Link>
           );

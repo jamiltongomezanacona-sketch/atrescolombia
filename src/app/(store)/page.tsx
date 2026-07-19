@@ -53,6 +53,7 @@ export default async function Home() {
 
   return (
     <main>
+      <HeroSection product={heroProduct} promo={heroPromo} />
       <CategoryStrip
         categories={[
           { label: "Todo", href: "/productos" },
@@ -66,7 +67,6 @@ export default async function Home() {
       />
       <FlashSection products={promoProducts.length ? promoProducts : products} />
       <EditorialGallery products={editorialProducts} />
-      <HeroSection product={heroProduct} promo={heroPromo} productCount={products.length} />
       <PromoGrid promos={promos} fallbackProducts={promoProducts} />
       <ProductRail title="Mas vendidos" href="/productos?orden=tendencias" products={bestSellers} priorityCount={4} />
       <ProductRail title="Novedades" href="/novedades" products={newProducts.length ? newProducts : products} />
@@ -84,76 +84,49 @@ function uniqueProducts(items: Product[]) {
 function HeroSection({
   product,
   promo,
-  productCount,
 }: {
   product?: Product;
   promo?: Promo;
-  productCount: number;
 }) {
   const image = promo?.image ?? product?.image ?? "/icono.png";
-  const href = promo?.href ?? (product ? `/productos/${product.slug}` : "/productos");
 
   return (
-    <section className="relative isolate overflow-hidden bg-black text-white">
+    <section className="relative isolate overflow-hidden bg-ink text-white">
       <div className="absolute inset-0">
         <SafeProductImage
           src={image}
           alt=""
           priority
           sizes="100vw"
-          className="object-cover opacity-60"
+          className="object-cover opacity-55"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.58)_42%,rgba(0,0,0,0.2)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(10,10,10,0.92)_0%,rgba(10,10,10,0.55)_48%,rgba(10,10,10,0.28)_100%)]" />
       </div>
 
-      <div className="catalog-container relative grid min-h-[260px] content-end gap-4 pb-5 pt-14 sm:min-h-[340px] sm:gap-6 sm:pb-8 sm:pt-20 md:grid-cols-[1fr_340px] md:items-end md:pb-10 lg:min-h-[500px]">
+      <div className="catalog-container relative flex min-h-[72vh] max-h-[820px] flex-col justify-end pb-10 pt-24 sm:min-h-[68vh] sm:pb-14 sm:pt-28 lg:min-h-[78vh] lg:pb-16">
         <div className="max-w-2xl">
-          <div className="mb-3 flex flex-wrap gap-1.5 sm:mb-4 sm:gap-2">
-            <Badge tone="brand">Oferta Flash</Badge>
-            <Badge tone="amber">Nuevo drop</Badge>
-            <Badge tone="emerald">{productCount} productos</Badge>
-          </div>
-          <h1 className="max-w-3xl text-3xl font-medium leading-none text-white sm:text-5xl lg:text-6xl">
+          <p className="text-[11px] font-medium tracking-[0.18em] text-white/65">MODA COLOMBIANA</p>
+          <h1 className="mt-3 text-5xl font-medium leading-[0.92] tracking-tight text-white sm:text-6xl lg:text-7xl">
             ATRES
           </h1>
-          <p className="mt-3 max-w-xl text-sm font-normal leading-6 text-white/82 sm:mt-4 sm:text-lg sm:leading-7">
-            Moda colombiana directa, colecciones listas para comprar y precios visibles para decidir rapido.
+          <p className="mt-4 max-w-md text-sm font-normal leading-6 text-white/78 sm:mt-5 sm:text-base sm:leading-7">
+            Del taller al cliente. Colecciones listas para comprar, con precios claros.
           </p>
-          <div className="mt-4 flex flex-wrap gap-2 sm:mt-6 sm:gap-3">
+          <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
             <Link
               href="/productos"
-              className="atres-interactive inline-flex min-h-10 items-center justify-center rounded-full bg-white px-4 text-xs font-medium !text-black hover:bg-amber-100 sm:min-h-12 sm:px-5 sm:text-sm"
+              className="atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-white px-5 text-sm font-medium text-ink hover:bg-surface-muted sm:min-h-12 sm:px-6"
             >
-              <span className="text-current">Comprar ahora</span>
+              Comprar ahora
             </Link>
             <Link
               href="/ofertas"
-              className="atres-interactive inline-flex min-h-10 items-center justify-center rounded-full bg-white/10 px-4 text-xs font-medium text-white ring-1 ring-white/25 hover:bg-white/20 sm:min-h-12 sm:px-5 sm:text-sm"
+              className="atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-white/10 px-5 text-sm font-medium text-white ring-1 ring-white/25 hover:bg-white/16 sm:min-h-12 sm:px-6"
             >
               Ver ofertas
             </Link>
           </div>
         </div>
-
-        {product ? (
-          <Link
-            href={href}
-            className="atres-interactive hidden overflow-hidden rounded-lg bg-white/92 p-2 text-black shadow-lift ring-1 ring-white/60 md:block"
-          >
-            <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-surface-muted">
-              <SafeProductImage
-                src={product.image}
-                alt={product.name}
-                sizes="340px"
-                className="object-cover"
-              />
-            </div>
-            <div className="p-3">
-              <p className="line-clamp-1 text-sm font-medium">{product.name}</p>
-              <ProductPrice price={product.price} previousPrice={product.previousPrice} size="md" className="mt-2" />
-            </div>
-          </Link>
-        ) : null}
       </div>
     </section>
   );
@@ -165,16 +138,19 @@ function CategoryStrip({
   categories: Array<{ label: string; href: string }>;
 }) {
   return (
-    <nav className="sticky top-[3.5rem] z-30 border-y border-black/5 bg-white/94 shadow-sm backdrop-blur-xl lg:top-[7.9rem]" aria-label="Categorias destacadas">
-      <div className="atres-scroll catalog-container flex gap-1.5 overflow-x-auto py-1.5 sm:gap-2 sm:py-2">
+    <nav
+      className="sticky top-[3.5rem] z-30 border-y border-black/[0.06] bg-surface/94 backdrop-blur-xl lg:top-[7.9rem]"
+      aria-label="Categorias destacadas"
+    >
+      <div className="atres-scroll catalog-container flex gap-1.5 overflow-x-auto py-2 sm:gap-2">
         {categories.map((category, index) => (
           <Link
             key={`${category.href}-${category.label}`}
             href={category.href}
             className={
               index === 0
-                ? "atres-interactive inline-flex min-h-8 shrink-0 items-center rounded-full bg-black px-3 text-xs font-medium !text-white sm:min-h-9 sm:px-4"
-                : "atres-interactive inline-flex min-h-8 shrink-0 items-center rounded-full bg-stone-100 px-3 text-xs font-medium text-stone-800 hover:bg-black hover:text-white sm:min-h-9 sm:px-4"
+                ? "atres-interactive inline-flex min-h-8 shrink-0 items-center rounded-[var(--radius-card)] bg-ink px-3 text-xs font-medium text-white sm:min-h-9 sm:px-3.5"
+                : "atres-interactive inline-flex min-h-8 shrink-0 items-center rounded-[var(--radius-card)] bg-transparent px-3 text-xs font-medium text-ink-muted ring-1 ring-black/8 hover:bg-surface-muted hover:text-ink sm:min-h-9 sm:px-3.5"
             }
           >
             <span className="text-current">{category.label}</span>
@@ -210,23 +186,25 @@ function PromoGrid({
   if (!tiles.length) return null;
 
   return (
-    <section className="catalog-container grid gap-2 py-3 sm:grid-cols-3 md:gap-3 md:py-5">
+    <section className="catalog-container grid gap-3 py-5 sm:grid-cols-3 md:gap-4 md:py-7">
       {tiles.map((tile) => (
         <Link
           key={`${tile.href}-${tile.title}`}
           href={tile.href}
-          className="group relative min-h-[104px] overflow-hidden rounded-lg bg-black p-3 text-white shadow-soft ring-1 ring-black/5 sm:min-h-[132px] sm:p-4"
+          className="group relative min-h-[140px] overflow-hidden rounded-[var(--radius-card)] bg-ink p-4 text-white sm:min-h-[160px] sm:p-5"
         >
           <SafeProductImage
             src={tile.image}
             alt=""
             sizes="(max-width: 640px) 100vw, 33vw"
-            className="object-cover opacity-50 transition duration-500 group-hover:scale-105"
+            className="object-cover opacity-45 transition duration-500 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/10" />
-          <div className="relative max-w-[78%]">
-            <p className="text-base font-medium leading-tight sm:text-lg">{tile.title}</p>
-            <p className="mt-1.5 line-clamp-2 text-xs font-normal leading-5 text-white/80 sm:mt-2">{tile.subtitle}</p>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent" />
+          <div className="relative max-w-[80%]">
+            <p className="text-lg font-medium leading-tight sm:text-xl">{tile.title}</p>
+            <p className="mt-2 line-clamp-2 text-xs font-normal leading-5 text-white/75 sm:text-sm">
+              {tile.subtitle}
+            </p>
           </div>
         </Link>
       ))}
@@ -239,22 +217,25 @@ function EditorialGallery({ products }: { products: Product[] }) {
   const [featured, ...supporting] = products;
 
   return (
-    <section className="catalog-container py-3 md:py-4" aria-labelledby="editorial-gallery-title">
-      <div className="mb-2.5 flex items-end justify-between gap-3">
+    <section className="catalog-container py-5 md:py-7" aria-labelledby="editorial-gallery-title">
+      <div className="mb-4 flex items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-medium text-stone-500">Editorial ATRES</p>
-          <h2 id="editorial-gallery-title" className="mt-1 text-xl font-medium leading-none text-ink md:text-2xl">
+          <p className="text-[11px] font-medium tracking-wide text-ink-muted">Editorial</p>
+          <h2 id="editorial-gallery-title" className="mt-1 text-2xl font-medium tracking-tight text-ink md:text-3xl">
             Comprar por foto
           </h2>
         </div>
-        <Link href="/productos" className="shrink-0 text-sm font-medium text-ink underline-offset-4 hover:underline">
+        <Link
+          href="/productos"
+          className="shrink-0 text-sm font-medium text-ink-muted underline-offset-4 transition hover:text-ink hover:underline"
+        >
           Ver catalogo
         </Link>
       </div>
 
-      <div className="grid gap-2 md:grid-cols-[1.15fr_0.85fr] md:gap-3">
+      <div className="grid gap-3 md:grid-cols-[1.2fr_0.8fr] md:gap-4">
         {featured ? <EditorialTile product={featured} featured /> : null}
-        <div className="grid grid-cols-2 gap-2 md:gap-3">
+        <div className="grid grid-cols-2 gap-3 md:gap-4">
           {supporting.map((product) => (
             <EditorialTile key={`editorial-${product.slug}`} product={product} />
           ))}
@@ -268,46 +249,33 @@ function EditorialTile({ product, featured = false }: { product: Product; featur
   return (
     <Link
       href={`/productos/${product.slug}`}
-      className={`group relative overflow-hidden rounded-lg bg-black shadow-soft ring-1 ring-black/5 ${
-        featured ? "min-h-[260px] md:min-h-[430px]" : "min-h-[158px] md:min-h-[208px]"
+      className={`group relative overflow-hidden rounded-[var(--radius-card)] bg-ink ${
+        featured ? "min-h-[280px] md:min-h-[460px]" : "min-h-[168px] md:min-h-[222px]"
       }`}
     >
       <SafeProductImage
         src={product.image}
         alt={product.name}
         sizes={featured ? "(max-width: 768px) 100vw, 52vw" : "(max-width: 768px) 50vw, 22vw"}
-        className="object-cover opacity-92 transition duration-500 group-hover:scale-105"
+        className="object-cover opacity-95 transition duration-500 group-hover:scale-[1.04]"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/12 to-transparent" />
-      <div className="absolute left-2 top-2 flex flex-wrap gap-1.5">
-        {product.isPromo ? (
-          <span className="rounded-full bg-[#ff4d00] px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
-            Oferta
-          </span>
-        ) : null}
-        {product.isNew ? (
-          <span className="rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-medium text-black shadow-sm">
-            Nuevo
-          </span>
-        ) : null}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
+      <div className="absolute left-2.5 top-2.5 flex flex-wrap gap-1.5">
+        {product.isPromo ? <Badge tone="brand">Oferta</Badge> : null}
+        {product.isNew ? <Badge tone="soft">Nuevo</Badge> : null}
       </div>
-      <div className="absolute inset-x-0 bottom-0 p-3 text-white">
-        <p className={`${featured ? "text-lg leading-5" : "text-sm leading-4"} line-clamp-2 font-medium`}>
+      <div className="absolute inset-x-0 bottom-0 p-3.5 text-white sm:p-4">
+        <p className={`${featured ? "text-xl leading-6 sm:text-2xl" : "text-sm leading-5"} line-clamp-2 font-medium`}>
           {product.name}
         </p>
-        <div className="mt-2 flex items-end justify-between gap-2">
+        <div className="mt-2.5">
           <ProductPrice
             price={product.price}
             previousPrice={product.previousPrice}
-            className="rounded-full bg-white/92 px-2 py-1 text-black shadow-sm backdrop-blur"
+            className="inline-flex rounded-[var(--radius-card)] bg-white/92 px-2 py-1 text-ink backdrop-blur-sm"
             currentClassName={featured ? "text-base" : "text-sm"}
             previousClassName="mt-0 text-[10px]"
           />
-          {featured ? (
-            <span className="hidden shrink-0 rounded-full bg-white/14 px-3 py-1.5 text-xs font-medium text-white ring-1 ring-white/24 sm:inline-flex">
-              Ver prenda
-            </span>
-          ) : null}
         </div>
       </div>
     </Link>
@@ -320,17 +288,22 @@ function FlashSection({ products }: { products: Product[] }) {
   if (!flashProducts.length) return null;
 
   return (
-    <section className="catalog-container py-3 md:py-4">
-      <div className="mb-2.5 flex items-end justify-between gap-3 md:mb-3">
+    <section className="catalog-container py-5 md:py-7">
+      <div className="mb-4 flex items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-medium text-brand">Oferta Flash</p>
-          <h2 className="mt-1 text-xl font-medium leading-none text-ink md:text-2xl">Precios para comprar hoy</h2>
+          <p className="text-[11px] font-medium tracking-wide text-brand">Oferta Flash</p>
+          <h2 className="mt-1 text-2xl font-medium tracking-tight text-ink md:text-3xl">
+            Precios para comprar hoy
+          </h2>
         </div>
-        <Link href="/ofertas" className="text-sm font-medium text-ink underline-offset-4 hover:underline">
+        <Link
+          href="/ofertas"
+          className="text-sm font-medium text-ink-muted underline-offset-4 transition hover:text-ink hover:underline"
+        >
           Ver todo
         </Link>
       </div>
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {flashProducts.map((product) => {
           const discount = getDiscountPercent(product);
 
@@ -338,13 +311,13 @@ function FlashSection({ products }: { products: Product[] }) {
             <Link
               key={`flash-${product.slug}`}
               href={`/productos/${product.slug}`}
-              className="atres-interactive grid grid-cols-[82px_1fr] gap-2 rounded-lg bg-white/92 p-1.5 shadow-soft ring-1 ring-black/5 sm:grid-cols-[96px_1fr] sm:gap-3 sm:p-2"
+              className="atres-interactive grid grid-cols-[88px_1fr] gap-3 rounded-[var(--radius-card)] bg-surface p-2 ring-1 ring-black/[0.05] sm:grid-cols-[104px_1fr] sm:p-2.5"
             >
-              <div className="relative aspect-square overflow-hidden rounded-md bg-surface-muted">
+              <div className="relative aspect-square overflow-hidden rounded-[var(--radius-card)] bg-surface-muted">
                 <SafeProductImage
                   src={product.image}
                   alt={product.name}
-                  sizes="96px"
+                  sizes="104px"
                   className="object-cover"
                 />
               </div>
@@ -353,10 +326,10 @@ function FlashSection({ products }: { products: Product[] }) {
                   <Badge tone="brand">Flash</Badge>
                   {discount ? <Badge tone="amber">-{discount}%</Badge> : null}
                 </div>
-                <p className="mt-1.5 line-clamp-1 text-sm font-normal leading-5 text-ink sm:mt-2 sm:line-clamp-2">
+                <p className="mt-2 line-clamp-2 text-sm font-medium leading-5 text-ink">
                   {product.name}
                 </p>
-                <ProductPrice price={product.price} previousPrice={product.previousPrice} className="mt-1 sm:mt-2" />
+                <ProductPrice price={product.price} previousPrice={product.previousPrice} className="mt-2" />
               </div>
             </Link>
           );
@@ -370,33 +343,38 @@ function CollectionGrid({ products }: { products: Product[] }) {
   if (!products.length) return null;
 
   return (
-    <section className="catalog-container py-4 md:py-5">
-      <div className="mb-3 flex items-end justify-between gap-3">
+    <section className="catalog-container py-5 md:py-7">
+      <div className="mb-4 flex items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-medium text-stone-500">Colecciones</p>
-          <h2 className="mt-1 text-2xl font-medium leading-none text-ink">Comprar por estilo</h2>
+          <p className="text-[11px] font-medium tracking-wide text-ink-muted">Colecciones</p>
+          <h2 className="mt-1 text-2xl font-medium tracking-tight text-ink md:text-3xl">
+            Comprar por estilo
+          </h2>
         </div>
-        <Link href="/productos" className="text-sm font-medium text-ink underline-offset-4 hover:underline">
+        <Link
+          href="/productos"
+          className="text-sm font-medium text-ink-muted underline-offset-4 transition hover:text-ink hover:underline"
+        >
           Explorar
         </Link>
       </div>
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         {products.map((product) => (
           <Link
             key={`collection-${product.collection}`}
             href={`/productos?coleccion=${encodeURIComponent(product.collection)}`}
-            className="group relative min-h-[190px] overflow-hidden rounded-lg bg-black p-4 text-white shadow-soft"
+            className="group relative min-h-[200px] overflow-hidden rounded-[var(--radius-card)] bg-ink p-4 text-white sm:min-h-[220px]"
           >
             <SafeProductImage
               src={product.image}
               alt=""
               sizes="(max-width: 1024px) 50vw, 25vw"
-              className="object-cover opacity-60 transition duration-500 group-hover:scale-105"
+              className="object-cover opacity-55 transition duration-500 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
-            <div className="relative flex h-full min-h-[158px] flex-col justify-end">
-              <p className="text-xl font-medium leading-tight">{product.collection}</p>
-              <p className="mt-2 line-clamp-1 text-xs text-white/70">{product.categoryName}</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+            <div className="relative flex h-full min-h-[168px] flex-col justify-end">
+              <p className="text-xl font-medium leading-tight sm:text-2xl">{product.collection}</p>
+              <p className="mt-2 line-clamp-1 text-xs text-white/65">{product.categoryName}</p>
             </div>
           </Link>
         ))}

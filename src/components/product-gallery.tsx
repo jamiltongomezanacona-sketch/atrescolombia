@@ -14,7 +14,6 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
   const selectedImages = useMemo(() => sanitizeImages(images), [images]);
   const [rawSelectedImageIndex, setRawSelectedImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [zoomed, setZoomed] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const selectedImageIndex = wrapIndex(rawSelectedImageIndex, selectedImages.length);
   const selectedImage = selectedImages[selectedImageIndex] ?? selectedImages[0] ?? FALLBACK_IMAGES[0];
@@ -25,12 +24,10 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
 
   const nextImage = useCallback(() => {
     setSelectedImageIndex(selectedImageIndex + 1);
-    setZoomed(false);
   }, [selectedImageIndex, setSelectedImageIndex]);
 
   const previousImage = useCallback(() => {
     setSelectedImageIndex(selectedImageIndex - 1);
-    setZoomed(false);
   }, [selectedImageIndex, setSelectedImageIndex]);
 
   useEffect(() => {
@@ -48,8 +45,6 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
       if (event.key === "Escape") setLightboxOpen(false);
       if (event.key === "ArrowRight") nextImage();
       if (event.key === "ArrowLeft") previousImage();
-      if (event.key === "+" || event.key === "=") setZoomed(true);
-      if (event.key === "-" || event.key === "0") setZoomed(false);
     }
 
     document.body.style.overflow = "hidden";
@@ -143,7 +138,6 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
             type="button"
             onClick={() => {
               setLightboxOpen(false);
-              setZoomed(false);
             }}
             className="absolute right-3 top-3 z-20 grid size-11 place-items-center rounded-[var(--radius-card)] bg-white text-xl font-medium text-ink shadow-sm md:right-6 md:top-6"
             aria-label="Cerrar galeria"
@@ -160,19 +154,14 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
             &lsaquo;
           </button>
 
-          <button
-            type="button"
-            onClick={() => setZoomed((current) => !current)}
-            className={`relative h-dvh w-full overflow-hidden bg-black md:h-[86vh] md:max-w-5xl md:rounded-[var(--radius-card)] ${zoomed ? "cursor-zoom-out overflow-auto" : "cursor-zoom-in"}`}
-            aria-label={zoomed ? "Quitar zoom" : "Ampliar imagen"}
-          >
+          <div className="relative h-[calc(100dvh-104px)] w-full overflow-hidden bg-black md:h-[86vh] md:max-w-5xl md:rounded-[var(--radius-card)]">
             <SafeProductImage
               src={selectedImage}
               alt={productName}
               sizes="100vw"
-              className={`transition duration-300 ${zoomed ? "scale-150 object-cover md:object-contain" : "object-cover md:object-contain"}`}
+              className="object-contain"
             />
-          </button>
+          </div>
 
           <button
             type="button"
@@ -190,7 +179,6 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
                 type="button"
                 onClick={() => {
                   setSelectedImageIndex(index);
-                  setZoomed(false);
                 }}
                 className={`relative size-11 shrink-0 overflow-hidden rounded-[var(--radius-card)] bg-white/10 ${
                   index === selectedImageIndex ? "ring-2 ring-white" : "ring-1 ring-white/30"

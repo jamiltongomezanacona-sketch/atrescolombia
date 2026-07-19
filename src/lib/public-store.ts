@@ -31,7 +31,6 @@ import { curatedAtresProducts, curatedAtresPromos } from "@/lib/curated-atres-as
 const ATRES_PLACEHOLDER_IMAGE = "/icono.png";
 const PRODUCT_SELECT_BASE =
   "id,name,slug,short_description,description,price,previous_price,discount_percent,sku,inventory_total,is_featured,is_new,is_promo,tags,collection,category_id,display_order,created_at";
-const PRODUCT_SELECT_WITH_LEGACY_IMAGES = `${PRODUCT_SELECT_BASE},image_url,main_image_url,cover_image_url,featured_image_url`;
 
 type SupabaseCategoryRow = {
   id: string;
@@ -60,16 +59,11 @@ type SupabaseProductRow = {
   tags: string[] | null;
   collection: string | null;
   category_id: string | null;
-  image_url?: string | null;
-  main_image_url?: string | null;
-  cover_image_url?: string | null;
-  featured_image_url?: string | null;
 };
 
 type SupabaseImageRow = {
   product_id: string;
   public_url?: string | null;
-  image_url?: string | null;
   storage_path?: string | null;
   alt?: string | null;
   display_order?: number | null;
@@ -222,23 +216,11 @@ export async function getPublicProducts(): Promise<Product[]> {
 
   try {
     const supabase = await createSupabaseServerClient();
-    const productResult = await supabase
+    const { data: productRows, error: productError } = await supabase
       .from("products")
-      .select(PRODUCT_SELECT_WITH_LEGACY_IMAGES)
+      .select(PRODUCT_SELECT_BASE)
       .eq("status", "active")
       .order("display_order", { ascending: true });
-    let productRows: unknown[] | null = productResult.data;
-    let productError = productResult.error;
-
-    if (productError && /column .* does not exist/i.test(productError.message)) {
-      const fallback = await supabase
-        .from("products")
-        .select(PRODUCT_SELECT_BASE)
-        .eq("status", "active")
-        .order("display_order", { ascending: true });
-      productRows = fallback.data;
-      productError = fallback.error;
-    }
 
     if (productError || !productRows?.length) {
       if (productError) console.error("ATRES public products query failed:", productError.message);
@@ -390,23 +372,11 @@ async function getImagesByProductId(productIds: string[]) {
 
   try {
     const supabase = await createSupabaseServerClient();
-    const imageResult = await supabase
+    const { data, error } = await supabase
       .from("product_images")
-      .select("product_id,public_url,image_url,storage_path,alt,display_order,is_primary")
+      .select("product_id,public_url,storage_path,alt,display_order,is_primary")
       .in("product_id", productIds)
       .order("display_order", { ascending: true });
-    let data: unknown[] | null = imageResult.data;
-    let error = imageResult.error;
-
-    if (error && /column .* does not exist/i.test(error.message)) {
-      const fallback = await supabase
-        .from("product_images")
-        .select("product_id,public_url,alt,display_order,is_primary")
-        .in("product_id", productIds)
-        .order("display_order", { ascending: true });
-      data = fallback.data;
-      error = fallback.error;
-    }
 
     if (error) {
       console.error("ATRES public product images query failed:", error.message);
@@ -496,13 +466,7 @@ function mapProductRow(
     return (a.display_order ?? 0) - (b.display_order ?? 0);
   });
   const imageUrls = sortedImages.map(resolveProductImageUrl).filter((image): image is string => Boolean(image));
-  const legacyImageUrls = [
-    row.image_url,
-    row.main_image_url,
-    row.cover_image_url,
-    row.featured_image_url,
-  ].filter((image): image is string => Boolean(image?.trim()));
-  const allImageUrls = Array.from(new Set([...imageUrls, ...legacyImageUrls]));
+  const allImageUrls = Array.from(new Set(imageUrls));
   const colors = Array.from(new Set(variants.map((variant) => variant.color).filter(Boolean)));
   const sizes = Array.from(new Set(variants.map((variant) => variant.size).filter(Boolean)));
 
@@ -530,7 +494,7 @@ function mapProductRow(
 }
 
 function resolveProductImageUrl(image: SupabaseImageRow) {
-  const directUrl = image.public_url?.trim() || image.image_url?.trim();
+  const directUrl = image.public_url?.trim();
   if (directUrl) return directUrl;
 
   const storagePath = image.storage_path?.trim();

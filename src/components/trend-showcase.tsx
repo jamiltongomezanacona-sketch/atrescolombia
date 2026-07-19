@@ -35,7 +35,7 @@ export function TrendShowcase({
   if (!featured.length && !title) return null;
 
   return (
-    <section className={cn("store-container md:py-4", compact ? "py-2" : "py-3")}>
+    <section className={cn("store-container md:py-4", compact ? "py-1" : "py-3")}>
       <div className={cn("relative overflow-hidden rounded-lg shadow-soft ring-1 ring-white/55", theme.washClass)}>
         <div className="pointer-events-none absolute inset-0">
           <SafeProductImage
@@ -49,7 +49,7 @@ export function TrendShowcase({
         <div
           className={cn(
             "relative grid md:p-5",
-            compact ? "gap-2 p-2 md:gap-4" : "gap-4 p-3",
+            compact ? "gap-1.5 p-1.5 md:gap-4 md:p-5" : "gap-4 p-3",
             showStats ? "md:grid-cols-[1fr_0.85fr]" : "md:grid-cols-[0.75fr_1.55fr]",
             compact && "lg:p-6",
           )}
@@ -58,7 +58,7 @@ export function TrendShowcase({
             href={href}
             className={cn(
               "flex flex-col justify-center rounded-lg ring-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] md:min-h-[168px]",
-              compact ? "min-h-[116px] p-3 md:p-4" : "min-h-[148px] p-4",
+              compact ? "min-h-[78px] p-2.5 md:min-h-[116px] md:p-4" : "min-h-[148px] p-4",
               theme.panelClass,
             )}
           >
@@ -69,12 +69,12 @@ export function TrendShowcase({
               className={cn(
                 "font-medium leading-none tracking-tight",
                 theme.textClass,
-                compact ? "mt-2 text-3xl md:mt-4 md:text-4xl lg:text-5xl" : title ? "mt-4 text-3xl md:text-4xl lg:text-5xl" : "mt-4 text-3xl md:text-4xl",
+                compact ? "mt-1 text-2xl md:mt-4 md:text-4xl lg:text-5xl" : title ? "mt-4 text-3xl md:text-4xl lg:text-5xl" : "mt-4 text-3xl md:text-4xl",
               )}
             >
               {headline}
             </h2>
-            <p className={cn("max-w-sm text-sm font-normal", compact ? "mt-2 line-clamp-2 leading-5 md:mt-3 md:leading-6" : "mt-3 leading-6", theme.mutedTextClass)}>{body}</p>
+            <p className={cn("max-w-sm font-normal", compact ? "mt-1 line-clamp-2 text-xs leading-4 md:mt-3 md:text-sm md:leading-6" : "mt-3 text-sm leading-6", theme.mutedTextClass)}>{body}</p>
             <div className={cn("mt-3 flex-wrap gap-2", compact ? "hidden sm:flex" : "flex")}>
               {theme.chips.slice(0, compact ? 3 : 4).map((chip) => (
                 <span
@@ -93,7 +93,7 @@ export function TrendShowcase({
                 <p className={cn("text-xs font-medium", theme.accentClass)}>Tendencias</p>
                 <p className={cn("mt-2 font-medium leading-none", compact ? "text-2xl md:text-3xl" : "text-3xl", theme.textClass)}>{theme.trendTag}</p>
               </div>
-              <div className={cn("grid grid-cols-3", compact ? "gap-1.5 md:gap-2" : "gap-2")}>
+              <div className={cn("grid grid-cols-3", compact ? "gap-1 md:gap-2" : "gap-2")}>
                 <Stat label="Productos" value={showStats.products} theme={theme} compact={compact} />
                 <Stat label="Nuevos" value={showStats.news} theme={theme} compact={compact} />
                 <Stat label="Ofertas" value={showStats.promos} theme={theme} compact={compact} />
@@ -140,9 +140,9 @@ function Stat({
   compact?: boolean;
 }) {
   return (
-    <div className={cn("rounded-lg text-center ring-1", compact ? "p-2 md:p-3" : "p-3", theme.panelClass)}>
-      <p className={cn("font-medium", compact ? "text-xl md:text-2xl" : "text-2xl", theme.textClass)}>{value}</p>
-      <p className={cn("mt-0.5 text-[10px] font-normal md:mt-1", theme.mutedTextClass)}>{label}</p>
+    <div className={cn("rounded-lg text-center ring-1", compact ? "p-1.5 md:p-3" : "p-3", theme.panelClass)}>
+      <p className={cn("font-medium", compact ? "text-lg md:text-2xl" : "text-2xl", theme.textClass)}>{value}</p>
+      <p className={cn("mt-0.5 text-[9px] font-normal md:mt-1 md:text-[10px]", theme.mutedTextClass)}>{label}</p>
     </div>
   );
 }

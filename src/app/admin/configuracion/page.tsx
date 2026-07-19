@@ -16,9 +16,27 @@ export default async function AdminSettingsPage() {
         <div className="mt-5">
           <ActionStateForm action={saveSettings} submitLabel="Guardar configuracion">
             <TextField label="Nombre tienda" name="store_name" defaultValue={settings?.store_name ?? "ATRES"} />
-            <TextField label="Logo URL" name="logo_url" defaultValue={settings?.logo_url} />
-            <TextField label="Favicon URL" name="favicon_url" defaultValue={settings?.favicon_url} />
-            <TextField label="Banner principal URL" name="hero_banner_url" defaultValue={settings?.hero_banner_url} />
+            <TextField
+              label="Logo URL"
+              name="logo_url"
+              defaultValue={settings?.logo_url}
+              maxLength={1000}
+              placeholder="/assets/... o https://..."
+            />
+            <TextField
+              label="Favicon URL"
+              name="favicon_url"
+              defaultValue={settings?.favicon_url}
+              maxLength={1000}
+              placeholder="/assets/... o https://..."
+            />
+            <TextField
+              label="Banner principal URL"
+              name="hero_banner_url"
+              defaultValue={settings?.hero_banner_url}
+              maxLength={1000}
+              placeholder="/assets/... o https://..."
+            />
             <div className="grid gap-4 md:grid-cols-2">
               <TextField label="WhatsApp" name="whatsapp" defaultValue={settings?.whatsapp} />
               <TextField label="Correo" name="email" defaultValue={settings?.email} />

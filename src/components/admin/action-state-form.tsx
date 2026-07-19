@@ -47,12 +47,16 @@ export function TextField({
   defaultValue,
   type = "text",
   required = false,
+  maxLength,
+  placeholder,
 }: {
   label: string;
   name: string;
   defaultValue?: string | number | null;
   type?: string;
   required?: boolean;
+  maxLength?: number;
+  placeholder?: string;
 }) {
   return (
     <Input
@@ -60,6 +64,8 @@ export function TextField({
       name={name}
       type={type}
       required={required}
+      maxLength={maxLength}
+      placeholder={placeholder}
       defaultValue={defaultValue ?? ""}
       className="h-11 rounded-xl border-zinc-200 bg-zinc-50/70 px-3 text-sm focus:bg-white md:h-12 md:px-4"
     />

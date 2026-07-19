@@ -11,10 +11,23 @@ type ActionState = {
   message: string;
 };
 
+type ImageUrlValueResult =
+  | {
+      ok: true;
+      message: string;
+      value: string | null;
+    }
+  | {
+      ok: false;
+      message: string;
+    };
+
 type SupabaseServerClient = Awaited<ReturnType<typeof createSupabaseServerClient>>;
 
 const MAX_QUICK_PRODUCT_IMAGE_BYTES = 900 * 1024;
+const MAX_IMAGE_URL_LENGTH = 1000;
 const ALLOWED_QUICK_PRODUCT_IMAGE_TYPES = new Set(["image/webp", "image/jpeg", "image/png"]);
+const BLOCKED_IMAGE_URL_PREFIXES = ["data:", "blob:", "file:", "javascript:", "vbscript:"];
 const PRODUCT_VARIANT_STATUSES: ProductVariantStatus[] = ["available", "sold_out", "hidden", "coming_soon"];
 
 export type QuickProductImageInput = {
@@ -525,7 +538,9 @@ export async function saveCategory(_: ActionState, formData: FormData): Promise<
   const id = stringValue(formData, "id");
   const name = stringValue(formData, "name");
   const slug = slugify(stringValue(formData, "slug") || name);
+  const imageUrl = imageUrlValue(formData, "image_url", "Imagen URL");
   if (!name || !slug) return { ok: false, message: "Nombre y slug son obligatorios." };
+  if (!imageUrl.ok) return imageUrl;
 
   const supabase = await createSupabaseServerClient();
   const payload = {
@@ -533,7 +548,7 @@ export async function saveCategory(_: ActionState, formData: FormData): Promise<
     name,
     slug,
     description: stringValue(formData, "description"),
-    image_url: stringValue(formData, "image_url") || null,
+    image_url: imageUrl.value,
     status: stringValue(formData, "status") || "active",
     display_order: numberValue(formData, "display_order"),
   };
@@ -565,15 +580,19 @@ export async function saveBanner(_: ActionState, formData: FormData): Promise<Ac
   if (guard) return guard;
   const id = stringValue(formData, "id");
   const title = stringValue(formData, "title");
+  const desktopImageUrl = imageUrlValue(formData, "desktop_image_url", "Imagen escritorio URL");
+  const mobileImageUrl = imageUrlValue(formData, "mobile_image_url", "Imagen movil URL");
   if (!title) return { ok: false, message: "Titulo obligatorio." };
+  if (!desktopImageUrl.ok) return desktopImageUrl;
+  if (!mobileImageUrl.ok) return mobileImageUrl;
   const supabase = await createSupabaseServerClient();
   const payload = {
     title,
     subtitle: stringValue(formData, "subtitle"),
     button_text: stringValue(formData, "button_text"),
     link_url: stringValue(formData, "link_url") || "/productos",
-    desktop_image_url: stringValue(formData, "desktop_image_url") || null,
-    mobile_image_url: stringValue(formData, "mobile_image_url") || null,
+    desktop_image_url: desktopImageUrl.value,
+    mobile_image_url: mobileImageUrl.value,
     start_at: stringValue(formData, "start_at") || null,
     end_at: stringValue(formData, "end_at") || null,
     status: stringValue(formData, "status") || "hidden",
@@ -617,12 +636,18 @@ export async function savePromotion(_: ActionState, formData: FormData): Promise
 export async function saveSettings(_: ActionState, formData: FormData): Promise<ActionState> {
   const guard = ensureSupabase();
   if (guard) return guard;
+  const logoUrl = imageUrlValue(formData, "logo_url", "Logo URL");
+  const faviconUrl = imageUrlValue(formData, "favicon_url", "Favicon URL");
+  const heroBannerUrl = imageUrlValue(formData, "hero_banner_url", "Banner principal URL");
+  if (!logoUrl.ok) return logoUrl;
+  if (!faviconUrl.ok) return faviconUrl;
+  if (!heroBannerUrl.ok) return heroBannerUrl;
   const supabase = await createSupabaseServerClient();
   const payload = {
     store_name: stringValue(formData, "store_name") || "ATRES",
-    logo_url: stringValue(formData, "logo_url") || null,
-    favicon_url: stringValue(formData, "favicon_url") || null,
-    hero_banner_url: stringValue(formData, "hero_banner_url") || null,
+    logo_url: logoUrl.value,
+    favicon_url: faviconUrl.value,
+    hero_banner_url: heroBannerUrl.value,
     whatsapp: stringValue(formData, "whatsapp"),
     email: stringValue(formData, "email"),
     instagram: stringValue(formData, "instagram"),
@@ -700,6 +725,35 @@ async function validateCategorySelection(
 function stringValue(formData: FormData, key: string) {
   const value = formData.get(key);
   return typeof value === "string" ? value.trim() : "";
+}
+
+function imageUrlValue(formData: FormData, key: string, label: string): ImageUrlValueResult {
+  const value = stringValue(formData, key);
+  if (!value) return { ok: true, message: "", value: null };
+
+  if (value.length > MAX_IMAGE_URL_LENGTH) {
+    return {
+      ok: false,
+      message: `${label} es demasiado larga. Usa una URL corta o una ruta de Storage; no pegues imagenes en base64.`,
+    };
+  }
+
+  const normalized = value.toLowerCase();
+  if (BLOCKED_IMAGE_URL_PREFIXES.some((prefix) => normalized.startsWith(prefix))) {
+    return {
+      ok: false,
+      message: `${label} debe ser una URL o ruta de imagen. No se permiten imagenes incrustadas en base64.`,
+    };
+  }
+
+  if (/[\r\n\t]/.test(value) || (!value.startsWith("/") && !/^https?:\/\//i.test(value))) {
+    return {
+      ok: false,
+      message: `${label} debe empezar por /, http:// o https://.`,
+    };
+  }
+
+  return { ok: true, message: "", value };
 }
 
 function numberValue(formData: FormData, key: string) {

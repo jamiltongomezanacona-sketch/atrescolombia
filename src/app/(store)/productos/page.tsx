@@ -112,14 +112,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </p>
         </div>
 
-        <div className="sticky top-[3.5rem] z-30 -mx-4 mb-2 border-y border-black/5 bg-background/95 px-4 py-2 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:static lg:mb-3 lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
-          <nav className="flex gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" aria-label="Departamentos del catalogo">
+        <div className="sticky top-[3.5rem] z-30 -mx-4 mb-2 border-y border-black/5 bg-background/95 px-4 py-2 backdrop-blur-xl sm:mx-0 sm:rounded-lg sm:border sm:bg-white/88 sm:shadow-soft lg:static lg:mb-2 lg:border-none lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none lg:backdrop-blur-none">
+          <nav className="flex gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] lg:gap-1.5 [&::-webkit-scrollbar]:hidden" aria-label="Departamentos del catalogo">
             {categoryTabs.map((tab) => (
               <Link
                 key={tab.label}
                 href={tab.href}
                 aria-current={tab.active ? "page" : undefined}
-                className={`inline-flex h-9 shrink-0 items-center rounded-full px-3.5 text-xs font-medium transition sm:h-10 sm:text-sm lg:px-4 ${
+                className={`inline-flex h-9 shrink-0 items-center rounded-full px-3.5 text-xs font-medium transition sm:h-10 sm:text-sm lg:h-8 lg:px-3.5 lg:text-[13px] ${
                   tab.active
                     ? "bg-black !text-white shadow-sm"
                     : "bg-white text-stone-700 ring-1 ring-black/5 hover:bg-stone-100"
@@ -131,9 +131,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </nav>
         </div>
 
-        <div className="lg:grid lg:grid-cols-[216px_minmax(0,1fr)] lg:items-start lg:gap-4 xl:gap-5">
-          <aside className="sticky top-[7.25rem] hidden max-h-[calc(100vh-8rem)] overflow-y-auto rounded-lg bg-white/88 p-3 shadow-soft ring-1 ring-black/5 lg:block lg:[&_fieldset]:pb-2.5 lg:[&_input]:h-9 lg:[&_select]:h-9">
-            <div className="mb-2.5 flex items-center justify-between gap-2">
+        <div className="lg:grid lg:grid-cols-[204px_minmax(0,1fr)] lg:items-start lg:gap-3 xl:grid-cols-[212px_minmax(0,1fr)] xl:gap-4">
+          <aside className="sticky top-[6.75rem] hidden max-h-[calc(100vh-7.25rem)] overflow-y-auto rounded-lg bg-white/88 p-2.5 shadow-soft ring-1 ring-black/5 lg:block lg:[&_fieldset]:pb-2.5 lg:[&_input]:h-9 lg:[&_select]:h-9">
+            <div className="mb-2 flex items-center justify-between gap-2">
               <div>
                 <p className="text-[11px] font-medium text-brand">Filtros</p>
                 <p className="text-sm font-medium text-ink">Refina tu busqueda</p>
@@ -153,7 +153,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </aside>
 
           <div className="min-w-0">
-            <div className="mb-2 grid gap-2 rounded-lg bg-white/88 p-1.5 shadow-sm ring-1 ring-black/5 sm:mb-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-2 sm:rounded-xl sm:p-2 lg:mb-3 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none lg:ring-0">
+            <div className="mb-2 grid gap-2 rounded-lg bg-white/88 p-1.5 shadow-sm ring-1 ring-black/5 sm:mb-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-2 sm:rounded-xl sm:p-2 lg:mb-2 lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none lg:ring-0">
               <div className="flex items-center justify-between gap-2 sm:justify-start">
                 <p className="text-sm font-medium text-stone-700 lg:text-stone-500">
                   {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
@@ -167,7 +167,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   <FilterDrawer filters={filters} options={options} />
                 </div>
               </div>
-              <div className="flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0 lg:gap-2">
+              <div className="flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0 lg:gap-1.5">
                 <span className="hidden h-8 shrink-0 items-center px-1 text-[11px] font-medium text-stone-400 md:inline-flex">
                   Ordenar
                 </span>
@@ -177,7 +177,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     <Link
                       key={link.value}
                       href={buildCatalogQuery({ ...filters, orden: link.value })}
-                      className={`inline-flex h-8 shrink-0 items-center rounded-full px-2.5 text-[11px] font-medium transition sm:px-3 sm:text-xs lg:h-9 lg:px-3.5 ${
+                      className={`inline-flex h-8 shrink-0 items-center rounded-full px-2.5 text-[11px] font-medium transition sm:px-3 sm:text-xs lg:h-8 lg:px-3 ${
                         active
                           ? "bg-black !text-white shadow-sm"
                           : "bg-white/75 text-stone-700 ring-1 ring-black/5 hover:bg-white"

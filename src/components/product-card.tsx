@@ -39,14 +39,14 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const salesCount = getSalesCount(product);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft">
+    <article className="group flex h-full flex-col overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft lg:rounded-[7px]">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
           <div className="relative aspect-[4/5] overflow-hidden bg-surface-muted sm:aspect-[3/4] lg:aspect-[4/5]">
             <SafeProductImage
               src={product.image}
               alt={product.name}
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 30vw, (max-width: 1500px) 24vw, 230px"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 30vw, (max-width: 1500px) 24vw, (max-width: 1800px) 19vw, 15vw"
               priority={priority}
               className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
             />
@@ -95,12 +95,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         ) : null}
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col px-2 pb-2 pt-1.5 sm:p-3 lg:p-3.5">
+      <div className="flex min-w-0 flex-1 flex-col px-2 pb-2 pt-1.5 sm:p-3 lg:px-2.5 lg:pb-2.5 lg:pt-2">
         <div className="hidden min-h-4 items-center justify-between gap-2 sm:flex">
-          <p className="hidden truncate text-[10px] font-medium text-stone-400 sm:block">
+          <p className="hidden truncate text-[10px] font-medium text-stone-400 sm:block lg:text-[9.5px]">
             {product.categoryName}
           </p>
-          <div className="ml-auto flex shrink-0 items-center gap-1 text-[10px] font-medium text-stone-500">
+          <div className="ml-auto flex shrink-0 items-center gap-1 text-[10px] font-medium text-stone-500 lg:text-[9.5px]">
             <StarIcon />
             <span>{product.rating.toFixed(1)}</span>
             <span className="text-stone-300">|</span>
@@ -108,14 +108,14 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </div>
         </div>
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="line-clamp-2 text-[12.5px] font-normal leading-[15px] text-ink transition group-hover:text-black sm:mt-1 sm:text-[13px] sm:leading-5 md:text-sm lg:min-h-10">
+          <h3 className="line-clamp-2 text-[12.5px] font-normal leading-[15px] text-ink transition group-hover:text-black sm:mt-1 sm:text-[13px] sm:leading-5 md:text-sm lg:min-h-9 lg:text-[13px] lg:leading-[18px]">
             {product.name}
           </h3>
         </Link>
 
-        <div className="mt-0.5 flex items-center justify-between gap-2 sm:mt-1.5 lg:mt-2">
+        <div className="mt-0.5 flex items-center justify-between gap-2 sm:mt-1.5 lg:mt-1.5">
           {sizes.length > 0 ? (
-            <p className="truncate text-[10px] font-normal leading-none text-stone-500/90 sm:text-[11px] sm:leading-normal lg:text-xs">
+            <p className="truncate text-[10px] font-normal leading-none text-stone-500/90 sm:text-[11px] sm:leading-normal lg:text-[10.5px]">
               Tallas: {sizes.join(" / ")}
               {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
             </p>
@@ -136,13 +136,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           ) : null}
         </div>
 
-        <div className="mt-0.5 flex items-end justify-between gap-2 sm:mt-2 lg:mt-3">
+        <div className="mt-0.5 flex items-end justify-between gap-2 sm:mt-2 lg:mt-2">
           <ProductPrice
             price={product.price}
             previousPrice={previousPrice}
             size="md"
-            currentClassName="text-[1.28rem] sm:text-xl lg:text-[1.35rem]"
-            previousClassName="mt-0 text-[11px] sm:mt-1 sm:text-xs"
+            currentClassName="text-[1.28rem] sm:text-xl lg:text-[1.18rem]"
+            previousClassName="mt-0 text-[11px] sm:mt-1 sm:text-xs lg:text-[11px]"
           />
           <Link
             href={`/productos/${product.slug}`}
@@ -151,7 +151,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             Ver
           </Link>
         </div>
-        <div className="hidden sm:block lg:pt-1">
+        <div className="hidden sm:block lg:pt-0.5">
           <ProductCardActions product={product} />
         </div>
       </div>

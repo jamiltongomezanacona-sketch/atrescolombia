@@ -70,16 +70,17 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       />
 
       {subcategories.length > 0 ? (
-        <section className="catalog-container pb-2 md:pb-3" aria-label="Subcategorias">
-          <p className="mb-1.5 text-xs font-medium text-stone-500 md:mb-2">
+        <section className="catalog-container pb-1.5 md:pb-3" aria-label="Subcategorias">
+          <p className="mb-1 text-xs font-medium text-stone-500 md:mb-2">
             Subcategorias
           </p>
           <div className="flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] [-ms-overflow-style:none] md:flex-wrap md:gap-2 [&::-webkit-scrollbar]:hidden">
             <Link
               href={`/categoria/${category.slug}`}
-              className="shrink-0 rounded-full bg-black px-3 py-1.5 text-xs font-medium text-white md:px-4 md:py-2"
+              className="shrink-0 rounded-full bg-black px-3 py-1.5 text-xs font-medium shadow-sm md:px-4 md:py-2"
+              style={{ color: "#fff" }}
             >
-              Todo {category.shortName}
+              <span className="text-white">Todo {category.shortName}</span>
             </Link>
             {subcategories.map((child) => (
               <Link

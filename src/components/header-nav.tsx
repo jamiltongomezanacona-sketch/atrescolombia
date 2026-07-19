@@ -29,10 +29,10 @@ export function HeaderNav({ items }: HeaderNavProps) {
               aria-current={active ? "page" : undefined}
               className={cn(
                 "atres-interactive shrink-0 rounded-full px-3.5 py-1.5",
-                active ? "bg-white text-black shadow-sm" : "text-white/90 hover:bg-white/10 hover:text-white",
+                active ? "bg-white !text-black shadow-sm" : "text-white/90 hover:bg-white/10 hover:text-white",
               )}
             >
-              {link.label}
+              <span className="text-current">{link.label}</span>
             </Link>
           );
         })}

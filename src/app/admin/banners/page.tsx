@@ -46,8 +46,20 @@ function BannerForm({ banner }: { banner?: Awaited<ReturnType<typeof getAdminBan
       <TextField label="Subtitulo" name="subtitle" defaultValue={banner?.subtitle} />
       <TextField label="Texto boton" name="button_text" defaultValue={banner?.button_text} />
       <TextField label="Enlace" name="link_url" defaultValue={banner?.link_url ?? "/productos"} />
-      <TextField label="Imagen escritorio URL" name="desktop_image_url" defaultValue={banner?.desktop_image_url} />
-      <TextField label="Imagen movil URL" name="mobile_image_url" defaultValue={banner?.mobile_image_url} />
+      <TextField
+        label="Imagen escritorio URL"
+        name="desktop_image_url"
+        defaultValue={banner?.desktop_image_url}
+        maxLength={1000}
+        placeholder="/assets/... o https://..."
+      />
+      <TextField
+        label="Imagen movil URL"
+        name="mobile_image_url"
+        defaultValue={banner?.mobile_image_url}
+        maxLength={1000}
+        placeholder="/assets/... o https://..."
+      />
       <div className="grid gap-3 md:grid-cols-2">
         <TextField label="Inicio" name="start_at" type="datetime-local" />
         <TextField label="Final" name="end_at" type="datetime-local" />

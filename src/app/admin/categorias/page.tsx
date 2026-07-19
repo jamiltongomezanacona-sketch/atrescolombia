@@ -69,7 +69,13 @@ function CategoryForm({
       <TextField label="Nombre" name="name" defaultValue={category?.name} required />
       <TextField label="Slug" name="slug" defaultValue={category?.slug} required />
       <TextAreaField label="Descripcion" name="description" defaultValue={category?.description} />
-      <TextField label="Imagen URL" name="image_url" defaultValue={category?.image_url} />
+      <TextField
+        label="Imagen URL"
+        name="image_url"
+        defaultValue={category?.image_url}
+        maxLength={1000}
+        placeholder="/assets/... o https://..."
+      />
       <AdminSelect label="Categoria padre" name="parent_id" defaultValue={category?.parent_id ?? ""}>
         <option value="">Sin padre</option>
         {parentOptions.map((item) => (

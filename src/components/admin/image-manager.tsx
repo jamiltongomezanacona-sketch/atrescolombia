@@ -79,7 +79,10 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
             .select("*")
             .single();
 
-          if (error) throw error;
+          if (error) {
+            await supabase.storage.from("product-images").remove([path]);
+            throw error;
+          }
           uploaded.push(data as AdminProductImage);
         }
 

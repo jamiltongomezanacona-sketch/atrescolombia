@@ -39,7 +39,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const salesCount = getSalesCount(product);
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft">
+    <article className="group flex flex-col self-start overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(18,18,18,0.04)] ring-1 ring-black/[0.035] transition duration-300 hover:-translate-y-0.5 hover:shadow-soft">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
           <div className="relative aspect-[4/5] overflow-hidden bg-surface-muted sm:aspect-[3/4]">
@@ -95,7 +95,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         ) : null}
       </div>
 
-      <div className="flex flex-col p-2 sm:p-3">
+      <div className="flex min-w-0 flex-1 flex-col px-2 pb-2 pt-1.5 sm:p-3">
         <div className="hidden min-h-4 items-center justify-between gap-2 sm:flex">
           <p className="hidden truncate text-[10px] font-medium text-stone-400 sm:block">
             {product.categoryName}
@@ -108,7 +108,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </div>
         </div>
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="line-clamp-2 text-[13px] font-normal leading-4 text-ink transition group-hover:text-black sm:mt-1 sm:leading-5 md:text-sm">
+          <h3 className="line-clamp-2 text-[12.5px] font-normal leading-[15px] text-ink transition group-hover:text-black sm:mt-1 sm:text-[13px] sm:leading-5 md:text-sm">
             {product.name}
           </h3>
         </Link>
@@ -136,12 +136,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           ) : null}
         </div>
 
-        <div className="mt-1.5 flex items-end justify-between gap-2 sm:mt-2">
+        <div className="mt-1 flex items-end justify-between gap-2 sm:mt-2">
           <ProductPrice
             price={product.price}
             previousPrice={previousPrice}
             size="md"
-            className="[&>p:first-child]:text-[1.35rem] [&>p:last-child]:mt-0.5 sm:[&>p:first-child]:text-xl"
+            className="[&>p:first-child]:text-[1.25rem] [&>p:last-child]:mt-0 [&>p:last-child]:text-[11px] sm:[&>p:first-child]:text-xl sm:[&>p:last-child]:mt-1 sm:[&>p:last-child]:text-xs"
           />
           <Link
             href={`/productos/${product.slug}`}

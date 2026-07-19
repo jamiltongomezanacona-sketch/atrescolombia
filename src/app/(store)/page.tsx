@@ -37,6 +37,12 @@ export default async function Home() {
   const heroPromo = promos[0];
   const bestSellers = trendingProducts.length ? trendingProducts : products;
   const recommended = products.filter((product) => product.stock > 0).slice(0, 12);
+  const visualProducts = uniqueProducts([
+    ...trendingProducts,
+    ...promoProducts,
+    ...newProducts,
+    ...products,
+  ]).slice(0, 10);
   const collections = Array.from(
     new Map(
       products
@@ -59,6 +65,7 @@ export default async function Home() {
         ]}
       />
       <FlashSection products={promoProducts.length ? promoProducts : products} />
+      <PhotoReel products={visualProducts} />
       <HeroSection product={heroProduct} promo={heroPromo} productCount={products.length} />
       <PromoGrid promos={promos} fallbackProducts={promoProducts} />
       <ProductRail title="Mas vendidos" href="/productos?orden=tendencias" products={bestSellers} priorityCount={4} />
@@ -68,6 +75,10 @@ export default async function Home() {
       <StoreBenefits />
     </main>
   );
+}
+
+function uniqueProducts(items: Product[]) {
+  return Array.from(new Map(items.map((product) => [product.slug, product])).values());
 }
 
 function HeroSection({
@@ -219,6 +230,67 @@ function PromoGrid({
           </div>
         </Link>
       ))}
+    </section>
+  );
+}
+
+function PhotoReel({ products }: { products: Product[] }) {
+  if (!products.length) return null;
+
+  return (
+    <section className="catalog-container py-3 md:py-4" aria-labelledby="photo-reel-title">
+      <div className="mb-2.5 flex items-end justify-between gap-3">
+        <div>
+          <p className="text-xs font-medium text-stone-500">Reel ATRES</p>
+          <h2 id="photo-reel-title" className="mt-1 text-xl font-medium leading-none text-ink md:text-2xl">
+            Fotos para elegir rapido
+          </h2>
+        </div>
+        <Link href="/productos" className="shrink-0 text-sm font-medium text-ink underline-offset-4 hover:underline">
+          Ver catalogo
+        </Link>
+      </div>
+
+      <div className="-mx-3 overflow-x-auto px-3 [scrollbar-width:none] [-ms-overflow-style:none] md:mx-0 md:px-0 [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-2 md:grid md:grid-cols-5 md:gap-3">
+          {products.map((product, index) => (
+            <Link
+              key={`reel-${product.slug}`}
+              href={`/productos/${product.slug}`}
+              className={`group relative h-48 shrink-0 overflow-hidden rounded-lg bg-black shadow-soft ring-1 ring-black/5 md:h-56 md:w-auto ${
+                index === 0 ? "w-[58vw] max-w-[240px] md:col-span-2" : "w-[38vw] max-w-[168px]"
+              }`}
+            >
+              <SafeProductImage
+                src={product.image}
+                alt={product.name}
+                sizes="(max-width: 768px) 58vw, 20vw"
+                className="object-cover opacity-90 transition duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/10 to-transparent" />
+              {product.isPromo ? (
+                <span className="absolute left-2 top-2 rounded-full bg-[#ff4d00] px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
+                  Oferta
+                </span>
+              ) : product.isNew ? (
+                <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-medium text-black shadow-sm">
+                  Nuevo
+                </span>
+              ) : null}
+              <div className="absolute inset-x-0 bottom-0 p-2.5 text-white">
+                <p className="line-clamp-2 text-sm font-medium leading-4">{product.name}</p>
+                <ProductPrice
+                  price={product.price}
+                  previousPrice={product.previousPrice}
+                  className="mt-1 rounded-full bg-white/92 px-2 py-1 text-black shadow-sm backdrop-blur"
+                  currentClassName="text-sm"
+                  previousClassName="mt-0 text-[10px]"
+                />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

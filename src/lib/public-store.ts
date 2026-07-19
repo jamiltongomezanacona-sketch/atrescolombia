@@ -29,6 +29,9 @@ import {
 import { curatedAtresProducts, curatedAtresPromos } from "@/lib/curated-atres-assets";
 
 const ATRES_PLACEHOLDER_IMAGE = "/icono.png";
+const PRODUCT_SELECT_BASE =
+  "id,name,slug,short_description,description,price,previous_price,discount_percent,sku,inventory_total,is_featured,is_new,is_promo,tags,collection,category_id,display_order,created_at";
+const PRODUCT_SELECT_WITH_LEGACY_IMAGES = `${PRODUCT_SELECT_BASE},image_url,main_image_url,cover_image_url,featured_image_url`;
 
 type SupabaseCategoryRow = {
   id: string;
@@ -57,6 +60,10 @@ type SupabaseProductRow = {
   tags: string[] | null;
   collection: string | null;
   category_id: string | null;
+  image_url?: string | null;
+  main_image_url?: string | null;
+  cover_image_url?: string | null;
+  featured_image_url?: string | null;
 };
 
 type SupabaseImageRow = {
@@ -213,13 +220,23 @@ export async function getPublicProducts(): Promise<Product[]> {
 
   try {
     const supabase = await createSupabaseServerClient();
-    const { data: productRows, error: productError } = await supabase
+    const productResult = await supabase
       .from("products")
-      .select(
-        "id,name,slug,short_description,description,price,previous_price,discount_percent,sku,inventory_total,is_featured,is_new,is_promo,tags,collection,category_id,display_order,created_at",
-      )
+      .select(PRODUCT_SELECT_WITH_LEGACY_IMAGES)
       .eq("status", "active")
       .order("display_order", { ascending: true });
+    let productRows: unknown[] | null = productResult.data;
+    let productError = productResult.error;
+
+    if (productError && /column .* does not exist/i.test(productError.message)) {
+      const fallback = await supabase
+        .from("products")
+        .select(PRODUCT_SELECT_BASE)
+        .eq("status", "active")
+        .order("display_order", { ascending: true });
+      productRows = fallback.data;
+      productError = fallback.error;
+    }
 
     if (productError || !productRows?.length) {
       if (productError) console.error("ATRES public products query failed:", productError.message);
@@ -465,6 +482,13 @@ function mapProductRow(
     return a.display_order - b.display_order;
   });
   const imageUrls = sortedImages.map((image) => image.public_url);
+  const legacyImageUrls = [
+    row.image_url,
+    row.main_image_url,
+    row.cover_image_url,
+    row.featured_image_url,
+  ].filter((image): image is string => Boolean(image?.trim()));
+  const allImageUrls = Array.from(new Set([...imageUrls, ...legacyImageUrls]));
   const colors = Array.from(new Set(variants.map((variant) => variant.color).filter(Boolean)));
   const sizes = Array.from(new Set(variants.map((variant) => variant.size).filter(Boolean)));
 
@@ -481,8 +505,8 @@ function mapProductRow(
     isPromo: row.is_promo,
     rating: 4.7,
     stock: row.inventory_total,
-    image: imageUrls[0] ?? ATRES_PLACEHOLDER_IMAGE,
-    images: imageUrls.length ? imageUrls : [ATRES_PLACEHOLDER_IMAGE],
+    image: allImageUrls[0] ?? ATRES_PLACEHOLDER_IMAGE,
+    images: allImageUrls.length ? allImageUrls : [ATRES_PLACEHOLDER_IMAGE],
     colors: colors.length ? colors : ["Unico"],
     sizes: sizes.length ? sizes : ["Unica"],
     description: row.description || row.short_description || row.name,

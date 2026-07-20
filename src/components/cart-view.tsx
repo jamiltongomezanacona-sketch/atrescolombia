@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { ProductPrice } from "@/components/ui/product-price";
+import { loadPublicProductsBySlugs } from "@/lib/public-product-actions";
 import { buildCartWhatsAppMessage, buildWhatsAppUrl, resolveStoreWhatsapp } from "@/lib/whatsapp";
 import { formatCOP, type Product } from "@/lib/store-data";
 
@@ -18,7 +19,6 @@ type CartItem = {
 };
 
 type CartViewProps = {
-  products: Product[];
   whatsapp?: string;
 };
 
@@ -32,8 +32,10 @@ function readCart() {
   }
 }
 
-export function CartView({ products, whatsapp }: CartViewProps) {
+export function CartView({ whatsapp }: CartViewProps) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     function syncCart() {
@@ -49,6 +51,45 @@ export function CartView({ products, whatsapp }: CartViewProps) {
       window.removeEventListener("storage", syncCart);
     };
   }, []);
+
+  const slugKey = useMemo(
+    () =>
+      Array.from(new Set(items.map((item) => item.slug)))
+        .sort()
+        .join("\0"),
+    [items],
+  );
+
+  useEffect(() => {
+    const slugs = slugKey ? slugKey.split("\0") : [];
+    let cancelled = false;
+
+    if (!slugs.length) {
+      queueMicrotask(() => {
+        if (!cancelled) {
+          setProducts([]);
+          setReady(true);
+        }
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    queueMicrotask(() => {
+      if (!cancelled) setReady(false);
+    });
+
+    void loadPublicProductsBySlugs(slugs).then((nextProducts) => {
+      if (cancelled) return;
+      setProducts(nextProducts);
+      setReady(true);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [slugKey]);
 
   const rows = useMemo(
     () =>
@@ -109,11 +150,30 @@ export function CartView({ products, whatsapp }: CartViewProps) {
     persistCart([]);
   }
 
-  if (rows.length === 0) {
+  if (!ready) {
+    return (
+      <p className="text-sm font-normal text-stone-500" role="status" aria-live="polite">
+        Cargando carrito…
+      </p>
+    );
+  }
+
+  if (items.length === 0) {
     return (
       <EmptyState
         title="Tu carrito esta vacio"
         description="Agrega productos desde el detalle para verlos aqui."
+        actionHref="/productos"
+        actionLabel="Explorar productos"
+      />
+    );
+  }
+
+  if (rows.length === 0) {
+    return (
+      <EmptyState
+        title="Productos no disponibles"
+        description="Los productos de tu carrito ya no estan activos. Vacia el carrito o sigue comprando."
         actionHref="/productos"
         actionLabel="Explorar productos"
       />

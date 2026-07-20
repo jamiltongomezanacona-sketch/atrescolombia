@@ -3,14 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { ProductCard } from "@/components/product-card";
 import { EmptyState } from "@/components/ui/empty-state";
+import { loadPublicProductsBySlugs } from "@/lib/public-product-actions";
 import type { Product } from "@/lib/store-data";
 
-type FavoritesViewProps = {
-  products: Product[];
-};
-
-export function FavoritesView({ products }: FavoritesViewProps) {
+export function FavoritesView() {
   const [favoriteSlugs, setFavoriteSlugs] = useState<string[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     function syncFavorites() {
@@ -33,10 +32,51 @@ export function FavoritesView({ products }: FavoritesViewProps) {
     };
   }, []);
 
-  const favoriteProducts = useMemo(
-    () => products.filter((product) => favoriteSlugs.includes(product.slug)),
-    [favoriteSlugs, products],
-  );
+  const slugKey = useMemo(() => [...favoriteSlugs].sort().join("\0"), [favoriteSlugs]);
+
+  useEffect(() => {
+    const slugs = slugKey ? slugKey.split("\0") : [];
+    let cancelled = false;
+
+    if (!slugs.length) {
+      queueMicrotask(() => {
+        if (!cancelled) {
+          setProducts([]);
+          setReady(true);
+        }
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    queueMicrotask(() => {
+      if (!cancelled) setReady(false);
+    });
+
+    void loadPublicProductsBySlugs(slugs).then((nextProducts) => {
+      if (cancelled) return;
+      setProducts(nextProducts);
+      setReady(true);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [slugKey]);
+
+  const favoriteProducts = useMemo(() => {
+    const bySlug = new Map(products.map((product) => [product.slug, product]));
+    return favoriteSlugs.map((slug) => bySlug.get(slug)).filter(Boolean) as Product[];
+  }, [favoriteSlugs, products]);
+
+  if (!ready) {
+    return (
+      <p className="text-sm font-normal text-stone-500" role="status" aria-live="polite">
+        Cargando favoritos…
+      </p>
+    );
+  }
 
   if (favoriteProducts.length === 0) {
     return (

@@ -242,35 +242,57 @@ export const getPublicProducts = cache(async function getPublicProducts(): Promi
       return [];
     }
 
-    const products = productRows as unknown as SupabaseProductRow[];
-    const productIds = products.map((product) => product.id);
-    const categoryIds = Array.from(new Set(products.map((product) => product.category_id).filter(Boolean))) as string[];
-    const shopIds = Array.from(new Set(products.map((product) => product.shop_id).filter(Boolean))) as string[];
-    const [categoriesById, imagesByProductId, variantsByProductId, shopsById] = await Promise.all([
-      getCategoriesById(categoryIds),
-      getImagesByProductId(productIds),
-      getVariantsByProductId(productIds),
-      getShopsById(shopIds),
-    ]);
-
-    return products.map((row) =>
-      mapProductRow(
-        row,
-        row.category_id ? categoriesById.get(row.category_id) ?? null : null,
-        imagesByProductId.get(row.id) ?? [],
-        variantsByProductId.get(row.id) ?? [],
-        row.shop_id ? shopsById.get(row.shop_id) ?? null : null,
-      ),
-    );
+    return hydrateProductRows(productRows as unknown as SupabaseProductRow[]);
   } catch (error) {
     console.error("ATRES public products unexpected failure:", error);
     return [];
   }
 });
 
+/** Loads only the requested active products (for cart/favorites). Caps at 40 slugs. */
+export async function getPublicProductsBySlugs(slugs: string[]): Promise<Product[]> {
+  const normalized = Array.from(
+    new Set(
+      slugs
+        .map((slug) => slug.trim())
+        .filter(Boolean)
+        .slice(0, 40),
+    ),
+  );
+
+  if (!normalized.length) return [];
+
+  if (!hasSupabaseEnv()) {
+    const catalog = mergeProducts(curatedAtresProducts, fallbackProducts);
+    const wanted = new Set(normalized);
+    return catalog.filter((product) => wanted.has(product.slug));
+  }
+
+  try {
+    const supabase = createSupabasePublicClient();
+    const { data: productRows, error: productError } = await supabase
+      .from("products")
+      .select(PRODUCT_SELECT_BASE)
+      .eq("status", "active")
+      .in("slug", normalized);
+
+    if (productError) {
+      console.error("ATRES public products-by-slug query failed:", productError.message);
+      return [];
+    }
+
+    if (!productRows?.length) return [];
+
+    return hydrateProductRows(productRows as unknown as SupabaseProductRow[]);
+  } catch (error) {
+    console.error("ATRES public products-by-slug unexpected failure:", error);
+    return [];
+  }
+}
+
 export async function getPublicProduct(slug: string) {
-  const products = await getPublicProducts();
-  return products.find((product) => product.slug === slug);
+  const [match] = await getPublicProductsBySlugs([slug]);
+  return match;
 }
 
 export async function getPublicProductsByCategory(slug: string) {
@@ -415,6 +437,28 @@ function mergeProducts(primary: Product[], secondary: Product[]) {
     }
   }
   return Array.from(bySlug.values());
+}
+
+async function hydrateProductRows(products: SupabaseProductRow[]): Promise<Product[]> {
+  const productIds = products.map((product) => product.id);
+  const categoryIds = Array.from(new Set(products.map((product) => product.category_id).filter(Boolean))) as string[];
+  const shopIds = Array.from(new Set(products.map((product) => product.shop_id).filter(Boolean))) as string[];
+  const [categoriesById, imagesByProductId, variantsByProductId, shopsById] = await Promise.all([
+    getCategoriesById(categoryIds),
+    getImagesByProductId(productIds),
+    getVariantsByProductId(productIds),
+    getShopsById(shopIds),
+  ]);
+
+  return products.map((row) =>
+    mapProductRow(
+      row,
+      row.category_id ? categoriesById.get(row.category_id) ?? null : null,
+      imagesByProductId.get(row.id) ?? [],
+      variantsByProductId.get(row.id) ?? [],
+      row.shop_id ? shopsById.get(row.shop_id) ?? null : null,
+    ),
+  );
 }
 
 async function getCategoriesById(categoryIds: string[]) {

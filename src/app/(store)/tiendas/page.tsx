@@ -8,8 +8,6 @@ export const metadata = {
   description: "Explora las tiendas de moda ATRES y sus catálogos.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default async function ShopsPage() {
   const shops = await getPublicShops();
 

@@ -1226,11 +1226,19 @@ function slugify(value: string) {
 }
 
 function revalidateStore() {
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/productos");
   revalidatePath("/productos/[slug]", "page");
   revalidatePath("/categoria/[slug]", "page");
+  revalidatePath("/categorias");
   revalidatePath("/categorias/[slug]", "page");
   revalidatePath("/ofertas");
   revalidatePath("/novedades");
+  revalidatePath("/promociones");
+  revalidatePath("/tiendas");
+  revalidatePath("/tiendas/[slug]", "page");
+  revalidatePath("/buscar");
+  revalidatePath("/carrito");
+  revalidatePath("/favoritos");
 }

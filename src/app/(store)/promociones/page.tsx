@@ -7,8 +7,6 @@ export const metadata = {
   description: "Promociones y precios especiales ATRES Colombia.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default async function OffersPage() {
   const products = await getPublicPromoProducts();
 

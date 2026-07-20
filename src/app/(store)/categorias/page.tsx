@@ -9,8 +9,6 @@ export const metadata = {
   description: "Departamentos ATRES por categorias, hogar y colecciones.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default async function CategoriesIndexPage() {
   const categories = await getPublicCategoriesForDisplay();
 

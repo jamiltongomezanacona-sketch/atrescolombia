@@ -23,8 +23,6 @@ export const metadata = {
   description: "Catalogo completo de moda ATRES.",
 };
 
-export const dynamic = "force-dynamic";
-
 type ProductsPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };

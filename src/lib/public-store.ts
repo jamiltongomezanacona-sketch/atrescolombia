@@ -14,7 +14,7 @@ import {
   type StoreCategory,
 } from "@/lib/store-navigation";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabasePublicClient } from "@/lib/supabase/public";
 import {
   categories as fallbackCategories,
   getNewProducts,
@@ -99,7 +99,7 @@ export const getPublicCategories = cache(async function getPublicCategories(): P
   }
 
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
     const { data, error } = await supabase
       .from("categories")
       .select("id,slug,name,description,image_url,display_order,parent_id")
@@ -230,7 +230,7 @@ export const getPublicProducts = cache(async function getPublicProducts(): Promi
   }
 
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
     const { data: productRows, error: productError } = await supabase
       .from("products")
       .select(PRODUCT_SELECT_BASE)
@@ -325,7 +325,7 @@ export const getPublicShops = cache(async function getPublicShops(): Promise<Pub
   if (!hasSupabaseEnv()) return [];
 
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
     const [{ data: shops, error }, products] = await Promise.all([
       supabase
         .from("shops")
@@ -375,13 +375,13 @@ export async function getPublicShopBySlug(slug: string) {
   return shops.find((shop) => normalizeNavSlug(shop.slug) === normalized) ?? null;
 }
 
-export async function getPublicPromos(): Promise<Promo[]> {
+export const getPublicPromos = cache(async function getPublicPromos(): Promise<Promo[]> {
   if (!hasSupabaseEnv()) {
     return [...curatedAtresPromos, ...promos];
   }
 
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
     const { data, error } = await supabase
       .from("banners")
       .select("title,subtitle,link_url,desktop_image_url,display_order")
@@ -405,7 +405,7 @@ export async function getPublicPromos(): Promise<Promo[]> {
   } catch {
     return [];
   }
-}
+});
 
 function mergeProducts(primary: Product[], secondary: Product[]) {
   const bySlug = new Map<string, Product>();
@@ -422,7 +422,7 @@ async function getCategoriesById(categoryIds: string[]) {
   if (!categoryIds.length) return categoriesById;
 
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
     const { data, error } = await supabase.from("categories").select("id,slug,name").in("id", categoryIds);
     if (error) {
       console.error("ATRES public product categories query failed:", error.message);
@@ -443,7 +443,7 @@ async function getImagesByProductId(productIds: string[]) {
   if (!productIds.length) return imagesByProductId;
 
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
     const { data, error } = await supabase
       .from("product_images")
       .select("product_id,public_url,storage_path,alt,display_order,is_primary")
@@ -472,7 +472,7 @@ async function getVariantsByProductId(productIds: string[]) {
   if (!productIds.length) return variantsByProductId;
 
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
     const { data, error } = await supabase
       .from("product_variants")
       .select("product_id,size,color,inventory,status")
@@ -574,7 +574,7 @@ function mapProductRow(
 async function getShopsById(shopIds: string[]) {
   if (!shopIds.length) return new Map<string, { id: string; slug: string; name: string }>();
 
-  const supabase = await createSupabaseServerClient();
+  const supabase = createSupabasePublicClient();
   const { data, error } = await supabase.from("shops").select("id,slug,name").in("id", shopIds);
   if (error || !data?.length) return new Map();
 

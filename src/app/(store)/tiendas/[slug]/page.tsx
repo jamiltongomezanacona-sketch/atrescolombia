@@ -1,8 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { getPublicShopBySlug } from "@/lib/public-store";
 
-export const dynamic = "force-dynamic";
-
 type ShopProductsPageProps = {
   params?: Promise<{ slug: string }>;
 };

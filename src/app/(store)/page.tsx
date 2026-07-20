@@ -14,8 +14,6 @@ import {
 } from "@/lib/public-store";
 import { getDiscountPercent, type Product, type Promo } from "@/lib/store-data";
 
-export const dynamic = "force-dynamic";
-
 export const metadata = {
   title: {
     absolute: "ATRES | Moda colombiana directa",

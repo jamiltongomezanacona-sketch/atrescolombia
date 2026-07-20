@@ -6,6 +6,9 @@ import { StoreFooter } from "@/components/store-footer";
 import { getPublicStoreSettings } from "@/lib/public-settings";
 import { resolveStoreWhatsapp } from "@/lib/whatsapp";
 
+/** ISR: public catalog refreshes at least every 2 minutes; admin CRUD also revalidates paths. */
+export const revalidate = 120;
+
 export default async function StoreLayout({ children }: { children: React.ReactNode }) {
   const settings = await getPublicStoreSettings();
 

@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabasePublicClient } from "@/lib/supabase/public";
 
 export type PublicStoreSettings = {
   storeName: string;
@@ -14,7 +14,7 @@ export const getPublicStoreSettings = cache(async function getPublicStoreSetting
   if (!hasSupabaseEnv()) return null;
 
   try {
-    const supabase = await createSupabaseServerClient();
+    const supabase = createSupabasePublicClient();
     const { data, error } = await supabase
       .from("store_settings")
       .select("store_name,whatsapp,email,shipping_text,promo_message")

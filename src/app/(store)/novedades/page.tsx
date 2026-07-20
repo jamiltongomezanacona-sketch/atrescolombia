@@ -7,8 +7,6 @@ export const metadata = {
   description: "Las prendas mas nuevas de ATRES Colombia.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default async function NewArrivalsPage() {
   const products = await getPublicNewProducts();
 

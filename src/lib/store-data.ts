@@ -32,6 +32,9 @@ export type Product = {
   description: string;
   details: string[];
   collection: string;
+  shopId?: string;
+  shopSlug?: string;
+  shopName?: string;
 };
 
 export type Promo = {

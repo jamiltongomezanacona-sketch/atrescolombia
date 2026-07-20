@@ -5,6 +5,7 @@ import { SearchBox } from "@/components/search-box";
 
 const PRODUCT_FILTER_KEYS = [
   "categoria",
+  "tienda",
   "talla",
   "color",
   "coleccion",

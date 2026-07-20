@@ -19,6 +19,7 @@ export function HeaderNav({ items }: HeaderNavProps) {
     categoria: searchParams.get("categoria"),
     ofertas: searchParams.get("ofertas"),
     novedades: searchParams.get("novedades"),
+    tienda: searchParams.get("tienda"),
   };
 
   return (

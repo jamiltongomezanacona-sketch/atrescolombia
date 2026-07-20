@@ -30,7 +30,7 @@ import { curatedAtresProducts, curatedAtresPromos } from "@/lib/curated-atres-as
 
 const ATRES_PLACEHOLDER_IMAGE = "/icono.png";
 const PRODUCT_SELECT_BASE =
-  "id,name,slug,short_description,description,price,previous_price,discount_percent,sku,inventory_total,is_featured,is_new,is_promo,tags,collection,category_id,display_order,created_at";
+  "id,name,slug,short_description,description,price,previous_price,discount_percent,sku,inventory_total,is_featured,is_new,is_promo,tags,collection,category_id,shop_id,display_order,created_at";
 
 type SupabaseCategoryRow = {
   id: string;
@@ -59,6 +59,20 @@ type SupabaseProductRow = {
   tags: string[] | null;
   collection: string | null;
   category_id: string | null;
+  shop_id: string | null;
+};
+
+export type PublicShop = {
+  id: string;
+  name: string;
+  title: string;
+  slug: string;
+  shortDescription: string;
+  description: string;
+  city: string;
+  logoUrl: string | null;
+  coverUrl: string | null;
+  productCount?: number;
 };
 
 type SupabaseImageRow = {
@@ -230,10 +244,12 @@ export async function getPublicProducts(): Promise<Product[]> {
     const products = productRows as unknown as SupabaseProductRow[];
     const productIds = products.map((product) => product.id);
     const categoryIds = Array.from(new Set(products.map((product) => product.category_id).filter(Boolean))) as string[];
-    const [categoriesById, imagesByProductId, variantsByProductId] = await Promise.all([
+    const shopIds = Array.from(new Set(products.map((product) => product.shop_id).filter(Boolean))) as string[];
+    const [categoriesById, imagesByProductId, variantsByProductId, shopsById] = await Promise.all([
       getCategoriesById(categoryIds),
       getImagesByProductId(productIds),
       getVariantsByProductId(productIds),
+      getShopsById(shopIds),
     ]);
 
     return products.map((row) =>
@@ -242,6 +258,7 @@ export async function getPublicProducts(): Promise<Product[]> {
         row.category_id ? categoriesById.get(row.category_id) ?? null : null,
         imagesByProductId.get(row.id) ?? [],
         variantsByProductId.get(row.id) ?? [],
+        row.shop_id ? shopsById.get(row.shop_id) ?? null : null,
       ),
     );
   } catch (error) {
@@ -301,6 +318,60 @@ export async function getPublicRelatedProducts(product: Product) {
 
   const products = await getPublicProductsByCategory(product.categorySlug);
   return products.filter((item) => item.slug !== product.slug).slice(0, 4);
+}
+
+export async function getPublicShops(): Promise<PublicShop[]> {
+  if (!hasSupabaseEnv()) return [];
+
+  try {
+    const supabase = await createSupabaseServerClient();
+    const [{ data: shops, error }, products] = await Promise.all([
+      supabase
+        .from("shops")
+        .select("id,name,title,slug,short_description,description,city,logo_url,cover_url,status,show_on_home")
+        .eq("status", "active")
+        .order("name", { ascending: true }),
+      getPublicProducts(),
+    ]);
+
+    if (error || !shops?.length) {
+      if (error) console.error("ATRES public shops query failed:", error.message);
+      return [];
+    }
+
+    const counts = new Map<string, number>();
+    for (const product of products) {
+      if (!product.shopId) continue;
+      counts.set(product.shopId, (counts.get(product.shopId) ?? 0) + 1);
+    }
+
+    return (shops as Array<Record<string, unknown>>)
+      .map((shop) => {
+        const id = String(shop.id);
+        return {
+          id,
+          name: String(shop.name ?? ""),
+          title: String(shop.title || shop.name || ""),
+          slug: String(shop.slug ?? ""),
+          shortDescription: String(shop.short_description ?? ""),
+          description: String(shop.description ?? ""),
+          city: String(shop.city ?? ""),
+          logoUrl: typeof shop.logo_url === "string" ? shop.logo_url : null,
+          coverUrl: typeof shop.cover_url === "string" ? shop.cover_url : null,
+          productCount: counts.get(id) ?? 0,
+        } satisfies PublicShop;
+      })
+      .filter((shop) => shop.slug);
+  } catch (error) {
+    console.error("ATRES public shops unexpected failure:", error);
+    return [];
+  }
+}
+
+export async function getPublicShopBySlug(slug: string) {
+  const shops = await getPublicShops();
+  const normalized = normalizeNavSlug(slug);
+  return shops.find((shop) => normalizeNavSlug(shop.slug) === normalized) ?? null;
 }
 
 export async function getPublicPromos(): Promise<Promo[]> {
@@ -459,6 +530,7 @@ function mapProductRow(
   category: SupabaseCategoryRow | null,
   images: SupabaseImageRow[],
   variants: SupabaseVariantRow[],
+  shop: { id: string; slug: string; name: string } | null,
 ): Product {
   const sortedImages = [...images].sort((a, b) => {
     if (a.is_primary) return -1;
@@ -492,7 +564,25 @@ function mapProductRow(
     description: row.description || row.short_description || row.name,
     details: row.tags?.length ? row.tags : ["Producto ATRES", "Disponible en tienda"],
     collection: row.collection || "ATRES",
+    shopId: shop?.id ?? row.shop_id ?? undefined,
+    shopSlug: shop?.slug,
+    shopName: shop?.name,
   };
+}
+
+async function getShopsById(shopIds: string[]) {
+  if (!shopIds.length) return new Map<string, { id: string; slug: string; name: string }>();
+
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.from("shops").select("id,slug,name").in("id", shopIds);
+  if (error || !data?.length) return new Map();
+
+  return new Map(
+    (data as Array<{ id: string; slug: string; name: string }>).map((shop) => [
+      shop.id,
+      { id: shop.id, slug: shop.slug, name: shop.name },
+    ]),
+  );
 }
 
 function resolveProductImageUrl(image: SupabaseImageRow) {

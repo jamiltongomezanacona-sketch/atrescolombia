@@ -34,6 +34,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
     categoria: searchParams.get("categoria"),
     ofertas: searchParams.get("ofertas"),
     novedades: searchParams.get("novedades"),
+    tienda: searchParams.get("tienda"),
   };
   const [prevPathname, setPrevPathname] = useState(pathname);
   const titleId = useId();

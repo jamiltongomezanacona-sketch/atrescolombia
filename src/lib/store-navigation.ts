@@ -26,6 +26,7 @@ export const PRIMARY_NAV: NavItem[] = [
   { key: "mujer", label: "Mujer", href: "/categoria/mujer", kind: "category" },
   { key: "ninos", label: "Niños", href: "/categoria/ninos", kind: "category" },
   { key: "hogar", label: "Hogar", href: "/categoria/hogar", kind: "category" },
+  { key: "tiendas", label: "Tiendas", href: "/tiendas", kind: "route" },
   { key: "ofertas", label: "Ofertas", href: "/ofertas", kind: "route" },
 ];
 
@@ -291,13 +292,15 @@ export function isStoreNavActive(
     categoria?: string | null;
     ofertas?: string | null;
     novedades?: string | null;
+    tienda?: string | null;
   },
 ) {
   const pathname = context.pathname;
   const categoria = context.categoria ?? null;
   const ofertas = context.ofertas ?? null;
   const novedades = context.novedades ?? null;
-  const hasCatalogFilter = Boolean(categoria || ofertas || novedades);
+  const tienda = context.tienda ?? null;
+  const hasCatalogFilter = Boolean(categoria || ofertas || novedades || tienda);
 
   if (link.href === "/productos" || link.key === "todo") {
     return pathname === "/productos" && !hasCatalogFilter;
@@ -305,6 +308,10 @@ export function isStoreNavActive(
 
   if (link.key === "novedades" || link.href === "/novedades") {
     return pathname === "/novedades" || (pathname === "/productos" && Boolean(novedades));
+  }
+
+  if (link.key === "tiendas" || link.href === "/tiendas" || link.href.startsWith("/tiendas/")) {
+    return pathname === "/tiendas" || pathname.startsWith("/tiendas/") || (pathname === "/productos" && Boolean(tienda));
   }
 
   if (link.key === "ofertas" || link.href === "/ofertas" || link.href === "/promociones") {

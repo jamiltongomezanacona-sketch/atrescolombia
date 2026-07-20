@@ -4,6 +4,7 @@ import { getDescendantCategorySlugs, normalizeNavSlug, type StoreCategory } from
 export type CatalogFilterState = {
   q?: string;
   categoria?: string;
+  tienda?: string;
   talla?: string;
   color?: string;
   coleccion?: string;
@@ -41,6 +42,7 @@ export function parseCatalogFilters(
   return {
     q: value("q")?.trim() || undefined,
     categoria: value("categoria")?.trim() || undefined,
+    tienda: value("tienda")?.trim() || undefined,
     talla: value("talla")?.trim() || undefined,
     color: value("color")?.trim() || undefined,
     coleccion: value("coleccion")?.trim() || undefined,
@@ -58,6 +60,7 @@ export function buildCatalogQuery(filters: CatalogFilterState, basePath = "/prod
 
   if (filters.q) params.set("q", filters.q);
   if (filters.categoria) params.set("categoria", filters.categoria);
+  if (filters.tienda) params.set("tienda", filters.tienda);
   if (filters.talla) params.set("talla", filters.talla);
   if (filters.color) params.set("color", filters.color);
   if (filters.coleccion) params.set("coleccion", filters.coleccion);
@@ -137,6 +140,11 @@ export function applyCatalogFilters(
           normalizeNavSlug(product.categoryName) === normalizeNavSlug(slug),
       ),
     );
+  }
+
+  if (filters.tienda) {
+    const target = normalizeNavSlug(filters.tienda);
+    list = list.filter((product) => normalizeNavSlug(product.shopSlug ?? "") === target);
   }
 
   if (filters.talla) {

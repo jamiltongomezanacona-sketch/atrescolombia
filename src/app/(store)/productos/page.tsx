@@ -14,6 +14,7 @@ import {
   getPublicCategories,
   getPublicCategoriesForDisplay,
   getPublicProducts,
+  getPublicShopBySlug,
 } from "@/lib/public-store";
 import { normalizeNavSlug } from "@/lib/store-navigation";
 
@@ -31,10 +32,11 @@ type ProductsPageProps = {
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const params = await searchParams;
   const filters = parseCatalogFilters(params);
-  const [products, categories, displayCategories] = await Promise.all([
+  const [products, categories, displayCategories, activeShop] = await Promise.all([
     getPublicProducts(),
     getPublicCategories(),
     getPublicCategoriesForDisplay(),
+    filters.tienda ? getPublicShopBySlug(filters.tienda) : Promise.resolve(null),
   ]);
 
   const options = collectFilterOptions(products, categories);
@@ -45,7 +47,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         (category) => normalizeNavSlug(category.slug) === normalizeNavSlug(filters.categoria ?? ""),
       )
     : null;
-  const pageTitle = activeCategory?.shortName ?? (filters.ofertas ? "Ofertas" : filters.novedades ? "Novedades" : "Productos");
+  const pageTitle =
+    activeShop?.title ||
+    activeShop?.name ||
+    activeCategory?.shortName ||
+    (filters.ofertas ? "Ofertas" : filters.novedades ? "Novedades" : "Productos");
 
   const orderLinks = [
     { label: "Para ti", value: "relevancia" },
@@ -118,6 +124,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               <h1 className="shrink-0 text-base font-medium tracking-tight text-ink sm:text-lg lg:text-xl">
                 {pageTitle}
               </h1>
+              {activeShop ? (
+                <Link
+                  href="/tiendas"
+                  className="text-[11px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline"
+                >
+                  Todas las tiendas
+                </Link>
+              ) : null}
               <FilterDrawer filters={filters} options={options} />
               <p className="text-xs font-medium text-ink-muted">
                 {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}

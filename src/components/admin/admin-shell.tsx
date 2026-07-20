@@ -8,10 +8,11 @@ import { cn } from "@/lib/cn";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", hint: "Resumen" },
+  { href: "/admin/tiendas", label: "Tiendas", hint: "Multitienda", superadminOnly: true },
   { href: "/admin/productos", label: "Productos", hint: "Catalogo" },
-  { href: "/admin/categorias", label: "Categorias", hint: "Estructura" },
-  { href: "/admin/banners", label: "Banners", hint: "Campanas" },
-  { href: "/admin/promociones", label: "Promociones", hint: "Ofertas" },
+  { href: "/admin/categorias", label: "Categorias", hint: "Estructura", superadminOnly: true },
+  { href: "/admin/banners", label: "Banners", hint: "Campanas", superadminOnly: true },
+  { href: "/admin/promociones", label: "Promociones", hint: "Ofertas", superadminOnly: true },
   { href: "/admin/configuracion", label: "Configuracion", hint: "Tienda" },
 ];
 
@@ -20,8 +21,15 @@ function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function AdminShell({ children }: { children: React.ReactNode }) {
+export function AdminShell({
+  children,
+  isSuperAdmin = true,
+}: {
+  children: React.ReactNode;
+  isSuperAdmin?: boolean;
+}) {
   const pathname = usePathname();
+  const visibleItems = navItems.filter((item) => isSuperAdmin || !item.superadminOnly);
 
   return (
     <main className="min-h-screen bg-ink text-ink">
@@ -30,7 +38,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <BrandLogo href="/admin" compact dark sublabel="Panel privado" />
         </div>
         <nav className="relative mt-8 grid gap-1" aria-label="Admin">
-          {navItems.map((item) => {
+          {visibleItems.map((item) => {
             const active = isActive(pathname, item.href);
             return (
               <Link
@@ -91,7 +99,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             className="mt-3 flex gap-1.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Admin movil"
           >
-            {navItems.map((item) => {
+            {visibleItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
                 <Link

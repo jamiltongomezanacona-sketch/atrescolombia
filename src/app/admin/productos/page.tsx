@@ -15,9 +15,9 @@ type AdminProductsPageProps = {
 };
 
 export default async function AdminProductsPage({ searchParams }: AdminProductsPageProps) {
-  await requireAdmin();
+  const session = await requireAdmin();
   const params = await searchParams;
-  const [products, categories] = await Promise.all([getAdminProducts(), getAdminCategories()]);
+  const [products, categories] = await Promise.all([getAdminProducts(session), getAdminCategories()]);
   const q = (params?.q ?? "").toLowerCase();
   const estado = params?.estado ?? "";
   const categoryById = new Map(categories.map((category) => [category.id, category.name]));
@@ -33,7 +33,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
   const statusSummary = getStatusSummary(products, filtered.length, estado);
 
   return (
-    <AdminShell>
+    <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-5">
         <div className="relative overflow-hidden rounded-2xl bg-[#0b1f3a] p-4 text-white shadow-sm ring-1 ring-[#284a68] md:p-5">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[#6ea8d9]" />

@@ -4,11 +4,11 @@ import { requireAdmin } from "@/lib/admin/auth";
 import { getAdminCategories } from "@/lib/admin/data";
 
 export default async function NewProductPage() {
-  await requireAdmin();
+  const session = await requireAdmin();
   const categories = await getAdminCategories();
 
   return (
-    <AdminShell>
+    <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-5">
         <div className="rounded-2xl bg-white/92 p-4 shadow-sm ring-1 ring-black/5 md:p-5">
           <p className="text-xs font-black uppercase tracking-wide text-zinc-500">Catalogo</p>

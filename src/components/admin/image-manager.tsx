@@ -7,6 +7,7 @@ import type { AdminProductImage } from "@/lib/admin/types";
 
 type ImageManagerProps = {
   productId: string;
+  shopId?: string | null;
   images: AdminProductImage[];
 };
 
@@ -15,7 +16,7 @@ const MAX_SIZE = 8 * 1024 * 1024;
 const MAX_UPLOAD_SIZE = 900 * 1024;
 const QUALITY_STEPS = [0.82, 0.76, 0.68, 0.6];
 
-export function ImageManager({ productId, images }: ImageManagerProps) {
+export function ImageManager({ productId, shopId, images }: ImageManagerProps) {
   const [items, setItems] = useState(images);
   const [message, setMessage] = useState("");
   const [uploading, startUpload] = useTransition();
@@ -57,7 +58,9 @@ export function ImageManager({ productId, images }: ImageManagerProps) {
           if (webp.size > MAX_UPLOAD_SIZE) {
             throw new Error("La imagen optimizada sigue superando 900KB. Usa una foto mas liviana.");
           }
-          const path = `products/${productId}/${crypto.randomUUID()}.webp`;
+          const path = shopId
+            ? `products/${shopId}/${productId}/${crypto.randomUUID()}.webp`
+            : `products/${productId}/${crypto.randomUUID()}.webp`;
           const { error: uploadError } = await supabase.storage
             .from("product-images")
             .upload(path, webp, { contentType: "image/webp", upsert: false });

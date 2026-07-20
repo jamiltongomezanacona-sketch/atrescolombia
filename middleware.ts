@@ -40,6 +40,8 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
   let isAdmin = false;
+  let isSuperAdmin = false;
+  let isShopAdmin = false;
 
   if (user) {
     const { data: profile } = await supabase
@@ -47,7 +49,18 @@ export async function middleware(request: NextRequest) {
       .select("role")
       .eq("id", user.id)
       .maybeSingle();
-    isAdmin = profile?.role === "admin";
+    isSuperAdmin = profile?.role === "admin" || profile?.role === "superadmin";
+
+    const { data: memberships } = await supabase
+      .from("shop_members")
+      .select("shop_id,role,status")
+      .eq("user_id", user.id)
+      .eq("status", "active");
+
+    isShopAdmin = (memberships ?? []).some((member) => member.role === "shop_admin");
+    isSuperAdmin =
+      isSuperAdmin || (memberships ?? []).some((member) => member.role === "superadmin");
+    isAdmin = isSuperAdmin || isShopAdmin;
   }
 
   if (!user && !isLoginRoute) {
@@ -64,6 +77,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  if (user && isShopAdmin && !isSuperAdmin && isSuperAdminOnlyRoute(request.nextUrl.pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin/productos";
+    url.search = "";
+    return NextResponse.redirect(url);
+  }
+
   if (user && isAdmin && isLoginRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin";
@@ -71,6 +91,16 @@ export async function middleware(request: NextRequest) {
   }
 
   return response;
+}
+
+function isSuperAdminOnlyRoute(pathname: string) {
+  return (
+    pathname === "/admin" ||
+    pathname.startsWith("/admin/tiendas") ||
+    pathname.startsWith("/admin/categorias") ||
+    pathname.startsWith("/admin/banners") ||
+    pathname.startsWith("/admin/promociones")
+  );
 }
 
 export const config = {

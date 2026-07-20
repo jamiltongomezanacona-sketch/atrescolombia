@@ -4,17 +4,17 @@ import { AdminSelect } from "@/components/admin/admin-select";
 import { AdminStatusBadge } from "@/components/admin/admin-status-badge";
 import { buildIndentedCategoryOptions, sortCategoriesAsTree } from "@/lib/admin/category-options";
 import { saveCategory } from "@/lib/admin/actions";
-import { requireAdmin } from "@/lib/admin/auth";
+import { requireSuperAdmin } from "@/lib/admin/auth";
 import { getAdminCategories } from "@/lib/admin/data";
 
 export default async function AdminCategoriesPage() {
-  await requireAdmin();
+  const session = await requireSuperAdmin();
   const categories = await getAdminCategories();
   const tree = sortCategoriesAsTree(categories);
   const parentNameById = new Map(categories.map((category) => [category.id, category.name]));
 
   return (
-    <AdminShell>
+    <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-4 lg:grid-cols-[420px_1fr]">
         <section className="bg-white p-4 shadow-sm">
           <p className="text-xs font-black uppercase text-zinc-500">Catalogo</p>

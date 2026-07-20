@@ -1,15 +1,15 @@
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ActionStateForm, TextAreaField, TextField } from "@/components/admin/action-state-form";
 import { savePromotion } from "@/lib/admin/actions";
-import { requireAdmin } from "@/lib/admin/auth";
+import { requireSuperAdmin } from "@/lib/admin/auth";
 import { getAdminPromotions } from "@/lib/admin/data";
 
 export default async function AdminPromotionsPage() {
-  await requireAdmin();
+  const session = await requireSuperAdmin();
   const promotions = await getAdminPromotions();
 
   return (
-    <AdminShell>
+    <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-4 lg:grid-cols-[420px_1fr]">
         <section className="bg-white p-4 shadow-sm">
           <h1 className="text-2xl font-black">Crear promocion</h1>

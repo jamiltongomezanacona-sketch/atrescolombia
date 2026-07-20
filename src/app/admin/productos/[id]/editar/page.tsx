@@ -12,10 +12,10 @@ type EditProductPageProps = {
 };
 
 export default async function EditProductPage({ params, searchParams }: EditProductPageProps) {
-  await requireAdmin();
+  const session = await requireAdmin();
   const { id } = await params;
   const [product, categories, images, variants, query] = await Promise.all([
-    getAdminProduct(id),
+    getAdminProduct(id, session),
     getAdminCategories(),
     getAdminProductImages(id),
     getAdminProductVariants(id),
@@ -25,7 +25,7 @@ export default async function EditProductPage({ params, searchParams }: EditProd
   if (!product) notFound();
 
   return (
-    <AdminShell>
+    <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-4 md:gap-5">
         <div className="relative overflow-hidden rounded-2xl bg-[#0b1f3a] p-4 text-white shadow-sm ring-1 ring-[#284a68] md:p-6">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[#6ea8d9]" />
@@ -65,7 +65,7 @@ export default async function EditProductPage({ params, searchParams }: EditProd
             />
           </div>
           <div className="xl:sticky xl:top-6">
-            <ImageManager productId={product.id} images={images} />
+            <ImageManager productId={product.id} shopId={product.shop_id} images={images} />
           </div>
         </section>
       </div>

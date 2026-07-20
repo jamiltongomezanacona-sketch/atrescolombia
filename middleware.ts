@@ -86,7 +86,7 @@ export async function middleware(request: NextRequest) {
 
   if (user && isAdmin && isLoginRoute) {
     const url = request.nextUrl.clone();
-    url.pathname = "/admin";
+    url.pathname = isSuperAdmin ? "/admin" : "/admin/productos";
     return NextResponse.redirect(url);
   }
 

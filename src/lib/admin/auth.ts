@@ -41,7 +41,8 @@ export async function getAdminSession() {
   const shopIds = shopMemberships
     .filter((member) => member.role === "shop_admin")
     .map((member) => member.shop_id);
-  const isShopAdmin = shopIds.length > 0 || role === "shop_admin";
+  // Shop admins must have an active membership row (aligned with middleware + RLS).
+  const isShopAdmin = shopIds.length > 0;
 
   return {
     user,

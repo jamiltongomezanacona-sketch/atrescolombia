@@ -66,7 +66,7 @@ export default async function AdminShopsPage() {
                       {shop.max_products} productos / {shop.max_images} imagenes
                     </td>
                     <td className="p-3">
-                      <ShopRowActions shopId={shop.id} status={shop.status} email={shop.email} />
+                      <ShopRowActions shopId={shop.id} status={shop.status} />
                     </td>
                   </tr>
                 ))}
@@ -107,7 +107,7 @@ function ShopCard({
         </div>
       </dl>
       <div className="mt-3">
-        <ShopRowActions shopId={shop.id} status={shop.status} email={shop.email} />
+        <ShopRowActions shopId={shop.id} status={shop.status} />
       </div>
     </article>
   );

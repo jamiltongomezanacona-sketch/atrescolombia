@@ -4,9 +4,16 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { getAdminSession, requireSuperAdmin } from "@/lib/admin/auth";
-import { getSupabaseEnv, hasSupabaseEnv } from "@/lib/supabase/config";
+import {
+  createSupabaseServiceRoleClient,
+  getSupabaseEnv,
+  hasSupabaseEnv,
+  hasSupabaseServiceRoleEnv,
+} from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ProductVariantStatus } from "@/lib/admin/types";
+
+const DEFAULT_SHOP_SLUGS = ["atres-kinds", "atres-kids"] as const;
 
 type ActionState = {
   ok: boolean;
@@ -99,50 +106,94 @@ export async function saveShop(_: ActionState, formData: FormData): Promise<Acti
     return { ok: false, message: "Nombre y slug son obligatorios." };
   }
 
+  const whatsapp = stringValue(formData, "whatsapp");
+  if (whatsapp && !isValidWhatsapp(whatsapp)) {
+    return { ok: false, message: "WhatsApp invalido. Usa solo digitos (minimo 10)." };
+  }
+
+  const adminEmail = stringValue(formData, "admin_email").toLowerCase();
+  const adminPassword = stringValue(formData, "admin_password");
+  const adminName = stringValue(formData, "admin_name") || name;
+
+  if (!id) {
+    if (!adminEmail || !adminPassword) {
+      return { ok: false, message: "Correo y contrasena del administrador son obligatorios al crear una tienda." };
+    }
+    if (!isValidEmail(adminEmail)) {
+      return { ok: false, message: "Correo del administrador invalido." };
+    }
+    if (adminPassword.length < 8) {
+      return { ok: false, message: "La contrasena del administrador debe tener al menos 8 caracteres." };
+    }
+    if (!hasSupabaseServiceRoleEnv()) {
+      return {
+        ok: false,
+        message: "Configura SUPABASE_SERVICE_ROLE_KEY en el servidor para crear administradores de tienda.",
+      };
+    }
+  }
+
   const supabase = await createSupabaseServerClient();
-  const payload = {
+
+  const { data: slugOwner } = await supabase.from("shops").select("id").eq("slug", slug).maybeSingle();
+  if (slugOwner?.id && slugOwner.id !== id) {
+    return { ok: false, message: "El slug ya esta en uso por otra tienda." };
+  }
+
+  const basePayload = {
     name,
     title: stringValue(formData, "title") || name,
     slug,
     short_description: stringValue(formData, "short_description"),
     description: stringValue(formData, "description"),
     city: stringValue(formData, "city"),
-    whatsapp: stringValue(formData, "whatsapp"),
-    email: stringValue(formData, "email"),
+    whatsapp,
+    email: stringValue(formData, "email") || adminEmail,
     logo_url: nullableStringValue(formData, "logo_url"),
     cover_url: nullableStringValue(formData, "cover_url"),
-    verified: checkboxValue(formData, "verified"),
-    status: stringValue(formData, "status") || "active",
-    max_products: Math.max(0, numberValue(formData, "max_products") || 0),
-    max_images: Math.max(1, numberValue(formData, "max_images") || 10),
     show_on_home: checkboxValue(formData, "show_on_home"),
     allow_promotions: checkboxValue(formData, "allow_promotions"),
     updated_by: session.user?.id ?? null,
   };
 
+  const payload = session.isSuperAdmin
+    ? {
+        ...basePayload,
+        verified: checkboxValue(formData, "verified"),
+        status: stringValue(formData, "status") || "active",
+        max_products: Math.max(0, numberValue(formData, "max_products") || 0),
+        max_images: Math.max(1, numberValue(formData, "max_images") || 10),
+      }
+    : basePayload;
+
   const result = id
     ? await supabase.from("shops").update(payload).eq("id", id).select("id").single()
     : await supabase.from("shops").insert({ ...payload, created_by: session.user?.id ?? null }).select("id").single();
 
-  if (result.error) return { ok: false, message: result.error.message };
+  if (result.error || !result.data?.id) {
+    return { ok: false, message: result.error?.message ?? "No se pudo guardar la tienda." };
+  }
 
-  const adminEmail = stringValue(formData, "admin_email");
-  const adminPassword = stringValue(formData, "admin_password");
-  const adminName = stringValue(formData, "admin_name");
-  let adminMessage = "";
+  const shopId = result.data.id as string;
 
-  if (!id && adminEmail && adminPassword) {
-    const adminResult = await createShopAdmin(result.data.id, adminEmail, adminPassword, adminName);
-    adminMessage = adminResult.ok ? " Administrador creado." : ` Tienda creada, pero falta vincular admin: ${adminResult.message}`;
+  if (!id) {
+    const adminResult = await createShopAdmin(shopId, adminEmail, adminPassword, adminName);
+    if (!adminResult.ok) {
+      await supabase.from("shops").delete().eq("id", shopId);
+      return {
+        ok: false,
+        message: `No se creo la tienda: fallo al crear el administrador. ${adminResult.message}`,
+      };
+    }
   }
 
   revalidatePath("/admin/tiendas");
-  revalidatePath(`/admin/tiendas/${result.data.id}/editar`);
-  if (session.isSuperAdmin) {
-    redirect(`/admin/tiendas/${result.data.id}/editar?guardado=1`);
+  revalidatePath(`/admin/tiendas/${shopId}/editar`);
+  if (session.isSuperAdmin && !id) {
+    redirect(`/admin/tiendas/${shopId}/editar?guardado=1`);
   }
 
-  return { ok: true, message: `Tienda guardada.${adminMessage}` };
+  return { ok: true, message: id ? "Tienda actualizada." : "Tienda y administrador creados correctamente." };
 }
 
 export async function setShopStatus(shopId: string, status: "active" | "suspended" | "archived") {
@@ -160,14 +211,60 @@ export async function setShopStatus(shopId: string, status: "active" | "suspende
   return { ok: true, message: "Estado de tienda actualizado." };
 }
 
-export async function sendShopAdminPasswordReset(email: string) {
+export async function sendShopAdminPasswordReset(shopId: string) {
   const guard = ensureSupabase();
   if (guard) return guard;
   await requireSuperAdmin();
+
+  const supabase = await createSupabaseServerClient();
+  const { data: members, error: membersError } = await supabase
+    .from("shop_members")
+    .select("user_id")
+    .eq("shop_id", shopId)
+    .eq("status", "active")
+    .eq("role", "shop_admin");
+
+  if (membersError) return { ok: false, message: membersError.message };
+
+  const userIds = (members ?? []).map((member) => member.user_id).filter(Boolean);
+  if (!userIds.length) {
+    return { ok: false, message: "La tienda no tiene un administrador activo vinculado." };
+  }
+
+  const { data: profiles, error: profilesError } = await supabase
+    .from("profiles")
+    .select("email")
+    .in("id", userIds);
+
+  if (profilesError) return { ok: false, message: profilesError.message };
+
+  const emails = Array.from(
+    new Set(
+      (profiles ?? [])
+        .map((profile) => (typeof profile.email === "string" ? profile.email.trim().toLowerCase() : ""))
+        .filter(Boolean),
+    ),
+  );
+
+  if (!emails.length) {
+    return { ok: false, message: "No se encontro correo del administrador de la tienda." };
+  }
+
   const authClient = createIsolatedAuthClient();
-  const { error } = await authClient.auth.resetPasswordForEmail(email);
-  if (error) return { ok: false, message: error.message };
-  return { ok: true, message: "Correo de restablecimiento enviado." };
+  const errors: string[] = [];
+  for (const email of emails) {
+    const { error } = await authClient.auth.resetPasswordForEmail(email);
+    if (error) errors.push(`${email}: ${error.message}`);
+  }
+
+  if (errors.length === emails.length) {
+    return { ok: false, message: errors.join(" | ") };
+  }
+
+  return {
+    ok: true,
+    message: `Correo de restablecimiento enviado a ${emails.length} administrador(es).`,
+  };
 }
 
 export async function signInAdmin(_: ActionState, formData: FormData): Promise<ActionState> {
@@ -189,7 +286,13 @@ export async function signInAdmin(_: ActionState, formData: FormData): Promise<A
     return { ok: false, message: error.message };
   }
 
-  redirect("/admin");
+  const session = await getAdminSession();
+  if (!session.isAdmin) {
+    await supabase.auth.signOut();
+    return { ok: false, message: "Tu cuenta no tiene permisos de administracion." };
+  }
+
+  redirect(session.isSuperAdmin ? "/admin" : "/admin/productos");
 }
 
 export async function signOutAdmin() {
@@ -222,6 +325,12 @@ export async function saveProduct(_: ActionState, formData: FormData): Promise<A
   const categoryError = await validateCategorySelection(supabase, categoryId, subcategoryId);
   if (categoryError) return categoryError;
   const shopId = await resolveAdminShopIdForWrite(null);
+  if (!id && !shopId) {
+    return {
+      ok: false,
+      message: "No se pudo asignar la tienda del producto. Verifica membresia o la tienda ATRES KINDS.",
+    };
+  }
 
   const payload = {
     name,
@@ -346,6 +455,12 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
 
   const businessId = await resolveLegacyBusinessId();
   const shopId = await resolveAdminShopIdForWrite(input.shop_id ?? null);
+  if (!shopId) {
+    return {
+      ok: false,
+      message: "No se pudo asignar la tienda del producto. Verifica membresia o la tienda ATRES KINDS.",
+    };
+  }
   const normalizedVariants = normalizeProductVariants(input.variants ?? []);
   const inventoryTotal = normalizedVariants.length ? sumVariantInventory(normalizedVariants) : input.inventory_total;
   const corePayload = {
@@ -359,6 +474,7 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
     sku: input.sku,
     inventory_total: inventoryTotal,
     status: input.status,
+    shop_id: shopId,
   };
   const textPayload = {
     ...corePayload,
@@ -367,7 +483,6 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
   };
   const fullPayload = {
     ...textPayload,
-    ...(shopId ? { shop_id: shopId } : {}),
     subcategory_id: input.subcategory_id,
     is_featured: input.is_featured,
     is_new: input.is_new,
@@ -388,8 +503,6 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
 
   const payloadAttempts = [
     fullPayload,
-    shopId ? { ...textPayload, shop_id: shopId } : null,
-    shopId ? { ...corePayload, shop_id: shopId } : null,
     textPayload,
     corePayload,
     businessId ? { ...textPayload, business_id: businessId } : null,
@@ -601,6 +714,9 @@ export async function setProductStatus(productId: string, status: "active" | "hi
   const guard = ensureSupabase();
   if (guard) return guard;
 
+  const access = await assertCanManageProduct(productId);
+  if (!access.ok) return access;
+
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.from("products").update({ status }).eq("id", productId);
 
@@ -616,6 +732,9 @@ export async function setProductStatus(productId: string, status: "active" | "hi
 export async function deleteArchivedProduct(productId: string): Promise<ActionState> {
   const guard = ensureSupabase();
   if (guard) return guard;
+
+  const access = await assertCanManageProduct(productId);
+  if (!access.ok) return access;
 
   const supabase = await createSupabaseServerClient();
   const { data: product, error: productError } = await supabase
@@ -677,6 +796,9 @@ export async function deleteArchivedProduct(productId: string): Promise<ActionSt
 export async function duplicateProduct(productId: string) {
   const guard = ensureSupabase();
   if (guard) return guard;
+
+  const access = await assertCanManageProduct(productId);
+  if (!access.ok) return access;
 
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.from("products").select("*").eq("id", productId).single();
@@ -839,15 +961,21 @@ function ensureSupabase() {
 
 async function createShopAdmin(shopId: string, email: string, password: string, name: string): Promise<ActionState> {
   try {
-    const authClient = createIsolatedAuthClient();
-    const { data, error } = await authClient.auth.signUp({
+    if (!hasSupabaseServiceRoleEnv()) {
+      return {
+        ok: false,
+        message: "Falta SUPABASE_SERVICE_ROLE_KEY en el servidor.",
+      };
+    }
+
+    const service = createSupabaseServiceRoleClient();
+    const { data, error } = await service.auth.admin.createUser({
       email,
       password,
-      options: {
-        data: {
-          name,
-          role: "shop_admin",
-        },
+      email_confirm: true,
+      user_metadata: {
+        name,
+        role: "shop_admin",
       },
     });
 
@@ -856,24 +984,37 @@ async function createShopAdmin(shopId: string, email: string, password: string, 
         ok: false,
         message:
           error?.message ??
-          "Supabase no devolvio el usuario. Si el correo ya existe, vincula la tienda manualmente.",
+          "No se pudo crear el usuario. Si el correo ya existe, usa otro o vincula la membresia manualmente.",
       };
     }
 
-    const supabase = await createSupabaseServerClient();
-    await supabase.from("profiles").upsert({
-      id: data.user.id,
+    const userId = data.user.id;
+    const { error: profileError } = await service.from("profiles").upsert({
+      id: userId,
       email,
       role: "shop_admin",
     });
-    const { error: memberError } = await supabase.from("shop_members").upsert({
-      shop_id: shopId,
-      user_id: data.user.id,
-      role: "shop_admin",
-      status: "active",
-    });
 
-    if (memberError) return { ok: false, message: memberError.message };
+    if (profileError) {
+      await service.auth.admin.deleteUser(userId);
+      return { ok: false, message: profileError.message };
+    }
+
+    const { error: memberError } = await service.from("shop_members").upsert(
+      {
+        shop_id: shopId,
+        user_id: userId,
+        role: "shop_admin",
+        status: "active",
+      },
+      { onConflict: "shop_id,user_id" },
+    );
+
+    if (memberError) {
+      await service.auth.admin.deleteUser(userId);
+      return { ok: false, message: memberError.message };
+    }
+
     return { ok: true, message: "Administrador creado." };
   } catch (error) {
     return {
@@ -901,19 +1042,49 @@ async function resolveAdminShopIdForWrite(requestedShopId: string | null) {
     return session.primaryShopId;
   }
 
-  if (requestedShopId) return requestedShopId;
+  if (requestedShopId) {
+    if (session.isSuperAdmin) return requestedShopId;
+    return session.shopIds.includes(requestedShopId) ? requestedShopId : null;
+  }
 
   try {
     const supabase = await createSupabaseServerClient();
-    const { data } = await supabase
-      .from("shops")
-      .select("id")
-      .eq("slug", "atres-kids")
-      .maybeSingle();
-    return typeof data?.id === "string" ? data.id : null;
+    for (const slug of DEFAULT_SHOP_SLUGS) {
+      const { data } = await supabase.from("shops").select("id").eq("slug", slug).maybeSingle();
+      if (typeof data?.id === "string") return data.id;
+    }
+    return null;
   } catch {
     return null;
   }
+}
+
+async function assertCanManageProduct(productId: string): Promise<ActionState> {
+  const session = await getAdminSession();
+  if (!session.isAdmin) {
+    return { ok: false, message: "No tienes permisos de administracion." };
+  }
+  if (session.isSuperAdmin) {
+    return { ok: true, message: "ok" };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.from("products").select("shop_id").eq("id", productId).maybeSingle();
+  if (error) return { ok: false, message: error.message };
+  if (!data) return { ok: false, message: "Producto no encontrado." };
+  if (!session.primaryShopId || data.shop_id !== session.primaryShopId) {
+    return { ok: false, message: "No puedes administrar productos de otra tienda." };
+  }
+  return { ok: true, message: "ok" };
+}
+
+function isValidEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function isValidWhatsapp(value: string) {
+  const digits = value.replace(/\D/g, "");
+  return digits.length >= 10 && digits.length <= 15;
 }
 
 async function validateCategorySelection(

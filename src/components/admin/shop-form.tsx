@@ -66,22 +66,23 @@ export function ShopForm({
         <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
           <SectionTitle eyebrow="Administrador" title="Acceso inicial" />
           <div className="grid gap-3 md:grid-cols-3">
-            <Field label="Nombre" name="admin_name" />
-            <Field label="Usuario / correo" name="admin_email" type="email" />
-            <Field label="Contrasena temporal" name="admin_password" type="password" />
+            <Field label="Nombre" name="admin_name" required />
+            <Field label="Usuario / correo" name="admin_email" type="email" required />
+            <Field label="Contrasena temporal" name="admin_password" type="password" required />
           </div>
           <p className="text-xs font-medium leading-5 text-zinc-500">
-            Si Supabase Auth no permite registro publico, crea el usuario en Supabase y vincula su membresia manualmente.
+            Se crea el usuario en Supabase Auth con rol de tienda y se vincula automaticamente. Requiere
+            SUPABASE_SERVICE_ROLE_KEY en el servidor. Si falla el usuario, la tienda no se conserva.
           </p>
         </section>
       ) : null}
 
-      <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
-        <SectionTitle eyebrow="Configuracion" title="Limites y visibilidad" />
-        <div className="grid gap-3 md:grid-cols-2">
-          <Field label="Maximo de productos" name="max_products" type="number" defaultValue={shop?.max_products ?? 200} />
-          <Field label="Maximo de imagenes" name="max_images" type="number" defaultValue={shop?.max_images ?? 10} />
-          {allowStatusEdit ? (
+      {allowStatusEdit ? (
+        <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+          <SectionTitle eyebrow="Configuracion" title="Limites y visibilidad" />
+          <div className="grid gap-3 md:grid-cols-2">
+            <Field label="Maximo de productos" name="max_products" type="number" defaultValue={shop?.max_products ?? 200} />
+            <Field label="Maximo de imagenes" name="max_images" type="number" defaultValue={shop?.max_images ?? 10} />
             <label className="grid gap-2 text-sm font-bold">
               Estado
               <select name="status" defaultValue={shop?.status ?? "active"} className={inputClass}>
@@ -90,16 +91,23 @@ export function ShopForm({
                 <option value="archived">Archivada</option>
               </select>
             </label>
-          ) : (
-            <input type="hidden" name="status" value={shop?.status ?? "active"} />
-          )}
-        </div>
-        <div className="grid gap-3 sm:grid-cols-3">
-          <CheckField label="Tienda verificada" name="verified" defaultChecked={shop?.verified} />
-          <CheckField label="Mostrar en pagina principal" name="show_on_home" defaultChecked={shop?.show_on_home ?? true} />
-          <CheckField label="Permitir promociones" name="allow_promotions" defaultChecked={shop?.allow_promotions} />
-        </div>
-      </section>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <CheckField label="Tienda verificada" name="verified" defaultChecked={shop?.verified} />
+            <CheckField label="Mostrar en pagina principal" name="show_on_home" defaultChecked={shop?.show_on_home ?? true} />
+            <CheckField label="Permitir promociones" name="allow_promotions" defaultChecked={shop?.allow_promotions} />
+          </div>
+        </section>
+      ) : (
+        <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+          <SectionTitle eyebrow="Visibilidad" title="Opciones de tienda" />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <CheckField label="Mostrar en pagina principal" name="show_on_home" defaultChecked={shop?.show_on_home ?? true} />
+            <CheckField label="Permitir promociones" name="allow_promotions" defaultChecked={shop?.allow_promotions} />
+          </div>
+          <input type="hidden" name="status" value={shop?.status ?? "active"} />
+        </section>
+      )}
 
       {state.message ? (
         <p

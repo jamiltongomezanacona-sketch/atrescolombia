@@ -7,10 +7,9 @@ import { Button } from "@/components/ui/button";
 type ShopRowActionsProps = {
   shopId: string;
   status: string;
-  email?: string;
 };
 
-export function ShopRowActions({ shopId, status, email }: ShopRowActionsProps) {
+export function ShopRowActions({ shopId, status }: ShopRowActionsProps) {
   const [message, setMessage] = useState("");
   const [pending, startTransition] = useTransition();
 
@@ -27,14 +26,9 @@ export function ShopRowActions({ shopId, status, email }: ShopRowActionsProps) {
   }
 
   function resetPassword() {
-    if (!email) {
-      setMessage("La tienda no tiene correo configurado.");
-      return;
-    }
-
     startTransition(async () => {
       setMessage("");
-      const result = await sendShopAdminPasswordReset(email);
+      const result = await sendShopAdminPasswordReset(shopId);
       setMessage(result.message);
     });
   }

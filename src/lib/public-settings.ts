@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -9,7 +10,7 @@ export type PublicStoreSettings = {
   promoMessage: string;
 };
 
-export async function getPublicStoreSettings(): Promise<PublicStoreSettings | null> {
+export const getPublicStoreSettings = cache(async function getPublicStoreSettings(): Promise<PublicStoreSettings | null> {
   if (!hasSupabaseEnv()) return null;
 
   try {
@@ -32,4 +33,4 @@ export async function getPublicStoreSettings(): Promise<PublicStoreSettings | nu
   } catch {
     return null;
   }
-}
+});

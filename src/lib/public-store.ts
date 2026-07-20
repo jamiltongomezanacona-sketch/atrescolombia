@@ -1,3 +1,4 @@
+import { cache } from "react";
 import {
   buildPrimaryNavItems,
   categorySlugMatches,
@@ -92,7 +93,7 @@ type SupabaseVariantRow = {
   status?: string | null;
 };
 
-export async function getPublicCategories(): Promise<StoreCategory[]> {
+export const getPublicCategories = cache(async function getPublicCategories(): Promise<StoreCategory[]> {
   if (!hasSupabaseEnv()) {
     return fallbackCategories.map(mapFallbackCategory);
   }
@@ -117,7 +118,7 @@ export async function getPublicCategories(): Promise<StoreCategory[]> {
   } catch {
     return [];
   }
-}
+});
 
 export async function getStoreNavigation(): Promise<NavItem[]> {
   const [categories, products] = await Promise.all([getPublicCategories(), getPublicProducts()]);
@@ -223,7 +224,7 @@ export async function getPublicSubcategories(parentSlug: string) {
   );
 }
 
-export async function getPublicProducts(): Promise<Product[]> {
+export const getPublicProducts = cache(async function getPublicProducts(): Promise<Product[]> {
   if (!hasSupabaseEnv()) {
     return mergeProducts(curatedAtresProducts, fallbackProducts);
   }
@@ -265,7 +266,7 @@ export async function getPublicProducts(): Promise<Product[]> {
     console.error("ATRES public products unexpected failure:", error);
     return [];
   }
-}
+});
 
 export async function getPublicProduct(slug: string) {
   const products = await getPublicProducts();
@@ -320,7 +321,7 @@ export async function getPublicRelatedProducts(product: Product) {
   return products.filter((item) => item.slug !== product.slug).slice(0, 4);
 }
 
-export async function getPublicShops(): Promise<PublicShop[]> {
+export const getPublicShops = cache(async function getPublicShops(): Promise<PublicShop[]> {
   if (!hasSupabaseEnv()) return [];
 
   try {
@@ -366,7 +367,7 @@ export async function getPublicShops(): Promise<PublicShop[]> {
     console.error("ATRES public shops unexpected failure:", error);
     return [];
   }
-}
+});
 
 export async function getPublicShopBySlug(slug: string) {
   const shops = await getPublicShops();

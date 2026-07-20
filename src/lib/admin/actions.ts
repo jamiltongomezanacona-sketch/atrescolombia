@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
-import { getAdminSession, requireSuperAdmin } from "@/lib/admin/auth";
+import { getAdminSession, requireAdmin, requireSuperAdmin } from "@/lib/admin/auth";
 import {
   createSupabaseServiceRoleClient,
   getSupabaseEnv,
@@ -308,7 +308,13 @@ export async function saveProduct(_: ActionState, formData: FormData): Promise<A
   const guard = ensureSupabase();
   if (guard) return guard;
 
+  const session = await requireAdmin();
   const id = stringValue(formData, "id");
+  if (id) {
+    const access = await assertCanManageProduct(id);
+    if (!access.ok) return access;
+  }
+
   const slug = slugify(stringValue(formData, "slug") || stringValue(formData, "name"));
   const name = stringValue(formData, "name");
   const sku = stringValue(formData, "sku");
@@ -321,7 +327,7 @@ export async function saveProduct(_: ActionState, formData: FormData): Promise<A
   }
 
   const supabase = await createSupabaseServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = session.user;
   const categoryError = await validateCategorySelection(supabase, categoryId, subcategoryId);
   if (categoryError) return categoryError;
   const shopId = await resolveAdminShopIdForWrite(null);
@@ -368,6 +374,7 @@ export async function saveProduct(_: ActionState, formData: FormData): Promise<A
 }
 
 export async function revalidateProductAdminChanges() {
+  await requireAdmin();
   revalidateStore();
   revalidatePath("/admin");
   revalidatePath("/admin/productos");
@@ -378,6 +385,7 @@ export async function uploadQuickProductImage(
 ): Promise<ActionState & { image?: QuickProductImageInput }> {
   const guard = ensureSupabase();
   if (guard) return guard;
+  await requireAdmin();
 
   const productId = stringValue(formData, "productId");
   const fileName = stringValue(formData, "fileName") || "producto.webp";
@@ -434,6 +442,7 @@ export async function uploadQuickProductImage(
 export async function cleanupQuickProductUploads(paths: string[]): Promise<ActionState> {
   const guard = ensureSupabase();
   if (guard) return guard;
+  await requireAdmin();
   if (!paths.length) return { ok: true, message: "Sin imagenes temporales." };
 
   const supabase = await createSupabaseServerClient();
@@ -446,10 +455,9 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
   const guard = ensureSupabase();
   if (guard) return guard;
 
+  const session = await requireAdmin();
   const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = session.user;
   const categoryError = await validateCategorySelection(supabase, input.category_id, input.subcategory_id);
   if (categoryError) return categoryError;
 
@@ -600,6 +608,9 @@ export async function saveProductVariants(productId: string, variants: ProductVa
   if (!productId) {
     return { ok: false, message: "Producto no encontrado para guardar variantes." };
   }
+
+  const access = await assertCanManageProduct(productId);
+  if (!access.ok) return access;
 
   const normalizedVariants = normalizeProductVariants(variants);
   if (!normalizedVariants.length) {
@@ -823,6 +834,7 @@ export async function duplicateProduct(productId: string) {
 export async function saveCategory(_: ActionState, formData: FormData): Promise<ActionState> {
   const guard = ensureSupabase();
   if (guard) return guard;
+  await requireSuperAdmin();
 
   const id = stringValue(formData, "id");
   const name = stringValue(formData, "name");
@@ -853,6 +865,7 @@ export async function saveCategory(_: ActionState, formData: FormData): Promise<
 export async function archiveCategory(categoryId: string) {
   const guard = ensureSupabase();
   if (guard) return guard;
+  await requireSuperAdmin();
   const supabase = await createSupabaseServerClient();
   const { count } = await supabase.from("products").select("id", { count: "exact", head: true }).eq("category_id", categoryId);
   if (count && count > 0) {
@@ -867,6 +880,7 @@ export async function archiveCategory(categoryId: string) {
 export async function saveBanner(_: ActionState, formData: FormData): Promise<ActionState> {
   const guard = ensureSupabase();
   if (guard) return guard;
+  await requireSuperAdmin();
   const id = stringValue(formData, "id");
   const title = stringValue(formData, "title");
   const desktopImageUrl = imageUrlValue(formData, "desktop_image_url", "Imagen escritorio URL");
@@ -899,6 +913,7 @@ export async function saveBanner(_: ActionState, formData: FormData): Promise<Ac
 export async function savePromotion(_: ActionState, formData: FormData): Promise<ActionState> {
   const guard = ensureSupabase();
   if (guard) return guard;
+  await requireSuperAdmin();
   const id = stringValue(formData, "id");
   const name = stringValue(formData, "name");
   const slug = slugify(stringValue(formData, "slug") || name);
@@ -925,6 +940,7 @@ export async function savePromotion(_: ActionState, formData: FormData): Promise
 export async function saveSettings(_: ActionState, formData: FormData): Promise<ActionState> {
   const guard = ensureSupabase();
   if (guard) return guard;
+  await requireSuperAdmin();
   const logoUrl = imageUrlValue(formData, "logo_url", "Logo URL");
   const faviconUrl = imageUrlValue(formData, "favicon_url", "Favicon URL");
   const heroBannerUrl = imageUrlValue(formData, "hero_banner_url", "Banner principal URL");

@@ -1,15 +1,35 @@
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ActionStateForm, TextAreaField, TextField } from "@/components/admin/action-state-form";
+import { ShopForm } from "@/components/admin/shop-form";
 import { saveSettings } from "@/lib/admin/actions";
 import { requireAdmin } from "@/lib/admin/auth";
-import { getStoreSettings } from "@/lib/admin/data";
+import { getPrimaryAdminShop, getStoreSettings } from "@/lib/admin/data";
 
 export default async function AdminSettingsPage() {
-  await requireAdmin();
+  const session = await requireAdmin();
+
+  if (!session.isSuperAdmin) {
+    const shop = await getPrimaryAdminShop(session);
+    return (
+      <AdminShell isSuperAdmin={session.isSuperAdmin}>
+        <section className="max-w-3xl bg-white p-4 shadow-sm">
+          <p className="text-xs font-black uppercase text-zinc-500">Tienda</p>
+          <h1 className="text-3xl font-black">Datos de mi tienda</h1>
+          <p className="mt-2 text-sm font-semibold leading-6 text-zinc-500">
+            Actualiza la informacion visible de tu tienda dentro de ATRES.
+          </p>
+          <div className="mt-5">
+            <ShopForm shop={shop} allowStatusEdit={false} submitLabel="Guardar mi tienda" />
+          </div>
+        </section>
+      </AdminShell>
+    );
+  }
+
   const settings = await getStoreSettings();
 
   return (
-    <AdminShell>
+    <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <section className="max-w-3xl bg-white p-4 shadow-sm">
         <p className="text-xs font-black uppercase text-zinc-500">Tienda</p>
         <h1 className="text-3xl font-black">Configuracion general</h1>

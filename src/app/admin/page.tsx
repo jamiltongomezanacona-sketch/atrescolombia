@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { AdminShell, StatCard } from "@/components/admin/admin-shell";
-import { requireAdmin } from "@/lib/admin/auth";
+import { requireSuperAdmin } from "@/lib/admin/auth";
 import { getAdminBanners, getAdminCategories, getAdminProducts, getAdminPromotions } from "@/lib/admin/data";
 
 export default async function AdminDashboardPage() {
-  await requireAdmin();
+  const session = await requireSuperAdmin();
   const [products, categories, banners, promotions] = await Promise.all([
-    getAdminProducts(),
+    getAdminProducts(session),
     getAdminCategories(),
     getAdminBanners(),
     getAdminPromotions(),
@@ -17,7 +17,7 @@ export default async function AdminDashboardPage() {
   const activePromotions = promotions.filter((promotion) => promotion.status === "active");
 
   return (
-    <AdminShell>
+    <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-5">
         <div className="rounded-[var(--radius-card)] bg-ink p-5 text-white md:p-6">
           <div className="flex flex-wrap items-end justify-between gap-4">

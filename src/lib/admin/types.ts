@@ -1,5 +1,8 @@
 export type ContentStatus = "active" | "hidden" | "archived";
 export type ProductVariantStatus = "available" | "sold_out" | "hidden" | "coming_soon";
+export type ProfileRole = "admin" | "superadmin" | "shop_admin";
+export type ShopStatus = "active" | "suspended" | "archived";
+export type ShopMemberRole = "superadmin" | "shop_admin";
 
 export type AdminCategory = {
   id: string;
@@ -16,6 +19,7 @@ export type AdminCategory = {
 
 export type AdminProduct = {
   id: string;
+  shop_id: string;
   name: string;
   slug: string;
   short_description: string;
@@ -36,6 +40,40 @@ export type AdminProduct = {
   display_order: number;
   created_at: string;
   updated_at: string;
+};
+
+export type AdminShop = {
+  id: string;
+  name: string;
+  title: string;
+  slug: string;
+  short_description: string;
+  description: string;
+  city: string;
+  whatsapp: string;
+  email: string;
+  logo_url: string | null;
+  cover_url: string | null;
+  verified: boolean;
+  status: ShopStatus;
+  max_products: number;
+  max_images: number;
+  show_on_home: boolean;
+  allow_promotions: boolean;
+  created_by: string | null;
+  updated_by: string | null;
+  created_at: string;
+  updated_at: string;
+  product_count?: number;
+};
+
+export type AdminShopMember = {
+  id: string;
+  shop_id: string;
+  user_id: string;
+  role: ShopMemberRole;
+  status: ContentStatus;
+  created_at: string;
 };
 
 export type AdminProductImage = {

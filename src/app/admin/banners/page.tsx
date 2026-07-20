@@ -1,15 +1,15 @@
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ActionStateForm, TextField } from "@/components/admin/action-state-form";
 import { saveBanner } from "@/lib/admin/actions";
-import { requireAdmin } from "@/lib/admin/auth";
+import { requireSuperAdmin } from "@/lib/admin/auth";
 import { getAdminBanners } from "@/lib/admin/data";
 
 export default async function AdminBannersPage() {
-  await requireAdmin();
+  const session = await requireSuperAdmin();
   const banners = await getAdminBanners();
 
   return (
-    <AdminShell>
+    <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-4 lg:grid-cols-[420px_1fr]">
         <section className="bg-white p-4 shadow-sm">
           <h1 className="text-2xl font-black">Crear banner</h1>

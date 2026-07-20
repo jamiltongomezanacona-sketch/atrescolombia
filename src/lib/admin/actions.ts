@@ -2,7 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { hasSupabaseEnv } from "@/lib/supabase/config";
+import { createClient } from "@supabase/supabase-js";
+import { getAdminSession, requireSuperAdmin } from "@/lib/admin/auth";
+import { getSupabaseEnv, hasSupabaseEnv } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ProductVariantStatus } from "@/lib/admin/types";
 
@@ -51,6 +53,7 @@ export type ProductVariantInput = {
 
 export type QuickProductInput = {
   id: string;
+  shop_id?: string | null;
   name: string;
   slug: string;
   short_description: string;
@@ -73,6 +76,99 @@ export type QuickProductInput = {
   images: QuickProductImageInput[];
   variants?: ProductVariantInput[];
 };
+
+export async function saveShop(_: ActionState, formData: FormData): Promise<ActionState> {
+  const guard = ensureSupabase();
+  if (guard) return guard;
+
+  const session = await getAdminSession();
+  if (!session.isAdmin) return { ok: false, message: "No tienes permisos para administrar tiendas." };
+
+  const id = stringValue(formData, "id");
+  if (!session.isSuperAdmin && id !== session.primaryShopId) {
+    return { ok: false, message: "Solo puedes editar los datos de tu tienda." };
+  }
+
+  if (!id && !session.isSuperAdmin) {
+    return { ok: false, message: "Solo el superadmin puede crear tiendas." };
+  }
+
+  const name = stringValue(formData, "name");
+  const slug = slugify(stringValue(formData, "slug") || name);
+  if (!name || !slug) {
+    return { ok: false, message: "Nombre y slug son obligatorios." };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const payload = {
+    name,
+    title: stringValue(formData, "title") || name,
+    slug,
+    short_description: stringValue(formData, "short_description"),
+    description: stringValue(formData, "description"),
+    city: stringValue(formData, "city"),
+    whatsapp: stringValue(formData, "whatsapp"),
+    email: stringValue(formData, "email"),
+    logo_url: nullableStringValue(formData, "logo_url"),
+    cover_url: nullableStringValue(formData, "cover_url"),
+    verified: checkboxValue(formData, "verified"),
+    status: stringValue(formData, "status") || "active",
+    max_products: Math.max(0, numberValue(formData, "max_products") || 0),
+    max_images: Math.max(1, numberValue(formData, "max_images") || 10),
+    show_on_home: checkboxValue(formData, "show_on_home"),
+    allow_promotions: checkboxValue(formData, "allow_promotions"),
+    updated_by: session.user?.id ?? null,
+  };
+
+  const result = id
+    ? await supabase.from("shops").update(payload).eq("id", id).select("id").single()
+    : await supabase.from("shops").insert({ ...payload, created_by: session.user?.id ?? null }).select("id").single();
+
+  if (result.error) return { ok: false, message: result.error.message };
+
+  const adminEmail = stringValue(formData, "admin_email");
+  const adminPassword = stringValue(formData, "admin_password");
+  const adminName = stringValue(formData, "admin_name");
+  let adminMessage = "";
+
+  if (!id && adminEmail && adminPassword) {
+    const adminResult = await createShopAdmin(result.data.id, adminEmail, adminPassword, adminName);
+    adminMessage = adminResult.ok ? " Administrador creado." : ` Tienda creada, pero falta vincular admin: ${adminResult.message}`;
+  }
+
+  revalidatePath("/admin/tiendas");
+  revalidatePath(`/admin/tiendas/${result.data.id}/editar`);
+  if (session.isSuperAdmin) {
+    redirect(`/admin/tiendas/${result.data.id}/editar?guardado=1`);
+  }
+
+  return { ok: true, message: `Tienda guardada.${adminMessage}` };
+}
+
+export async function setShopStatus(shopId: string, status: "active" | "suspended" | "archived") {
+  const guard = ensureSupabase();
+  if (guard) return guard;
+  const session = await requireSuperAdmin();
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase
+    .from("shops")
+    .update({ status, updated_by: session.user?.id ?? null })
+    .eq("id", shopId);
+
+  if (error) return { ok: false, message: error.message };
+  revalidatePath("/admin/tiendas");
+  return { ok: true, message: "Estado de tienda actualizado." };
+}
+
+export async function sendShopAdminPasswordReset(email: string) {
+  const guard = ensureSupabase();
+  if (guard) return guard;
+  await requireSuperAdmin();
+  const authClient = createIsolatedAuthClient();
+  const { error } = await authClient.auth.resetPasswordForEmail(email);
+  if (error) return { ok: false, message: error.message };
+  return { ok: true, message: "Correo de restablecimiento enviado." };
+}
 
 export async function signInAdmin(_: ActionState, formData: FormData): Promise<ActionState> {
   if (!hasSupabaseEnv()) {
@@ -125,6 +221,7 @@ export async function saveProduct(_: ActionState, formData: FormData): Promise<A
   const { data: { user } } = await supabase.auth.getUser();
   const categoryError = await validateCategorySelection(supabase, categoryId, subcategoryId);
   if (categoryError) return categoryError;
+  const shopId = await resolveAdminShopIdForWrite(null);
 
   const payload = {
     name,
@@ -145,6 +242,7 @@ export async function saveProduct(_: ActionState, formData: FormData): Promise<A
     tags: listValue(formData, "tags"),
     collection: stringValue(formData, "collection"),
     display_order: numberValue(formData, "display_order"),
+    ...(!id && shopId ? { shop_id: shopId } : {}),
     updated_by: user?.id ?? null,
   };
 
@@ -194,7 +292,10 @@ export async function uploadQuickProductImage(
   }
 
   const supabase = await createSupabaseServerClient();
-  const storagePath = `products/${productId}/${crypto.randomUUID()}.webp`;
+  const shopId = await resolveAdminShopIdForWrite(null);
+  const storagePath = shopId
+    ? `products/${shopId}/${productId}/${crypto.randomUUID()}.webp`
+    : `products/${productId}/${crypto.randomUUID()}.webp`;
   const { error } = await supabase.storage
     .from("product-images")
     .upload(storagePath, file, { contentType: file.type || "image/webp", upsert: false });
@@ -244,6 +345,7 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
   if (categoryError) return categoryError;
 
   const businessId = await resolveLegacyBusinessId();
+  const shopId = await resolveAdminShopIdForWrite(input.shop_id ?? null);
   const normalizedVariants = normalizeProductVariants(input.variants ?? []);
   const inventoryTotal = normalizedVariants.length ? sumVariantInventory(normalizedVariants) : input.inventory_total;
   const corePayload = {
@@ -265,6 +367,7 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
   };
   const fullPayload = {
     ...textPayload,
+    ...(shopId ? { shop_id: shopId } : {}),
     subcategory_id: input.subcategory_id,
     is_featured: input.is_featured,
     is_new: input.is_new,
@@ -285,6 +388,8 @@ export async function createQuickProduct(input: QuickProductInput): Promise<Acti
 
   const payloadAttempts = [
     fullPayload,
+    shopId ? { ...textPayload, shop_id: shopId } : null,
+    shopId ? { ...corePayload, shop_id: shopId } : null,
     textPayload,
     corePayload,
     businessId ? { ...textPayload, business_id: businessId } : null,
@@ -732,6 +837,85 @@ function ensureSupabase() {
   return null;
 }
 
+async function createShopAdmin(shopId: string, email: string, password: string, name: string): Promise<ActionState> {
+  try {
+    const authClient = createIsolatedAuthClient();
+    const { data, error } = await authClient.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name,
+          role: "shop_admin",
+        },
+      },
+    });
+
+    if (error || !data.user?.id) {
+      return {
+        ok: false,
+        message:
+          error?.message ??
+          "Supabase no devolvio el usuario. Si el correo ya existe, vincula la tienda manualmente.",
+      };
+    }
+
+    const supabase = await createSupabaseServerClient();
+    await supabase.from("profiles").upsert({
+      id: data.user.id,
+      email,
+      role: "shop_admin",
+    });
+    const { error: memberError } = await supabase.from("shop_members").upsert({
+      shop_id: shopId,
+      user_id: data.user.id,
+      role: "shop_admin",
+      status: "active",
+    });
+
+    if (memberError) return { ok: false, message: memberError.message };
+    return { ok: true, message: "Administrador creado." };
+  } catch (error) {
+    return {
+      ok: false,
+      message: error instanceof Error ? error.message : "No se pudo crear el administrador.",
+    };
+  }
+}
+
+function createIsolatedAuthClient() {
+  const { url, anonKey } = getSupabaseEnv();
+  return createClient(url, anonKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
+}
+
+async function resolveAdminShopIdForWrite(requestedShopId: string | null) {
+  const session = await getAdminSession();
+  if (!session.isAdmin) return null;
+
+  if (!session.isSuperAdmin) {
+    return session.primaryShopId;
+  }
+
+  if (requestedShopId) return requestedShopId;
+
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data } = await supabase
+      .from("shops")
+      .select("id")
+      .eq("slug", "atres-kids")
+      .maybeSingle();
+    return typeof data?.id === "string" ? data.id : null;
+  } catch {
+    return null;
+  }
+}
+
 async function validateCategorySelection(
   supabase: SupabaseServerClient,
   categoryId: string | null,
@@ -787,6 +971,10 @@ async function validateCategorySelection(
 function stringValue(formData: FormData, key: string) {
   const value = formData.get(key);
   return typeof value === "string" ? value.trim() : "";
+}
+
+function nullableStringValue(formData: FormData, key: string) {
+  return stringValue(formData, key) || null;
 }
 
 function imageUrlValue(formData: FormData, key: string, label: string): ImageUrlValueResult {

@@ -129,7 +129,8 @@
 |------|---------|
 | `b954001` | chore: punto de restauracion antes de auditoria perf/seguridad |
 | `761075b` | perf(products): dedupe public catalog queries with React.cache |
-| *(auth)* | fix(auth): enforce server-side checks on admin product and catalog actions |
+| `7696ad7` | fix(auth): enforce server-side checks on admin product and catalog actions |
+| `a35e022` | docs: informe final de auditoria perf y seguridad |
 
 ## 15. Comparación antes / después
 

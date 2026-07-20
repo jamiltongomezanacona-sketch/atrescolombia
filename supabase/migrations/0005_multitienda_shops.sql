@@ -122,10 +122,10 @@ insert into public.shops (
   allow_promotions
 )
 values (
-  'ATRES KIDS',
-  'ATRES KIDS',
-  'atres-kids',
-  'Tienda principal infantil de ATRES.',
+  'ATRES KINDS',
+  'ATRES KINDS',
+  'atres-kinds',
+  'Tienda principal de ATRES Colombia.',
   'Productos actuales migrados desde el catalogo ATRES para iniciar la arquitectura multitienda.',
   'Colombia',
   '',
@@ -144,7 +144,7 @@ on conflict (slug) do update set
   updated_at = now();
 
 update public.products
-set shop_id = (select id from public.shops where slug = 'atres-kids' limit 1)
+set shop_id = (select id from public.shops where slug = 'atres-kinds' limit 1)
 where shop_id is null;
 
 alter table public.products alter column shop_id set not null;

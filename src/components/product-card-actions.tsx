@@ -39,13 +39,10 @@ export function ProductCardActions({ product, whatsapp, compact = false }: Produ
   const color = firstMeaningful(product.colors, "Unico");
   const size = firstMeaningful(product.sizes, "Unica");
   const productHref = `/productos/${product.slug}`;
-  const imageUrl = product.image || product.images.find(Boolean) || "";
   const resolvedWhatsapp = resolveStoreWhatsapp(whatsapp);
   const whatsappUrl = buildWhatsAppUrl(
     resolvedWhatsapp,
-    buildProductWhatsAppMessage(product, size, color, {
-      imageUrl,
-    }),
+    buildProductWhatsAppMessage(product, size, color),
   );
 
   function openWhatsapp(event: MouseEvent<HTMLButtonElement>) {
@@ -56,9 +53,7 @@ export function ProductCardActions({ product, whatsapp, compact = false }: Produ
     const phone = resolveStoreWhatsapp(source?.dataset.atresWhatsapp ?? whatsapp);
     const url = buildWhatsAppUrl(
       phone,
-      buildProductWhatsAppMessage(product, size, color, {
-        imageUrl,
-      }),
+      buildProductWhatsAppMessage(product, size, color),
     );
 
     if (url) {

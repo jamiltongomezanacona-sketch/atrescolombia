@@ -471,6 +471,8 @@ function mapProductRow(
   const sizes = Array.from(new Set(variants.map((variant) => variant.size).filter(Boolean)));
 
   return {
+    id: row.id,
+    sku: row.sku,
     slug: row.slug,
     name: row.name,
     categorySlug: category?.slug ?? "productos",

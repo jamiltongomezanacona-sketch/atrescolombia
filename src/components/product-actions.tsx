@@ -43,7 +43,6 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
     resolveStoreWhatsapp(whatsapp),
     buildProductWhatsAppMessage(product, size, color, {
       productUrl,
-      imageUrl: effectiveSelectedImage,
     }),
   );
   const outOfStock = product.stock <= 0;

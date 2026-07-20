@@ -19,28 +19,38 @@ export function buildWhatsAppUrl(phone: string, message: string) {
 export function buildProductWhatsAppMessage(
   product: {
     name: string;
-    slug: string;
-    price: number;
+    slug?: string;
+    price: number | string;
+    sku?: string;
+    id?: string;
   },
   size?: string,
   color?: string,
   options?: {
     productUrl?: string;
-    imageUrl?: string;
+    reference?: string;
   },
 ) {
-  const lines = [
-    "Hola ATRES, quiero informacion de este producto:",
-    product.name,
-    `Precio: $${product.price.toLocaleString("es-CO")}`,
+  const productUrl = options?.productUrl ?? (
+    product.slug ? `https://atrescolombia.com/productos/${product.slug}` : "https://atrescolombia.com/productos"
+  );
+  const reference = cleanField(options?.reference) || cleanField(product.sku) || cleanField(product.id);
+  const productColor = cleanField(color);
+  const productSize = cleanField(size);
+  const sections = [
+    "👋 Hola ATRES.",
+    "Me interesa esta prenda y quisiera más información.",
+    `🛍 Producto:\n${product.name}`,
+    `💲 Precio:\n${formatProductPrice(product.price)}`,
   ];
 
-  if (color) lines.push(`Color: ${color}`);
-  if (size) lines.push(`Talla: ${size}`);
-  lines.push(`Link: ${options?.productUrl ?? `https://atrescolombia.com/productos/${product.slug}`}`);
-  if (options?.imageUrl) lines.push(`Imagen: ${options.imageUrl}`);
+  if (productColor) sections.push(`🎨 Color:\n${productColor}`);
+  if (productSize) sections.push(`📏 Talla:\n${productSize}`);
+  if (reference) sections.push(`🆔 Referencia:\n${reference}`);
 
-  return lines.join("\n");
+  sections.push(`🔗 Ver producto:\n${productUrl}`, "Muchas gracias.");
+
+  return sections.join("\n\n");
 }
 
 export function buildCartWhatsAppMessage(
@@ -57,4 +67,22 @@ export function buildCartWhatsAppMessage(
 
   lines.push(`Subtotal: $${subtotal.toLocaleString("es-CO")}`);
   return lines.join("\n");
+}
+
+function cleanField(value?: string | null) {
+  const trimmed = value?.trim();
+  if (!trimmed) return "";
+
+  const normalized = trimmed
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+  if (normalized === "unico" || normalized === "unica") return "";
+  return trimmed;
+}
+
+function formatProductPrice(value: number | string) {
+  if (typeof value === "string") return value.trim();
+  return `$${value.toLocaleString("es-CO")}`;
 }

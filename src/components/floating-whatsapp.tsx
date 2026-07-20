@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import { buildWhatsAppUrl, resolveStoreWhatsapp } from "@/lib/whatsapp";
+import { buildProductWhatsAppMessage, buildWhatsAppUrl, resolveStoreWhatsapp } from "@/lib/whatsapp";
 
 type ProductContext = {
   name: string;
@@ -10,7 +10,7 @@ type ProductContext = {
   url: string;
   color: string;
   size: string;
-  image: string;
+  reference: string;
 };
 
 function readProductContext(): ProductContext | null {
@@ -28,23 +28,24 @@ function readProductContext(): ProductContext | null {
     url: window.location.href,
     color: element.dataset.whatsappProductColor?.trim() ?? "",
     size: element.dataset.whatsappProductSize?.trim() ?? "",
-    image: element.dataset.whatsappProductImage?.trim() ?? "",
+    reference: element.dataset.whatsappProductReference?.trim() ?? "",
   };
 }
 
 function buildMessage(product: ProductContext | null) {
   if (product) {
-    const lines = [
-      "Hola ATRES, quiero informacion de esta prenda:",
-      product.name,
-    ];
-
-    if (product.price) lines.push(`Precio: ${product.price}`);
-    if (product.color) lines.push(`Color: ${product.color}`);
-    if (product.size) lines.push(`Talla: ${product.size}`);
-    lines.push(`Link: ${product.url}`);
-    if (product.image) lines.push(`Imagen: ${product.image}`);
-    return lines.join("\n");
+    return buildProductWhatsAppMessage(
+      {
+        name: product.name,
+        price: product.price,
+      },
+      product.size,
+      product.color,
+      {
+        productUrl: product.url,
+        reference: product.reference,
+      },
+    );
   }
 
   return [

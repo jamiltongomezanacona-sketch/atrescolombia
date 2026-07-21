@@ -90,7 +90,7 @@ export function FavoritesView() {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4" aria-live="polite">
+    <div className="catalog-grid" aria-live="polite">
       {favoriteProducts.map((product) => (
         <ProductCard key={product.slug} product={product} />
       ))}

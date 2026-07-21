@@ -27,6 +27,14 @@ function meaningfulSizes(sizes: string[]) {
   });
 }
 
+function pickRandomProductImage(product: Product) {
+  const gallery = Array.from(
+    new Set([...(product.images ?? []), product.image].filter((image): image is string => Boolean(image))),
+  );
+  if (!gallery.length) return product.image;
+  return gallery[Math.floor(Math.random() * gallery.length)] ?? product.image;
+}
+
 export function ProductCard({ product, priority = false, compact = false }: ProductCardProps) {
   const discount = getDiscountPercent(product);
   const previousPrice =
@@ -40,6 +48,7 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
   const swatches = product.colors.filter(Boolean).slice(0, 3);
   const showDiscount = discount && !ribbon?.includes("%");
   const salesCount = getSalesCount(product);
+  const displayImage = pickRandomProductImage(product);
 
   return (
     <article
@@ -52,7 +61,7 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
         <Link href={`/productos/${product.slug}`} className="block">
           <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
             <SafeProductImage
-              src={product.image}
+              src={displayImage}
               alt={product.name}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 30vw, (max-width: 1500px) 24vw, (max-width: 1800px) 19vw, 15vw"
               priority={priority}

@@ -208,7 +208,16 @@ export function sortCatalogProducts(products: Product[], order: string) {
     return sorted.sort((a, b) => discountValue(b) - discountValue(a));
   }
 
-  return sorted;
+  // "relevancia" / Para ti: orden aleatorio en cada visita al catalogo.
+  return shuffleProducts(sorted);
+}
+
+function shuffleProducts(products: Product[]) {
+  for (let index = products.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [products[index], products[swapIndex]] = [products[swapIndex], products[index]];
+  }
+  return products;
 }
 
 export function countActiveFilters(filters: CatalogFilterState) {

@@ -16,42 +16,45 @@ export function BrandLogo({
   dark = false,
   compact = false,
 }: BrandLogoProps) {
-  const size = compact ? 34 : 48;
+  // Full mark already includes the ATRES wordmark; avoid duplicating text next to it.
+  const showWordmark = Boolean(sublabel);
 
   const content = (
     <>
       <span
         className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-[var(--radius-card)] bg-white ring-1 ring-black/10 ${
-          compact ? "h-[34px] w-[34px]" : "h-12 w-12"
+          compact ? "h-9 w-9" : "h-12 w-12"
         }`}
       >
         <Image
           src="/icono.png"
           alt=""
-          width={size}
-          height={size}
+          width={compact ? 36 : 48}
+          height={compact ? 36 : 48}
           priority
-          className="h-full w-full object-contain p-1"
+          className="h-full w-full object-contain p-0.5"
         />
       </span>
-      <span className={`min-w-0 ${compact ? "max-[360px]:hidden" : ""}`}>
-        <span
-          className={`block font-medium leading-none tracking-[0.14em] ${
-            compact ? "text-[0.95rem]" : "text-2xl"
-          } ${dark ? "text-white" : "text-ink"}`}
-        >
-          {label}
-        </span>
-        {sublabel ? (
+      {showWordmark ? (
+        <span className={`min-w-0 ${compact ? "max-[360px]:hidden" : ""}`}>
           <span
-            className={`mt-1 block text-[10px] font-normal tracking-wide ${
-              dark ? "text-white/55" : "text-ink-muted"
-            }`}
+            className={`block font-medium leading-none tracking-[0.14em] ${
+              compact ? "text-[0.95rem]" : "text-2xl"
+            } ${dark ? "text-white" : "text-ink"}`}
           >
-            {sublabel}
+            {label}
           </span>
-        ) : null}
-      </span>
+          {sublabel ? (
+            <span
+              className={`mt-1 block text-[10px] font-normal tracking-wide ${
+                dark ? "text-white/55" : "text-ink-muted"
+              }`}
+            >
+              {sublabel}
+            </span>
+          ) : null}
+        </span>
+      ) : null}
     </>
   );
 

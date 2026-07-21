@@ -100,8 +100,8 @@ export function FloatingWhatsApp() {
       aria-label={product ? `Consultar ${product.name} por WhatsApp` : "Consultar por WhatsApp"}
       className={`atres-interactive group fixed z-20 flex items-center overflow-hidden text-white transition duration-300 ease-out hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] ${
         compactCatalog
-          ? "bottom-[calc(4.85rem+env(safe-area-inset-bottom))] right-3 md:bottom-6 md:right-6"
-          : "bottom-[calc(5.7rem+env(safe-area-inset-bottom))] right-3 md:bottom-6 md:right-6"
+          ? "bottom-[calc(5.1rem+env(safe-area-inset-bottom))] right-3 md:bottom-6 md:right-6"
+          : "bottom-[calc(5.9rem+env(safe-area-inset-bottom))] right-3 md:bottom-6 md:right-6"
       } rounded-full bg-[#128C4A] shadow-[0_14px_36px_rgba(18,140,74,0.35)] ring-1 ring-black/10 hover:bg-[#0f7a40] hover:shadow-[0_18px_44px_rgba(18,140,74,0.42)] max-md:size-12 max-md:justify-center md:gap-3 md:rounded-2xl md:px-3.5 md:py-2.5 lg:px-4 lg:py-3`}
     >
       <span

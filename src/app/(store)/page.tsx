@@ -65,10 +65,11 @@ export default async function Home() {
           { label: "Ofertas", href: "/ofertas" },
         ]}
       />
+      <HomeTrustStrip />
+      <ProductRail title="Mas vendidos" href="/productos?orden=tendencias" products={bestSellers} priorityCount={4} />
       <FlashSection products={promoProducts.length ? promoProducts : products} />
       <EditorialGallery products={editorialProducts} />
       <PromoGrid promos={promos} fallbackProducts={promoProducts} />
-      <ProductRail title="Mas vendidos" href="/productos?orden=tendencias" products={bestSellers} priorityCount={4} />
       <ProductRail title="Novedades" href="/novedades" products={newProducts.length ? newProducts : products} />
       <CollectionGrid products={collections} />
       <ProductRail title="Recomendados para ti" href="/productos" products={recommended} />
@@ -98,30 +99,33 @@ function HeroSection({
           alt=""
           priority
           sizes="100vw"
-          className="object-cover opacity-55"
+          className="object-cover object-[center_28%] opacity-70 sm:object-[center_24%] lg:object-[72%_28%] lg:opacity-75"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(10,10,10,0.92)_0%,rgba(10,10,10,0.55)_48%,rgba(10,10,10,0.28)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(10,10,10,0.82)_0%,rgba(10,10,10,0.42)_46%,rgba(10,10,10,0.12)_100%)]" />
       </div>
 
-      <div className="catalog-container relative flex min-h-[62vh] max-h-[820px] flex-col justify-end pb-10 pt-24 sm:min-h-[68vh] sm:pb-14 sm:pt-28 lg:min-h-[78vh] lg:pb-16">
-        <div className="max-w-2xl">
-          <p className="text-[11px] font-medium tracking-[0.18em] text-white/65">MODA COLOMBIANA</p>
-          <h1 className="mt-3 text-5xl font-medium leading-[0.92] tracking-tight text-white sm:text-6xl lg:text-7xl">
+      <div className="catalog-container relative flex min-h-[420px] max-h-[560px] flex-col justify-end pb-7 pt-20 sm:min-h-[460px] sm:pb-9 sm:pt-24 lg:min-h-[520px] lg:pb-10 lg:pt-16">
+        <div className="max-w-xl lg:max-w-2xl">
+          <p className="text-[11px] font-medium tracking-[0.18em] text-white/80">MODA COLOMBIANA</p>
+          <h1 className="mt-2.5 text-4xl font-medium leading-[0.94] tracking-tight text-white [text-shadow:0_1px_18px_rgba(0,0,0,0.35)] sm:mt-3 sm:text-5xl lg:text-6xl">
             ATRES
           </h1>
-          <p className="mt-4 max-w-md text-sm font-normal leading-6 text-white/78 sm:mt-5 sm:text-base sm:leading-7">
-            Del taller al cliente. Colecciones listas para comprar, con precios claros.
+          <p className="mt-3 max-w-md text-sm font-medium leading-6 text-white sm:mt-4 sm:text-base sm:leading-7">
+            Moda colombiana directamente del taller.
           </p>
-          <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
+          <p className="mt-1.5 max-w-md text-sm font-normal leading-6 text-white/78 sm:mt-2 sm:leading-7">
+            Colecciones listas para comprar, con precios claros y atencion directa.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-6 sm:gap-3">
             <Link
               href="/productos"
-              className="atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-white px-5 text-sm font-medium text-ink hover:bg-surface-muted sm:min-h-12 sm:px-6"
+              className="atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-white px-5 text-sm font-medium text-ink shadow-soft transition hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:min-h-12 sm:px-6"
             >
               Comprar ahora
             </Link>
             <Link
               href="/ofertas"
-              className="atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-white/10 px-5 text-sm font-medium text-white ring-1 ring-white/25 hover:bg-white/16 sm:min-h-12 sm:px-6"
+              className="atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-white/10 px-5 text-sm font-medium text-white ring-1 ring-white/30 transition hover:bg-white/18 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:min-h-12 sm:px-6"
             >
               Ver ofertas
             </Link>
@@ -142,15 +146,15 @@ function CategoryStrip({
       className="sticky top-[3.5rem] z-30 border-y border-black/[0.06] bg-surface/94 backdrop-blur-xl lg:top-[7.9rem]"
       aria-label="Categorias destacadas"
     >
-      <div className="atres-scroll catalog-container flex gap-1.5 overflow-x-auto py-2 sm:gap-2">
+      <div className="atres-scroll catalog-container flex gap-2 overflow-x-auto py-2.5 sm:gap-2.5 sm:py-3">
         {categories.map((category, index) => (
           <Link
             key={`${category.href}-${category.label}`}
             href={category.href}
             className={
               index === 0
-                ? "atres-interactive inline-flex min-h-8 shrink-0 items-center rounded-[var(--radius-card)] bg-ink px-3 text-xs font-medium text-white sm:min-h-9 sm:px-3.5"
-                : "atres-interactive inline-flex min-h-8 shrink-0 items-center rounded-[var(--radius-card)] bg-transparent px-3 text-xs font-medium text-ink-muted ring-1 ring-black/8 hover:bg-surface-muted hover:text-ink sm:min-h-9 sm:px-3.5"
+                ? "atres-interactive inline-flex min-h-9 shrink-0 items-center rounded-[var(--radius-card)] bg-ink px-3.5 text-xs font-medium text-white transition hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:min-h-10 sm:px-4"
+                : "atres-interactive inline-flex min-h-9 shrink-0 items-center rounded-[var(--radius-card)] bg-transparent px-3.5 text-xs font-medium text-ink-muted ring-1 ring-black/10 transition hover:bg-surface-muted hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:min-h-10 sm:px-4"
             }
           >
             <span className="text-current">{category.label}</span>
@@ -158,6 +162,68 @@ function CategoryStrip({
         ))}
       </div>
     </nav>
+  );
+}
+
+function HomeTrustStrip() {
+  const items = [
+    { label: "Producto colombiano", icon: "flag" as const },
+    { label: "Compra directa", icon: "direct" as const },
+    { label: "Atencion por WhatsApp", icon: "chat" as const },
+    { label: "Tiendas independientes", icon: "store" as const },
+  ];
+
+  return (
+    <section className="border-b border-black/[0.06] bg-surface" aria-label="Confianza ATRES">
+      <ul className="catalog-container grid grid-cols-2 gap-2 py-3 sm:grid-cols-4 sm:gap-3 sm:py-3.5">
+        {items.map((item) => (
+          <li
+            key={item.label}
+            className="flex min-h-10 items-center gap-2 rounded-[var(--radius-card)] px-1.5 text-ink sm:min-h-11 sm:justify-center sm:px-2"
+          >
+            <TrustIcon type={item.icon} />
+            <span className="text-[11px] font-medium leading-4 text-ink sm:text-xs">{item.label}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function TrustIcon({ type }: { type: "flag" | "direct" | "chat" | "store" }) {
+  const className = "size-3.5 shrink-0 text-ink-muted";
+
+  if (type === "flag") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M5 4v16" />
+        <path d="M5 5h10l-1.5 3.5L15 12H5" />
+      </svg>
+    );
+  }
+
+  if (type === "direct") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M4 12h14" />
+        <path d="m13 6 5 6-5 6" />
+      </svg>
+    );
+  }
+
+  if (type === "chat") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M5 6h14v9H9l-4 3V6Z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M4 9h16l-1.2 11H5.2L4 9Z" />
+      <path d="M8 9V7a4 4 0 0 1 8 0v2" />
+    </svg>
   );
 }
 
@@ -186,7 +252,7 @@ function PromoGrid({
   if (!tiles.length) return null;
 
   return (
-    <section className="catalog-container grid gap-3 py-5 sm:grid-cols-3 md:gap-4 md:py-7">
+    <section className="catalog-container grid gap-3 py-4 sm:grid-cols-3 md:gap-4 md:py-5">
       {tiles.map((tile) => (
         <Link
           key={`${tile.href}-${tile.title}`}
@@ -217,8 +283,8 @@ function EditorialGallery({ products }: { products: Product[] }) {
   const [featured, ...supporting] = products;
 
   return (
-    <section className="catalog-container py-5 md:py-7" aria-labelledby="editorial-gallery-title">
-      <div className="mb-4 flex items-end justify-between gap-3">
+    <section className="catalog-container py-4 md:py-5" aria-labelledby="editorial-gallery-title">
+      <div className="mb-3 flex items-end justify-between gap-3 md:mb-4">
         <div>
           <p className="text-[11px] font-medium tracking-wide text-ink-muted">Editorial</p>
           <h2 id="editorial-gallery-title" className="mt-1 text-2xl font-medium tracking-tight text-ink md:text-3xl">
@@ -288,8 +354,8 @@ function FlashSection({ products }: { products: Product[] }) {
   if (!flashProducts.length) return null;
 
   return (
-    <section className="catalog-container py-5 md:py-7">
-      <div className="mb-4 flex items-end justify-between gap-3">
+    <section className="catalog-container py-4 md:py-5">
+      <div className="mb-3 flex items-end justify-between gap-3 md:mb-4">
         <div>
           <p className="text-[11px] font-medium tracking-wide text-brand">Oferta Flash</p>
           <h2 className="mt-1 text-2xl font-medium tracking-tight text-ink md:text-3xl">

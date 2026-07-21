@@ -9,6 +9,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "migrate:curated:supabase": "node scripts/migrate-curated-assets-to-supabase.mjs",
+    "import:valeur:demo": "node scripts/import-valeur-demo.mjs",
     "activate:banners": "node scripts/activate-demo-banners.mjs"
   },
   "dependencies": {

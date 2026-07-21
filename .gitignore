@@ -43,4 +43,8 @@ next-env.d.ts
 # local asset curation workbench
 /asset-workbench/
 
+# valeur demo image binaries (catalog.json stays tracked)
+/scripts/data/valeur-demo/*.jpg
+/scripts/data/valeur-demo/*.jpeg
+
 .codex-remote-attachments/

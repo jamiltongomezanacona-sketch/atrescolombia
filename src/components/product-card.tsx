@@ -46,7 +46,8 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
   const visualTone = getCommercialTone(product);
   const sizeLabel = getCompactSizeLabel(meaningfulSizes(product.sizes));
   const swatches = product.colors.filter(Boolean).slice(0, 3);
-  const showDiscount = discount && !ribbon?.includes("%");
+  // Prefer ribbon ("Ahorra $…") over a second "-%" badge on the same image.
+  const showDiscount = Boolean(discount) && !ribbon;
   const salesCount = getSalesCount(product);
   const displayImage = pickRandomProductImage(product);
 
@@ -54,7 +55,7 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
     <article
       className={cn(
         "group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface transition duration-300",
-        compact ? "hover:shadow-soft" : "hover:-translate-y-0.5 hover:shadow-soft",
+        "hover:shadow-soft motion-safe:hover:-translate-y-0.5",
       )}
     >
       <div className="relative bg-surface-muted">
@@ -65,9 +66,9 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
               alt={product.name}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 30vw, (max-width: 1500px) 24vw, (max-width: 1800px) 19vw, 15vw"
               priority={priority}
-              className="h-full w-full object-cover transition duration-500 ease-out group-hover:scale-[1.04]"
+              className="h-full w-full object-cover transition duration-500 ease-out motion-safe:group-hover:scale-[1.03]"
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 transition duration-300 motion-safe:group-hover:opacity-100" />
           </div>
         </Link>
 
@@ -132,41 +133,36 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
         ) : null}
       </div>
 
-      <div
-        className={cn(
-          "flex min-w-0 flex-1 flex-col",
-          compact ? "px-1.5 pb-1.5 pt-1 sm:px-1.5 sm:pb-1.5" : "px-2 pb-2 pt-2 sm:px-2.5 sm:pb-2.5",
-        )}
-      >
-        {!compact ? (
-          <div className="mb-1 hidden items-center justify-between gap-2 sm:flex">
-            <p className="truncate text-[10px] font-medium tracking-wide text-ink-muted">{product.categoryName}</p>
-            <div className="flex shrink-0 items-center gap-1 text-[10px] font-medium text-ink-muted">
-              <StarIcon />
-              <span>{product.rating.toFixed(1)}</span>
-              <span className="hidden text-stone-300 sm:inline">·</span>
-              <span className="hidden text-ink-muted/80 lg:inline">{salesCount}</span>
-            </div>
+      <div className={cn("flex min-w-0 flex-col", compact ? "gap-0.5 p-1.5" : "gap-1 p-2 sm:p-2.5")}>
+        <div className="flex items-center justify-between gap-1.5">
+          <p className="min-w-0 truncate text-[10px] font-medium leading-none text-ink-muted/85 sm:text-[11px]">
+            {product.categoryName}
+          </p>
+          <div className="flex shrink-0 items-center gap-0.5 text-[10px] font-medium leading-none text-ink-muted sm:text-[11px]">
+            <StarIcon />
+            <span className="text-ink">{product.rating.toFixed(1)}</span>
+            <span className="text-ink-muted/50">·</span>
+            <span className="text-ink-muted/80">{salesCount}</span>
           </div>
-        ) : null}
+        </div>
 
         <Link href={`/productos/${product.slug}`} className="block">
           <h3
             className={cn(
               "line-clamp-2 font-medium text-ink transition group-hover:text-ink",
               compact
-                ? "text-[12px] leading-[1.2] sm:text-[13px] sm:leading-[1.25]"
-                : "text-[13px] leading-[1.25] sm:min-h-10 sm:text-sm sm:leading-5",
+                ? "min-h-[2.4em] text-[12px] leading-[1.2] sm:text-[13px]"
+                : "min-h-[2.5em] text-[13px] leading-[1.25] sm:text-sm",
             )}
           >
             {product.name}
           </h3>
         </Link>
 
-        {!compact ? (
-          <div className="mt-1 flex items-center justify-between gap-2">
+        {(sizes.length > 0 || swatches.length > 0) ? (
+          <div className="flex items-center justify-between gap-2">
             {sizes.length > 0 ? (
-              <p className="truncate text-[10px] font-normal text-ink-muted/90 sm:text-[11px]">
+              <p className="min-w-0 truncate text-[10px] font-normal leading-none text-ink-muted/90 sm:text-[11px]">
                 {sizes.join(" · ")}
                 {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
               </p>
@@ -174,11 +170,12 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
               <span />
             )}
             {swatches.length > 0 ? (
-              <div className="hidden shrink-0 items-center gap-1 sm:flex" aria-label="Colores disponibles">
+              <div className="flex shrink-0 items-center gap-1" aria-label="Colores disponibles">
                 {swatches.map((color) => (
                   <span
                     key={color}
                     title={color}
+                    aria-label={color}
                     className="size-2.5 rounded-full ring-1 ring-black/10"
                     style={{ backgroundColor: colorToHex(color) }}
                   />
@@ -186,30 +183,21 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
               </div>
             ) : null}
           </div>
-        ) : sizes.length > 0 ? (
-          <p className="mt-0.5 truncate text-[9px] font-normal text-ink-muted/85 sm:text-[10px]">
-            {sizes.join(" · ")}
-            {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
-          </p>
         ) : null}
 
-        <div className={cn("flex items-end justify-between gap-1.5", compact ? "mt-0.5" : "mt-1.5 sm:mt-2")}>
+        <div className="mt-0.5 flex items-end justify-between gap-2">
           <ProductPrice
             price={product.price}
             previousPrice={previousPrice}
             size="md"
+            className="flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0"
             currentClassName={
-              compact ? "text-[0.95rem] sm:text-base lg:text-[1.05rem]" : "text-lg sm:text-xl lg:text-[1.15rem]"
+              compact ? "text-[0.95rem] leading-none sm:text-base" : "text-base leading-none sm:text-lg"
             }
-            previousClassName={compact ? "mt-0 text-[9px] sm:text-[10px]" : "mt-0.5 text-[10px] sm:text-[11px]"}
+            previousClassName="mt-0 text-[10px] leading-none sm:text-[11px]"
           />
+          <ProductCardActions product={product} />
         </div>
-
-        {!compact ? (
-          <div className="mt-auto hidden pt-1.5 sm:block [&_a]:rounded-[var(--radius-card)] [&_a]:bg-transparent [&_a]:shadow-none [&_button]:min-h-8 [&_button]:rounded-[var(--radius-card)] [&_button]:bg-ink/90 [&_button]:text-[10px] [&_button]:font-medium [&_button]:shadow-none [&_button]:hover:bg-ink [&_div]:mt-0 [&_div]:gap-1 lg:[&_div]:grid-cols-1">
-            <ProductCardActions product={product} />
-          </div>
-        ) : null}
       </div>
     </article>
   );

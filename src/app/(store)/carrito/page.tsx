@@ -13,7 +13,7 @@ export default async function CartPage() {
 
   return (
     <main>
-      <section className="store-container py-6 md:py-8">
+      <section className="store-container py-3 md:py-4">
         <PageHeader eyebrow="Tu compra" title="Carrito" />
         <CartView whatsapp={resolveStoreWhatsapp(settings?.whatsapp)} />
       </section>

@@ -114,10 +114,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         colors={product.colors}
         sizes={product.sizes}
       >
-        <section className="store-container grid gap-6 py-6 md:gap-8 md:py-8 lg:grid-cols-[1.12fr_0.88fr] lg:items-start lg:gap-10">
+        <section className="store-container grid gap-4 py-3 md:gap-6 md:py-4 lg:grid-cols-[1.12fr_0.88fr] lg:items-start lg:gap-8">
           <ProductGallery productName={product.name} images={product.images} />
 
-          <GlassPanel className="self-start p-5 sm:p-6 lg:sticky lg:top-28 lg:p-7">
+          <GlassPanel className="self-start p-4 sm:p-5 lg:sticky lg:top-28 lg:p-6">
             <div className="flex flex-wrap gap-1.5">
               {commercialBadge ? (
                 <Badge tone="black" className={getToneClass(commercialTone)}>

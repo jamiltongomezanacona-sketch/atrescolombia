@@ -14,7 +14,7 @@ export default async function CategoriesIndexPage() {
 
   return (
     <main>
-      <section className="store-container py-6 md:py-8">
+      <section className="store-container py-3 md:py-4">
         <PageHeader
           eyebrow="ATRES"
           title="Departamentos"
@@ -23,7 +23,7 @@ export default async function CategoriesIndexPage() {
         {categories.length === 0 ? (
           <p className="text-sm font-normal text-stone-500">No hay categorias con productos disponibles.</p>
         ) : (
-          <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2.5 md:gap-3 lg:grid-cols-4">
             {categories.map((category) => {
               const theme = getCategoryVisualTheme(category.slug, category.name);
 
@@ -31,7 +31,7 @@ export default async function CategoriesIndexPage() {
                 <Link
                   key={category.slug}
                   href={`/categoria/${category.slug}`}
-                  className={`group relative isolate min-h-[184px] overflow-hidden rounded-lg p-4 shadow-soft ring-1 ring-white/60 transition hover:-translate-y-1 sm:min-h-[210px] ${theme.washClass}`}
+                  className={`group relative isolate min-h-[156px] overflow-hidden rounded-lg p-3.5 shadow-soft ring-1 ring-white/60 transition hover:-translate-y-1 sm:min-h-[178px] ${theme.washClass}`}
                 >
                   <div className="pointer-events-none absolute inset-0">
                     <Image
@@ -43,7 +43,7 @@ export default async function CategoriesIndexPage() {
                     />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-b from-black/58 via-black/28 to-black/48" />
-                  <div className="relative flex h-full min-h-[152px] flex-col justify-between sm:min-h-[178px]">
+                  <div className="relative flex h-full min-h-[128px] flex-col justify-between sm:min-h-[150px]">
                     <p className={`text-xs font-medium ${theme.accentClass}`}>{theme.eyebrow}</p>
                     <div>
                       <h2 className="text-[1.7rem] font-medium leading-none tracking-tight text-white sm:text-3xl">

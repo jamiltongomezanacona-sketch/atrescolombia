@@ -12,7 +12,7 @@ export default async function NewArrivalsPage() {
 
   return (
     <main>
-      <section className="catalog-container py-6 md:py-8">
+      <section className="catalog-container py-3 md:py-4">
         <PageHeader
           variant="dark"
           eyebrow="Recien llegado"

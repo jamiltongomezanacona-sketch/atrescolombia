@@ -104,19 +104,19 @@ function HeroSection({
         <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(10,10,10,0.82)_0%,rgba(10,10,10,0.42)_46%,rgba(10,10,10,0.12)_100%)]" />
       </div>
 
-      <div className="catalog-container relative flex min-h-[420px] max-h-[560px] flex-col justify-end pb-7 pt-20 sm:min-h-[460px] sm:pb-9 sm:pt-24 lg:min-h-[520px] lg:pb-10 lg:pt-16">
+      <div className="catalog-container relative flex min-h-[360px] max-h-[480px] flex-col justify-end pb-5 pt-16 sm:min-h-[400px] sm:pb-7 sm:pt-20 lg:min-h-[440px] lg:pb-8 lg:pt-14">
         <div className="max-w-xl lg:max-w-2xl">
           <p className="text-[11px] font-medium tracking-[0.18em] text-white/80">MODA COLOMBIANA</p>
-          <h1 className="mt-2.5 text-4xl font-medium leading-[0.94] tracking-tight text-white [text-shadow:0_1px_18px_rgba(0,0,0,0.35)] sm:mt-3 sm:text-5xl lg:text-6xl">
+          <h1 className="mt-2 text-4xl font-medium leading-[0.94] tracking-tight text-white [text-shadow:0_1px_18px_rgba(0,0,0,0.35)] sm:mt-2.5 sm:text-5xl lg:text-6xl">
             ATRES
           </h1>
-          <p className="mt-3 max-w-md text-sm font-medium leading-6 text-white sm:mt-4 sm:text-base sm:leading-7">
+          <p className="mt-2.5 max-w-md text-sm font-medium leading-6 text-white sm:mt-3 sm:text-base sm:leading-7">
             Moda colombiana directamente del taller.
           </p>
-          <p className="mt-1.5 max-w-md text-sm font-normal leading-6 text-white/78 sm:mt-2 sm:leading-7">
+          <p className="mt-1 max-w-md text-sm font-normal leading-6 text-white/78 sm:leading-7">
             Colecciones listas para comprar, con precios claros y atencion directa.
           </p>
-          <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-6 sm:gap-3">
+          <div className="mt-4 flex flex-wrap gap-2.5 sm:mt-5 sm:gap-3">
             <Link
               href="/productos"
               className="atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-white px-5 text-sm font-medium text-ink shadow-soft transition hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:min-h-12 sm:px-6"
@@ -252,12 +252,12 @@ function PromoGrid({
   if (!tiles.length) return null;
 
   return (
-    <section className="catalog-container grid gap-3 py-4 sm:grid-cols-3 md:gap-4 md:py-5">
+    <section className="catalog-container grid gap-2.5 py-3 sm:grid-cols-3 md:gap-3 md:py-4">
       {tiles.map((tile) => (
         <Link
           key={`${tile.href}-${tile.title}`}
           href={tile.href}
-          className="group relative min-h-[140px] overflow-hidden rounded-[var(--radius-card)] bg-ink p-4 text-white sm:min-h-[160px] sm:p-5"
+          className="group relative min-h-[120px] overflow-hidden rounded-[var(--radius-card)] bg-ink p-3.5 text-white sm:min-h-[140px] sm:p-4"
         >
           <SafeProductImage
             src={tile.image}
@@ -283,11 +283,11 @@ function EditorialGallery({ products }: { products: Product[] }) {
   const [featured, ...supporting] = products;
 
   return (
-    <section className="catalog-container py-4 md:py-5" aria-labelledby="editorial-gallery-title">
-      <div className="mb-3 flex items-end justify-between gap-3 md:mb-4">
+    <section className="catalog-container py-3 md:py-4" aria-labelledby="editorial-gallery-title">
+      <div className="mb-2.5 flex items-end justify-between gap-3 md:mb-3">
         <div>
           <p className="text-[11px] font-medium tracking-wide text-ink-muted">Editorial</p>
-          <h2 id="editorial-gallery-title" className="mt-1 text-2xl font-medium tracking-tight text-ink md:text-3xl">
+          <h2 id="editorial-gallery-title" className="mt-0.5 text-xl font-medium tracking-tight text-ink md:text-2xl">
             Comprar por foto
           </h2>
         </div>
@@ -316,7 +316,7 @@ function EditorialTile({ product, featured = false }: { product: Product; featur
     <Link
       href={`/productos/${product.slug}`}
       className={`group relative overflow-hidden rounded-[var(--radius-card)] bg-ink ${
-        featured ? "min-h-[280px] md:min-h-[460px]" : "min-h-[168px] md:min-h-[222px]"
+        featured ? "min-h-[240px] md:min-h-[360px]" : "min-h-[140px] md:min-h-[180px]"
       }`}
     >
       <SafeProductImage
@@ -354,11 +354,11 @@ function FlashSection({ products }: { products: Product[] }) {
   if (!flashProducts.length) return null;
 
   return (
-    <section className="catalog-container py-4 md:py-5">
-      <div className="mb-3 flex items-end justify-between gap-3 md:mb-4">
+    <section className="catalog-container py-3 md:py-4">
+      <div className="mb-2.5 flex items-end justify-between gap-3 md:mb-3">
         <div>
           <p className="text-[11px] font-medium tracking-wide text-brand">Oferta Flash</p>
-          <h2 className="mt-1 text-2xl font-medium tracking-tight text-ink md:text-3xl">
+          <h2 className="mt-0.5 text-xl font-medium tracking-tight text-ink md:text-2xl">
             Precios para comprar hoy
           </h2>
         </div>
@@ -409,11 +409,11 @@ function CollectionGrid({ products }: { products: Product[] }) {
   if (!products.length) return null;
 
   return (
-    <section className="catalog-container py-5 md:py-7">
-      <div className="mb-4 flex items-end justify-between gap-3">
+    <section className="catalog-container py-3 md:py-4">
+      <div className="mb-2.5 flex items-end justify-between gap-3 md:mb-3">
         <div>
           <p className="text-[11px] font-medium tracking-wide text-ink-muted">Colecciones</p>
-          <h2 className="mt-1 text-2xl font-medium tracking-tight text-ink md:text-3xl">
+          <h2 className="mt-0.5 text-xl font-medium tracking-tight text-ink md:text-2xl">
             Comprar por estilo
           </h2>
         </div>
@@ -424,12 +424,12 @@ function CollectionGrid({ products }: { products: Product[] }) {
           Explorar
         </Link>
       </div>
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
+      <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-4 lg:gap-3">
         {products.map((product) => (
           <Link
             key={`collection-${product.collection}`}
             href={`/productos?coleccion=${encodeURIComponent(product.collection)}`}
-            className="group relative min-h-[200px] overflow-hidden rounded-[var(--radius-card)] bg-ink p-4 text-white sm:min-h-[220px]"
+            className="group relative min-h-[170px] overflow-hidden rounded-[var(--radius-card)] bg-ink p-3.5 text-white sm:min-h-[190px]"
           >
             <SafeProductImage
               src={product.image}

@@ -30,6 +30,11 @@
   /* Shape & layout */
   --radius-card: 0.5rem;
   --content-max: 1350px;
+  /* Store density standard: less empty space, content sooner */
+  --page-y: 0.75rem;
+  --page-y-md: 1rem;
+  --section-y: 0.75rem;
+  --section-y-md: 1rem;
 }
 
 @theme inline {
@@ -288,6 +293,17 @@ h6 {
   max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: 0.75rem;
+}
+
+/* Shared vertical rhythm for store listing pages */
+.store-page-y {
+  padding-block: var(--page-y);
+}
+
+@media (min-width: 768px) {
+  .store-page-y {
+    padding-block: var(--page-y-md);
+  }
 }
 
 /* Full-bleed header rows: content hugs viewport edges (no centered max-width). */

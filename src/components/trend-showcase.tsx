@@ -57,8 +57,8 @@ export function TrendShowcase({
           <Link
             href={href}
             className={cn(
-              "flex flex-col justify-center rounded-lg ring-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] md:min-h-[168px]",
-              compact ? "min-h-[78px] p-2.5 md:min-h-[116px] md:p-4" : "min-h-[148px] p-4",
+              "flex flex-col justify-center rounded-lg ring-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] md:min-h-[140px]",
+              compact ? "min-h-[72px] p-2.5 md:min-h-[100px] md:p-3.5" : "min-h-[128px] p-3.5",
               theme.panelClass,
             )}
           >
@@ -69,7 +69,7 @@ export function TrendShowcase({
               className={cn(
                 "font-medium leading-none tracking-tight",
                 theme.textClass,
-                compact ? "mt-1 text-2xl md:mt-4 md:text-4xl lg:text-5xl" : title ? "mt-4 text-3xl md:text-4xl lg:text-5xl" : "mt-4 text-3xl md:text-4xl",
+                compact ? "mt-1 text-2xl md:mt-2.5 md:text-3xl lg:text-4xl" : title ? "mt-3 text-2xl md:text-3xl lg:text-4xl" : "mt-3 text-2xl md:text-3xl",
               )}
             >
               {headline}

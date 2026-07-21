@@ -93,7 +93,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </section>
       ) : null}
 
-      <section className="catalog-container py-2 md:py-5">
+      <section className="catalog-container py-2 md:py-3">
         {categoryProducts.length === 0 ? (
           <p className="text-sm font-normal text-stone-500">
             No hay productos en esta categoria por ahora. Explora otras colecciones ATRES.

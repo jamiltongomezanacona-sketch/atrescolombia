@@ -13,11 +13,11 @@ export default async function ShopsPage() {
 
   return (
     <main>
-      <section className="catalog-container py-6 md:py-8">
-        <div className="mb-5 md:mb-6">
+      <section className="catalog-container py-3 md:py-4">
+        <div className="mb-3 md:mb-3.5">
           <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-ink-muted">Multitienda</p>
-          <h1 className="mt-1 text-2xl font-medium tracking-tight text-ink md:text-3xl">Tiendas</h1>
-          <p className="mt-2 max-w-xl text-sm font-normal text-ink-muted">
+          <h1 className="mt-0.5 text-xl font-medium tracking-tight text-ink sm:text-2xl">Tiendas</h1>
+          <p className="mt-1 max-w-xl text-xs font-normal text-ink-muted sm:text-sm">
             Elige una tienda para ver solo sus productos.
           </p>
         </div>

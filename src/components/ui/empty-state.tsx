@@ -12,13 +12,13 @@ type EmptyStateProps = {
 
 export function EmptyState({ title, description, actionHref, actionLabel, className }: EmptyStateProps) {
   return (
-    <GlassPanel className={cn("atres-rise px-6 py-10 text-center sm:px-8 sm:py-12", className)}>
-      <div className="mx-auto mb-4 grid size-12 place-items-center rounded-[var(--radius-card)] bg-surface-muted text-ink-muted">
+    <GlassPanel className={cn("atres-rise px-4 py-6 text-center sm:px-6 sm:py-8", className)}>
+      <div className="mx-auto mb-3 grid size-10 place-items-center rounded-[var(--radius-card)] bg-surface-muted text-ink-muted">
         <EmptyIcon />
       </div>
-      <h2 className="text-2xl font-medium tracking-tight text-ink md:text-3xl">{title}</h2>
-      <p className="mx-auto mt-3 max-w-md text-sm font-normal leading-6 text-ink-muted">{description}</p>
-      <Button href={actionHref} className="mt-6" size="md">
+      <h2 className="text-xl font-medium tracking-tight text-ink sm:text-2xl">{title}</h2>
+      <p className="mx-auto mt-2 max-w-md text-sm font-normal leading-5 text-ink-muted sm:leading-6">{description}</p>
+      <Button href={actionHref} className="mt-4" size="md">
         {actionLabel}
       </Button>
     </GlassPanel>

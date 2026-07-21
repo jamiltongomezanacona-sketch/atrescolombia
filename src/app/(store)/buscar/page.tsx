@@ -36,8 +36,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <main>
-      <section className="catalog-container py-6 md:py-8">
-        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+      <section className="catalog-container py-3 md:py-4">
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
           <PageHeader
             className="mb-0 flex-1"
             eyebrow="Resultados"

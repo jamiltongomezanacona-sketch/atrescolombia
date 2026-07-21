@@ -9,7 +9,7 @@ export const metadata = {
 export default function FavoritesPage() {
   return (
     <main>
-      <section className="store-container py-6 md:py-8">
+      <section className="store-container py-3 md:py-4">
         <PageHeader eyebrow="Tu seleccion" title="Favoritos" />
         <FavoritesView />
       </section>

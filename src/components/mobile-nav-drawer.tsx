@@ -13,6 +13,7 @@ type MobileNavDrawerProps = {
 };
 
 const EXTRA_LINKS: NavItem[] = [
+  { key: "tiendas", label: "Tiendas", href: "/tiendas", kind: "route" },
   { key: "catalogo", label: "Catalogo completo", href: "/productos", kind: "route" },
   { key: "categorias", label: "Todas las categorias", href: "/categorias", kind: "route" },
   { key: "buscar", label: "Buscar", href: "/buscar", kind: "route" },
@@ -79,8 +80,12 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
 
   const departmentLinks = items;
   const links = [
-    ...departmentLinks,
-    ...EXTRA_LINKS.filter((link) => !departmentLinks.some((item) => item.href === link.href)),
+    ...EXTRA_LINKS.filter((link) => link.key === "tiendas"),
+    ...departmentLinks.filter((item) => item.key !== "tiendas"),
+    ...EXTRA_LINKS.filter(
+      (link) =>
+        link.key !== "tiendas" && !departmentLinks.some((item) => item.href === link.href || item.key === link.key),
+    ),
   ];
 
   const panel =
@@ -134,7 +139,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
           </div>
 
           <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Menu de categorias">
-            <p className="px-2 text-[11px] font-medium tracking-wide text-ink-muted">Categorias</p>
+            <p className="px-2 text-[11px] font-medium tracking-wide text-ink-muted">Explorar</p>
             <ul className="mt-2 grid gap-0.5">
               {links.map((link) => {
                 const active = isStoreNavActive(link, navContext);

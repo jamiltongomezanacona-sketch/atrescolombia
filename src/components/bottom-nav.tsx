@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 const items = [
   { label: "Comprar", href: "/productos", icon: "home" as const },
   { label: "Categorias", href: "/categorias", icon: "grid" as const },
-  { label: "Buscar", href: "/buscar", icon: "search" as const },
+  { label: "Tiendas", href: "/tiendas", icon: "store" as const },
   { label: "Favoritos", href: "/favoritos", icon: "heart" as const },
   { label: "Carrito", href: "/carrito", icon: "bag" as const },
 ];
@@ -23,9 +23,11 @@ export function BottomNav() {
       <div className="pointer-events-auto mx-auto grid max-w-[23rem] grid-cols-5 rounded-[var(--radius-card)] border border-black/8 bg-surface/95 px-1 py-1.5 shadow-soft backdrop-blur-xl">
         {items.map((item) => {
           const active =
-            item.href === "/"
-              ? pathname === "/"
-              : pathname === item.href || pathname.startsWith(`${item.href}/`);
+            item.href === "/tiendas"
+              ? pathname === "/tiendas" || pathname.startsWith("/tiendas/")
+              : item.href === "/"
+                ? pathname === "/"
+                : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
           return (
             <Link
@@ -49,7 +51,13 @@ export function BottomNav() {
   );
 }
 
-function NavIcon({ type, active }: { type: "home" | "grid" | "search" | "heart" | "bag"; active: boolean }) {
+function NavIcon({
+  type,
+  active,
+}: {
+  type: "home" | "grid" | "store" | "heart" | "bag";
+  active: boolean;
+}) {
   const className = cn("size-3.5", active ? "text-white" : "text-current");
 
   if (type === "home") {
@@ -72,11 +80,12 @@ function NavIcon({ type, active }: { type: "home" | "grid" | "search" | "heart" 
     );
   }
 
-  if (type === "search") {
+  if (type === "store") {
     return (
       <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="11" cy="11" r="7" />
-        <path d="m21 21-4.3-4.3" />
+        <path d="M4 9h16l-1.2 11H5.2L4 9Z" />
+        <path d="M8 9V7a4 4 0 0 1 8 0v2" />
+        <path d="M9 13h6" />
       </svg>
     );
   }

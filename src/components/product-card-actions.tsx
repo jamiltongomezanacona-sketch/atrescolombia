@@ -72,17 +72,18 @@ export function ProductCardActions(props: ProductCardActionsProps) {
       aria-live="polite"
       onClick={addToCart}
       className={cn(
-        "atres-interactive inline-flex size-8 shrink-0 items-center justify-center rounded-full text-base font-medium leading-none text-white transition duration-200",
+        "atres-interactive inline-flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-card)] transition duration-200",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
-        "active:scale-95 disabled:cursor-not-allowed disabled:bg-stone-300 disabled:text-stone-500",
-        "sm:size-8",
-        added ? "atres-pop bg-emerald-600 hover:bg-emerald-600" : "bg-ink hover:bg-black",
+        "active:scale-95 disabled:cursor-not-allowed disabled:opacity-35",
+        added
+          ? "atres-pop text-emerald-600"
+          : "text-ink hover:bg-black/[0.04] hover:text-black",
         className,
       )}
     >
       <span aria-hidden="true" className="grid place-items-center">
         {outOfStock ? (
-          <span className="text-sm font-medium leading-none">—</span>
+          <span className="text-sm font-medium leading-none text-ink-muted">—</span>
         ) : added ? (
           <CheckIcon />
         ) : (
@@ -93,19 +94,20 @@ export function ProductCardActions(props: ProductCardActionsProps) {
   );
 }
 
+/** Minimal cart silhouette — thin stroke, no filled circle button. */
 function CartIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="size-3.5 fill-none stroke-current"
-      strokeWidth="1.85"
+      className="size-[1.15rem] fill-none stroke-current"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M3 4h1.6l1.35 9.2h11.3L19.5 7.2H7.1" />
-      <path d="M7.1 7.2 6.1 4.8H21" />
-      <circle cx="9.2" cy="18.6" r="1.35" />
-      <circle cx="16.6" cy="18.6" r="1.35" />
+      <path d="M4 5h1.4l1.2 8.2h10.2L18.6 8H7.2" />
+      <path d="M7.2 8 6.4 5.2H20" />
+      <circle cx="9.2" cy="18.2" r="1.15" />
+      <circle cx="16.2" cy="18.2" r="1.15" />
     </svg>
   );
 }
@@ -114,8 +116,8 @@ function CheckIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="size-3.5 fill-none stroke-current"
-      strokeWidth="2.2"
+      className="size-[1.15rem] fill-none stroke-current"
+      strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
     >

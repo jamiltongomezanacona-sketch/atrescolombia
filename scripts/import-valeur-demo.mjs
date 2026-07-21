@@ -20,7 +20,7 @@ const dataDir = path.join(projectRoot, "scripts", "data", "valeur-demo");
 const catalogPath = path.join(dataDir, "catalog.json");
 const bucketName = process.env.ATRES_SUPABASE_BUCKET || "product-images";
 const dryRun = process.argv.includes("--dry-run");
-const shopLookup = (process.env.ATRES_VALEUR_SHOP_SLUG || "valeur").toLowerCase();
+const shopLookup = (process.env.ATRES_VALEUR_SHOP_SLUG || "bogota").toLowerCase();
 
 async function loadDotEnvLocal() {
   const envPath = path.join(projectRoot, ".env.local");
@@ -65,16 +65,23 @@ function discountPercent(price, previous) {
   return Math.round(((previous - price) / previous) * 100);
 }
 
-function buildVariants(sizes, colors) {
+function buildVariants(productSku, sizes, colors) {
   const variants = [];
   for (const size of sizes) {
     for (const color of colors) {
+      const suffix = `${size}-${color}`
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .toUpperCase()
+        .slice(0, 40);
       variants.push({
+        sku: `${productSku}-${suffix}`.slice(0, 64),
         size,
         color,
         inventory: 8,
-        status: "active",
-        sku_suffix: `${size}-${color}`.replace(/\s+/g, "").slice(0, 40),
+        status: "available",
       });
     }
   }
@@ -122,6 +129,30 @@ async function main() {
 
   console.log(`[OK] Tienda: ${shop.name} (${shop.slug}) id=${shop.id}`);
 
+  let businessId = process.env.ATRES_BUSINESS_ID || "";
+  if (!businessId) {
+    const { data: existingProduct } = await supabase
+      .from("products")
+      .select("business_id")
+      .not("business_id", "is", null)
+      .limit(1)
+      .maybeSingle();
+    businessId = existingProduct?.business_id || "";
+  }
+  if (!businessId) {
+    const { data: business } = await supabase
+      .from("businesses")
+      .select("id")
+      .in("slug", ["confecciones-bogota", "atres-kids", "atres-kinds"])
+      .limit(1)
+      .maybeSingle();
+    businessId = business?.id || "";
+  }
+  if (!businessId) {
+    throw new Error("No se pudo resolver business_id legado. Define ATRES_BUSINESS_ID en .env.local.");
+  }
+  console.log(`[OK] business_id legado resuelto`);
+
   const { data: categories, error: categoryError } = await supabase
     .from("categories")
     .select("id,slug,name,status")
@@ -164,6 +195,7 @@ async function main() {
       collection: item.collection,
       display_order: index + 1,
       shop_id: shop.id,
+      business_id: businessId,
     };
 
     const { data: existing, error: existingError } = await supabase
@@ -219,12 +251,13 @@ async function main() {
     if (imageRowError) throw new Error(`product_images ${item.slug}: ${imageRowError.message}`);
 
     await supabase.from("product_variants").delete().eq("product_id", productId);
-    const variants = buildVariants(item.sizes, item.colors).map((variant) => ({
+    const variants = buildVariants(payload.sku, item.sizes, item.colors).map((variant) => ({
       product_id: productId,
+      sku: variant.sku,
       size: variant.size,
       color: variant.color,
       inventory: variant.inventory,
-      status: "active",
+      status: "available",
     }));
 
     if (variants.length) {

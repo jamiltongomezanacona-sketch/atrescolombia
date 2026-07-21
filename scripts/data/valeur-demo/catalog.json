@@ -5,15 +5,26 @@
     "short_description": "Chaqueta deportiva tela Vioto, logos bordados y bolsillos con cierre.",
     "description": "Nuevo modelo VALEUR. Tela Vioto, logos bordados, bolsillos con cierre. Ideal para look urbano y motorsport.",
     "image": "chaqueta-ferrari-nuevo-modelo.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "chaquetas-urbanas",
     "price": 189900,
     "previous_price": 219900,
-    "sizes": ["M", "L", "XL"],
-    "colors": ["Negro/Rojo"],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Negro/Rojo"
+    ],
     "is_new": true,
     "is_featured": true,
     "is_promo": true,
-    "tags": ["valeur", "chaqueta", "ferrari", "demo"],
+    "tags": [
+      "valeur",
+      "chaqueta",
+      "ferrari",
+      "demo"
+    ],
     "collection": "VALEUR Motorsport"
   },
   {
@@ -22,15 +33,28 @@
     "short_description": "Chaqueta premium negra con acentos Ferrari y Puma.",
     "description": "Chaqueta premium VALEUR en negro con detalles en rojo y blanco, logos bordados. Tallas S a XL.",
     "image": "chaqueta-premium-ferrari-negra.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "chaquetas-urbanas",
     "price": 179900,
     "previous_price": null,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Negro"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Negro"
+    ],
     "is_new": true,
     "is_featured": false,
     "is_promo": false,
-    "tags": ["valeur", "chaqueta", "ferrari", "premium", "demo"],
+    "tags": [
+      "valeur",
+      "chaqueta",
+      "ferrari",
+      "premium",
+      "demo"
+    ],
     "collection": "VALEUR Motorsport"
   },
   {
@@ -39,15 +63,27 @@
     "short_description": "Chaqueta blanca con paneles rojo y azul navy.",
     "description": "Chaqueta deportiva blanca VALEUR con contraste rojo/navy y logos bordados.",
     "image": "chaqueta-ferrari-blanca.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "chaquetas-urbanas",
     "price": 179900,
     "previous_price": null,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Blanco"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Blanco"
+    ],
     "is_new": true,
     "is_featured": false,
     "is_promo": false,
-    "tags": ["valeur", "chaqueta", "ferrari", "demo"],
+    "tags": [
+      "valeur",
+      "chaqueta",
+      "ferrari",
+      "demo"
+    ],
     "collection": "VALEUR Motorsport"
   },
   {
@@ -56,15 +92,27 @@
     "short_description": "Chaqueta negro/blanco/rojo estilo racing.",
     "description": "Diseño color-block VALEUR con panel blanco en pecho y hombros en rojo.",
     "image": "chaqueta-ferrari-colorblock.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "chaquetas-urbanas",
     "price": 179900,
     "previous_price": null,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Negro/Blanco/Rojo"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Negro/Blanco/Rojo"
+    ],
     "is_new": false,
     "is_featured": true,
     "is_promo": false,
-    "tags": ["valeur", "chaqueta", "ferrari", "demo"],
+    "tags": [
+      "valeur",
+      "chaqueta",
+      "ferrari",
+      "demo"
+    ],
     "collection": "VALEUR Motorsport"
   },
   {
@@ -73,15 +121,27 @@
     "short_description": "Chaqueta roja con franjas blancas en mangas.",
     "description": "Chaqueta racing roja VALEUR con franjas blancas y logos bordados.",
     "image": "chaqueta-ferrari-roja.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "chaquetas-urbanas",
     "price": 179900,
     "previous_price": null,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Rojo"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Rojo"
+    ],
     "is_new": false,
     "is_featured": false,
     "is_promo": false,
-    "tags": ["valeur", "chaqueta", "ferrari", "demo"],
+    "tags": [
+      "valeur",
+      "chaqueta",
+      "ferrari",
+      "demo"
+    ],
     "collection": "VALEUR Motorsport"
   },
   {
@@ -90,15 +150,28 @@
     "short_description": "Chaqueta premium blanca Puma x BMW Motorsport.",
     "description": "Chaqueta premium VALEUR blanca con detalles BMW Motorsport y acentos azul/rojo/negro.",
     "image": "chaqueta-premium-bmw-blanca.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "chaquetas-urbanas",
     "price": 189900,
     "previous_price": 219900,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Blanco"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Blanco"
+    ],
     "is_new": true,
     "is_featured": true,
     "is_promo": true,
-    "tags": ["valeur", "chaqueta", "bmw", "premium", "demo"],
+    "tags": [
+      "valeur",
+      "chaqueta",
+      "bmw",
+      "premium",
+      "demo"
+    ],
     "collection": "VALEUR Motorsport"
   },
   {
@@ -107,15 +180,27 @@
     "short_description": "Chaqueta negra con paneles BMW Motorsport.",
     "description": "Chaqueta negra VALEUR con bloques de color azul, blanco y rojo estilo motorsport.",
     "image": "chaqueta-bmw-negra.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "chaquetas-urbanas",
     "price": 189900,
     "previous_price": null,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Negro"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Negro"
+    ],
     "is_new": true,
     "is_featured": false,
     "is_promo": false,
-    "tags": ["valeur", "chaqueta", "bmw", "demo"],
+    "tags": [
+      "valeur",
+      "chaqueta",
+      "bmw",
+      "demo"
+    ],
     "collection": "VALEUR Motorsport"
   },
   {
@@ -124,15 +209,27 @@
     "short_description": "Chaqueta negro/blanco/azul BMW Motorsport.",
     "description": "Chaqueta color-block VALEUR con pecho blanco y hombros azul rey.",
     "image": "chaqueta-bmw-colorblock.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "chaquetas-urbanas",
     "price": 189900,
     "previous_price": null,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Negro/Blanco/Azul"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Negro/Blanco/Azul"
+    ],
     "is_new": false,
     "is_featured": true,
     "is_promo": false,
-    "tags": ["valeur", "chaqueta", "bmw", "demo"],
+    "tags": [
+      "valeur",
+      "chaqueta",
+      "bmw",
+      "demo"
+    ],
     "collection": "VALEUR Motorsport"
   },
   {
@@ -141,15 +238,29 @@
     "short_description": "Conjunto sudadera sin capota, tela Vioto Patprimo.",
     "description": "Conjunto chaqueta + pantalón VALEUR sin capota. Tela Vioto Patprimo, logos bordados en hilo. Colores Negro, Blanco y Rojo.",
     "image": "conjunto-ferrari-sin-capota.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "conjuntos-deportivos",
     "price": 249900,
     "previous_price": 289900,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Negro", "Blanco", "Rojo"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Negro",
+      "Blanco",
+      "Rojo"
+    ],
     "is_new": true,
     "is_featured": true,
     "is_promo": true,
-    "tags": ["valeur", "conjunto", "ferrari", "demo"],
+    "tags": [
+      "valeur",
+      "conjunto",
+      "ferrari",
+      "demo"
+    ],
     "collection": "VALEUR Conjuntos"
   },
   {
@@ -158,15 +269,28 @@
     "short_description": "Conjunto sudadera BMW sin capota, logos bordados.",
     "description": "Conjunto VALEUR BMW Motorsport sin capota. Tela Vioto Patprimo, logos bordados. Colores Blanco y Negro.",
     "image": "conjunto-bmw-sin-capota.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "conjuntos-deportivos",
     "price": 249900,
     "previous_price": 289900,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Blanco", "Negro"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Blanco",
+      "Negro"
+    ],
     "is_new": true,
     "is_featured": true,
     "is_promo": true,
-    "tags": ["valeur", "conjunto", "bmw", "demo"],
+    "tags": [
+      "valeur",
+      "conjunto",
+      "bmw",
+      "demo"
+    ],
     "collection": "VALEUR Conjuntos"
   },
   {
@@ -175,15 +299,30 @@
     "short_description": "Conjunto con capota forrada y bolsillos con cremallera.",
     "description": "Conjunto VALEUR Ferrari con capota forrada, logos bordados y bolsillos con cremallera. Colores Rojo, Blanco y Negro.",
     "image": "conjunto-ferrari-capota.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "conjuntos-deportivos",
     "price": 269900,
     "previous_price": 309900,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Rojo", "Blanco", "Negro"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Rojo",
+      "Blanco",
+      "Negro"
+    ],
     "is_new": true,
     "is_featured": true,
     "is_promo": true,
-    "tags": ["valeur", "conjunto", "ferrari", "capota", "demo"],
+    "tags": [
+      "valeur",
+      "conjunto",
+      "ferrari",
+      "capota",
+      "demo"
+    ],
     "collection": "VALEUR Conjuntos"
   },
   {
@@ -192,15 +331,28 @@
     "short_description": "Conjunto Ferrari con capota en gris claro y oscuro.",
     "description": "Conjunto VALEUR Ferrari con capota forrada. Disponibles Gris Claro y Gris Oscuro. Tallas S a XL.",
     "image": "conjunto-ferrari-capota-gris.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "conjuntos-deportivos",
     "price": 269900,
     "previous_price": null,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Gris Claro", "Gris Oscuro"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Gris Claro",
+      "Gris Oscuro"
+    ],
     "is_new": false,
     "is_featured": false,
     "is_promo": false,
-    "tags": ["valeur", "conjunto", "ferrari", "demo"],
+    "tags": [
+      "valeur",
+      "conjunto",
+      "ferrari",
+      "demo"
+    ],
     "collection": "VALEUR Conjuntos"
   },
   {
@@ -209,15 +361,30 @@
     "short_description": "Conjunto BMW con capota forrada, tela Vioto Patprimo.",
     "description": "Conjunto VALEUR BMW con capota forrada y bolsillos con cremallera. Colores Gris Oscuro, Blanco y Gris Claro.",
     "image": "conjunto-bmw-capota.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "conjuntos-deportivos",
     "price": 269900,
     "previous_price": 309900,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Gris Oscuro", "Blanco", "Gris Claro"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Gris Oscuro",
+      "Blanco",
+      "Gris Claro"
+    ],
     "is_new": true,
     "is_featured": true,
     "is_promo": true,
-    "tags": ["valeur", "conjunto", "bmw", "capota", "demo"],
+    "tags": [
+      "valeur",
+      "conjunto",
+      "bmw",
+      "capota",
+      "demo"
+    ],
     "collection": "VALEUR Conjuntos"
   },
   {
@@ -226,15 +393,28 @@
     "short_description": "Conjunto BMW con capota en negro y rojo.",
     "description": "Conjunto VALEUR BMW con capota forrada. Colores Negro y Rojo. Logos bordados en hilo.",
     "image": "conjunto-bmw-capota-negro-rojo.jpg",
-    "categorySlug": "hombre",
+    "categorySlug": "conjuntos-deportivos",
     "price": 269900,
     "previous_price": null,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Negro", "Rojo"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Negro",
+      "Rojo"
+    ],
     "is_new": false,
     "is_featured": false,
     "is_promo": false,
-    "tags": ["valeur", "conjunto", "bmw", "demo"],
+    "tags": [
+      "valeur",
+      "conjunto",
+      "bmw",
+      "demo"
+    ],
     "collection": "VALEUR Conjuntos"
   },
   {
@@ -243,15 +423,32 @@
     "short_description": "Conjunto sudadera mujer, tela LOTTO 100% poliéster.",
     "description": "Conjunto VALEUR para mujer. Tela LOTTO 100% poliéster. Tallas S a XL. Varios colores disponibles.",
     "image": "conjunto-sudadera-mujer.jpg",
-    "categorySlug": "mujer",
+    "categorySlug": "conjuntos-deportivos",
     "price": 229900,
     "previous_price": 259900,
-    "sizes": ["S", "M", "L", "XL"],
-    "colors": ["Rosado", "Blanco", "Beige", "Negro", "Celeste", "Lila"],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Rosado",
+      "Blanco",
+      "Beige",
+      "Negro",
+      "Celeste",
+      "Lila"
+    ],
     "is_new": true,
     "is_featured": true,
     "is_promo": true,
-    "tags": ["valeur", "conjunto", "mujer", "demo"],
+    "tags": [
+      "valeur",
+      "conjunto",
+      "mujer",
+      "demo"
+    ],
     "collection": "VALEUR Mujer"
   }
 ]

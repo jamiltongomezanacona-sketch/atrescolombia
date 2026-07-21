@@ -39,7 +39,7 @@ export async function SiteHeader() {
         </div>
       </div>
 
-      <div className="hidden header-container py-1.5 lg:block lg:py-2">
+      <div className="hidden header-container py-1.5 lg:block lg:py-1.5">
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 xl:gap-4">
           <div className="flex shrink-0 items-center gap-2">
             <Suspense fallback={<div className="h-9 w-9 rounded-[var(--radius-card)] bg-white/10 lg:hidden" />}>
@@ -60,7 +60,7 @@ export async function SiteHeader() {
       </div>
 
       <div className="hidden lg:block">
-        <Suspense fallback={<div className="h-10 border-t border-white/10 bg-white/[0.03]" />}>
+        <Suspense fallback={<div className="h-7 border-t border-white/10 bg-white/[0.03]" />}>
           <HeaderNav items={navItems} />
         </Suspense>
       </div>

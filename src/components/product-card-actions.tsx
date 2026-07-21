@@ -80,7 +80,46 @@ export function ProductCardActions(props: ProductCardActionsProps) {
         className,
       )}
     >
-      <span aria-hidden="true">{outOfStock ? "—" : added ? "✓" : "+"}</span>
+      <span aria-hidden="true" className="grid place-items-center">
+        {outOfStock ? (
+          <span className="text-sm font-medium leading-none">—</span>
+        ) : added ? (
+          <CheckIcon />
+        ) : (
+          <CartIcon />
+        )}
+      </span>
     </button>
+  );
+}
+
+function CartIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="size-[1.05rem] fill-none stroke-current lg:size-5"
+      strokeWidth="1.85"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M3 4h1.6l1.35 9.2h11.3L19.5 7.2H7.1" />
+      <path d="M7.1 7.2 6.1 4.8H21" />
+      <circle cx="9.2" cy="18.6" r="1.35" />
+      <circle cx="16.6" cy="18.6" r="1.35" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="size-[1.05rem] fill-none stroke-current lg:size-5"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5.5 12.5 10 17l8.5-9.5" />
+    </svg>
   );
 }

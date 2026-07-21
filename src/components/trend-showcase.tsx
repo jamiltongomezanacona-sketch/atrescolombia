@@ -35,7 +35,7 @@ export function TrendShowcase({
   if (!featured.length && !title) return null;
 
   return (
-    <section className={cn("store-container md:py-4", compact ? "py-1" : "py-3")}>
+    <section className={cn("catalog-container products-catalog-container md:py-4", compact ? "py-1" : "py-3")}>
       <div className={cn("relative overflow-hidden rounded-lg shadow-soft ring-1 ring-white/55", theme.washClass)}>
         <div className="pointer-events-none absolute inset-0">
           <SafeProductImage

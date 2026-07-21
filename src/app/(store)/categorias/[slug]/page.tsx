@@ -68,7 +68,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       />
 
       {subcategories.length > 0 ? (
-        <section className="catalog-container pb-1.5 md:pb-3" aria-label="Subcategorias">
+        <section className="catalog-container products-catalog-container pb-1.5 md:pb-3" aria-label="Subcategorias">
           <p className="mb-1 text-xs font-medium text-stone-500 md:mb-2">
             Subcategorias
           </p>
@@ -93,7 +93,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </section>
       ) : null}
 
-      <section className="catalog-container py-2 md:py-3">
+      <section className="catalog-container products-catalog-container py-2 md:py-3">
         {categoryProducts.length === 0 ? (
           <p className="text-sm font-normal text-stone-500">
             No hay productos en esta categoria por ahora. Explora otras colecciones ATRES.

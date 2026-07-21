@@ -21,18 +21,18 @@ export function ProductRail({
   if (!products.length) return null;
 
   return (
-    <section className="store-container py-3 md:py-4">
-      <div className="mb-2.5 flex items-end justify-between gap-4">
-        <h2 className="text-lg font-medium tracking-tight text-ink md:text-xl">{title}</h2>
+    <section className="catalog-container products-catalog-container py-3 md:py-4">
+      <div className="mb-2 flex items-end justify-between gap-3">
+        <h2 className="text-base font-medium tracking-tight text-ink sm:text-lg md:text-xl">{title}</h2>
         <Link
           href={href}
-          className="text-sm font-medium text-ink-muted underline-offset-4 transition hover:text-ink hover:underline"
+          className="text-xs font-medium text-ink-muted underline-offset-4 transition hover:text-ink hover:underline sm:text-sm"
         >
           {linkLabel}
         </Link>
       </div>
-      <div className="product-rail">
-        {products.slice(0, 8).map((product, index) => (
+      <div className="catalog-grid">
+        {products.slice(0, 10).map((product, index) => (
           <ProductCard
             key={product.slug}
             product={product}

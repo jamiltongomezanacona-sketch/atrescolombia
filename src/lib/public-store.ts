@@ -340,7 +340,7 @@ export async function getPublicRelatedProducts(product: Product) {
   }
 
   const products = await getPublicProductsByCategory(product.categorySlug);
-  return products.filter((item) => item.slug !== product.slug).slice(0, 4);
+  return products.filter((item) => item.slug !== product.slug).slice(0, 10);
 }
 
 export const getPublicShops = cache(async function getPublicShops(): Promise<PublicShop[]> {

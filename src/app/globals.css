@@ -455,44 +455,20 @@ h6 {
 
 .product-rail {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(9.75rem, 44%);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
-  align-items: start;
-  overflow-x: auto;
-  padding-bottom: 0.25rem;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: 0.25rem;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-}
-
-.product-rail > * {
-  scroll-snap-align: start;
+  align-items: stretch;
 }
 
 @media (min-width: 640px) {
   .product-rail {
-    grid-auto-columns: minmax(11rem, 28%);
     gap: 0.875rem;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .product-rail {
-    display: grid;
-    grid-auto-flow: unset;
-    grid-auto-columns: unset;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 1rem;
-    overflow: visible;
-    scroll-snap-type: none;
-  }
-}
-
-@media (min-width: 1536px) {
-  .product-rail {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    gap: 1.125rem;
   }
 }

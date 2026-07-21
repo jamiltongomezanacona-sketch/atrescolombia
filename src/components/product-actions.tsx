@@ -95,21 +95,21 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
   }
 
   return (
-    <div className="mt-6 space-y-6">
+    <div className="mt-4 space-y-3.5">
       <OptionGroup title="Color" value={color} items={product.colors} onChange={setColor} />
       <OptionGroup title="Talla" value={size} items={product.sizes} onChange={setSize} />
 
       <div>
-        <p className="mb-2 text-[11px] font-medium tracking-wide text-ink-muted">Cantidad</p>
+        <p className="mb-1.5 text-[10px] font-medium tracking-wide text-ink-muted sm:text-[11px]">Cantidad</p>
         <div
-          className="inline-grid grid-cols-[44px_52px_44px] overflow-hidden rounded-[var(--radius-card)] bg-surface-muted text-center ring-1 ring-black/8"
+          className="inline-grid grid-cols-[40px_48px_40px] overflow-hidden rounded-[var(--radius-card)] bg-surface-muted text-center ring-1 ring-black/8"
           role="group"
           aria-label="Cantidad"
         >
           <button
             type="button"
             aria-label="Reducir cantidad"
-            className="h-11 font-medium text-ink transition hover:bg-white"
+            className="h-10 font-medium text-ink transition hover:bg-white"
             onClick={() => setQuantity((current) => Math.max(1, current - 1))}
           >
             −
@@ -117,14 +117,14 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
           <span
             aria-live="polite"
             aria-atomic="true"
-            className="flex h-11 items-center justify-center bg-surface text-sm font-medium text-ink"
+            className="flex h-10 items-center justify-center bg-surface text-sm font-medium text-ink"
           >
             {quantity}
           </span>
           <button
             type="button"
             aria-label="Aumentar cantidad"
-            className="h-11 font-medium text-ink transition hover:bg-white"
+            className="h-10 font-medium text-ink transition hover:bg-white"
             onClick={() => setQuantity((current) => Math.min(9, current + 1))}
           >
             +
@@ -132,7 +132,7 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
         </div>
       </div>
 
-      <div className="grid gap-2.5 sm:grid-cols-[1fr_1fr_auto]">
+      <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
         <Button type="button" onClick={() => addToCart(false)} disabled={outOfStock}>
           Agregar al carrito
         </Button>
@@ -151,13 +151,13 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex h-12 w-full items-center justify-center rounded-[var(--radius-card)] bg-[#25D366] px-4 text-sm font-medium text-white transition hover:bg-[#1ebe57]"
+          className="inline-flex h-11 w-full items-center justify-center rounded-[var(--radius-card)] bg-[#25D366] px-4 text-sm font-medium text-white transition hover:bg-[#1ebe57]"
         >
           Consultar por WhatsApp
         </a>
       ) : null}
 
-      <Button type="button" variant="secondary" size="lg" onClick={shareProduct}>
+      <Button type="button" variant="secondary" size="md" onClick={shareProduct}>
         Compartir producto
       </Button>
 
@@ -206,15 +206,15 @@ function OptionGroup({
 }) {
   return (
     <div>
-      <p className="mb-2 text-[11px] font-medium tracking-wide text-ink-muted">{title}</p>
-      <div className="flex flex-wrap gap-2" role="group" aria-label={title}>
+      <p className="mb-1.5 text-[10px] font-medium tracking-wide text-ink-muted sm:text-[11px]">{title}</p>
+      <div className="flex flex-wrap gap-1.5" role="group" aria-label={title}>
         {items.map((item) => (
           <button
             key={item}
             type="button"
             aria-pressed={value === item}
             onClick={() => onChange(item)}
-            className={`min-h-10 min-w-10 rounded-[var(--radius-card)] px-3 py-2 text-sm font-normal transition ${
+            className={`min-h-9 min-w-9 rounded-[var(--radius-card)] px-2.5 py-1.5 text-sm font-normal transition ${
               value === item
                 ? "bg-ink text-white"
                 : "bg-surface text-ink-muted ring-1 ring-black/10 hover:bg-surface-muted hover:text-ink"

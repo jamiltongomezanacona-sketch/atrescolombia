@@ -84,7 +84,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     getPublicStoreSettings(),
   ]);
   const discount = getDiscountPercent(product);
-  const recentlyViewed = publicProducts.filter((item) => item.slug !== product.slug).slice(0, 4);
+  const recentlyViewed = publicProducts.filter((item) => item.slug !== product.slug).slice(0, 10);
   const inStock = product.stock > 0;
   const commercialBadge = getCommercialBadge(product);
   const commercialTone = getCommercialTone(product);
@@ -114,11 +114,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
         colors={product.colors}
         sizes={product.sizes}
       >
-        <section className="store-container grid gap-4 py-3 md:gap-6 md:py-4 lg:grid-cols-[1.12fr_0.88fr] lg:items-start lg:gap-8">
+        <section className="catalog-container products-catalog-container grid gap-3 py-2 md:gap-5 md:py-3 lg:grid-cols-[1.15fr_0.85fr] lg:items-start lg:gap-6">
           <ProductGallery productName={product.name} images={product.images} />
 
-          <GlassPanel className="self-start p-4 sm:p-5 lg:sticky lg:top-28 lg:p-6">
-            <div className="flex flex-wrap gap-1.5">
+          <GlassPanel className="self-start p-3 sm:p-4 lg:sticky lg:top-28 lg:p-4">
+            <div className="flex flex-wrap gap-1">
               {commercialBadge ? (
                 <Badge tone="black" className={getToneClass(commercialTone)}>
                   {commercialBadge}
@@ -128,14 +128,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <Badge tone={inStock ? "metal" : "soft"}>{inStock ? "Disponible" : "Agotado"}</Badge>
             </div>
 
-            <p className="mt-4 text-[11px] font-medium tracking-wide text-ink-muted">
+            <p className="mt-2.5 text-[10px] font-medium tracking-wide text-ink-muted sm:text-[11px]">
               <Link href={`/categoria/${product.categorySlug}`} className="transition hover:text-brand">
                 {product.categoryName}
               </Link>
               {product.collection ? ` / ${product.collection}` : ""}
             </p>
 
-            <h1 className="mt-2 text-3xl font-medium tracking-tight text-ink sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
+            <h1 className="mt-1 text-2xl font-medium tracking-tight text-ink sm:text-3xl lg:text-[2.15rem] lg:leading-[1.12]">
               {product.name}
             </h1>
 
@@ -143,40 +143,47 @@ export default async function ProductPage({ params }: ProductPageProps) {
               price={product.price}
               previousPrice={product.previousPrice}
               size="lg"
-              className="mt-4 flex items-end gap-3"
+              className="mt-2.5 flex flex-wrap items-baseline gap-x-2 gap-y-0"
             />
 
-            <p className="mt-5 text-sm font-normal leading-7 text-ink-muted sm:text-base sm:leading-7">
+            <p className="mt-2.5 text-sm font-normal leading-5 text-ink-muted sm:leading-6">
               {product.description}
             </p>
-            <p className="mt-2 text-sm font-medium text-brand">{commercialLine}</p>
+            <p className="mt-1 text-xs font-medium text-brand sm:text-sm">{commercialLine}</p>
 
             {sizes.length > 0 ? (
-              <p className="mt-3 text-sm font-normal text-ink-muted">
-                Tallas disponibles: {product.sizes.join(" · ")}
+              <p className="mt-1.5 text-xs font-normal text-ink-muted sm:text-sm">
+                Tallas: {product.sizes.join(" · ")}
               </p>
             ) : null}
 
             <ProductActions product={product} whatsapp={resolveStoreWhatsapp(settings?.whatsapp)} />
 
-            <div className="mt-6 border-t border-black/[0.06] pt-5 text-sm font-normal text-ink-muted">
-              <p className="text-[11px] font-medium tracking-wide text-ink">Guia rapida</p>
-              <div className="mt-2.5 grid gap-1.5">
-                <p>Disponibilidad: {product.stock} unidades</p>
+            <div className="mt-4 border-t border-black/[0.06] pt-3">
+              <p className="text-[10px] font-medium tracking-wide text-ink sm:text-[11px]">Guia rapida</p>
+              <ul className="mt-1.5 grid gap-1 text-xs font-normal leading-5 text-ink-muted sm:text-sm">
+                <li>Disponibilidad: {product.stock} unidades</li>
                 {settings?.shippingText ? (
-                  <p>{settings.shippingText}</p>
+                  <li>{settings.shippingText}</li>
                 ) : (
-                  <p>Guia de tallas: elige tu talla habitual; fit regular salvo indicacion.</p>
+                  <li>Guia de tallas: elige tu talla habitual; fit regular salvo indicacion.</li>
                 )}
-                {settings?.promoMessage ? <p className="font-medium text-brand">{settings.promoMessage}</p> : null}
-              </div>
+                {settings?.promoMessage ? (
+                  <li className="font-medium text-brand">{settings.promoMessage}</li>
+                ) : null}
+              </ul>
             </div>
 
-            <div className="mt-6">
-              <p className="mb-2.5 text-[11px] font-medium tracking-wide text-ink-muted">Detalles</p>
-              <ul className="grid gap-1.5 text-sm font-normal text-ink-muted">
+            <div className="mt-3 border-t border-black/[0.06] pt-3">
+              <p className="mb-1.5 text-[10px] font-medium tracking-wide text-ink-muted sm:text-[11px]">
+                Cualidades
+              </p>
+              <ul className="grid gap-0 text-xs font-normal text-ink-muted sm:text-sm">
                 {visibleDetails.map((detail) => (
-                  <li key={detail} className="border-b border-black/[0.05] py-2 last:border-b-0">
+                  <li
+                    key={detail}
+                    className="border-b border-black/[0.04] py-1.5 leading-5 last:border-b-0"
+                  >
                     {detail}
                   </li>
                 ))}

@@ -208,6 +208,7 @@ export async function setShopStatus(shopId: string, status: "active" | "suspende
 
   if (error) return { ok: false, message: error.message };
   revalidatePath("/admin/tiendas");
+  revalidateStore();
   return { ok: true, message: "Estado de tienda actualizado." };
 }
 

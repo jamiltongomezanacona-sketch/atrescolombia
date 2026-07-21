@@ -450,15 +450,27 @@ async function hydrateProductRows(products: SupabaseProductRow[]): Promise<Produ
     getShopsById(shopIds),
   ]);
 
-  return products.map((row) =>
-    mapProductRow(
-      row,
-      row.category_id ? categoriesById.get(row.category_id) ?? null : null,
-      imagesByProductId.get(row.id) ?? [],
-      variantsByProductId.get(row.id) ?? [],
-      row.shop_id ? shopsById.get(row.shop_id) ?? null : null,
-    ),
-  );
+  return products
+    .filter((row) => isProductShopPubliclyVisible(row.shop_id, shopsById))
+    .map((row) =>
+      mapProductRow(
+        row,
+        row.category_id ? categoriesById.get(row.category_id) ?? null : null,
+        imagesByProductId.get(row.id) ?? [],
+        variantsByProductId.get(row.id) ?? [],
+        row.shop_id ? shopsById.get(row.shop_id) ?? null : null,
+      ),
+    );
+}
+
+/** Products without shop stay visible; products with a shop only if that shop is active. */
+function isProductShopPubliclyVisible(
+  shopId: string | null,
+  shopsById: Map<string, { id: string; slug: string; name: string; status: string }>,
+) {
+  if (!shopId) return true;
+  const shop = shopsById.get(shopId);
+  return Boolean(shop && shop.status === "active");
 }
 
 async function getCategoriesById(categoryIds: string[]) {
@@ -616,16 +628,16 @@ function mapProductRow(
 }
 
 async function getShopsById(shopIds: string[]) {
-  if (!shopIds.length) return new Map<string, { id: string; slug: string; name: string }>();
+  if (!shopIds.length) return new Map<string, { id: string; slug: string; name: string; status: string }>();
 
   const supabase = createSupabasePublicClient();
-  const { data, error } = await supabase.from("shops").select("id,slug,name").in("id", shopIds);
+  const { data, error } = await supabase.from("shops").select("id,slug,name,status").in("id", shopIds);
   if (error || !data?.length) return new Map();
 
   return new Map(
-    (data as Array<{ id: string; slug: string; name: string }>).map((shop) => [
+    (data as Array<{ id: string; slug: string; name: string; status: string }>).map((shop) => [
       shop.id,
-      { id: shop.id, slug: shop.slug, name: shop.name },
+      { id: shop.id, slug: shop.slug, name: shop.name, status: shop.status },
     ]),
   );
 }

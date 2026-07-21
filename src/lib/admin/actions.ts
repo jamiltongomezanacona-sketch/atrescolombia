@@ -439,6 +439,69 @@ export async function uploadQuickProductImage(
   };
 }
 
+export async function uploadShopBrandImage(
+  formData: FormData,
+): Promise<ActionState & { publicUrl?: string }> {
+  const guard = ensureSupabase();
+  if (guard) return guard;
+
+  await requireAdmin();
+  const shopId = stringValue(formData, "shopId");
+  const kind = stringValue(formData, "kind");
+  const file = formData.get("file");
+
+  if (!shopId) {
+    return { ok: false, message: "Guarda la tienda primero para subir imagenes." };
+  }
+
+  if (kind !== "logo" && kind !== "cover") {
+    return { ok: false, message: "Tipo de imagen invalido." };
+  }
+
+  if (!(file instanceof File)) {
+    return { ok: false, message: "No se recibio la imagen para subir." };
+  }
+
+  if (!ALLOWED_QUICK_PRODUCT_IMAGE_TYPES.has(file.type)) {
+    return { ok: false, message: "Solo se permiten imagenes WebP, JPG o PNG." };
+  }
+
+  if (file.size > MAX_QUICK_PRODUCT_IMAGE_BYTES) {
+    return {
+      ok: false,
+      message: "La imagen optimizada supera 900KB. Reduce la foto antes de subirla.",
+    };
+  }
+
+  const access = await assertCanManageShop(shopId);
+  if (!access.ok) return access;
+
+  const supabase = await createSupabaseServerClient();
+  const storagePath = `shops/${shopId}/${kind}-${crypto.randomUUID()}.webp`;
+  const { error } = await supabase.storage
+    .from("product-images")
+    .upload(storagePath, file, { contentType: file.type || "image/webp", upsert: false });
+
+  if (error) {
+    return {
+      ok: false,
+      message: `No se pudo subir la imagen. Detalle: ${error.message}`,
+    };
+  }
+
+  const { data } = supabase.storage.from("product-images").getPublicUrl(storagePath);
+  revalidatePath("/admin/tiendas");
+  revalidatePath(`/admin/tiendas/${shopId}/editar`);
+  revalidatePath("/tiendas");
+  revalidatePath(`/tiendas/[slug]`, "page");
+
+  return {
+    ok: true,
+    message: kind === "logo" ? "Logo subido." : "Portada subida.",
+    publicUrl: data.publicUrl,
+  };
+}
+
 export async function cleanupQuickProductUploads(paths: string[]): Promise<ActionState> {
   const guard = ensureSupabase();
   if (guard) return guard;
@@ -1073,6 +1136,20 @@ async function resolveAdminShopIdForWrite(requestedShopId: string | null) {
   } catch {
     return null;
   }
+}
+
+async function assertCanManageShop(shopId: string): Promise<ActionState> {
+  const session = await getAdminSession();
+  if (!session.isAdmin) {
+    return { ok: false, message: "No tienes permisos de administracion." };
+  }
+  if (session.isSuperAdmin) {
+    return { ok: true, message: "ok" };
+  }
+  if (session.shopIds.includes(shopId) || session.primaryShopId === shopId) {
+    return { ok: true, message: "ok" };
+  }
+  return { ok: false, message: "Solo puedes subir imagenes de tu tienda." };
 }
 
 async function assertCanManageProduct(productId: string): Promise<ActionState> {

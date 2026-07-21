@@ -16,7 +16,7 @@ import { getDiscountPercent, type Product } from "@/lib/store-data";
 type ProductCardProps = {
   product: Product;
   priority?: boolean;
-  /** Denser commercial layout for catalog grids only. */
+  /** Kept for callers; catalog cards share one dense standard. */
   compact?: boolean;
 };
 
@@ -35,7 +35,7 @@ function pickRandomProductImage(product: Product) {
   return gallery[Math.floor(Math.random() * gallery.length)] ?? product.image;
 }
 
-export function ProductCard({ product, priority = false, compact = false }: ProductCardProps) {
+export function ProductCard({ product, priority = false }: ProductCardProps) {
   const discount = getDiscountPercent(product);
   const previousPrice =
     product.previousPrice && product.previousPrice > product.price ? product.previousPrice : null;
@@ -44,20 +44,15 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
   const ribbon = getTopRibbon(product);
   const visualTag = ribbon ? null : getCommercialBadge(product);
   const visualTone = getCommercialTone(product);
-  const sizeLabel = getCompactSizeLabel(meaningfulSizes(product.sizes));
   const swatches = product.colors.filter(Boolean).slice(0, 3);
   // Prefer ribbon ("Ahorra $…") over a second "-%" badge on the same image.
   const showDiscount = Boolean(discount) && !ribbon;
   const salesCount = getSalesCount(product);
   const displayImage = pickRandomProductImage(product);
+  const hasOptions = sizes.length > 0 || swatches.length > 0;
 
   return (
-    <article
-      className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface transition duration-300",
-        "hover:shadow-soft motion-safe:hover:-translate-y-0.5",
-      )}
-    >
+    <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface transition duration-300 hover:shadow-soft motion-safe:hover:-translate-y-0.5">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
           <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
@@ -73,96 +68,64 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
         </Link>
 
         {ribbon ? (
-          <div
-            className={cn(
-              "absolute left-1.5 top-1.5 max-w-[72%] rounded-[var(--radius-card)] bg-brand font-medium text-white",
-              compact ? "px-1.5 py-px text-[9px] sm:text-[10px]" : "left-2 top-2 px-2 py-0.5 text-[10px] sm:text-[11px]",
-            )}
-          >
+          <div className="absolute left-1.5 top-1.5 max-w-[72%] rounded-[var(--radius-card)] bg-brand px-1.5 py-px text-[9px] font-medium text-white sm:text-[10px]">
             <span className="truncate">{ribbon}</span>
           </div>
         ) : null}
 
-        <div
-          className={cn(
-            "absolute opacity-90 transition group-hover:opacity-100",
-            compact ? "right-1 top-1" : "right-1.5 top-1.5",
-          )}
-        >
+        <div className="absolute right-1 top-1 opacity-90 transition group-hover:opacity-100">
           <FavoriteButton productSlug={product.slug} compact />
         </div>
 
         {visualTag ? (
-          <div className={cn("absolute", compact ? "left-1.5 top-1.5" : "left-2 top-2")}>
-            <Badge
-              tone="black"
-              className={cn(getToneClass(visualTone), compact ? "px-1.5 py-px text-[9px]" : "text-[10px]")}
-            >
+          <div className="absolute left-1.5 top-1.5">
+            <Badge tone="black" className={cn(getToneClass(visualTone), "px-1.5 py-px text-[9px]")}>
               {visualTag}
             </Badge>
           </div>
         ) : null}
 
         {showDiscount ? (
-          <div className={cn("absolute", compact ? "bottom-1.5 left-1.5" : "bottom-2 left-2")}>
-            <Badge tone="brand" className={compact ? "px-1.5 py-px text-[9px]" : "text-[10px]"}>
+          <div className="absolute bottom-1.5 left-1.5">
+            <Badge tone="brand" className="px-1.5 py-px text-[9px]">
               -{discount}%
             </Badge>
           </div>
         ) : null}
 
-        {sizeLabel ? (
-          <div
-            className={cn(
-              "absolute hidden rounded-[var(--radius-card)] bg-white/92 font-medium text-ink-muted backdrop-blur-sm sm:block",
-              compact
-                ? "bottom-1.5 right-1.5 px-1 py-px text-[9px]"
-                : "bottom-2 right-2 px-1.5 py-0.5 text-[10px]",
-            )}
-          >
-            {sizeLabel}
-          </div>
-        ) : null}
-
         {!inStock ? (
-          <div className={cn("absolute inset-x-1.5", compact ? "bottom-1.5" : "inset-x-2 bottom-2")}>
-            <Badge tone="black" className={compact ? "px-1.5 py-px text-[9px]" : "text-[10px]"}>
+          <div className="absolute inset-x-1.5 bottom-1.5">
+            <Badge tone="black" className="px-1.5 py-px text-[9px]">
               Agotado
             </Badge>
           </div>
         ) : null}
       </div>
 
-      <div className={cn("flex min-w-0 flex-col", compact ? "gap-0.5 p-1.5" : "gap-1 p-2 sm:p-2.5")}>
-        <div className="flex items-center justify-between gap-1.5">
-          <p className="min-w-0 truncate text-[10px] font-medium leading-none text-ink-muted/85 sm:text-[11px]">
+      {/* Dense commercial info: photo → name → price+cart; meta secondary */}
+      <div className="flex min-w-0 flex-col gap-0.5 px-1.5 pb-1.5 pt-1">
+        <div className="flex items-center justify-between gap-1.5 leading-none">
+          <p className="min-w-0 truncate text-[9px] font-medium tracking-wide text-ink-muted/80 sm:text-[10px]">
             {product.categoryName}
           </p>
-          <div className="flex shrink-0 items-center gap-0.5 text-[10px] font-medium leading-none text-ink-muted sm:text-[11px]">
+          <p className="flex shrink-0 items-center gap-0.5 text-[9px] font-medium text-ink-muted sm:text-[10px]">
             <StarIcon />
             <span className="text-ink">{product.rating.toFixed(1)}</span>
-            <span className="text-ink-muted/50">·</span>
-            <span className="text-ink-muted/80">{salesCount}</span>
-          </div>
+            <span className="text-ink-muted/45">·</span>
+            <span className="text-ink-muted/75">{salesCount}</span>
+          </p>
         </div>
 
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3
-            className={cn(
-              "line-clamp-2 font-medium text-ink transition group-hover:text-ink",
-              compact
-                ? "min-h-[2.4em] text-[12px] leading-[1.2] sm:text-[13px]"
-                : "min-h-[2.5em] text-[13px] leading-[1.25] sm:text-sm",
-            )}
-          >
+          <h3 className="line-clamp-2 text-[12px] font-medium leading-[1.2] text-ink transition group-hover:text-ink sm:text-[13px] sm:leading-[1.22]">
             {product.name}
           </h3>
         </Link>
 
-        {(sizes.length > 0 || swatches.length > 0) ? (
-          <div className="flex items-center justify-between gap-2">
+        {hasOptions ? (
+          <div className="flex items-center justify-between gap-1.5 leading-none">
             {sizes.length > 0 ? (
-              <p className="min-w-0 truncate text-[10px] font-normal leading-none text-ink-muted/90 sm:text-[11px]">
+              <p className="min-w-0 truncate text-[9px] font-normal text-ink-muted/85 sm:text-[10px]">
                 {sizes.join(" · ")}
                 {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
               </p>
@@ -170,13 +133,13 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
               <span />
             )}
             {swatches.length > 0 ? (
-              <div className="flex shrink-0 items-center gap-1" aria-label="Colores disponibles">
+              <div className="flex shrink-0 items-center gap-0.5" aria-label="Colores disponibles">
                 {swatches.map((color) => (
                   <span
                     key={color}
                     title={color}
                     aria-label={color}
-                    className="size-2.5 rounded-full ring-1 ring-black/10"
+                    className="size-2 rounded-full ring-1 ring-black/10"
                     style={{ backgroundColor: colorToHex(color) }}
                   />
                 ))}
@@ -185,36 +148,20 @@ export function ProductCard({ product, priority = false, compact = false }: Prod
           </div>
         ) : null}
 
-        <div className="mt-0.5 flex items-end justify-between gap-2">
+        <div className="flex items-center justify-between gap-1.5 pt-0.5">
           <ProductPrice
             price={product.price}
             previousPrice={previousPrice}
-            size="md"
-            className="flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0"
-            currentClassName={
-              compact ? "text-[0.95rem] leading-none sm:text-base" : "text-base leading-none sm:text-lg"
-            }
-            previousClassName="mt-0 text-[10px] leading-none sm:text-[11px]"
+            size="sm"
+            className="flex min-w-0 flex-wrap items-baseline gap-x-1 gap-y-0"
+            currentClassName="text-[0.9rem] leading-none sm:text-[0.95rem]"
+            previousClassName="mt-0 text-[9px] leading-none sm:text-[10px]"
           />
           <ProductCardActions product={product} />
         </div>
       </div>
     </article>
   );
-}
-
-function getCompactSizeLabel(sizes: string[]) {
-  if (!sizes.length) return null;
-  const numeric = sizes
-    .map((size) => Number(size))
-    .filter((size) => Number.isFinite(size))
-    .sort((a, b) => a - b);
-
-  if (numeric.length >= 2 && numeric.length === sizes.length) {
-    return `${numeric[0]}-${numeric[numeric.length - 1]}`;
-  }
-
-  return sizes.slice(0, 2).join("/");
 }
 
 function colorToHex(color: string) {
@@ -245,7 +192,7 @@ function getSalesCount(product: Product) {
 
 function StarIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-3 fill-amber-400 text-amber-400">
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-2.5 fill-amber-400 text-amber-400">
       <path d="m12 2.8 2.75 5.57 6.15.9-4.45 4.33 1.05 6.12L12 16.83l-5.5 2.89 1.05-6.12L3.1 9.27l6.15-.9L12 2.8Z" />
     </svg>
   );

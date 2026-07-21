@@ -72,10 +72,10 @@ export function ProductCardActions(props: ProductCardActionsProps) {
       aria-live="polite"
       onClick={addToCart}
       className={cn(
-        "atres-interactive inline-flex size-9 shrink-0 items-center justify-center rounded-full text-base font-medium leading-none text-white transition duration-200",
+        "atres-interactive inline-flex size-8 shrink-0 items-center justify-center rounded-full text-base font-medium leading-none text-white transition duration-200",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
         "active:scale-95 disabled:cursor-not-allowed disabled:bg-stone-300 disabled:text-stone-500",
-        "sm:size-9 lg:size-10",
+        "sm:size-8",
         added ? "atres-pop bg-emerald-600 hover:bg-emerald-600" : "bg-ink hover:bg-black",
         className,
       )}
@@ -97,7 +97,7 @@ function CartIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="size-[1.05rem] fill-none stroke-current lg:size-5"
+      className="size-3.5 fill-none stroke-current"
       strokeWidth="1.85"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -114,7 +114,7 @@ function CheckIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="size-[1.05rem] fill-none stroke-current lg:size-5"
+      className="size-3.5 fill-none stroke-current"
       strokeWidth="2.2"
       strokeLinecap="round"
       strokeLinejoin="round"

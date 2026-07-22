@@ -1,5 +1,13 @@
+"use client";
+
 import Image from "next/image";
-import { isRemoteImageUrl, normalizePublicImageUrl } from "@/lib/image-url";
+import { useState } from "react";
+import { ATRES_IMAGE_PLACEHOLDER } from "@/lib/local-media";
+import {
+  isRemoteImageUrl,
+  isUnsupportedExternalImageUrl,
+  normalizePublicImageUrl,
+} from "@/lib/image-url";
 
 type SafeProductImageProps = {
   src: string;
@@ -9,7 +17,12 @@ type SafeProductImageProps = {
   className?: string;
 };
 
-const FALLBACK_IMAGE = "/icono.png";
+function resolveInitialSrc(src: string) {
+  const trimmed = src?.trim() ?? "";
+  if (!trimmed) return ATRES_IMAGE_PLACEHOLDER;
+  if (isUnsupportedExternalImageUrl(trimmed)) return ATRES_IMAGE_PLACEHOLDER;
+  return normalizePublicImageUrl(trimmed) || ATRES_IMAGE_PLACEHOLDER;
+}
 
 export function SafeProductImage({
   src,
@@ -18,17 +31,24 @@ export function SafeProductImage({
   sizes,
   className,
 }: SafeProductImageProps) {
-  const imageSrc = src?.trim() ? normalizePublicImageUrl(src) : FALLBACK_IMAGE;
+  const resolvedSrc = resolveInitialSrc(src);
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const failed = failedSrc === resolvedSrc;
+  const displaySrc = failed ? ATRES_IMAGE_PLACEHOLDER : resolvedSrc;
 
   return (
     <Image
-      src={imageSrc}
+      src={displaySrc}
       alt={alt}
       fill
       sizes={sizes}
       preload={priority}
-      unoptimized={isRemoteImageUrl(imageSrc)}
+      unoptimized={isRemoteImageUrl(displaySrc)}
       className={className}
+      onError={() => {
+        if (resolvedSrc === ATRES_IMAGE_PLACEHOLDER || failed) return;
+        setFailedSrc(resolvedSrc);
+      }}
     />
   );
 }

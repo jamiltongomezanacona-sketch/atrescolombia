@@ -1,5 +1,4 @@
 import type { StoreCategory } from "@/lib/store-navigation";
-import { isUnsplashUrl } from "@/lib/local-media";
 
 export const HOME_HERO_CONTENT = {
   eyebrow: "ATRES Colombia",
@@ -58,7 +57,7 @@ export const HOME_CATEGORY_IMAGES = {
 
 export function getHomeCategoryImage(category: StoreCategory) {
   const image = category.image?.trim();
-  if (image && !isUnsplashUrl(image)) return image;
+  if (image) return image;
 
   const key = `${category.slug} ${category.name} ${category.shortName}`.toLowerCase();
   if (key.includes("hombre")) return HOME_CATEGORY_IMAGES.hombre;

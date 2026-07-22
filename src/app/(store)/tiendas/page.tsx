@@ -50,7 +50,7 @@ export default async function ShopsPage() {
                   >
                     <div className="relative aspect-[3/5] overflow-hidden rounded-t-[20px] bg-surface-muted">
                       <SafeProductImage
-                        src={shop.coverUrl || shop.logoUrl || "/icono.png"}
+                        src={shop.coverUrl || shop.logoUrl || "/assets/atres-curated/placeholder.webp"}
                         alt=""
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                         className="object-cover transition duration-500 ease-out group-hover:scale-[1.035]"

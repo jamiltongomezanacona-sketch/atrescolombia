@@ -22,7 +22,7 @@ export default async function StoreLayout({ children }: { children: React.ReactN
       <div
         id="contenido-principal"
         tabIndex={-1}
-        className="flex flex-1 flex-col pt-[3.5rem] pb-[calc(7.25rem+env(safe-area-inset-bottom))] outline-none md:pb-0 lg:pt-0"
+        className="flex flex-1 flex-col pt-[3rem] pb-[calc(7.25rem+env(safe-area-inset-bottom))] outline-none md:pb-0 lg:pt-0"
       >
         {children}
       </div>

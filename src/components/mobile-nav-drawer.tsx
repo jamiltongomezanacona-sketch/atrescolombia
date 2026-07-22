@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { usePathname, useSearchParams } from "next/navigation";
+import { signOutAdmin } from "@/lib/admin/actions";
 import type { NavItem } from "@/lib/store-navigation";
 import { isStoreNavActive } from "@/lib/store-navigation";
 import { cn } from "@/lib/cn";
@@ -11,6 +12,8 @@ import { cn } from "@/lib/cn";
 type MobileNavDrawerProps = {
   items: NavItem[];
 };
+
+type AuthStatus = "unknown" | "signed-in" | "signed-out";
 
 const EXTRA_LINKS: NavItem[] = [
   { key: "tiendas", label: "Tiendas", href: "/tiendas", kind: "route" },
@@ -27,6 +30,7 @@ function subscribe() {
 
 export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
   const [open, setOpen] = useState(false);
+  const [authStatus, setAuthStatus] = useState<AuthStatus>("unknown");
   const mounted = useSyncExternalStore(subscribe, () => true, () => false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -78,6 +82,32 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
     };
   }, [open]);
 
+  useEffect(() => {
+    if (!open || authStatus !== "unknown") return;
+
+    let active = true;
+
+    async function loadAuthStatus() {
+      try {
+        const { createSupabaseBrowserClient } = await import("@/lib/supabase/client");
+        const supabase = createSupabaseBrowserClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (active) setAuthStatus(user ? "signed-in" : "signed-out");
+      } catch {
+        if (active) setAuthStatus("signed-out");
+      }
+    }
+
+    void loadAuthStatus();
+
+    return () => {
+      active = false;
+    };
+  }, [authStatus, open]);
+
   const departmentLinks = items;
   const links = [
     ...EXTRA_LINKS.filter((link) => link.key === "tiendas"),
@@ -93,7 +123,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
     createPortal(
       <div
         className={cn(
-          "fixed inset-0 z-50 lg:hidden",
+          "fixed inset-0 z-50",
           open ? "pointer-events-auto" : "pointer-events-none",
         )}
         aria-hidden={!open}
@@ -116,11 +146,11 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
           aria-modal="true"
           aria-labelledby={titleId}
           className={cn(
-            "absolute inset-y-0 left-0 flex w-[min(88vw,320px)] flex-col bg-surface text-ink shadow-lift transition-transform duration-300",
+            "absolute inset-y-0 left-0 flex w-[min(88vw,330px)] flex-col bg-surface text-ink shadow-lift transition-transform duration-300",
             open ? "translate-x-0" : "-translate-x-full",
           )}
         >
-          <div className="flex items-center justify-between border-b border-black/6 px-4 py-4">
+          <div className="flex items-center justify-between border-b border-black/6 px-3.5 py-3">
             <Link href="/" className="min-w-0" onClick={() => setOpen(false)} tabIndex={open ? undefined : -1}>
               <p id={titleId} className="text-lg font-medium tracking-[0.14em]">
                 ATRES
@@ -130,7 +160,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
             <button
               ref={closeRef}
               type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-card)] hover:bg-surface-muted"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] hover:bg-surface-muted"
               aria-label="Cerrar menu"
               onClick={() => setOpen(false)}
             >
@@ -138,7 +168,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
             </button>
           </div>
 
-          <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Menu de categorias">
+          <nav className="flex-1 overflow-y-auto px-2.5 py-3" aria-label="Menu principal">
             <p className="px-2 text-[11px] font-medium tracking-wide text-ink-muted">Explorar</p>
             <ul className="mt-2 grid gap-0.5">
               {links.map((link) => {
@@ -149,7 +179,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
                     <Link
                       href={link.href}
                       className={cn(
-                        "flex min-h-11 items-center rounded-[var(--radius-card)] px-3 text-sm font-normal transition",
+                        "flex min-h-10 items-center rounded-[var(--radius-card)] px-3 text-sm font-normal transition",
                         active ? "bg-ink text-white" : "text-ink hover:bg-surface-muted",
                       )}
                       aria-current={active ? "page" : undefined}
@@ -164,10 +194,16 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
             </ul>
           </nav>
 
-          <div className="border-t border-black/6 p-4">
+          <DrawerAccountSection
+            authStatus={authStatus}
+            open={open}
+            onNavigate={() => setOpen(false)}
+          />
+
+          <div className="border-t border-black/6 p-3.5">
             <Link
               href="/ofertas"
-              className="flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-brand px-4 text-sm font-medium text-white hover:bg-brand-hover"
+              className="flex min-h-10 items-center justify-center rounded-[var(--radius-card)] bg-brand px-4 text-sm font-medium text-white hover:bg-brand-hover"
               onClick={() => setOpen(false)}
               tabIndex={open ? undefined : -1}
             >
@@ -184,17 +220,142 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
       <button
         ref={triggerRef}
         type="button"
-        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-card)] text-white transition hover:bg-white/10 lg:hidden"
+        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-card)] text-white transition hover:bg-white/10 lg:h-9 lg:w-9"
         aria-expanded={open}
         aria-controls="atres-mobile-drawer"
         aria-haspopup="dialog"
-        aria-label={open ? "Cerrar menu" : "Abrir menu de categorias"}
+        aria-label={open ? "Cerrar menu" : "Abrir menu principal"}
         onClick={() => setOpen((current) => !current)}
       >
         {open ? <CloseIcon /> : <MenuIcon />}
       </button>
       {panel}
     </>
+  );
+}
+
+function DrawerAccountSection({
+  authStatus,
+  open,
+  onNavigate,
+}: {
+  authStatus: AuthStatus;
+  open: boolean;
+  onNavigate: () => void;
+}) {
+  const signedIn = authStatus === "signed-in";
+
+  return (
+    <section className="border-t border-black/6 px-2.5 py-3" aria-label="Cuenta">
+      <p className="px-2 text-[11px] font-medium tracking-wide text-ink-muted">Cuenta</p>
+      <div className="mt-2 grid gap-0.5">
+        {authStatus === "unknown" ? (
+          <div className="flex min-h-10 items-center gap-2 rounded-[var(--radius-card)] px-3 text-sm text-ink-muted">
+            <DrawerIcon type="user" />
+            <span>Comprobando sesion</span>
+          </div>
+        ) : signedIn ? (
+          <>
+            <DrawerLink href="/admin/configuracion" label="Mi cuenta" icon="user" open={open} onNavigate={onNavigate} />
+            <DrawerLink href="/admin" label="Panel de administracion" icon="store" open={open} onNavigate={onNavigate} />
+            <form action={signOutAdmin} onSubmit={onNavigate}>
+              <button
+                type="submit"
+                className="flex min-h-10 w-full items-center gap-2 rounded-[var(--radius-card)] px-3 text-left text-sm font-normal text-ink transition hover:bg-surface-muted"
+                tabIndex={open ? undefined : -1}
+              >
+                <DrawerIcon type="logout" />
+                <span>Cerrar sesion</span>
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            <DrawerLink href="/admin/login" label="Iniciar sesion" icon="user" open={open} onNavigate={onNavigate} />
+            <DrawerLink href="/admin" label="Panel de administracion" icon="store" open={open} onNavigate={onNavigate} />
+          </>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function DrawerLink({
+  href,
+  label,
+  icon,
+  open,
+  onNavigate,
+}: {
+  href: string;
+  label: string;
+  icon: "user" | "store";
+  open: boolean;
+  onNavigate: () => void;
+}) {
+  return (
+    <Link
+      href={href}
+      className="flex min-h-10 items-center gap-2 rounded-[var(--radius-card)] px-3 text-sm font-normal text-ink transition hover:bg-surface-muted"
+      onClick={onNavigate}
+      tabIndex={open ? undefined : -1}
+    >
+      <DrawerIcon type={icon} />
+      <span>{label}</span>
+    </Link>
+  );
+}
+
+function DrawerIcon({ type }: { type: "user" | "store" | "logout" }) {
+  if (type === "store") {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="size-4 shrink-0 fill-none text-ink-muted"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M4 9h16l-1 11H5L4 9Z" />
+        <path d="M8 9V7a4 4 0 0 1 8 0v2" />
+        <path d="M9 13h6" />
+      </svg>
+    );
+  }
+
+  if (type === "logout") {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="size-4 shrink-0 fill-none text-ink-muted"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M10 17l5-5-5-5" />
+        <path d="M15 12H3" />
+        <path d="M21 3v18" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="size-4 shrink-0 fill-none text-ink-muted"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21a8 8 0 0 1 16 0" />
+    </svg>
   );
 }
 

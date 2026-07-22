@@ -41,17 +41,17 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
 
   if (compact) {
     return (
-      <nav className="flex items-center justify-end gap-0.5 lg:hidden" aria-label="Acciones rapidas">
+      <nav className="flex items-center justify-end gap-0 lg:hidden" aria-label="Acciones rapidas">
         {minimal ? null : <ActionLink href="/promociones" label="Notificaciones" icon="bell" compact />}
         <ActionLink href="/favoritos" label="Favoritos" icon="heart" compact />
         <Link
           href="/carrito"
           aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
-          className="atres-interactive relative inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-white"
+          className="atres-interactive relative inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-white"
         >
           <HeaderIcon type="bag" />
           {count > 0 ? (
-            <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-card)] bg-brand px-1 text-[9px] font-medium text-white">
+            <span className="absolute right-0 top-0 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-card)] bg-brand px-1 text-[9px] font-medium text-white">
               {count}
             </span>
           ) : null}
@@ -61,32 +61,24 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
   }
 
   return (
-    <nav className="hidden items-center justify-end gap-1 text-sm font-medium lg:flex" aria-label="Acciones">
+    <nav className="hidden items-center justify-end gap-0.5 text-sm font-medium lg:flex" aria-label="Acciones">
       <ActionLink href="/promociones" label="Notificaciones" icon="bell" iconOnly />
-      <ActionLink href="/favoritos" label="Favoritos" icon="heart" />
+      <ActionLink href="/favoritos" label="Favoritos" icon="heart" iconOnly />
       <Link
         href="/carrito"
-        className="atres-interactive relative inline-flex h-10 items-center gap-2 rounded-[var(--radius-card)] px-3 text-white/85 hover:bg-white/10 hover:text-white"
+        aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
+        className="atres-interactive relative inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-white"
       >
         <HeaderIcon type="bag" />
-        Carrito
         {count > 0 ? (
-          <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-[var(--radius-card)] bg-brand px-1 text-[10px] font-medium text-white">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-card)] bg-brand px-1 text-[9px] font-medium text-white">
             {count}
           </span>
         ) : null}
       </Link>
-      <button
-        type="button"
-        aria-label="Perfil"
-        title="Perfil"
-        className="atres-interactive inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-white"
-      >
-        <HeaderIcon type="user" />
-      </button>
       <Link
         href="/ofertas"
-        className="atres-interactive inline-flex h-10 items-center rounded-[var(--radius-card)] bg-white px-3.5 text-ink shadow-sm hover:bg-surface-muted"
+        className="atres-interactive hidden h-9 items-center rounded-[var(--radius-card)] bg-white px-3 text-sm text-ink shadow-sm hover:bg-surface-muted xl:inline-flex"
       >
         Ofertas
       </Link>
@@ -113,10 +105,10 @@ function ActionLink({
       aria-label={label}
       className={
         compact
-          ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-white"
+          ? "atres-interactive inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-white"
           : iconOnly
-            ? "atres-interactive inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-white"
-            : "atres-interactive inline-flex h-10 items-center gap-2 rounded-[var(--radius-card)] px-3 text-white/85 hover:bg-white/10 hover:text-white"
+            ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-white"
+            : "atres-interactive inline-flex h-9 items-center gap-2 rounded-[var(--radius-card)] px-2.5 text-white/85 hover:bg-white/10 hover:text-white"
       }
     >
       <HeaderIcon type={icon} />
@@ -125,7 +117,7 @@ function ActionLink({
   );
 }
 
-type HeaderIconType = "heart" | "bag" | "bell" | "user";
+type HeaderIconType = "heart" | "bag" | "bell";
 
 function HeaderIcon({ type }: { type: HeaderIconType }) {
   if (type === "heart") {
@@ -133,7 +125,7 @@ function HeaderIcon({ type }: { type: HeaderIconType }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-[18px] fill-none"
+        className="size-[17px] fill-none"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
@@ -149,7 +141,7 @@ function HeaderIcon({ type }: { type: HeaderIconType }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-[18px] fill-none"
+        className="size-[17px] fill-none"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
@@ -166,7 +158,7 @@ function HeaderIcon({ type }: { type: HeaderIconType }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-[18px] fill-none"
+        className="size-[17px] fill-none"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
@@ -177,19 +169,5 @@ function HeaderIcon({ type }: { type: HeaderIconType }) {
       </svg>
     );
   }
-
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="size-[18px] fill-none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="8" r="4" />
-      <path d="M4 21a8 8 0 0 1 16 0" />
-    </svg>
-  );
+  return null;
 }

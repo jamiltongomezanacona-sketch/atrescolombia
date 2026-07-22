@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { KeyboardEvent } from "react";
 import { useId, useMemo, useState } from "react";
 
 type SearchBoxProps = {
@@ -73,6 +74,12 @@ export function SearchBox({
     persistSearch(query);
   }
 
+  function submitWithEnter(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key !== "Enter" || event.nativeEvent.isComposing) return;
+    event.preventDefault();
+    event.currentTarget.form?.requestSubmit();
+  }
+
   return (
     <div className={`relative ${className ?? ""}`}>
       <form
@@ -80,8 +87,8 @@ export function SearchBox({
         onSubmit={submitSearch}
         className={
           compact
-            ? "flex h-10 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-white text-ink shadow-soft ring-1 ring-white/30"
-            : "flex h-11 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-white text-ink shadow-soft ring-1 ring-white/35"
+            ? "flex h-9 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-white text-ink shadow-soft ring-1 ring-white/30"
+            : "flex h-10 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-white text-ink shadow-soft ring-1 ring-white/35"
         }
         role="search"
       >
@@ -91,8 +98,8 @@ export function SearchBox({
         <span
           className={
             compact
-              ? "ml-2.5 text-ink-muted"
-              : "ml-2.5 grid size-7 shrink-0 place-items-center rounded-[var(--radius-card)] bg-surface-muted text-ink-muted"
+              ? "ml-2.5 grid size-5 shrink-0 place-items-center text-ink-muted"
+              : "ml-2.5 grid size-6 shrink-0 place-items-center rounded-[var(--radius-card)] bg-surface-muted text-ink-muted"
           }
         >
           <SearchIcon />
@@ -101,6 +108,7 @@ export function SearchBox({
           name="q"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
+          onKeyDown={submitWithEnter}
           onFocus={openPanel}
           onBlur={() => window.setTimeout(() => setOpen(false), 140)}
           aria-label="Buscar productos"
@@ -113,19 +121,11 @@ export function SearchBox({
           className={
             compact
               ? "min-w-0 flex-1 bg-transparent px-2 text-sm font-normal outline-none placeholder:text-stone-400"
-              : "min-w-0 flex-1 bg-transparent px-3 text-sm font-normal outline-none placeholder:text-stone-400"
+              : "min-w-0 flex-1 bg-transparent px-2.5 text-sm font-normal outline-none placeholder:text-stone-400"
           }
         />
-        <button
-          type="submit"
-          aria-label="Buscar"
-          className={
-            compact
-              ? "mr-1 inline-flex h-8 w-11 items-center justify-center rounded-[var(--radius-card)] bg-ink text-white"
-              : "mr-1 inline-flex h-9 min-w-20 items-center justify-center rounded-[var(--radius-card)] bg-ink px-4 text-sm font-medium text-white transition hover:bg-stone-800"
-          }
-        >
-          {compact ? <SearchIcon /> : buttonLabel}
+        <button type="submit" className="sr-only" aria-label="Buscar">
+          {buttonLabel}
         </button>
       </form>
 

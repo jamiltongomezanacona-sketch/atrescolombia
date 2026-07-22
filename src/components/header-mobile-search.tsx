@@ -39,7 +39,7 @@ export function HeaderMobileSearch() {
       initialQuery={query}
       hiddenInputs={hiddenInputs}
       className="min-w-0 lg:hidden"
-      placeholder={catalogMode ? "Buscar en el catalogo..." : "Buscar en ATRES..."}
+      placeholder={catalogMode ? "Buscar catalogo" : "Buscar en ATRES"}
     />
   );
 }

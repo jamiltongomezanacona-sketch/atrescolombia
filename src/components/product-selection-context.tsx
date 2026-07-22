@@ -27,7 +27,7 @@ type ProductSelectionProviderProps = {
 };
 
 const ProductSelectionContext = createContext<ProductSelectionContextValue | null>(null);
-const FALLBACK_IMAGES = ["/icono.png"];
+const FALLBACK_IMAGES = ["/assets/atres-curated/placeholder.webp"];
 
 export function ProductSelectionProvider({
   children,

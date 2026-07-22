@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { SafeProductImage } from "@/components/safe-product-image";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { GlassPanel } from "@/components/ui/glass-panel";
@@ -192,7 +192,7 @@ export function CartView({ whatsapp }: CartViewProps) {
               href={`/productos/${product.slug}`}
               className="relative aspect-square overflow-hidden rounded-lg bg-surface-muted"
             >
-              <Image src={product.image} alt={product.name} fill sizes="96px" className="object-cover" />
+              <SafeProductImage src={product.image} alt={product.name} sizes="96px" className="object-cover" />
             </Link>
             <div className="min-w-0">
               <Link href={`/productos/${product.slug}`} className="line-clamp-2 text-base font-medium text-ink">

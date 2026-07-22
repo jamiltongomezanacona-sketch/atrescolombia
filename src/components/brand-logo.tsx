@@ -32,6 +32,7 @@ export function BrandLogo({
           width={compact ? 36 : 48}
           height={compact ? 36 : 48}
           priority
+          unoptimized
           className="h-full w-full object-contain p-0.5"
         />
       </span>

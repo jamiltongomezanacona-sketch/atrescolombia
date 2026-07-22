@@ -51,7 +51,7 @@ export const categories: Category[] = [
     name: "Moda mujer",
     shortName: "Mujer",
     image:
-      "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=420&q=80",
+      "/assets/atres-curated/banners/banner-campana_atres-004.webp",
     description: "Vestidos, blusas, sets y prendas tendencia para todos los dias.",
   },
   {
@@ -59,7 +59,7 @@ export const categories: Category[] = [
     name: "Moda hombre",
     shortName: "Hombre",
     image:
-      "https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=420&q=80",
+      "/assets/atres-curated/banners/banner-campana_atres-003.webp",
     description: "Prendas urbanas, camisas, denim y basicos versatiles.",
   },
   {
@@ -67,7 +67,7 @@ export const categories: Category[] = [
     name: "Ninos",
     shortName: "Ninos",
     image:
-      "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=420&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-001.webp",
     description: "Ropa comoda, colorida y resistente para pequenos.",
   },
   {
@@ -75,7 +75,7 @@ export const categories: Category[] = [
     name: "Hogar",
     shortName: "Hogar",
     image:
-      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=420&q=80",
+      "/assets/atres-curated/banners/banner-campana_revision_marca-010.webp",
     description: "Sabanas, cobijas, textiles y accesorios para renovar tu hogar.",
   },
   {
@@ -83,7 +83,7 @@ export const categories: Category[] = [
     name: "Ninas",
     shortName: "Ninas",
     image:
-      "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&w=420&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-008.webp",
     description: "Vestidos, sets y novedades infantiles con estilo.",
   },
   {
@@ -91,7 +91,7 @@ export const categories: Category[] = [
     name: "Pijamas",
     shortName: "Pijamas",
     image:
-      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=420&q=80",
+      "/assets/atres-curated/banners/banner-campana_atres-009.webp",
     description: "Prendas suaves para descanso, casa y fines de semana.",
   },
   {
@@ -99,7 +99,7 @@ export const categories: Category[] = [
     name: "Jeans",
     shortName: "Jeans",
     image:
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=420&q=80",
+      "/assets/atres-curated/banners/banner-campana_atres-007.webp",
     description: "Denim, pantalones, shorts y fits esenciales.",
   },
   {
@@ -107,7 +107,7 @@ export const categories: Category[] = [
     name: "Ropa deportiva",
     shortName: "Deportivo",
     image:
-      "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=420&q=80",
+      "/assets/atres-curated/banners/banner-campana_atres-008.webp",
     description: "Leggings, tops, joggers y prendas para moverte.",
   },
   {
@@ -115,7 +115,7 @@ export const categories: Category[] = [
     name: "Uniformes",
     shortName: "Uniformes",
     image:
-      "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=420&q=80",
+      "/assets/atres-curated/banners/banner-campana_atres-005.webp",
     description: "Basicos funcionales para colegios, empresas y equipos.",
   },
   {
@@ -123,7 +123,7 @@ export const categories: Category[] = [
     name: "Calzado",
     shortName: "Calzado",
     image:
-      "https://images.unsplash.com/photo-1543508282-6319a3e2621f?auto=format&fit=crop&w=420&q=80",
+      "/assets/atres-curated/banners/banner-campana_revision_marca-012.webp",
     description: "Tenis, sandalias y zapatos para completar el look.",
   },
   {
@@ -131,7 +131,7 @@ export const categories: Category[] = [
     name: "Accesorios",
     shortName: "Accesorios",
     image:
-      "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=420&q=80",
+      "/assets/atres-curated/banners/banner-campana_revision_marca-011.webp",
     description: "Bolsos, gafas, complementos y detalles de temporada.",
   },
 ];
@@ -150,11 +150,11 @@ export const products: Product[] = [
     rating: 4.8,
     stock: 18,
     image:
-      "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-008.webp",
     images: [
-      "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-040.webp",
+      "/assets/atres-curated/products/producto-moda_infantil-060.webp",
+      "/assets/atres-curated/banners/banner-campana_atres-004.webp",
     ],
     colors: ["Arena", "Oliva", "Negro"],
     sizes: ["S", "M", "L"],
@@ -175,10 +175,10 @@ export const products: Product[] = [
     rating: 4.7,
     stock: 24,
     image:
-      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-040.webp",
     images: [
-      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-008.webp",
+      "/assets/atres-curated/products/producto-moda_infantil-040.webp",
     ],
     colors: ["Azul", "Blanco", "Verde"],
     sizes: ["S", "M", "L", "XL"],
@@ -198,10 +198,10 @@ export const products: Product[] = [
     rating: 4.9,
     stock: 30,
     image:
-      "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-030.webp",
     images: [
-      "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-001.webp",
+      "/assets/atres-curated/products/producto-moda_infantil-008.webp",
     ],
     colors: ["Mostaza", "Azul cielo", "Coral"],
     sizes: ["2", "4", "6", "8", "10"],
@@ -221,10 +221,10 @@ export const products: Product[] = [
     rating: 4.7,
     stock: 18,
     image:
-      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-060.webp",
     images: [
-      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-060.webp",
+      "/assets/atres-curated/banners/banner-campana_revision_marca-010.webp",
     ],
     colors: ["Blanco", "Arena", "Gris"],
     sizes: ["Sencilla", "Doble", "Queen"],
@@ -243,10 +243,10 @@ export const products: Product[] = [
     rating: 4.6,
     stock: 16,
     image:
-      "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-008.webp",
     images: [
-      "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-008.webp",
+      "/assets/atres-curated/products/producto-moda_infantil-012.webp",
     ],
     colors: ["Rosa", "Crema"],
     sizes: ["2", "4", "6", "8"],
@@ -266,10 +266,10 @@ export const products: Product[] = [
     rating: 4.8,
     stock: 22,
     image:
-      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-040.webp",
     images: [
-      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/banners/banner-campana_atres-006.webp",
+      "/assets/atres-curated/products/producto-moda_infantil-060.webp",
     ],
     colors: ["Champana", "Negro", "Rosa"],
     sizes: ["S", "M", "L"],
@@ -289,10 +289,10 @@ export const products: Product[] = [
     rating: 4.7,
     stock: 20,
     image:
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-012.webp",
     images: [
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1475178626620-a4d074967452?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/banners/banner-campana_atres-007.webp",
+      "/assets/atres-curated/products/producto-moda_infantil-050.webp",
     ],
     colors: ["Azul medio", "Azul oscuro"],
     sizes: ["6", "8", "10", "12", "14"],
@@ -313,10 +313,10 @@ export const products: Product[] = [
     rating: 4.6,
     stock: 40,
     image:
-      "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-001.webp",
     images: [
-      "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-050.webp",
+      "/assets/atres-curated/banners/banner-campana_atres-008.webp",
     ],
     colors: ["Negro", "Verde", "Vino"],
     sizes: ["S", "M", "L", "XL"],
@@ -335,10 +335,10 @@ export const products: Product[] = [
     rating: 4.5,
     stock: 12,
     image:
-      "https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-060.webp",
     images: [
-      "https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-060.webp",
+      "/assets/atres-curated/banners/banner-campana_atres-005.webp",
     ],
     colors: ["Negro", "Azul", "Verde"],
     sizes: ["S", "M", "L", "XL"],
@@ -358,10 +358,10 @@ export const products: Product[] = [
     rating: 4.8,
     stock: 14,
     image:
-      "https://images.unsplash.com/photo-1543508282-6319a3e2621f?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-020.webp",
     images: [
-      "https://images.unsplash.com/photo-1543508282-6319a3e2621f?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/banners/banner-campana_revision_marca-012.webp",
+      "/assets/atres-curated/products/producto-moda_infantil-012.webp",
     ],
     colors: ["Blanco", "Miel", "Grafito"],
     sizes: ["36", "37", "38", "39", "40", "41", "42"],
@@ -381,10 +381,10 @@ export const products: Product[] = [
     rating: 4.4,
     stock: 26,
     image:
-      "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-001.webp",
     images: [
-      "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1506629905607-d405b7a30db9?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/banners/banner-campana_revision_marca-011.webp",
+      "/assets/atres-curated/products/producto-moda_infantil-008.webp",
     ],
     colors: ["Dorado", "Negro", "Plateado"],
     sizes: ["Unica"],
@@ -405,10 +405,10 @@ export const products: Product[] = [
     rating: 4.5,
     stock: 35,
     image:
-      "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-012.webp",
     images: [
-      "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-030.webp",
+      "/assets/atres-curated/products/producto-moda_infantil-060.webp",
     ],
     colors: ["Blanco", "Lila", "Negro"],
     sizes: ["XS", "S", "M", "L"],
@@ -428,10 +428,10 @@ export const products: Product[] = [
     rating: 4.3,
     stock: 28,
     image:
-      "https://images.unsplash.com/photo-1591201102569-9edeeeb180b5?auto=format&fit=crop&w=900&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-020.webp",
     images: [
-      "https://images.unsplash.com/photo-1591201102569-9edeeeb180b5?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/products/producto-moda_infantil-020.webp",
+      "/assets/atres-curated/banners/banner-campana_atres-007.webp",
     ],
     colors: ["Azul claro", "Negro"],
     sizes: ["6", "8", "10", "12"],
@@ -447,7 +447,7 @@ export const promos: Promo[] = [
     subtitle: "Precios de temporada en prendas seleccionadas.",
     href: "/ofertas",
     image:
-      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/banners/banner-campana_atres-001.webp",
     tone: "bg-promo text-black",
   },
   {
@@ -455,7 +455,7 @@ export const promos: Promo[] = [
     subtitle: "Drops frescos para renovar el closet.",
     href: "/novedades",
     image:
-      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/banners/banner-campana_atres-003.webp",
     tone: "bg-black text-white",
   },
   {
@@ -463,7 +463,7 @@ export const promos: Promo[] = [
     subtitle: "Jeans, shorts y siluetas esenciales.",
     href: "/categoria/jeans",
     image:
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1200&q=80",
+      "/assets/atres-curated/banners/banner-campana_atres-007.webp",
     tone: "bg-white text-black",
   },
 ];

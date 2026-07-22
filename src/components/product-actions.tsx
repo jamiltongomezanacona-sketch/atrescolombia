@@ -171,9 +171,18 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
 }
 
 function getEffectiveProductImage(selectedImage: string, product: Product) {
-  if (selectedImage && selectedImage !== "/icono.png") return selectedImage;
-  if (product.image && product.image !== "/icono.png") return product.image;
-  return product.images.find((image) => image && image !== "/icono.png") ?? selectedImage;
+  if (selectedImage && selectedImage !== "/icono.png" && selectedImage !== "/assets/atres-curated/placeholder.webp") {
+    return selectedImage;
+  }
+  if (product.image && product.image !== "/icono.png" && product.image !== "/assets/atres-curated/placeholder.webp") {
+    return product.image;
+  }
+  return (
+    product.images.find(
+      (image) =>
+        image && image !== "/icono.png" && image !== "/assets/atres-curated/placeholder.webp",
+    ) ?? selectedImage
+  );
 }
 
 function getProductUrl(slug: string) {

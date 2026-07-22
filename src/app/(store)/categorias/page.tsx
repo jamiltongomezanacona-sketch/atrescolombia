@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { SafeProductImage } from "@/components/safe-product-image";
 import { PageHeader } from "@/components/ui/page-header";
 import { getCategoryVisualTheme } from "@/lib/category-visuals";
 import { getPublicCategoriesForDisplay } from "@/lib/public-store";
@@ -34,10 +34,9 @@ export default async function CategoriesIndexPage() {
                   className={`group relative isolate min-h-[156px] overflow-hidden rounded-lg p-3.5 shadow-soft ring-1 ring-white/60 transition hover:-translate-y-1 sm:min-h-[178px] ${theme.washClass}`}
                 >
                   <div className="pointer-events-none absolute inset-0">
-                    <Image
+                    <SafeProductImage
                       src={theme.heroImage}
                       alt=""
-                      fill
                       sizes="(max-width: 768px) 50vw, 25vw"
                       className="object-cover opacity-45 transition duration-500 group-hover:scale-105"
                     />

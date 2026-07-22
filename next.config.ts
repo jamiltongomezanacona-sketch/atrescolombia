@@ -23,11 +23,9 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    // Avoid Vercel/Next `/_next/image` quota 402s; assets come from Supabase or /public.
+    unoptimized: true,
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
       {
         protocol: "https",
         hostname: "**.supabase.co",

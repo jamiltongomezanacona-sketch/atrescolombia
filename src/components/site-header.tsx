@@ -19,8 +19,7 @@ export async function SiteHeader() {
       <div className="hidden border-b border-white/10 bg-white/[0.03] lg:block">
         <div className="header-container flex items-center justify-between gap-2 py-0.5 text-[11px] font-normal tracking-wide text-white/70">
           <span>100% producto colombiano</span>
-          <span className="hidden md:inline">Compra por prenda o al por mayor</span>
-          <Link href="/ofertas" className="text-white/85 transition hover:text-white">
+          <span className="hidden md:inline">Compra por prenda o al por mayor</span>          <Link href="/ofertas" className="text-white/85 transition hover:text-white">
             Ofertas y novedades
           </Link>
         </div>

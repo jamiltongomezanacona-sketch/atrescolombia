@@ -8,7 +8,7 @@ type ProductGalleryProps = {
   images: string[];
 };
 
-const FALLBACK_IMAGES = ["/icono.png"];
+const FALLBACK_IMAGES = ["/assets/atres-curated/placeholder.webp"];
 
 export function ProductGallery({ productName, images }: ProductGalleryProps) {
   const selectedImages = useMemo(() => sanitizeImages(images), [images]);

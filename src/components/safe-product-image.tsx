@@ -1,4 +1,12 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
+import { ATRES_IMAGE_PLACEHOLDER } from "@/lib/local-media";
+import {
+  isUnsupportedExternalImageUrl,
+  normalizePublicImageUrl,
+} from "@/lib/image-url";
 
 type SafeProductImageProps = {
   src: string;
@@ -8,9 +16,17 @@ type SafeProductImageProps = {
   className?: string;
 };
 
-const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=900&q=80";
+function resolveInitialSrc(src: string) {
+  const trimmed = src?.trim() ?? "";
+  if (!trimmed) return ATRES_IMAGE_PLACEHOLDER;
+  if (isUnsupportedExternalImageUrl(trimmed)) return ATRES_IMAGE_PLACEHOLDER;
+  return normalizePublicImageUrl(trimmed) || ATRES_IMAGE_PLACEHOLDER;
+}
 
+/**
+ * Storefront images bypass Next/Vercel `/_next/image` to avoid HTTP 402
+ * from image-optimization quotas. Supabase/local assets are served directly.
+ */
 export function SafeProductImage({
   src,
   alt,
@@ -18,16 +34,24 @@ export function SafeProductImage({
   sizes,
   className,
 }: SafeProductImageProps) {
-  const imageSrc = src?.trim() ? src : FALLBACK_IMAGE;
+  const resolvedSrc = resolveInitialSrc(src);
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const failed = failedSrc === resolvedSrc;
+  const displaySrc = failed ? ATRES_IMAGE_PLACEHOLDER : resolvedSrc;
 
   return (
     <Image
-      src={imageSrc}
+      src={displaySrc}
       alt={alt}
       fill
       sizes={sizes}
-      priority={priority}
+      preload={priority}
+      unoptimized
       className={className}
+      onError={() => {
+        if (resolvedSrc === ATRES_IMAGE_PLACEHOLDER || failed) return;
+        setFailedSrc(resolvedSrc);
+      }}
     />
   );
 }

@@ -249,12 +249,12 @@ export function getPrimaryDepartmentsForDisplay(categories: StoreCategory[]): St
           : `Explora ${nav.label.toLowerCase()} en ATRES.`,
       image:
         key === "hogar"
-          ? "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80"
+          ? "/assets/atres-curated/banners/banner-campana_revision_marca-010.webp"
           : key === "ninos"
-            ? "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=600&q=80"
+            ? "/assets/atres-curated/products/producto-moda_infantil-001.webp"
             : key === "mujer"
-              ? "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=600&q=80"
-              : "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+              ? "/assets/atres-curated/banners/banner-campana_atres-004.webp"
+              : "/assets/atres-curated/banners/banner-campana_atres-003.webp",
       parentId: null,
     });
   }

@@ -6,33 +6,44 @@ type ProductRailProps = {
   title: string;
   href: string;
   products: Product[];
+  subtitle?: string;
   linkLabel?: string;
   /** Eager-load first N cards (home above-fold only). Default 0. */
   priorityCount?: number;
+  maxItems?: number;
 };
 
 export function ProductRail({
   title,
   href,
   products,
-  linkLabel = "Ver mas",
+  subtitle,
+  linkLabel = "Ver todo",
   priorityCount = 0,
+  maxItems = 10,
 }: ProductRailProps) {
   if (!products.length) return null;
 
   return (
-    <section className="catalog-container products-catalog-container py-3 md:py-4">
-      <div className="mb-2 flex items-end justify-between gap-3">
-        <h2 className="text-base font-medium tracking-tight text-ink sm:text-lg md:text-xl">{title}</h2>
+    <section className="home-section catalog-container products-catalog-container">
+      <div className="mb-2 flex items-end justify-between gap-3 sm:mb-2.5">
+        <div className="min-w-0">
+          <h2 className="text-base font-medium tracking-tight text-ink sm:text-lg md:text-xl">{title}</h2>
+          {subtitle ? (
+            <p className="mt-0.5 line-clamp-1 text-xs font-normal text-ink-muted sm:text-sm">
+              {subtitle}
+            </p>
+          ) : null}
+        </div>
         <Link
           href={href}
-          className="text-xs font-medium text-ink-muted underline-offset-4 transition hover:text-ink hover:underline sm:text-sm"
+          className="shrink-0 text-xs font-medium text-ink-muted underline-offset-4 transition hover:text-ink hover:underline sm:text-sm"
         >
           {linkLabel}
         </Link>
       </div>
       <div className="catalog-grid">
-        {products.slice(0, 10).map((product, index) => (
+        {products.slice(0, maxItems).map((product, index) => (
           <ProductCard
             key={product.slug}
             product={product}

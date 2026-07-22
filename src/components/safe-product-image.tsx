@@ -8,8 +8,7 @@ type SafeProductImageProps = {
   className?: string;
 };
 
-const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=900&q=80";
+const FALLBACK_IMAGE = "/icono.png";
 
 export function SafeProductImage({
   src,

@@ -26,15 +26,6 @@ function meaningfulSizes(sizes: string[]) {
     return value && value !== "unica" && value !== "unico" && value !== "u";
   });
 }
-
-function pickRandomProductImage(product: Product) {
-  const gallery = Array.from(
-    new Set([...(product.images ?? []), product.image].filter((image): image is string => Boolean(image))),
-  );
-  if (!gallery.length) return product.image;
-  return gallery[Math.floor(Math.random() * gallery.length)] ?? product.image;
-}
-
 export function ProductCard({ product, priority = false }: ProductCardProps) {
   const discount = getDiscountPercent(product);
   const previousPrice =
@@ -47,19 +38,18 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const swatches = product.colors.filter(Boolean).slice(0, 3);
   // Prefer ribbon ("Ahorra $…") over a second "-%" badge on the same image.
   const showDiscount = Boolean(discount) && !ribbon;
-  const salesCount = getSalesCount(product);
-  const displayImage = pickRandomProductImage(product);
+  const displayImage = product.image;
   const hasOptions = sizes.length > 0 || swatches.length > 0;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface transition duration-300 hover:shadow-soft motion-safe:hover:-translate-y-0.5">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface ring-1 ring-black/[0.04] transition duration-300 hover:shadow-soft hover:ring-black/[0.08] motion-safe:hover:-translate-y-0.5">
       <div className="relative bg-surface-muted">
         <Link href={`/productos/${product.slug}`} className="block">
           <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
             <SafeProductImage
               src={displayImage}
               alt={product.name}
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 30vw, (max-width: 1500px) 24vw, (max-width: 1800px) 19vw, 15vw"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 20vw, (max-width: 1536px) 17vw, (max-width: 1800px) 16vw, 14vw"
               priority={priority}
               className="h-full w-full object-cover transition duration-500 ease-out motion-safe:group-hover:scale-[1.03]"
             />
@@ -102,22 +92,20 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         ) : null}
       </div>
 
-      {/* Dense commercial info: photo → name → price+cart; meta secondary */}
-      <div className="flex min-w-0 flex-col gap-0.5 px-1.5 pb-1.5 pt-1">
+      <div className="flex min-w-0 flex-col gap-1 px-2 pb-2 pt-1.5 sm:px-2.5 sm:pb-2.5">
         <div className="flex items-center justify-between gap-1.5 leading-none">
           <p className="min-w-0 truncate text-[9px] font-medium tracking-wide text-ink-muted/80 sm:text-[10px]">
             {product.categoryName}
           </p>
-          <p className="flex shrink-0 items-center gap-0.5 text-[9px] font-medium text-ink-muted sm:text-[10px]">
-            <StarIcon />
-            <span className="text-ink">{product.rating.toFixed(1)}</span>
-            <span className="text-ink-muted/45">·</span>
-            <span className="text-ink-muted/75">{salesCount}</span>
-          </p>
+          {product.shopName ? (
+            <p className="min-w-0 shrink truncate text-right text-[9px] font-medium text-ink-muted/75 sm:text-[10px]">
+              {product.shopName}
+            </p>
+          ) : null}
         </div>
 
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="line-clamp-2 text-[12px] font-medium leading-[1.2] text-ink transition group-hover:text-ink sm:text-[13px] sm:leading-[1.22]">
+          <h3 className="line-clamp-2 min-h-[2.05rem] text-[12px] font-medium leading-[1.24] text-ink transition group-hover:text-ink sm:min-h-[2.15rem] sm:text-[13px] sm:leading-[1.25]">
             {product.name}
           </h3>
         </Link>
@@ -126,7 +114,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           <div className="flex items-center justify-between gap-1.5 leading-none">
             {sizes.length > 0 ? (
               <p className="min-w-0 truncate text-[9px] font-normal text-ink-muted/85 sm:text-[10px]">
-                {sizes.join(" · ")}
+                {sizes.join(" / ")}
                 {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
               </p>
             ) : (
@@ -182,18 +170,4 @@ function colorToHex(color: string) {
   if (normalized.includes("gris")) return "#9ca3af";
   if (normalized.includes("denim")) return "#1d4ed8";
   return "#d6d3d1";
-}
-
-function getSalesCount(product: Product) {
-  const base = product.isTrending ? 180 : product.isPromo ? 96 : product.isNew ? 64 : 42;
-  const slugScore = Array.from(product.slug).reduce((sum, char) => sum + char.charCodeAt(0), 0);
-  return base + (slugScore % 73);
-}
-
-function StarIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-2.5 fill-amber-400 text-amber-400">
-      <path d="m12 2.8 2.75 5.57 6.15.9-4.45 4.33 1.05 6.12L12 16.83l-5.5 2.89 1.05-6.12L3.1 9.27l6.15-.9L12 2.8Z" />
-    </svg>
-  );
 }

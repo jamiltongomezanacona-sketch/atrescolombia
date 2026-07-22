@@ -15,10 +15,10 @@ export function getCommercialBadge(product: Product) {
   if (product.stock > 0 && product.stock <= 3) return "Ultimas piezas";
   if (product.isNew && product.isTrending) return "Nuevo top";
   if (product.isNew) return "Nuevo";
-  if (product.isTrending) return "Top ventas";
+  if (product.isTrending) return "Destacado";
   if (product.badge === "Oferta") return "Precio wow";
   if (product.badge === "Nuevo") return "Nuevo";
-  if (product.badge === "Tendencia" || product.badge === "Top") return "Top ventas";
+  if (product.badge === "Tendencia" || product.badge === "Top") return "Destacado";
   return product.badge;
 }
 
@@ -56,7 +56,7 @@ export function getCommercialLine(product: Product, inStock: boolean) {
 
   const key = `${product.categorySlug} ${product.categoryName} ${product.collection}`.toLowerCase();
 
-  if (product.isPromo) return "Precio especial por tiempo limitado";
+  if (product.isPromo) return "Precio especial en la vitrina";
   if (product.isNew) return "Nuevo drop listo para estrenar";
   if (key.includes("hogar") || key.includes("textil") || key.includes("sabana") || key.includes("cobija")) {
     return "Texturas suaves para renovar casa";
@@ -85,7 +85,7 @@ export function getTopRibbon(product: Product) {
 
   if (savings >= 5000) return `Ahorra ${formatShortCOP(savings)}`;
   if (discount && discount >= 20) return `Oferta top -${discount}%`;
-  if (product.isTrending) return "Top ventas";
+  if (product.isTrending) return "Destacado";
   return null;
 }
 

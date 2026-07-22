@@ -1,4 +1,5 @@
 import type { StoreCategory } from "@/lib/store-navigation";
+import { isUnsplashUrl } from "@/lib/local-media";
 
 export const HOME_HERO_CONTENT = {
   eyebrow: "ATRES Colombia",
@@ -10,6 +11,40 @@ export const HOME_HERO_CONTENT = {
   secondaryHref: "/novedades",
   fallbackImage: "/assets/atres-curated/banners/banner-campana_atres-001.webp",
 };
+
+/** Local hero slides used when few active banners exist in Supabase. */
+export const HOME_HERO_FALLBACK_SLIDES = [
+  {
+    image: "/assets/atres-curated/banners/banner-campana_atres-001.webp",
+    title: "Descubre lo mejor de Colombia",
+    subtitle: "Moda, productos y emprendimientos colombianos en un solo lugar.",
+    href: "/productos",
+  },
+  {
+    image: "/assets/atres-curated/banners/banner-campana_atres-002.webp",
+    title: "Novedades en la vitrina",
+    subtitle: "Explora lo mas reciente del catalogo ATRES.",
+    href: "/novedades",
+  },
+  {
+    image: "/assets/atres-curated/banners/banner-campana_atres-003.webp",
+    title: "Moda para hombre",
+    subtitle: "Prendas y propuestas del departamento masculino.",
+    href: "/categoria/hombre",
+  },
+  {
+    image: "/assets/atres-curated/banners/banner-campana_atres-004.webp",
+    title: "Moda para mujer",
+    subtitle: "Descubre prendas y colecciones del departamento femenino.",
+    href: "/categoria/mujer",
+  },
+  {
+    image: "/assets/atres-curated/banners/banner-campana_atres-007.webp",
+    title: "Ofertas del momento",
+    subtitle: "Productos con precio especial en el catalogo.",
+    href: "/ofertas",
+  },
+] as const;
 
 export const HOME_CATEGORY_IMAGES = {
   hombre: "/assets/atres-curated/banners/banner-campana_atres-003.webp",
@@ -23,7 +58,7 @@ export const HOME_CATEGORY_IMAGES = {
 
 export function getHomeCategoryImage(category: StoreCategory) {
   const image = category.image?.trim();
-  if (image && !image.includes("images.unsplash.com")) return image;
+  if (image && !isUnsplashUrl(image)) return image;
 
   const key = `${category.slug} ${category.name} ${category.shortName}`.toLowerCase();
   if (key.includes("hombre")) return HOME_CATEGORY_IMAGES.hombre;

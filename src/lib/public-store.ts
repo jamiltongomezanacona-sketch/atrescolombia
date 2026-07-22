@@ -28,6 +28,7 @@ import {
   type Promo,
 } from "@/lib/store-data";
 import { curatedAtresProducts, curatedAtresPromos } from "@/lib/curated-atres-assets";
+import { normalizePublicImageUrl } from "@/lib/image-url";
 
 const ATRES_PLACEHOLDER_IMAGE = "/icono.png";
 const PRODUCT_SELECT_BASE =
@@ -419,7 +420,7 @@ export const getPublicPromos = cache(async function getPublicPromos(): Promise<P
       title: banner.title,
       subtitle: banner.subtitle,
       href: banner.link_url || "/productos",
-      image: banner.desktop_image_url ?? ATRES_PLACEHOLDER_IMAGE,
+      image: normalizePublicImageUrl(banner.desktop_image_url ?? ATRES_PLACEHOLDER_IMAGE),
       tone: index === 0 ? "bg-promo text-black" : index === 1 ? "bg-black text-white" : "bg-white text-black",
     }));
 
@@ -565,7 +566,7 @@ function mapCategoryRow(category: SupabaseCategoryRow, slugById: Map<string, str
     slug: category.slug,
     name: category.name,
     shortName: category.name.replace(/^Moda\s+/i, ""),
-    image: category.image_url ?? ATRES_PLACEHOLDER_IMAGE,
+    image: normalizePublicImageUrl(category.image_url ?? ATRES_PLACEHOLDER_IMAGE),
     description: category.description ?? "",
     parentId: category.parent_id ?? null,
     parentSlug: category.parent_id ? slugById.get(category.parent_id) ?? null : null,
@@ -644,7 +645,7 @@ async function getShopsById(shopIds: string[]) {
 
 function resolveProductImageUrl(image: SupabaseImageRow) {
   const directUrl = image.public_url?.trim();
-  if (directUrl) return directUrl;
+  if (directUrl) return normalizePublicImageUrl(directUrl);
 
   const storagePath = image.storage_path?.trim();
   if (!storagePath) return null;
@@ -655,7 +656,9 @@ function resolveProductImageUrl(image: SupabaseImageRow) {
     .map((part) => encodeURIComponent(part))
     .join("/");
 
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/product-images/${encodedPath}`;
+  return normalizePublicImageUrl(
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/product-images/${encodedPath}`,
+  );
 }
 
 function categoryMatches(requestedSlug: string, productSlug: string, productName: string) {

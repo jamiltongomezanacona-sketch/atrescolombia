@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useState, useTransition } from "react";
+import { SafeProductImage } from "@/components/safe-product-image";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { AdminProductImage } from "@/lib/admin/types";
 
@@ -199,7 +200,12 @@ export function ImageManager({ productId, shopId, images }: ImageManagerProps) {
         {sortedItems.map((image, index) => (
           <article key={image.id} className="rounded-xl border border-zinc-200 bg-white p-2 shadow-sm">
             <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-zinc-100">
-              <Image src={image.public_url} alt={image.alt || "Producto"} fill sizes="180px" className="object-cover" />
+              <SafeProductImage
+                src={image.public_url}
+                alt={image.alt || "Producto"}
+                sizes="180px"
+                className="object-cover"
+              />
             </div>
             <div className="mt-2 grid gap-2">
               {image.is_primary ? <p className="rounded-full bg-[#eef6ff] px-2 py-1 text-xs font-black text-[#0b1f3a]">Principal</p> : null}

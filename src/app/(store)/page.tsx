@@ -40,7 +40,6 @@ export default async function Home() {
     ]);
 
   const heroProduct = trendingProducts[0] ?? promoProducts[0] ?? products[0];
-  const heroPromo = promos[0];
   const featuredProducts = trendingProducts.length ? trendingProducts : products;
   const recommended = products.filter((product) => product.stock > 0).slice(0, 12);
   const editorialProducts = uniqueProducts([
@@ -59,7 +58,7 @@ export default async function Home() {
 
   return (
     <main className="home-page">
-      <HomeHero product={heroProduct} promo={heroPromo} />
+      <HomeHero promos={promos} product={heroProduct} />
       <HomeCategoryPills categories={categories} />
       <HomeTrustStrip />
       <HomePromotions

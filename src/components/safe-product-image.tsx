@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { isRemoteImageUrl, normalizePublicImageUrl } from "@/lib/image-url";
 
 type SafeProductImageProps = {
   src: string;
@@ -17,7 +18,7 @@ export function SafeProductImage({
   sizes,
   className,
 }: SafeProductImageProps) {
-  const imageSrc = src?.trim() ? src : FALLBACK_IMAGE;
+  const imageSrc = src?.trim() ? normalizePublicImageUrl(src) : FALLBACK_IMAGE;
 
   return (
     <Image
@@ -25,7 +26,8 @@ export function SafeProductImage({
       alt={alt}
       fill
       sizes={sizes}
-      priority={priority}
+      preload={priority}
+      unoptimized={isRemoteImageUrl(imageSrc)}
       className={className}
     />
   );

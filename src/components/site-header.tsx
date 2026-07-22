@@ -17,7 +17,7 @@ export async function SiteHeader() {
       aria-label="Cabecera ATRES"
     >
       <div className="hidden border-b border-white/10 bg-white/[0.03] lg:block">
-        <div className="header-container flex items-center justify-between gap-3 py-1 text-[11px] font-normal tracking-wide text-white/70">
+        <div className="header-container flex items-center justify-between gap-2 py-0.5 text-[11px] font-normal tracking-wide text-white/70">
           <span>Productos colombianos</span>
           <span className="hidden md:inline">Compra directa y atencion por WhatsApp</span>
           <Link href="/ofertas" className="text-white/85 transition hover:text-white">
@@ -26,34 +26,29 @@ export async function SiteHeader() {
         </div>
       </div>
 
-      {/* Mobile: search-first bar (brand lives in the menu drawer) */}
-      <div className="header-container py-2 lg:hidden">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2">
-          <Suspense fallback={<div className="h-9 w-9 rounded-[var(--radius-card)] bg-white/10" />}>
-            <MobileNavDrawer items={navItems} />
-          </Suspense>
-          <Suspense fallback={<div className="h-10 rounded-[var(--radius-card)] bg-white/10" />}>
-            <HeaderMobileSearch />
-          </Suspense>
-          <HeaderActions compact minimal />
-        </div>
-      </div>
-
-      <div className="hidden header-container py-1.5 lg:block lg:py-1.5">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 xl:gap-4">
-          <div className="flex shrink-0 items-center gap-2">
-            <Suspense fallback={<div className="h-9 w-9 rounded-[var(--radius-card)] bg-white/10 lg:hidden" />}>
+      <div className="header-container py-1.5 lg:py-1">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 xl:gap-3">
+          <div className="flex shrink-0 items-center gap-1.5">
+            <Suspense fallback={<div className="h-8 w-8 rounded-[var(--radius-card)] bg-white/10 lg:h-9 lg:w-9" />}>
               <MobileNavDrawer items={navItems} />
             </Suspense>
-            <BrandLogo dark compact />
+            <div className="hidden lg:block">
+              <BrandLogo dark compact />
+            </div>
           </div>
 
-          <SearchBox
-            className="hidden min-w-0 w-full lg:block"
-            placeholder="Buscar vestidos, jeans, pijamas, uniformes..."
-          />
+          <div className="min-w-0">
+            <Suspense fallback={<div className="h-9 rounded-[var(--radius-card)] bg-white/10 lg:hidden" />}>
+              <HeaderMobileSearch />
+            </Suspense>
+            <SearchBox
+              className="hidden min-w-0 w-full lg:block"
+              placeholder="Buscar vestidos, jeans, pijamas..."
+            />
+          </div>
 
           <div className="flex shrink-0 items-center justify-end">
+            <HeaderActions compact minimal />
             <HeaderActions />
           </div>
         </div>

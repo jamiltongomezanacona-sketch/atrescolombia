@@ -25,8 +25,8 @@ export function ProductRail({
   if (!products.length) return null;
 
   return (
-    <section className="catalog-container products-catalog-container py-3 md:py-4">
-      <div className="mb-2.5 flex items-end justify-between gap-3 md:mb-3">
+    <section className="home-section catalog-container products-catalog-container">
+      <div className="mb-2 flex items-end justify-between gap-3 sm:mb-2.5">
         <div className="min-w-0">
           <h2 className="text-base font-medium tracking-tight text-ink sm:text-lg md:text-xl">{title}</h2>
           {subtitle ? (

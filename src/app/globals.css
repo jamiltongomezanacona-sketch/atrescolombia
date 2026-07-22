@@ -203,6 +203,42 @@ h6 {
   border-radius: var(--radius-card);
 }
 
+/* Home: compact vertical rhythm + horizontal scroll rows */
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.home-section {
+  padding-block: 0.625rem;
+}
+
+@media (min-width: 768px) {
+  .home-section {
+    padding-block: 0.75rem;
+  }
+}
+
+.home-scroll-row {
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.home-scroll-item {
+  scroll-snap-align: start;
+}
+
+@media (max-width: 639px) {
+  .home-scroll-row {
+    scrollbar-width: none;
+  }
+
+  .home-scroll-row::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @keyframes atres-shimmer {
   100% {
     transform: translateX(100%);

@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { ATRES_IMAGE_PLACEHOLDER } from "@/lib/local-media";
 import {
-  isRemoteImageUrl,
   isUnsupportedExternalImageUrl,
   normalizePublicImageUrl,
 } from "@/lib/image-url";
@@ -24,6 +23,10 @@ function resolveInitialSrc(src: string) {
   return normalizePublicImageUrl(trimmed) || ATRES_IMAGE_PLACEHOLDER;
 }
 
+/**
+ * Storefront images bypass Next/Vercel `/_next/image` to avoid HTTP 402
+ * from image-optimization quotas. Supabase/local assets are served directly.
+ */
 export function SafeProductImage({
   src,
   alt,
@@ -43,7 +46,7 @@ export function SafeProductImage({
       fill
       sizes={sizes}
       preload={priority}
-      unoptimized={isRemoteImageUrl(displaySrc)}
+      unoptimized
       className={className}
       onError={() => {
         if (resolvedSrc === ATRES_IMAGE_PLACEHOLDER || failed) return;

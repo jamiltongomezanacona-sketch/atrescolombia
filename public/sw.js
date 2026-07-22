@@ -1,4 +1,4 @@
-const CACHE_NAME = "atres-pwa-v3";
+const CACHE_NAME = "atres-pwa-v4";
 const STATIC_CACHE = [
   "/offline.html",
   "/icono.png",

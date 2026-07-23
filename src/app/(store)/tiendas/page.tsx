@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SafeProductImage } from "@/components/safe-product-image";
-import { getPublicProducts, getPublicShops } from "@/lib/public-store";
+import { getPublicProducts, getPublicShops, type PublicShop } from "@/lib/public-store";
 
 export const metadata = {
   title: "Tiendas",
@@ -15,10 +15,10 @@ export default async function ShopsPage() {
 
   return (
     <main>
-      <section className="catalog-container products-catalog-container py-3 md:py-4">
-        <div className="mb-3 md:mb-3.5">
+      <section className="catalog-container products-catalog-container !max-w-[1320px] !px-3 pb-[calc(8rem+env(safe-area-inset-bottom))] pt-2 sm:!px-4 md:pb-6 md:pt-3 lg:pb-7">
+        <div className="mb-2.5 md:mb-3">
           <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-ink-muted">Multitienda</p>
-          <h1 className="mt-0.5 text-xl font-medium tracking-tight text-ink sm:text-2xl">Tiendas</h1>
+          <h1 className="mt-0.5 text-xl font-medium tracking-normal text-ink sm:text-2xl">Tiendas</h1>
           <p className="mt-1 max-w-xl text-xs font-normal text-ink-muted sm:text-sm">
             Elige una tienda para ver solo sus productos.
           </p>
@@ -32,93 +32,49 @@ export default async function ShopsPage() {
             actionLabel="Ver catalogo"
           />
         ) : (
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
             {shops.map((shop) => {
               const shopName = shop.title || shop.name;
-              const productCount = shop.productCount ?? 0;
               const preview = shopPreviews.get(shop.id);
-              const thumbnails = preview?.thumbnails ?? [];
-              const categories = preview?.categories ?? [];
-              const statusBadge = preview?.hasPopular ? "Popular" : preview?.hasFeatured ? "Destacada" : null;
+              const shopImage =
+                shop.coverUrl || shop.logoUrl || preview?.thumbnails[0] || "/assets/atres-curated/placeholder.webp";
+              const isVerified = hasVerifiedStatus(shop);
 
               return (
                 <li key={shop.id} className="min-w-0">
                   <Link
                     href={`/tiendas/${shop.slug}`}
                     aria-label={`Ver tienda ${shopName}`}
-                    className="atres-interactive group flex h-full flex-col overflow-hidden rounded-[20px] bg-surface shadow-[0_16px_44px_rgba(15,15,15,0.08)] ring-1 ring-black/[0.06] transition duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_22px_60px_rgba(15,15,15,0.12)] hover:ring-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:translate-y-0 active:scale-[0.99]"
+                    className="group flex h-full flex-col overflow-hidden rounded-[18px] bg-surface shadow-[0_8px_22px_rgba(18,18,18,0.06)] ring-1 ring-black/[0.06] transition-[transform,box-shadow,background-color] duration-200 ease-out md:hover:-translate-y-1 md:hover:shadow-[0_14px_34px_rgba(18,18,18,0.1)] md:hover:ring-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98]"
                   >
-                    <div className="relative aspect-[3/5] overflow-hidden rounded-t-[20px] bg-surface-muted">
+                    <div className="relative aspect-[4/5] overflow-hidden rounded-[18px] bg-surface-muted">
                       <SafeProductImage
-                        src={shop.coverUrl || shop.logoUrl || "/assets/atres-curated/placeholder.webp"}
+                        src={shopImage}
                         alt=""
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                        className="object-cover transition duration-500 ease-out group-hover:scale-[1.035]"
+                        sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, (max-width: 1535px) 25vw, 20vw"
+                        className="object-cover transition duration-200 ease-out md:group-hover:scale-[1.025]"
                       />
-                      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex min-h-[48%] items-end bg-gradient-to-t from-black/75 via-black/35 to-transparent p-4">
-                        <div className="min-w-0">
-                          <h2 className="line-clamp-2 text-lg font-medium leading-tight tracking-tight text-white drop-shadow-sm">
-                            {shopName}
-                          </h2>
-                          <p className="mt-2 inline-flex items-center rounded-full bg-white/[0.14] px-2.5 py-1 text-[11px] font-medium text-white ring-1 ring-white/20 backdrop-blur-sm">
-                            ✓ Tienda verificada
-                          </p>
-                        </div>
-                      </div>
                     </div>
 
-                    <div className="flex flex-1 flex-col gap-3 p-3.5 sm:p-4">
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium text-ink">{shop.city || "Colombia"}</p>
-                        <p className="text-xs font-normal text-ink-muted">
-                          {productCount} producto{productCount === 1 ? "" : "s"}
-                        </p>
-                        {categories.length > 0 ? (
-                          <p className="line-clamp-1 text-xs font-normal text-ink-muted/85">
-                            {categories.join(" • ")}
-                          </p>
-                        ) : null}
-                      </div>
-
-                      <div className="flex flex-wrap gap-1.5" aria-label="Insignias de tienda">
-                        <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700 ring-1 ring-emerald-100">
-                          ✓ Verificada
+                    <div className="flex h-[7.25rem] flex-col overflow-hidden px-2.5 pb-2.5 pt-2 sm:h-[7.5rem] sm:px-3 sm:pb-3">
+                      <h2 className="line-clamp-2 min-h-[2rem] text-[13px] font-medium leading-[1.2] tracking-normal text-ink sm:text-sm">
+                        {shopName}
+                      </h2>
+                      <p className="mt-1 line-clamp-1 text-[11px] font-normal leading-4 text-ink-muted sm:text-xs">
+                        {shop.city || "Colombia"}
+                      </p>
+                      {isVerified ? (
+                        <span className="mt-1.5 w-fit rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium leading-4 text-emerald-700 ring-1 ring-emerald-100 sm:text-[11px]">
+                          Verificada
                         </span>
-                        <span className="rounded-full bg-stone-100 px-2.5 py-1 text-[11px] font-medium text-stone-700 ring-1 ring-black/[0.04]">
-                          Colombiana
-                        </span>
-                        {statusBadge ? (
-                          <span className="rounded-full bg-orange-50 px-2.5 py-1 text-[11px] font-medium text-orange-700 ring-1 ring-orange-100">
-                            {statusBadge}
-                          </span>
-                        ) : null}
-                      </div>
-
-                      {thumbnails.length >= 3 ? (
-                        <div className="flex gap-2" aria-label="Productos destacados de la tienda">
-                          {thumbnails.map((thumbnail, index) => (
-                            <span
-                              key={`${shop.id}-${thumbnail}-${index}`}
-                              className="relative size-10 overflow-hidden rounded-xl bg-surface-muted ring-1 ring-black/[0.05] sm:size-11"
-                            >
-                              <SafeProductImage
-                                src={thumbnail}
-                                alt=""
-                                sizes="56px"
-                                className="object-cover transition duration-200 ease-out group-hover:scale-[1.025]"
-                              />
-                            </span>
-                          ))}
-                        </div>
                       ) : null}
-
-                      <span className="mt-auto inline-flex h-9 items-center justify-center rounded-full bg-ink px-4 text-sm font-medium text-white transition duration-200 ease-out group-hover:bg-black group-focus-visible:bg-black group-active:scale-[0.98]">
-                        Ver tienda
+                      <span className="mt-auto inline-flex h-7 items-center justify-center rounded-full bg-ink px-2.5 text-[11px] font-medium text-white transition duration-200 ease-out group-hover:bg-black group-focus-visible:bg-black group-active:scale-[0.98] sm:h-8 sm:text-xs">
+                        Ver catalogo
                         <span
                           aria-hidden="true"
-                          className="ml-1 transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                          className="ml-1 transition-transform duration-200 ease-out md:group-hover:translate-x-0.5"
                         >
-                          →
+                          -&gt;
                         </span>
                       </span>
                     </div>
@@ -174,4 +130,8 @@ function buildShopPreviews(products: Awaited<ReturnType<typeof getPublicProducts
   }
 
   return previews;
+}
+
+function hasVerifiedStatus(shop: PublicShop) {
+  return (shop as PublicShop & { verified?: unknown }).verified === true;
 }

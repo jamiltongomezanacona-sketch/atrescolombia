@@ -1,9 +1,11 @@
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ShopForm } from "@/components/admin/shop-form";
 import { requireSuperAdmin } from "@/lib/admin/auth";
+import { getAdminShops } from "@/lib/admin/data";
 
 export default async function NewShopPage() {
   const session = await requireSuperAdmin();
+  const shops = await getAdminShops();
 
   return (
     <AdminShell isSuperAdmin={session.isSuperAdmin}>
@@ -12,10 +14,10 @@ export default async function NewShopPage() {
           <p className="text-xs font-black uppercase tracking-wide text-zinc-500">Multitienda</p>
           <h1 className="mt-1 text-3xl font-black tracking-tight">Crear tienda</h1>
           <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-zinc-500">
-            Registra una tienda independiente y prepara su administrador de catalogo.
+            Modo rapido con plantillas, duplicado y subida de logo/portada en el mismo paso.
           </p>
         </div>
-        <ShopForm showAdminFields />
+        <ShopForm showAdminFields shops={shops} />
       </div>
     </AdminShell>
   );

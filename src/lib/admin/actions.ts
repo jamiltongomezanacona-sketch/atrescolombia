@@ -161,7 +161,7 @@ export async function saveShop(_: ActionState, formData: FormData): Promise<Acti
         ...basePayload,
         verified: checkboxValue(formData, "verified"),
         status: stringValue(formData, "status") || "active",
-        max_products: Math.max(0, numberValue(formData, "max_products") || 0),
+        max_products: Math.max(0, numberValue(formData, "max_products") || 200),
         max_images: Math.max(1, numberValue(formData, "max_images") || 10),
       }
     : basePayload;
@@ -187,8 +187,33 @@ export async function saveShop(_: ActionState, formData: FormData): Promise<Acti
     }
   }
 
+  const brandUpdates: { logo_url?: string; cover_url?: string } = {};
+  const logoUpload = await uploadShopBrandFileFromForm(formData, "logo_file", shopId, "logo");
+  if (!logoUpload.ok) {
+    return { ok: false, message: logoUpload.message };
+  }
+  if (logoUpload.publicUrl) brandUpdates.logo_url = logoUpload.publicUrl;
+
+  const coverUpload = await uploadShopBrandFileFromForm(formData, "cover_file", shopId, "cover");
+  if (!coverUpload.ok) {
+    return { ok: false, message: coverUpload.message };
+  }
+  if (coverUpload.publicUrl) brandUpdates.cover_url = coverUpload.publicUrl;
+
+  if (Object.keys(brandUpdates).length) {
+    const { error: brandError } = await supabase.from("shops").update(brandUpdates).eq("id", shopId);
+    if (brandError) {
+      return {
+        ok: false,
+        message: `Tienda guardada, pero fallaron las imagenes: ${brandError.message}`,
+      };
+    }
+  }
+
   revalidatePath("/admin/tiendas");
   revalidatePath(`/admin/tiendas/${shopId}/editar`);
+  revalidatePath("/tiendas");
+  revalidatePath(`/tiendas/[slug]`, "page");
   if (session.isSuperAdmin && !id) {
     redirect(`/admin/tiendas/${shopId}/editar?guardado=1`);
   }
@@ -501,6 +526,42 @@ export async function uploadShopBrandImage(
     message: kind === "logo" ? "Logo subido." : "Portada subida.",
     publicUrl: data.publicUrl,
   };
+}
+
+async function uploadShopBrandFileFromForm(
+  formData: FormData,
+  fieldName: string,
+  shopId: string,
+  kind: "logo" | "cover",
+): Promise<ActionState & { publicUrl?: string }> {
+  const file = formData.get(fieldName);
+  if (!(file instanceof File) || file.size <= 0) {
+    return { ok: true, message: "" };
+  }
+
+  if (!ALLOWED_QUICK_PRODUCT_IMAGE_TYPES.has(file.type)) {
+    return { ok: false, message: `La imagen de ${kind} debe ser WebP, JPG o PNG.` };
+  }
+
+  if (file.size > MAX_QUICK_PRODUCT_IMAGE_BYTES) {
+    return {
+      ok: false,
+      message: `La imagen de ${kind} supera 900KB. Reduce la foto antes de subirla.`,
+    };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const storagePath = `shops/${shopId}/${kind}-${crypto.randomUUID()}.webp`;
+  const { error } = await supabase.storage
+    .from("product-images")
+    .upload(storagePath, file, { contentType: file.type || "image/webp", upsert: false });
+
+  if (error) {
+    return { ok: false, message: `No se pudo subir ${kind}: ${error.message}` };
+  }
+
+  const { data } = supabase.storage.from("product-images").getPublicUrl(storagePath);
+  return { ok: true, message: "", publicUrl: data.publicUrl };
 }
 
 export async function cleanupQuickProductUploads(paths: string[]): Promise<ActionState> {

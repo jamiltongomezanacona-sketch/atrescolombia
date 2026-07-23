@@ -1,74 +1,395 @@
 "use client";
 
-import { useActionState, useId, useRef, useState, useTransition } from "react";
+import {
+  useActionState,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+  type ChangeEvent,
+} from "react";
 import { saveShop, uploadShopBrandImage } from "@/lib/admin/actions";
 import type { AdminShop } from "@/lib/admin/types";
 import { Button } from "@/components/ui/button";
+import { ATRES_IMAGE_PLACEHOLDER } from "@/lib/local-media";
 
 type ShopFormProps = {
   shop?: AdminShop | null;
+  shops?: AdminShop[];
   showAdminFields?: boolean;
   allowStatusEdit?: boolean;
   submitLabel?: string;
+};
+
+type ShopTemplateId = "blank" | "moda" | "hogar" | "demo";
+
+type ShopTemplate = {
+  id: ShopTemplateId;
+  label: string;
+  hint: string;
+  values: Partial<{
+    title: string;
+    short_description: string;
+    description: string;
+    city: string;
+    max_products: number;
+    max_images: number;
+    allow_promotions: boolean;
+    show_on_home: boolean;
+    verified: boolean;
+    logo_url: string;
+    cover_url: string;
+  }>;
 };
 
 const initialState = { ok: false, message: "" };
 const MAX_UPLOAD_IMAGE_SIZE = 900 * 1024;
 const IMAGE_QUALITY_STEPS = [0.82, 0.76, 0.68, 0.6];
 
+const SHOP_TEMPLATES: ShopTemplate[] = [
+  {
+    id: "blank",
+    label: "En blanco",
+    hint: "Solo lo esencial",
+    values: {
+      max_products: 200,
+      max_images: 10,
+      show_on_home: true,
+      allow_promotions: false,
+      verified: false,
+    },
+  },
+  {
+    id: "moda",
+    label: "Moda",
+    hint: "Ropa y catalogo visual",
+    values: {
+      title: "Moda colombiana",
+      short_description: "Catalogo de moda con compra directa por WhatsApp.",
+      description: "Tienda de moda con prendas listas para explorar y contactar al vendedor.",
+      city: "Bogota",
+      max_products: 300,
+      max_images: 10,
+      show_on_home: true,
+      allow_promotions: true,
+      verified: false,
+      cover_url: "/assets/atres-curated/banners/banner-campana_atres-004.webp",
+      logo_url: ATRES_IMAGE_PLACEHOLDER,
+    },
+  },
+  {
+    id: "hogar",
+    label: "Hogar",
+    hint: "Textiles y casa",
+    values: {
+      title: "Hogar y textiles",
+      short_description: "Sabanas, cobijas y textiles para el hogar.",
+      description: "Tienda enfocada en hogar y textiles con atencion directa.",
+      city: "Medellin",
+      max_products: 200,
+      max_images: 10,
+      show_on_home: true,
+      allow_promotions: true,
+      verified: false,
+      cover_url: "/assets/atres-curated/banners/banner-campana_revision_marca-010.webp",
+      logo_url: ATRES_IMAGE_PLACEHOLDER,
+    },
+  },
+  {
+    id: "demo",
+    label: "Demo",
+    hint: "Lista para mostrar",
+    values: {
+      title: "Tienda demo ATRES",
+      short_description: "Tienda de demostracion lista para cargar productos.",
+      description: "Usa esta tienda para pruebas, demos comerciales o onboarding rapido.",
+      city: "Colombia",
+      max_products: 500,
+      max_images: 10,
+      show_on_home: true,
+      allow_promotions: true,
+      verified: true,
+      cover_url: "/assets/atres-curated/banners/banner-campana_atres-001.webp",
+      logo_url: ATRES_IMAGE_PLACEHOLDER,
+    },
+  },
+];
+
 export function ShopForm({
   shop,
+  shops = [],
   showAdminFields = false,
   allowStatusEdit = true,
   submitLabel = "Guardar tienda",
 }: ShopFormProps) {
+  const isCreate = !shop?.id;
   const [state, formAction, pending] = useActionState(saveShop, initialState);
+  const [quickMode, setQuickMode] = useState(isCreate);
+  const [showAdvanced, setShowAdvanced] = useState(!isCreate);
+  const [templateId, setTemplateId] = useState<ShopTemplateId>("blank");
+  const [name, setName] = useState(shop?.name ?? "");
+  const [title, setTitle] = useState(shop?.title ?? "");
+  const [slug, setSlug] = useState(shop?.slug ?? "");
+  const [slugTouched, setSlugTouched] = useState(Boolean(shop?.slug));
+  const [city, setCity] = useState(shop?.city ?? "");
+  const [whatsapp, setWhatsapp] = useState(shop?.whatsapp ?? "");
+  const [email, setEmail] = useState(shop?.email ?? "");
+  const [shortDescription, setShortDescription] = useState(shop?.short_description ?? "");
+  const [description, setDescription] = useState(shop?.description ?? "");
   const [logoUrl, setLogoUrl] = useState(shop?.logo_url ?? "");
   const [coverUrl, setCoverUrl] = useState(shop?.cover_url ?? "");
+  const [maxProducts, setMaxProducts] = useState(String(shop?.max_products ?? 200));
+  const [maxImages, setMaxImages] = useState(String(shop?.max_images ?? 10));
+  const [status, setStatus] = useState(shop?.status ?? "active");
+  const [verified, setVerified] = useState(Boolean(shop?.verified));
+  const [showOnHome, setShowOnHome] = useState(shop?.show_on_home ?? true);
+  const [allowPromotions, setAllowPromotions] = useState(Boolean(shop?.allow_promotions));
+  const [adminName, setAdminName] = useState("");
+  const [adminEmail, setAdminEmail] = useState("");
+  const [adminPassword, setAdminPassword] = useState(isCreate ? generatePassword() : "");
+  const [duplicateId, setDuplicateId] = useState("");
+
+  const selectedTemplate = useMemo(
+    () => SHOP_TEMPLATES.find((item) => item.id === templateId) ?? SHOP_TEMPLATES[0],
+    [templateId],
+  );
+
+  function applyTemplate(nextId: ShopTemplateId) {
+    const template = SHOP_TEMPLATES.find((item) => item.id === nextId) ?? SHOP_TEMPLATES[0];
+    setTemplateId(template.id);
+    const values = template.values;
+    if (values.title) setTitle(values.title);
+    if (values.short_description) setShortDescription(values.short_description);
+    if (values.description) setDescription(values.description);
+    if (values.city) setCity(values.city);
+    if (typeof values.max_products === "number") setMaxProducts(String(values.max_products));
+    if (typeof values.max_images === "number") setMaxImages(String(values.max_images));
+    if (typeof values.show_on_home === "boolean") setShowOnHome(values.show_on_home);
+    if (typeof values.allow_promotions === "boolean") setAllowPromotions(values.allow_promotions);
+    if (typeof values.verified === "boolean") setVerified(values.verified);
+    if (values.logo_url && !logoUrl) setLogoUrl(values.logo_url);
+    if (values.cover_url && !coverUrl) setCoverUrl(values.cover_url);
+  }
+
+  function applyDuplicate(shopId: string) {
+    setDuplicateId(shopId);
+    const source = shops.find((item) => item.id === shopId);
+    if (!source) return;
+    setName(`${source.name} (copia)`);
+    setTitle(source.title || source.name);
+    setSlugTouched(false);
+    setSlug(slugifyClient(`${source.slug || source.name}-copia`));
+    setCity(source.city || "");
+    setWhatsapp(source.whatsapp || "");
+    setEmail(source.email || "");
+    setShortDescription(source.short_description || "");
+    setDescription(source.description || "");
+    setLogoUrl(source.logo_url || "");
+    setCoverUrl(source.cover_url || "");
+    setMaxProducts(String(source.max_products || 200));
+    setMaxImages(String(source.max_images || 10));
+    setStatus("active");
+    setVerified(false);
+    setShowOnHome(source.show_on_home ?? true);
+    setAllowPromotions(Boolean(source.allow_promotions));
+    setAdminName(source.name);
+    setShowAdvanced(true);
+  }
+
+  function onNameChange(value: string) {
+    setName(value);
+    if (!slugTouched) setSlug(slugifyClient(value));
+    if (!adminName && isCreate) setAdminName(value);
+    if (!title) setTitle(value);
+  }
 
   return (
-    <form action={formAction} className="grid gap-4 md:gap-5">
+    <form action={formAction} className="grid gap-4 md:gap-5" encType="multipart/form-data">
       {shop?.id ? <input type="hidden" name="id" value={shop.id} /> : null}
+
+      {isCreate ? (
+        <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <SectionTitle eyebrow="Velocidad" title="Creacion rapida" />
+            <button
+              type="button"
+              onClick={() => {
+                setQuickMode((value) => !value);
+                setShowAdvanced((value) => (quickMode ? true : value));
+              }}
+              className="inline-flex h-10 items-center rounded-full bg-[#eef6ff] px-4 text-xs font-black text-[#0b1f3a] ring-1 ring-[#d8e7f5]"
+            >
+              {quickMode ? "Ver formulario completo" : "Usar modo rapido"}
+            </button>
+          </div>
+
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {SHOP_TEMPLATES.map((template) => (
+              <button
+                key={template.id}
+                type="button"
+                onClick={() => applyTemplate(template.id)}
+                className={`rounded-xl border px-3 py-3 text-left transition ${
+                  templateId === template.id
+                    ? "border-[#0b1f3a] bg-[#0b1f3a] text-white"
+                    : "border-[#d8e7f5] bg-[#eef6ff]/70 text-zinc-900 hover:bg-white"
+                }`}
+              >
+                <span className="block text-sm font-black">{template.label}</span>
+                <span className={`mt-1 block text-xs font-medium ${templateId === template.id ? "text-white/75" : "text-zinc-500"}`}>
+                  {template.hint}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {shops.length ? (
+            <label className="grid gap-2 text-sm font-bold">
+              Duplicar tienda existente
+              <select
+                value={duplicateId}
+                onChange={(event) => applyDuplicate(event.target.value)}
+                className={inputClass}
+              >
+                <option value="">No duplicar</option>
+                {shops.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name} ({item.slug})
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
+
+          <p className="text-xs font-medium leading-5 text-zinc-500">
+            Plantilla activa: <strong>{selectedTemplate.label}</strong>. Completa nombre + admin y crea. Lo demas queda
+            con valores listos.
+          </p>
+        </section>
+      ) : null}
 
       <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
         <SectionTitle eyebrow="Informacion" title="Datos de la tienda" />
         <div className="grid gap-3 md:grid-cols-2">
-          <Field label="Nombre de la tienda" name="name" defaultValue={shop?.name} required />
-          <Field label="Titulo comercial" name="title" defaultValue={shop?.title} />
-          <Field label="Slug" name="slug" defaultValue={shop?.slug} required />
-          <Field label="Ciudad" name="city" defaultValue={shop?.city} />
-          <Field label="WhatsApp" name="whatsapp" defaultValue={shop?.whatsapp} />
-          <Field label="Correo" name="email" type="email" defaultValue={shop?.email} />
+          <label className="grid gap-2 text-sm font-bold">
+            Nombre de la tienda
+            <input
+              name="name"
+              required
+              value={name}
+              onChange={(event) => onNameChange(event.target.value)}
+              className={inputClass}
+            />
+          </label>
+          {!quickMode ? (
+            <label className="grid gap-2 text-sm font-bold">
+              Titulo comercial
+              <input name="title" value={title} onChange={(event) => setTitle(event.target.value)} className={inputClass} />
+            </label>
+          ) : (
+            <input type="hidden" name="title" value={title || name} />
+          )}
+          <label className="grid gap-2 text-sm font-bold">
+            Slug
+            <input
+              name="slug"
+              required
+              value={slug}
+              onChange={(event) => {
+                setSlugTouched(true);
+                setSlug(slugifyClient(event.target.value));
+              }}
+              className={inputClass}
+            />
+          </label>
+          <label className="grid gap-2 text-sm font-bold">
+            Ciudad
+            <input name="city" value={city} onChange={(event) => setCity(event.target.value)} className={inputClass} />
+          </label>
+          <label className="grid gap-2 text-sm font-bold">
+            WhatsApp {quickMode ? <span className="font-medium text-zinc-400">(opcional)</span> : null}
+            <input
+              name="whatsapp"
+              value={whatsapp}
+              onChange={(event) => setWhatsapp(event.target.value.replace(/\D/g, "").slice(0, 15))}
+              className={inputClass}
+              placeholder="573001112233"
+            />
+          </label>
+          {!quickMode ? (
+            <label className="grid gap-2 text-sm font-bold">
+              Correo
+              <input
+                name="email"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className={inputClass}
+              />
+            </label>
+          ) : (
+            <input type="hidden" name="email" value={email} />
+          )}
         </div>
-        <TextAreaField label="Descripcion corta" name="short_description" defaultValue={shop?.short_description} />
-        <TextAreaField label="Descripcion completa" name="description" defaultValue={shop?.description} />
+        {!quickMode ? (
+          <>
+            <label className="grid gap-2 text-sm font-bold">
+              Descripcion corta
+              <textarea
+                name="short_description"
+                value={shortDescription}
+                onChange={(event) => setShortDescription(event.target.value)}
+                rows={2}
+                className={textareaClass}
+              />
+            </label>
+            <label className="grid gap-2 text-sm font-bold">
+              Descripcion completa
+              <textarea
+                name="description"
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                rows={3}
+                className={textareaClass}
+              />
+            </label>
+          </>
+        ) : (
+          <>
+            <input type="hidden" name="short_description" value={shortDescription} />
+            <input type="hidden" name="description" value={description} />
+          </>
+        )}
       </section>
 
       <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-[#eef6ff]/60 p-3 md:p-4">
         <SectionTitle eyebrow="Imagen" title="Identidad visual" />
-        {!shop?.id ? (
-          <p className="rounded-xl bg-white/80 px-3 py-2 text-xs font-medium text-zinc-500 ring-1 ring-[#d8e7f5]">
-            Guarda la tienda primero para subir imagenes desde el dispositivo.
-          </p>
-        ) : null}
+        <p className="rounded-xl bg-white/80 px-3 py-2 text-xs font-medium text-zinc-500 ring-1 ring-[#d8e7f5]">
+          Puedes subir logo y portada ahora. Si no subes nada, se usan los valores de la plantilla o el placeholder local.
+        </p>
         <div className="grid gap-3 md:grid-cols-2">
           <PreviewField
-            label="Logo URL"
+            label="Logo"
             name="logo_url"
+            fileName="logo_file"
             kind="logo"
             shopId={shop?.id}
             value={logoUrl}
             onChange={setLogoUrl}
             previewClassName="aspect-square"
+            allowCreateUpload
           />
           <PreviewField
-            label="Portada URL"
+            label="Portada"
             name="cover_url"
+            fileName="cover_file"
             kind="cover"
             shopId={shop?.id}
             value={coverUrl}
             onChange={setCoverUrl}
             previewClassName="aspect-[16/9]"
+            allowCreateUpload
           />
         </div>
       </section>
@@ -77,44 +398,128 @@ export function ShopForm({
         <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
           <SectionTitle eyebrow="Administrador" title="Acceso inicial" />
           <div className="grid gap-3 md:grid-cols-3">
-            <Field label="Nombre" name="admin_name" required />
-            <Field label="Usuario / correo" name="admin_email" type="email" required />
-            <Field label="Contrasena temporal" name="admin_password" type="password" required />
+            <label className="grid gap-2 text-sm font-bold">
+              Nombre
+              <input
+                name="admin_name"
+                required
+                value={adminName}
+                onChange={(event) => setAdminName(event.target.value)}
+                className={inputClass}
+              />
+            </label>
+            <label className="grid gap-2 text-sm font-bold">
+              Usuario / correo
+              <input
+                name="admin_email"
+                type="email"
+                required
+                value={adminEmail}
+                onChange={(event) => setAdminEmail(event.target.value)}
+                className={inputClass}
+              />
+            </label>
+            <label className="grid gap-2 text-sm font-bold">
+              Contrasena temporal
+              <div className="flex gap-2">
+                <input
+                  name="admin_password"
+                  type="text"
+                  required
+                  minLength={8}
+                  value={adminPassword}
+                  onChange={(event) => setAdminPassword(event.target.value)}
+                  className={inputClass}
+                />
+                <button
+                  type="button"
+                  onClick={() => setAdminPassword(generatePassword())}
+                  className="inline-flex h-11 shrink-0 items-center rounded-xl bg-[#0b1f3a] px-3 text-xs font-black text-white"
+                >
+                  Generar
+                </button>
+              </div>
+            </label>
           </div>
           <p className="text-xs font-medium leading-5 text-zinc-500">
-            Se crea el usuario en Supabase Auth con rol de tienda y se vincula automaticamente. Requiere
-            SUPABASE_SERVICE_ROLE_KEY en el servidor. Si falla el usuario, la tienda no se conserva.
+            Se crea el usuario en Supabase Auth con rol de tienda y se vincula automaticamente.
           </p>
         </section>
       ) : null}
 
       {allowStatusEdit ? (
         <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
-          <SectionTitle eyebrow="Configuracion" title="Limites y visibilidad" />
-          <div className="grid gap-3 md:grid-cols-2">
-            <Field label="Maximo de productos" name="max_products" type="number" defaultValue={shop?.max_products ?? 200} />
-            <Field label="Maximo de imagenes" name="max_images" type="number" defaultValue={shop?.max_images ?? 10} />
-            <label className="grid gap-2 text-sm font-bold">
-              Estado
-              <select name="status" defaultValue={shop?.status ?? "active"} className={inputClass}>
-                <option value="active">Activa</option>
-                <option value="suspended">Suspendida</option>
-                <option value="archived">Archivada</option>
-              </select>
-            </label>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <SectionTitle eyebrow="Configuracion" title="Limites y visibilidad" />
+            {isCreate ? (
+              <button
+                type="button"
+                onClick={() => setShowAdvanced((value) => !value)}
+                className="text-xs font-black text-[#2f6f9f] underline-offset-2 hover:underline"
+              >
+                {showAdvanced ? "Ocultar avanzado" : "Mas opciones"}
+              </button>
+            ) : null}
           </div>
-          <div className="grid gap-3 sm:grid-cols-3">
-            <CheckField label="Tienda verificada" name="verified" defaultChecked={shop?.verified} />
-            <CheckField label="Mostrar en pagina principal" name="show_on_home" defaultChecked={shop?.show_on_home ?? true} />
-            <CheckField label="Permitir promociones" name="allow_promotions" defaultChecked={shop?.allow_promotions} />
-          </div>
+
+          {showAdvanced || !isCreate ? (
+            <>
+              <div className="grid gap-3 md:grid-cols-2">
+                <label className="grid gap-2 text-sm font-bold">
+                  Maximo de productos
+                  <input
+                    name="max_products"
+                    type="number"
+                    value={maxProducts}
+                    onChange={(event) => setMaxProducts(event.target.value)}
+                    className={inputClass}
+                  />
+                </label>
+                <label className="grid gap-2 text-sm font-bold">
+                  Maximo de imagenes
+                  <input
+                    name="max_images"
+                    type="number"
+                    value={maxImages}
+                    onChange={(event) => setMaxImages(event.target.value)}
+                    className={inputClass}
+                  />
+                </label>
+                <label className="grid gap-2 text-sm font-bold">
+                  Estado
+                  <select name="status" value={status} onChange={(event) => setStatus(event.target.value as AdminShop["status"])} className={inputClass}>
+                    <option value="active">Activa</option>
+                    <option value="suspended">Suspendida</option>
+                    <option value="archived">Archivada</option>
+                  </select>
+                </label>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <CheckField label="Tienda verificada" name="verified" checked={verified} onChange={setVerified} />
+                <CheckField label="Mostrar en pagina principal" name="show_on_home" checked={showOnHome} onChange={setShowOnHome} />
+                <CheckField label="Permitir promociones" name="allow_promotions" checked={allowPromotions} onChange={setAllowPromotions} />
+              </div>
+            </>
+          ) : (
+            <>
+              <input type="hidden" name="max_products" value={maxProducts} />
+              <input type="hidden" name="max_images" value={maxImages} />
+              <input type="hidden" name="status" value={status} />
+              {verified ? <input type="hidden" name="verified" value="on" /> : null}
+              {showOnHome ? <input type="hidden" name="show_on_home" value="on" /> : null}
+              {allowPromotions ? <input type="hidden" name="allow_promotions" value="on" /> : null}
+              <p className="text-xs font-medium text-zinc-500">
+                Defaults listos: {maxProducts} productos, {maxImages} imagenes, estado {status}.
+              </p>
+            </>
+          )}
         </section>
       ) : (
         <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
           <SectionTitle eyebrow="Visibilidad" title="Opciones de tienda" />
           <div className="grid gap-3 sm:grid-cols-2">
-            <CheckField label="Mostrar en pagina principal" name="show_on_home" defaultChecked={shop?.show_on_home ?? true} />
-            <CheckField label="Permitir promociones" name="allow_promotions" defaultChecked={shop?.allow_promotions} />
+            <CheckField label="Mostrar en pagina principal" name="show_on_home" checked={showOnHome} onChange={setShowOnHome} />
+            <CheckField label="Permitir promociones" name="allow_promotions" checked={allowPromotions} onChange={setAllowPromotions} />
           </div>
           <input type="hidden" name="status" value={shop?.status ?? "active"} />
         </section>
@@ -134,7 +539,7 @@ export function ShopForm({
 
       <div className="sticky bottom-3 z-10 rounded-[var(--radius-card)] border border-black/8 bg-surface/95 p-2 shadow-soft backdrop-blur md:bottom-4">
         <Button type="submit" disabled={pending} variant="primary" className="h-11 w-full">
-          {pending ? "Guardando..." : submitLabel}
+          {pending ? "Guardando..." : isCreate ? "Crear tienda ahora" : submitLabel}
         </Button>
       </div>
     </form>
@@ -150,77 +555,38 @@ function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
   );
 }
 
-function Field({
-  label,
-  name,
-  defaultValue,
-  type = "text",
-  required = false,
-}: {
-  label: string;
-  name: string;
-  defaultValue?: string | number | null;
-  type?: string;
-  required?: boolean;
-}) {
-  return (
-    <label className="grid gap-2 text-sm font-bold">
-      {label}
-      <input
-        name={name}
-        type={type}
-        required={required}
-        defaultValue={defaultValue ?? ""}
-        className={inputClass}
-      />
-    </label>
-  );
-}
-
-function TextAreaField({
-  label,
-  name,
-  defaultValue,
-}: {
-  label: string;
-  name: string;
-  defaultValue?: string | null;
-}) {
-  return (
-    <label className="grid gap-2 text-sm font-bold">
-      {label}
-      <textarea name={name} defaultValue={defaultValue ?? ""} rows={3} className={textareaClass} />
-    </label>
-  );
-}
-
 function PreviewField({
   label,
   name,
+  fileName,
   kind,
   shopId,
   value,
   onChange,
   previewClassName,
+  allowCreateUpload = false,
 }: {
   label: string;
   name: string;
+  fileName: string;
   kind: "logo" | "cover";
   shopId?: string | null;
   value: string;
   onChange: (value: string) => void;
   previewClassName: string;
+  allowCreateUpload?: boolean;
 }) {
   const inputId = useId();
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, startUpload] = useTransition();
   const [message, setMessage] = useState("");
-  const canUpload = Boolean(shopId);
+  const [localPreview, setLocalPreview] = useState("");
+  const canImmediateUpload = Boolean(shopId);
+  const canPickFile = canImmediateUpload || allowCreateUpload;
 
-  function onFileSelected(event: React.ChangeEvent<HTMLInputElement>) {
+  function onFileSelected(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
-    event.target.value = "";
-    if (!file || !shopId) return;
+    if (!file) return;
 
     setMessage("");
     startUpload(async () => {
@@ -237,23 +603,36 @@ function PreviewField({
           throw new Error("La imagen optimizada supera 900KB. Usa una foto mas liviana.");
         }
 
-        const formData = new FormData();
-        formData.set("shopId", shopId);
-        formData.set("kind", kind);
-        formData.set("file", new File([webp], `${kind}.webp`, { type: "image/webp" }));
-
-        const result = await uploadShopBrandImage(formData);
-        if (!result.ok || !result.publicUrl) {
-          throw new Error(result.message || "No se pudo subir la imagen.");
+        if (shopId) {
+          const formData = new FormData();
+          formData.set("shopId", shopId);
+          formData.set("kind", kind);
+          formData.set("file", new File([webp], `${kind}.webp`, { type: "image/webp" }));
+          const result = await uploadShopBrandImage(formData);
+          if (!result.ok || !result.publicUrl) {
+            throw new Error(result.message || "No se pudo subir la imagen.");
+          }
+          onChange(result.publicUrl);
+          setLocalPreview("");
+          setMessage(result.message);
+        } else {
+          const optimized = new File([webp], `${kind}.webp`, { type: "image/webp" });
+          const transfer = new DataTransfer();
+          transfer.items.add(optimized);
+          if (fileRef.current) fileRef.current.files = transfer.files;
+          const previewUrl = URL.createObjectURL(webp);
+          setLocalPreview(previewUrl);
+          onChange("");
+          setMessage("Imagen lista. Se subira al crear la tienda.");
         }
-
-        onChange(result.publicUrl);
-        setMessage(result.message);
       } catch (error) {
-        setMessage(error instanceof Error ? error.message : "No se pudo subir la imagen.");
+        setMessage(error instanceof Error ? error.message : "No se pudo preparar la imagen.");
+        if (fileRef.current) fileRef.current.value = "";
       }
     });
   }
+
+  const previewSrc = localPreview || value;
 
   return (
     <div className="grid gap-2 text-sm font-bold">
@@ -263,31 +642,29 @@ function PreviewField({
         name={name}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="/assets/... o https://..."
+        placeholder="/assets/... o URL Supabase"
         className={inputClass}
       />
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
-          disabled={!canUpload || uploading}
+          disabled={!canPickFile || uploading}
           onClick={() => fileRef.current?.click()}
           className="inline-flex h-10 items-center justify-center rounded-full bg-[#0b1f3a] px-4 text-xs font-black text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {uploading ? "Subiendo..." : "Subir del dispositivo"}
+          {uploading ? "Preparando..." : "Subir del dispositivo"}
         </button>
         <input
           ref={fileRef}
           id={`${inputId}-file`}
+          name={shopId ? undefined : fileName}
           type="file"
           accept="image/jpeg,image/png,image/webp"
           capture="environment"
           className="sr-only"
-          disabled={!canUpload || uploading}
+          disabled={!canPickFile || uploading}
           onChange={onFileSelected}
         />
-        {!canUpload ? (
-          <span className="text-xs font-medium text-zinc-500">Disponible al editar</span>
-        ) : null}
       </div>
       {message ? (
         <p className="text-xs font-medium text-zinc-600" role="status" aria-live="polite">
@@ -295,13 +672,11 @@ function PreviewField({
         </p>
       ) : null}
       <span className={`relative overflow-hidden rounded-xl bg-white ring-1 ring-black/5 ${previewClassName}`}>
-        {value ? (
+        {previewSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={value} alt={`Vista previa ${label}`} className="h-full w-full object-cover" />
+          <img src={previewSrc} alt={`Vista previa ${label}`} className="h-full w-full object-cover" />
         ) : (
-          <span className="grid h-full place-items-center text-xs font-medium text-zinc-400">
-            Sin imagen
-          </span>
+          <span className="grid h-full place-items-center text-xs font-medium text-zinc-400">Sin imagen</span>
         )}
       </span>
     </div>
@@ -311,18 +686,45 @@ function PreviewField({
 function CheckField({
   label,
   name,
-  defaultChecked,
+  checked,
+  onChange,
 }: {
   label: string;
   name: string;
-  defaultChecked?: boolean;
+  checked?: boolean;
+  onChange: (value: boolean) => void;
 }) {
   return (
     <label className="flex min-h-12 items-center gap-3 rounded-xl border border-[#d8e7f5] bg-[#eef6ff]/70 px-3 text-sm font-bold transition hover:bg-white">
-      <input name={name} type="checkbox" defaultChecked={defaultChecked} className="size-4 accent-black" />
+      <input
+        name={name}
+        type="checkbox"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+        className="size-4 accent-black"
+      />
       {label}
     </label>
   );
+}
+
+function slugifyClient(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
+function generatePassword() {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+  let output = "Atres";
+  for (let i = 0; i < 8; i += 1) {
+    output += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  return `${output}!`;
 }
 
 async function normalizeBrandImage(file: File, kind: "logo" | "cover") {

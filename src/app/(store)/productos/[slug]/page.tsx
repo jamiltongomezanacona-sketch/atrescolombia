@@ -17,8 +17,9 @@ import {
 } from "@/lib/product-merchandising";
 import { getPublicStoreSettings } from "@/lib/public-settings";
 import { products, getDiscountPercent } from "@/lib/store-data";
-import { getPublicProduct, getPublicProducts, getPublicRelatedProducts } from "@/lib/public-store";
+import { getPublicProduct, getPublicProducts, getPublicRelatedProducts, getPublicShopBySlug } from "@/lib/public-store";
 import { resolveStoreWhatsapp } from "@/lib/whatsapp";
+import { ProductShopBlock } from "@/components/product-shop-block";
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
@@ -78,10 +79,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const [related, publicProducts, settings] = await Promise.all([
+  const [related, publicProducts, settings, shop] = await Promise.all([
     getPublicRelatedProducts(product),
     getPublicProducts(),
     getPublicStoreSettings(),
+    product.shopSlug ? getPublicShopBySlug(product.shopSlug) : Promise.resolve(null),
   ]);
   const discount = getDiscountPercent(product);
   const recentlyViewed = publicProducts.filter((item) => item.slug !== product.slug).slice(0, 10);
@@ -94,6 +96,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     const value = size.trim().toLowerCase();
     return value && value !== "unica" && value !== "unico";
   });
+  const productWhatsapp = resolveStoreWhatsapp(shop?.whatsapp || settings?.whatsapp);
 
   return (
     <main
@@ -132,7 +135,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <Link href={`/categoria/${product.categorySlug}`} className="transition hover:text-brand">
                 {product.categoryName}
               </Link>
-              {product.collection ? ` / ${product.collection}` : ""}
+              {shop ? (
+                <>
+                  {" / "}
+                  <Link href={`/tiendas/${shop.slug}`} className="transition hover:text-brand">
+                    {shop.title || shop.name}
+                  </Link>
+                </>
+              ) : product.collection ? (
+                ` / ${product.collection}`
+              ) : (
+                ""
+              )}
             </p>
 
             <h1 className="mt-1 text-2xl font-medium tracking-tight text-ink sm:text-3xl lg:text-[2.15rem] lg:leading-[1.12]">
@@ -145,11 +159,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
               size="lg"
               className="mt-2.5 flex flex-wrap items-baseline gap-x-2 gap-y-0"
             />
+            <p className="mt-1 text-xs font-normal text-ink-muted">
+              {inStock ? `${product.stock} unidades disponibles` : "Agotado"}
+            </p>
 
             <p className="mt-2.5 text-sm font-normal leading-5 text-ink-muted sm:leading-6">
               {product.description}
             </p>
             <p className="mt-1 text-xs font-medium text-brand sm:text-sm">{commercialLine}</p>
+
+            {shop ? <ProductShopBlock shop={shop} /> : null}
 
             {sizes.length > 0 ? (
               <p className="mt-1.5 text-xs font-normal text-ink-muted sm:text-sm">
@@ -157,12 +176,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </p>
             ) : null}
 
-            <ProductActions product={product} whatsapp={resolveStoreWhatsapp(settings?.whatsapp)} />
+            <ProductActions product={product} whatsapp={productWhatsapp} />
 
             <div className="mt-4 border-t border-black/[0.06] pt-3">
               <p className="text-[10px] font-medium tracking-wide text-ink sm:text-[11px]">Guia rapida</p>
               <ul className="mt-1.5 grid gap-1 text-xs font-normal leading-5 text-ink-muted sm:text-sm">
                 <li>Disponibilidad: {product.stock} unidades</li>
+                {shop ? (
+                  <li>
+                    Tienda: {shop.title || shop.name}
+                    {shop.city || shop.neighborhood || shop.locality
+                      ? ` · ${[shop.neighborhood || shop.locality, shop.city].filter(Boolean).join(", ")}`
+                      : ""}
+                  </li>
+                ) : null}
                 {settings?.shippingText ? (
                   <li>{settings.shippingText}</li>
                 ) : (

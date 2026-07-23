@@ -35,6 +35,9 @@ export type Product = {
   shopId?: string;
   shopSlug?: string;
   shopName?: string;
+  shopCity?: string;
+  shopLocality?: string;
+  shopNeighborhood?: string;
 };
 
 export type Promo = {

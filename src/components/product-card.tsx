@@ -98,11 +98,34 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             {product.categoryName}
           </p>
           {product.shopName ? (
-            <p className="min-w-0 shrink truncate text-right text-[9px] font-medium text-ink-muted/75 sm:text-[10px]">
-              {product.shopName}
-            </p>
+            product.shopSlug ? (
+              <Link
+                href={`/tiendas/${product.shopSlug}`}
+                className="min-w-0 shrink truncate text-right text-[9px] font-medium text-ink-muted/75 transition hover:text-ink sm:text-[10px]"
+              >
+                {product.shopName}
+              </Link>
+            ) : (
+              <p className="min-w-0 shrink truncate text-right text-[9px] font-medium text-ink-muted/75 sm:text-[10px]">
+                {product.shopName}
+              </p>
+            )
           ) : null}
         </div>
+
+        {(product.shopCity || product.shopNeighborhood || product.shopLocality) && product.shopSlug ? (
+          <Link
+            href={`/tiendas/${product.shopSlug}`}
+            className="flex min-w-0 items-center gap-1 text-[9px] font-medium text-ink-muted/80 transition hover:text-ink sm:text-[10px]"
+          >
+            <span aria-hidden="true" className="shrink-0">
+              📍
+            </span>
+            <span className="truncate">
+              {[product.shopCity, product.shopNeighborhood || product.shopLocality].filter(Boolean).join(" · ")}
+            </span>
+          </Link>
+        ) : null}
 
         <Link href={`/productos/${product.slug}`} className="block">
           <h3 className="line-clamp-2 min-h-[2.05rem] text-[12px] font-medium leading-[1.24] text-ink transition group-hover:text-ink sm:min-h-[2.15rem] sm:text-[13px] sm:leading-[1.25]">

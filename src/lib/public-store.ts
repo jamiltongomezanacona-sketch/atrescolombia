@@ -523,9 +523,19 @@ async function hydrateProductRows(products: SupabaseProductRow[]): Promise<Produ
 }
 
 /** Products without shop stay visible; products with a shop only if that shop is active. */
+type ShopLookup = {
+  id: string;
+  slug: string;
+  name: string;
+  status: string;
+  city?: string;
+  locality?: string;
+  neighborhood?: string;
+};
+
 function isProductShopPubliclyVisible(
   shopId: string | null,
-  shopsById: Map<string, { id: string; slug: string; name: string; status: string }>,
+  shopsById: Map<string, ShopLookup>,
 ) {
   if (!shopId) return true;
   const shop = shopsById.get(shopId);
@@ -646,7 +656,7 @@ function mapProductRow(
   category: SupabaseCategoryRow | null,
   images: SupabaseImageRow[],
   variants: SupabaseVariantRow[],
-  shop: { id: string; slug: string; name: string } | null,
+  shop: ShopLookup | null,
 ): Product {
   const sortedImages = [...images].sort((a, b) => {
     if (a.is_primary) return -1;
@@ -683,21 +693,45 @@ function mapProductRow(
     shopId: shop?.id ?? row.shop_id ?? undefined,
     shopSlug: shop?.slug,
     shopName: shop?.name,
+    shopCity: shop?.city || undefined,
+    shopLocality: shop?.locality || undefined,
+    shopNeighborhood: shop?.neighborhood || undefined,
   };
 }
 
 async function getShopsById(shopIds: string[]) {
-  if (!shopIds.length) return new Map<string, { id: string; slug: string; name: string; status: string }>();
+  if (!shopIds.length) return new Map<string, ShopLookup>();
 
   const supabase = createSupabasePublicClient();
-  const { data, error } = await supabase.from("shops").select("id,slug,name,status").in("id", shopIds);
-  if (error || !data?.length) return new Map();
+  const selectWithLocation = "id,slug,name,status,city,locality,neighborhood";
+  const selectLegacy = "id,slug,name,status";
+
+  const { data, error } = await supabase.from("shops").select(selectWithLocation).in("id", shopIds);
+  let rows = data as Array<Record<string, unknown>> | null;
+  let queryError = error;
+
+  if (queryError) {
+    const legacy = await supabase.from("shops").select(selectLegacy).in("id", shopIds);
+    rows = (legacy.data as Array<Record<string, unknown>> | null) ?? null;
+    queryError = legacy.error;
+  }
+
+  if (queryError || !rows?.length) return new Map();
 
   return new Map(
-    (data as Array<{ id: string; slug: string; name: string; status: string }>).map((shop) => [
-      shop.id,
-      { id: shop.id, slug: shop.slug, name: shop.name, status: shop.status },
-    ]),
+    rows.map((shop) => {
+      const id = String(shop.id);
+      const mapped: ShopLookup = {
+        id,
+        slug: String(shop.slug ?? ""),
+        name: String(shop.name ?? ""),
+        status: String(shop.status ?? ""),
+        city: typeof shop.city === "string" ? shop.city : undefined,
+        locality: typeof shop.locality === "string" ? shop.locality : undefined,
+        neighborhood: typeof shop.neighborhood === "string" ? shop.neighborhood : undefined,
+      };
+      return [id, mapped] as const;
+    }),
   );
 }
 

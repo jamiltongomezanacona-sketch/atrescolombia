@@ -365,10 +365,7 @@ export function ShopForm({
 
       <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-[#eef6ff]/60 p-3 md:p-4">
         <SectionTitle eyebrow="Imagen" title="Identidad visual" />
-        <p className="rounded-xl bg-white/80 px-3 py-2 text-xs font-medium text-zinc-500 ring-1 ring-[#d8e7f5]">
-          Puedes subir logo y portada ahora. Si no subes nada, se usan los valores de la plantilla o el placeholder local.
-        </p>
-        <div className="grid gap-3 md:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2">
           <PreviewField
             label="Logo"
             name="logo_url"
@@ -377,8 +374,10 @@ export function ShopForm({
             shopId={shop?.id}
             value={logoUrl}
             onChange={setLogoUrl}
-            previewClassName="aspect-square"
+            previewClassName={quickMode && isCreate ? "aspect-square w-24" : "aspect-square max-w-[140px]"}
             allowCreateUpload
+            showUrlInput={!quickMode || !isCreate}
+            compact={quickMode && isCreate}
           />
           <PreviewField
             label="Portada"
@@ -388,8 +387,10 @@ export function ShopForm({
             shopId={shop?.id}
             value={coverUrl}
             onChange={setCoverUrl}
-            previewClassName="aspect-[16/9]"
+            previewClassName={quickMode && isCreate ? "aspect-[16/9] w-full max-w-[220px]" : "aspect-[16/9]"}
             allowCreateUpload
+            showUrlInput={!quickMode || !isCreate}
+            compact={quickMode && isCreate}
           />
         </div>
       </section>
@@ -565,6 +566,8 @@ function PreviewField({
   onChange,
   previewClassName,
   allowCreateUpload = false,
+  showUrlInput = true,
+  compact = false,
 }: {
   label: string;
   name: string;
@@ -575,6 +578,8 @@ function PreviewField({
   onChange: (value: string) => void;
   previewClassName: string;
   allowCreateUpload?: boolean;
+  showUrlInput?: boolean;
+  compact?: boolean;
 }) {
   const inputId = useId();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -623,7 +628,7 @@ function PreviewField({
           const previewUrl = URL.createObjectURL(webp);
           setLocalPreview(previewUrl);
           onChange("");
-          setMessage("Imagen lista. Se subira al crear la tienda.");
+          setMessage("Lista para subir al crear.");
         }
       } catch (error) {
         setMessage(error instanceof Error ? error.message : "No se pudo preparar la imagen.");
@@ -636,23 +641,15 @@ function PreviewField({
 
   return (
     <div className="grid gap-2 text-sm font-bold">
-      <label htmlFor={`${inputId}-url`}>{label}</label>
-      <input
-        id={`${inputId}-url`}
-        name={name}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder="/assets/... o URL Supabase"
-        className={inputClass}
-      />
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <span>{label}</span>
         <button
           type="button"
           disabled={!canPickFile || uploading}
           onClick={() => fileRef.current?.click()}
-          className="inline-flex h-10 items-center justify-center rounded-full bg-[#0b1f3a] px-4 text-xs font-black text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex h-9 items-center justify-center rounded-full bg-[#0b1f3a] px-3.5 text-xs font-black text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {uploading ? "Preparando..." : "Subir del dispositivo"}
+          {uploading ? "Preparando..." : compact ? "Subir" : "Subir del dispositivo"}
         </button>
         <input
           ref={fileRef}
@@ -666,17 +663,41 @@ function PreviewField({
           onChange={onFileSelected}
         />
       </div>
+
+      {showUrlInput ? (
+        <label className="grid gap-1.5 text-xs font-bold text-zinc-500" htmlFor={`${inputId}-url`}>
+          URL opcional
+          <input
+            id={`${inputId}-url`}
+            name={name}
+            value={value}
+            onChange={(event) => onChange(event.target.value)}
+            placeholder="/assets/... o URL Supabase"
+            className={inputClass}
+          />
+        </label>
+      ) : (
+        <input type="hidden" name={name} value={value} />
+      )}
+
       {message ? (
         <p className="text-xs font-medium text-zinc-600" role="status" aria-live="polite">
           {message}
         </p>
       ) : null}
-      <span className={`relative overflow-hidden rounded-xl bg-white ring-1 ring-black/5 ${previewClassName}`}>
+
+      <span
+        className={`relative overflow-hidden rounded-xl bg-white ring-1 ring-black/5 ${
+          compact ? "min-h-16" : "min-h-24"
+        } ${previewClassName}`}
+      >
         {previewSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={previewSrc} alt={`Vista previa ${label}`} className="h-full w-full object-cover" />
         ) : (
-          <span className="grid h-full place-items-center text-xs font-medium text-zinc-400">Sin imagen</span>
+          <span className="grid h-full min-h-16 place-items-center px-2 text-center text-[11px] font-medium text-zinc-400">
+            Sin imagen
+          </span>
         )}
       </span>
     </div>

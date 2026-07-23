@@ -239,7 +239,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
           actionLabel="Ver catalogo"
         />
       ) : (
-        <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
+        <ul className="catalog-grid-with-sidebar">
           {filtered.map((shop) => (
             <ShopCard key={shop.id} shop={shop} />
           ))}

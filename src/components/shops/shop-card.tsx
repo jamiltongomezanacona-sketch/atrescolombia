@@ -2,7 +2,6 @@ import Link from "next/link";
 import { SafeProductImage } from "@/components/safe-product-image";
 import type { PublicShop } from "@/lib/public-store";
 import { ShopLocationButton, ShopLocationRow } from "@/components/shops/shop-location-row";
-import { buildMapsLocationUrl } from "@/lib/geo";
 
 export type ShopCardModel = PublicShop & {
   imageUrl: string;
@@ -22,28 +21,20 @@ export function ShopCard({ shop }: ShopCardProps) {
   const mapsQuery = [shop.address, shop.neighborhood, shop.locality, shop.city, shop.department, shop.country]
     .filter(Boolean)
     .join(", ");
-  const hasLocation = Boolean(
-    buildMapsLocationUrl({
-      mapsUrl: shop.mapsUrl,
-      latitude: shop.latitude,
-      longitude: shop.longitude,
-      address: mapsQuery || shop.address || shop.city,
-    }),
-  );
   const streetAddress = shop.address?.trim() || "";
 
   return (
     <li className="min-w-0">
-      <article className="group flex h-full flex-col overflow-hidden rounded-[18px] bg-surface shadow-[0_8px_22px_rgba(18,18,18,0.06)] ring-1 ring-black/[0.06] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(18,18,18,0.1)]">
+      <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface ring-1 ring-black/[0.04] transition duration-300 hover:shadow-soft hover:ring-black/[0.08] motion-safe:hover:-translate-y-0.5">
         <Link
           href={catalogHref}
           aria-label={`Ver catalogo de ${shopName}`}
-          className="relative block aspect-[4/5] overflow-hidden rounded-[18px] bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          className="relative block aspect-[3/4] overflow-hidden bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
           <SafeProductImage
             src={shop.imageUrl}
             alt=""
-            sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, (max-width: 1535px) 25vw, 20vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 20vw, (max-width: 1536px) 17vw, (max-width: 1800px) 16vw, 14vw"
             className="object-cover transition duration-200 ease-out group-hover:scale-[1.02]"
           />
           {shop.verified ? (
@@ -95,12 +86,12 @@ export function ShopCard({ shop }: ShopCardProps) {
             ) : null}
           </div>
 
-          <div className="mt-auto flex w-full gap-1.5 pt-1">
+          <div className="mt-auto grid w-full gap-1.5 pt-1">
             <Link
               href={catalogHref}
-              className={`${hasLocation ? "w-1/2" : "w-full"} inline-flex h-11 min-h-11 items-center justify-center rounded-full bg-ink px-2 text-[11px] font-semibold text-white transition-[background-color,transform] duration-200 ease-out hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98] sm:text-xs`}
+              className="inline-flex h-10 min-h-10 w-full items-center justify-center rounded-full bg-ink px-3 text-[11px] font-semibold text-white transition-[background-color,transform] duration-200 ease-out hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98] sm:h-11 sm:min-h-11 sm:text-xs"
             >
-              <span className="truncate">Ver catalogo</span>
+              Ver catalogo
             </Link>
             <ShopLocationButton
               shopName={shopName}
@@ -108,6 +99,7 @@ export function ShopCard({ shop }: ShopCardProps) {
               latitude={shop.latitude}
               longitude={shop.longitude}
               address={mapsQuery || shop.address || shop.city}
+              fullWidth
             />
           </div>
         </div>

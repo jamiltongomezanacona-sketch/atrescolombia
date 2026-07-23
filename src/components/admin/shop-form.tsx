@@ -291,7 +291,7 @@ export function ShopForm({
             <input type="hidden" name="title" value={title || name} />
           )}
           <label className="grid gap-2 text-sm font-bold">
-            Slug
+            Enlace de la tienda
             <input
               name="slug"
               required
@@ -301,7 +301,13 @@ export function ShopForm({
                 setSlug(slugifyClient(event.target.value));
               }}
               className={inputClass}
+              placeholder="ej: moda-bogota"
+              aria-describedby="shop-slug-hint"
             />
+            <span id="shop-slug-hint" className="text-xs font-medium leading-5 text-zinc-500">
+              Asi se vera en la web:{" "}
+              <span className="font-bold text-[#0b1f3a]">/tiendas/{slug || "nombre-tienda"}</span>
+            </span>
           </label>
           <label className="grid gap-2 text-sm font-bold">
             Ciudad

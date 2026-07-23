@@ -16,6 +16,7 @@ export function HomeHeroCarousel({ slides }: HomeHeroCarouselProps) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [loadedIndexes, setLoadedIndexes] = useState<Set<number>>(() => new Set([0]));
   const count = slides.length;
   const hasMany = count > 1;
   const slide = slides[active] ?? slides[0];
@@ -31,12 +32,31 @@ export function HomeHeroCarousel({ slides }: HomeHeroCarouselProps) {
   const goTo = useCallback(
     (index: number) => {
       if (!count) return;
-      setActive((index + count) % count);
+      const target = (index + count) % count;
+      setLoadedIndexes((current) => {
+        if (current.has(target)) return current;
+        const nextIndexes = new Set(current);
+        nextIndexes.add(target);
+        return nextIndexes;
+      });
+      setActive(target);
     },
     [count],
   );
 
   const next = useCallback(() => goTo(active + 1), [active, goTo]);
+
+  useEffect(() => {
+    if (!hasMany) return;
+    const timer = window.setTimeout(() => {
+      setLoadedIndexes((current) => {
+        const nextIndexes = new Set(current);
+        nextIndexes.add((active + 1) % count);
+        return nextIndexes.size === current.size ? current : nextIndexes;
+      });
+    }, 1800);
+    return () => window.clearTimeout(timer);
+  }, [active, count, hasMany]);
 
   useEffect(() => {
     if (!hasMany || paused || reduceMotion) return;
@@ -61,23 +81,27 @@ export function HomeHeroCarousel({ slides }: HomeHeroCarouselProps) {
       }}
     >
       <div className="absolute inset-0">
-        {slides.map((item, index) => (
-          <div
-            key={item.id}
-            className={`absolute inset-0 transition-opacity duration-700 ease-out ${
-              index === active ? "opacity-100" : "pointer-events-none opacity-0"
-            }`}
-            aria-hidden={index !== active}
-          >
-            <SafeProductImage
-              src={item.image}
-              alt=""
-              priority={index === 0}
-              sizes="100vw"
-              className="object-cover object-[center_32%] opacity-85 sm:object-[center_28%] lg:object-[68%_32%] lg:opacity-90"
-            />
-          </div>
-        ))}
+        {slides.map((item, index) => {
+          if (!loadedIndexes.has(index) && index !== active) return null;
+
+          return (
+            <div
+              key={item.id}
+              className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+                index === active ? "opacity-100" : "pointer-events-none opacity-0"
+              }`}
+              aria-hidden={index !== active}
+            >
+              <SafeProductImage
+                src={item.image}
+                alt=""
+                priority={index === 0}
+                sizes="100vw"
+                className="object-cover object-[center_32%] opacity-85 sm:object-[center_28%] lg:object-[68%_32%] lg:opacity-90"
+              />
+            </div>
+          );
+        })}
         <div className="absolute inset-0 bg-[linear-gradient(108deg,rgba(8,8,8,0.92)_0%,rgba(8,8,8,0.58)_42%,rgba(8,8,8,0.18)_68%,rgba(8,8,8,0.08)_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_82%,rgba(255,77,0,0.22),transparent_42%)]" />
       </div>

@@ -79,7 +79,6 @@ export default async function Home() {
         subtitle="Seleccion actual para explorar primero."
         href="/productos?orden=tendencias"
         products={featuredProducts}
-        priorityCount={4}
         maxItems={12}
       />
       <FlashSection products={promoProducts} />

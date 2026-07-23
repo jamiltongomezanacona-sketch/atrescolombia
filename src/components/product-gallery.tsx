@@ -68,7 +68,7 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
 
   return (
     <>
-      <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_88px] lg:grid-cols-[minmax(0,1fr)_96px] lg:gap-4">
+      <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_72px] sm:items-start lg:grid-cols-[minmax(0,1fr)_80px] lg:gap-3">
         <button
           type="button"
           onClick={() => setLightboxOpen(true)}
@@ -93,7 +93,7 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
           ) : null}
         </button>
 
-        <div className="atres-scroll grid grid-cols-5 gap-2 overflow-x-auto sm:grid-cols-1 sm:gap-2.5 sm:overflow-visible">
+        <div className="atres-scroll grid grid-cols-5 gap-2 overflow-x-auto sm:grid-cols-1 sm:content-start sm:gap-2 sm:self-start sm:overflow-visible">
           {selectedImages.map((image, index) => {
             const active = index === selectedImageIndex;
             return (
@@ -105,14 +105,14 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
                 aria-current={active ? "true" : undefined}
                 className={`relative aspect-square overflow-hidden rounded-[var(--radius-card)] bg-surface-muted transition ${
                   active
-                    ? "ring-2 ring-ink ring-offset-2 ring-offset-background"
+                    ? "ring-2 ring-ink ring-offset-1 ring-offset-background"
                     : "ring-1 ring-black/8 hover:ring-black/25"
                 }`}
               >
                 <SafeProductImage
                   src={image}
                   alt={`${productName} imagen ${index + 1}`}
-                  sizes="96px"
+                  sizes="80px"
                   className="object-cover"
                 />
               </button>

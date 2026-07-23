@@ -12,6 +12,7 @@ import {
 } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ProductVariantStatus } from "@/lib/admin/types";
+import { isValidLatitude, isValidLongitude } from "@/lib/geo";
 
 const DEFAULT_SHOP_SLUGS = ["atres-kinds", "atres-kids"] as const;
 
@@ -111,6 +112,12 @@ export async function saveShop(_: ActionState, formData: FormData): Promise<Acti
     return { ok: false, message: "WhatsApp invalido. Usa solo digitos (minimo 10)." };
   }
 
+  const location = parseShopLocationFromForm(formData);
+  if (!location.ok || !location.data) {
+    return { ok: false, message: location.message || "Error al validar la ubicacion." };
+  }
+  const locationData = location.data;
+
   const adminEmail = stringValue(formData, "admin_email").toLowerCase();
   const adminPassword = stringValue(formData, "admin_password");
   const adminName = stringValue(formData, "admin_name") || name;
@@ -146,7 +153,21 @@ export async function saveShop(_: ActionState, formData: FormData): Promise<Acti
     slug,
     short_description: stringValue(formData, "short_description"),
     description: stringValue(formData, "description"),
-    city: stringValue(formData, "city"),
+    city: locationData.city,
+    country: locationData.country,
+    department: locationData.department,
+    locality: locationData.locality,
+    neighborhood: locationData.neighborhood,
+    address: locationData.address,
+    address_reference: locationData.address_reference,
+    latitude: locationData.latitude,
+    longitude: locationData.longitude,
+    maps_url: locationData.maps_url,
+    postal_code: locationData.postal_code,
+    delivery_radius_km: locationData.delivery_radius_km,
+    pickup_enabled: locationData.pickup_enabled,
+    local_delivery_enabled: locationData.local_delivery_enabled,
+    location_verified: locationData.location_verified,
     whatsapp,
     email: stringValue(formData, "email") || adminEmail,
     logo_url: nullableStringValue(formData, "logo_url"),
@@ -1292,6 +1313,93 @@ async function validateCategorySelection(
   }
 
   return null;
+}
+
+function parseShopLocationFromForm(formData: FormData): ActionState & {
+  data?: {
+    country: string;
+    department: string;
+    city: string;
+    locality: string;
+    neighborhood: string;
+    address: string;
+    address_reference: string;
+    latitude: number | null;
+    longitude: number | null;
+    maps_url: string | null;
+    postal_code: string;
+    delivery_radius_km: number | null;
+    pickup_enabled: boolean;
+    local_delivery_enabled: boolean;
+    location_verified: boolean;
+  };
+} {
+  const address = stringValue(formData, "address").slice(0, 240);
+  const addressReference = stringValue(formData, "address_reference").slice(0, 180);
+  const city = stringValue(formData, "city").slice(0, 80);
+  const department = stringValue(formData, "department").slice(0, 80);
+  const locality = stringValue(formData, "locality").slice(0, 80);
+  const neighborhood = stringValue(formData, "neighborhood").slice(0, 80);
+  const country = (stringValue(formData, "country") || "Colombia").slice(0, 80);
+  const postalCode = stringValue(formData, "postal_code").slice(0, 20);
+  const mapsUrl = nullableStringValue(formData, "maps_url");
+
+  const latitudeRaw = stringValue(formData, "latitude");
+  const longitudeRaw = stringValue(formData, "longitude");
+  const latitude = latitudeRaw ? Number(latitudeRaw) : null;
+  const longitude = longitudeRaw ? Number(longitudeRaw) : null;
+
+  if (latitudeRaw && (latitude === null || !isValidLatitude(latitude))) {
+    return { ok: false, message: "Latitud invalida. Debe estar entre -90 y 90." };
+  }
+  if (longitudeRaw && (longitude === null || !isValidLongitude(longitude))) {
+    return { ok: false, message: "Longitud invalida. Debe estar entre -180 y 180." };
+  }
+  if ((latitude === null) !== (longitude === null)) {
+    return { ok: false, message: "Debes indicar latitud y longitud juntas, o dejar ambas vacias." };
+  }
+
+  const pickupEnabled = checkboxValue(formData, "pickup_enabled");
+  const localDeliveryEnabled = checkboxValue(formData, "local_delivery_enabled");
+  const locationVerified = checkboxValue(formData, "location_verified");
+
+  let deliveryRadiusKm: number | null = null;
+  if (localDeliveryEnabled) {
+    const radiusRaw = stringValue(formData, "delivery_radius_km");
+    if (radiusRaw) {
+      const radius = Number(radiusRaw);
+      if (!Number.isFinite(radius) || radius < 0) {
+        return { ok: false, message: "El radio de entrega no puede ser negativo." };
+      }
+      deliveryRadiusKm = Math.min(radius, 500);
+    }
+  }
+
+  if (address.length > 240) {
+    return { ok: false, message: "La direccion es demasiado larga." };
+  }
+
+  return {
+    ok: true,
+    message: "",
+    data: {
+      country,
+      department,
+      city,
+      locality,
+      neighborhood,
+      address,
+      address_reference: addressReference,
+      latitude,
+      longitude,
+      maps_url: mapsUrl,
+      postal_code: postalCode,
+      delivery_radius_km: deliveryRadiusKm,
+      pickup_enabled: pickupEnabled,
+      local_delivery_enabled: localDeliveryEnabled,
+      location_verified: locationVerified,
+    },
+  };
 }
 
 function stringValue(formData: FormData, key: string) {

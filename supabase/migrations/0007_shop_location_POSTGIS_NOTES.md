@@ -1,0 +1,19 @@
+-- PostGIS evaluation (NOT applied automatically)
+--
+-- Current choice for Fase 1:
+--   - Use latitude/longitude double precision on public.shops
+--   - Compute distance with Haversine in app (or SQL) when visitor opts in
+--   - Do NOT enable CREATE EXTENSION postgis in this project without explicit approval
+--
+-- When PostGIS would help:
+--   - Many shops + frequent "near me" / radius filters at DB level
+--   - Need ST_DWithin / GiST indexes for performance
+--
+-- Suggested future (manual, after approval):
+--   create extension if not exists postgis;
+--   alter table public.shops
+--     add column if not exists location geography(Point, 4326);
+--   -- keep lat/lng in sync via trigger or app write path
+--   create index if not exists shops_location_gix on public.shops using gist (location);
+--
+-- Until then, shops without coordinates remain listable by city/neighborhood filters.

@@ -73,6 +73,21 @@ export type PublicShop = {
   shortDescription: string;
   description: string;
   city: string;
+  country: string;
+  department: string;
+  locality: string;
+  neighborhood: string;
+  address: string;
+  addressReference: string;
+  latitude: number | null;
+  longitude: number | null;
+  mapsUrl: string | null;
+  deliveryRadiusKm: number | null;
+  pickupEnabled: boolean;
+  localDeliveryEnabled: boolean;
+  locationVerified: boolean;
+  verified: boolean;
+  whatsapp: string;
   logoUrl: string | null;
   coverUrl: string | null;
   productCount?: number;
@@ -350,17 +365,31 @@ export const getPublicShops = cache(async function getPublicShops(): Promise<Pub
 
   try {
     const supabase = createSupabasePublicClient();
+    const selectWithLocation =
+      "id,name,title,slug,short_description,description,city,country,department,locality,neighborhood,address,address_reference,latitude,longitude,maps_url,delivery_radius_km,pickup_enabled,local_delivery_enabled,location_verified,verified,whatsapp,logo_url,cover_url,status,show_on_home";
+    const selectLegacy =
+      "id,name,title,slug,short_description,description,city,logo_url,cover_url,status,show_on_home";
+
     const [{ data: shops, error }, products] = await Promise.all([
-      supabase
-        .from("shops")
-        .select("id,name,title,slug,short_description,description,city,logo_url,cover_url,status,show_on_home")
-        .eq("status", "active")
-        .order("name", { ascending: true }),
+      supabase.from("shops").select(selectWithLocation).eq("status", "active").order("name", { ascending: true }),
       getPublicProducts(),
     ]);
 
-    if (error || !shops?.length) {
-      if (error) console.error("ATRES public shops query failed:", error.message);
+    let shopRows = shops as Array<Record<string, unknown>> | null;
+    let shopError = error;
+
+    if (shopError) {
+      const legacy = await supabase
+        .from("shops")
+        .select(selectLegacy)
+        .eq("status", "active")
+        .order("name", { ascending: true });
+      shopRows = (legacy.data as Array<Record<string, unknown>> | null) ?? null;
+      shopError = legacy.error;
+    }
+
+    if (shopError || !shopRows?.length) {
+      if (shopError) console.error("ATRES public shops query failed:", shopError.message);
       return [];
     }
 
@@ -370,28 +399,54 @@ export const getPublicShops = cache(async function getPublicShops(): Promise<Pub
       counts.set(product.shopId, (counts.get(product.shopId) ?? 0) + 1);
     }
 
-    return (shops as Array<Record<string, unknown>>)
-      .map((shop) => {
-        const id = String(shop.id);
-        return {
-          id,
-          name: String(shop.name ?? ""),
-          title: String(shop.title || shop.name || ""),
-          slug: String(shop.slug ?? ""),
-          shortDescription: String(shop.short_description ?? ""),
-          description: String(shop.description ?? ""),
-          city: String(shop.city ?? ""),
-          logoUrl: typeof shop.logo_url === "string" ? shop.logo_url : null,
-          coverUrl: typeof shop.cover_url === "string" ? shop.cover_url : null,
-          productCount: counts.get(id) ?? 0,
-        } satisfies PublicShop;
-      })
+    return shopRows
+      .map((shop) => mapPublicShopRow(shop, counts.get(String(shop.id)) ?? 0))
       .filter((shop) => shop.slug);
   } catch (error) {
     console.error("ATRES public shops unexpected failure:", error);
     return [];
   }
 });
+
+function mapPublicShopRow(shop: Record<string, unknown>, productCount: number): PublicShop {
+  const id = String(shop.id);
+  const latitude = typeof shop.latitude === "number" ? shop.latitude : null;
+  const longitude = typeof shop.longitude === "number" ? shop.longitude : null;
+  const deliveryRadius =
+    typeof shop.delivery_radius_km === "number"
+      ? shop.delivery_radius_km
+      : typeof shop.delivery_radius_km === "string" && shop.delivery_radius_km
+        ? Number(shop.delivery_radius_km)
+        : null;
+
+  return {
+    id,
+    name: String(shop.name ?? ""),
+    title: String(shop.title || shop.name || ""),
+    slug: String(shop.slug ?? ""),
+    shortDescription: String(shop.short_description ?? ""),
+    description: String(shop.description ?? ""),
+    city: String(shop.city ?? ""),
+    country: String(shop.country ?? "Colombia"),
+    department: String(shop.department ?? ""),
+    locality: String(shop.locality ?? ""),
+    neighborhood: String(shop.neighborhood ?? ""),
+    address: String(shop.address ?? ""),
+    addressReference: String(shop.address_reference ?? ""),
+    latitude,
+    longitude,
+    mapsUrl: typeof shop.maps_url === "string" ? shop.maps_url : null,
+    deliveryRadiusKm: Number.isFinite(deliveryRadius as number) ? (deliveryRadius as number) : null,
+    pickupEnabled: Boolean(shop.pickup_enabled),
+    localDeliveryEnabled: Boolean(shop.local_delivery_enabled),
+    locationVerified: Boolean(shop.location_verified),
+    verified: Boolean(shop.verified),
+    whatsapp: String(shop.whatsapp ?? ""),
+    logoUrl: typeof shop.logo_url === "string" ? shop.logo_url : null,
+    coverUrl: typeof shop.cover_url === "string" ? shop.cover_url : null,
+    productCount,
+  };
+}
 
 export async function getPublicShopBySlug(slug: string) {
   const shops = await getPublicShops();

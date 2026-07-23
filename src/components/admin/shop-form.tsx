@@ -13,6 +13,7 @@ import { saveShop, uploadShopBrandImage } from "@/lib/admin/actions";
 import type { AdminShop } from "@/lib/admin/types";
 import { Button } from "@/components/ui/button";
 import { ATRES_IMAGE_PLACEHOLDER } from "@/lib/local-media";
+import { ShopLocationFields, type ShopLocationValues } from "@/components/admin/shop-location-fields";
 
 type ShopFormProps = {
   shop?: AdminShop | null;
@@ -132,7 +133,7 @@ export function ShopForm({
   const [title, setTitle] = useState(shop?.title ?? "");
   const [slug, setSlug] = useState(shop?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(shop?.slug));
-  const [city, setCity] = useState(shop?.city ?? "");
+  const [location, setLocation] = useState<ShopLocationValues>(() => locationFromShop(shop));
   const [whatsapp, setWhatsapp] = useState(shop?.whatsapp ?? "");
   const [email, setEmail] = useState(shop?.email ?? "");
   const [shortDescription, setShortDescription] = useState(shop?.short_description ?? "");
@@ -162,7 +163,7 @@ export function ShopForm({
     if (values.title) setTitle(values.title);
     if (values.short_description) setShortDescription(values.short_description);
     if (values.description) setDescription(values.description);
-    if (values.city) setCity(values.city);
+    if (values.city) setLocation((prev) => ({ ...prev, city: values.city || prev.city }));
     if (typeof values.max_products === "number") setMaxProducts(String(values.max_products));
     if (typeof values.max_images === "number") setMaxImages(String(values.max_images));
     if (typeof values.show_on_home === "boolean") setShowOnHome(values.show_on_home);
@@ -180,7 +181,7 @@ export function ShopForm({
     setTitle(source.title || source.name);
     setSlugTouched(false);
     setSlug(slugifyClient(`${source.slug || source.name}-copia`));
-    setCity(source.city || "");
+    setLocation(locationFromShop(source));
     setWhatsapp(source.whatsapp || "");
     setEmail(source.email || "");
     setShortDescription(source.short_description || "");
@@ -324,10 +325,6 @@ export function ShopForm({
             </span>
           </label>
           <label className="grid min-w-0 gap-2 text-sm font-bold">
-            Ciudad
-            <input name="city" value={city} onChange={(event) => setCity(event.target.value)} className={inputClass} />
-          </label>
-          <label className="grid min-w-0 gap-2 text-sm font-bold">
             WhatsApp {quickMode ? <span className="font-medium text-zinc-400">(opcional)</span> : null}
             <input
               name="whatsapp"
@@ -382,6 +379,13 @@ export function ShopForm({
           </>
         )}
       </section>
+
+      <ShopLocationFields
+        values={location}
+        onChange={(patch) => setLocation((prev) => ({ ...prev, ...patch }))}
+        inputClass={inputClass}
+        textareaClass={textareaClass}
+      />
 
       <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-[#eef6ff]/60 p-3 md:p-4">
         <SectionTitle eyebrow="Imagen" title="Identidad visual" />
@@ -745,6 +749,26 @@ function CheckField({
       <span className="min-w-0 break-words leading-5">{label}</span>
     </label>
   );
+}
+
+function locationFromShop(shop?: AdminShop | null): ShopLocationValues {
+  return {
+    country: shop?.country || "Colombia",
+    department: shop?.department || "",
+    city: shop?.city || "",
+    locality: shop?.locality || "",
+    neighborhood: shop?.neighborhood || "",
+    address: shop?.address || "",
+    address_reference: shop?.address_reference || "",
+    latitude: shop?.latitude != null ? String(shop.latitude) : "",
+    longitude: shop?.longitude != null ? String(shop.longitude) : "",
+    maps_url: shop?.maps_url || "",
+    postal_code: shop?.postal_code || "",
+    delivery_radius_km: shop?.delivery_radius_km != null ? String(shop.delivery_radius_km) : "",
+    pickup_enabled: Boolean(shop?.pickup_enabled),
+    local_delivery_enabled: Boolean(shop?.local_delivery_enabled),
+    location_verified: Boolean(shop?.location_verified),
+  };
 }
 
 function slugifyClient(value: string) {

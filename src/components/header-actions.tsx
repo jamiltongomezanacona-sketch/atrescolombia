@@ -76,12 +76,6 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
           </span>
         ) : null}
       </Link>
-      <Link
-        href="/ofertas"
-        className="atres-interactive hidden h-9 items-center rounded-[var(--radius-card)] bg-white px-3 text-sm text-ink shadow-sm hover:bg-surface-muted xl:inline-flex"
-      >
-        Ofertas
-      </Link>
     </nav>
   );
 }

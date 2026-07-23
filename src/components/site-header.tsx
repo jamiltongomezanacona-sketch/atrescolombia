@@ -28,9 +28,11 @@ export async function SiteHeader() {
       <div className="header-container py-1.5 lg:py-1">
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 xl:gap-3">
           <div className="flex shrink-0 items-center gap-1.5">
-            <Suspense fallback={<div className="h-8 w-8 rounded-[var(--radius-card)] bg-white/10 lg:h-9 lg:w-9" />}>
-              <MobileNavDrawer items={navItems} />
-            </Suspense>
+            <div className="lg:hidden">
+              <Suspense fallback={<div className="h-8 w-8 rounded-[var(--radius-card)] bg-white/10" />}>
+                <MobileNavDrawer items={navItems} />
+              </Suspense>
+            </div>
             <div className="hidden lg:block">
               <BrandLogo dark compact />
             </div>

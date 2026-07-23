@@ -220,7 +220,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
       <button
         ref={triggerRef}
         type="button"
-        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-card)] text-white transition hover:bg-white/10 lg:h-9 lg:w-9"
+        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-card)] text-white transition hover:bg-white/10 lg:hidden"
         aria-expanded={open}
         aria-controls="atres-mobile-drawer"
         aria-haspopup="dialog"

@@ -23,10 +23,16 @@ export function ProductShopBlock({ shop }: ProductShopBlockProps) {
         <div className="min-w-0 flex-1">
           <p className="text-[10px] font-medium uppercase tracking-wide text-ink-muted">Vendido por</p>
           <Link
-            href={profileHref}
+            href={catalogHref}
             className="mt-0.5 block truncate text-sm font-semibold text-ink transition hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
           >
             {shopName}
+          </Link>
+          <Link
+            href={profileHref}
+            className="mt-0.5 inline-block text-[11px] font-medium text-ink-muted underline-offset-2 transition hover:text-ink hover:underline"
+          >
+            Ver perfil e info
           </Link>
         </div>
         {shop.verified ? (
@@ -56,14 +62,8 @@ export function ProductShopBlock({ shop }: ProductShopBlockProps) {
 
       <div className="mt-2.5 flex gap-1.5">
         <Link
-          href={profileHref}
-          className="inline-flex h-10 min-h-10 min-w-0 flex-1 items-center justify-center rounded-full bg-ink px-2 text-[11px] font-semibold text-white transition duration-200 hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs"
-        >
-          <span className="truncate">Ver tienda</span>
-        </Link>
-        <Link
           href={catalogHref}
-          className="inline-flex h-10 min-h-10 min-w-0 flex-1 items-center justify-center rounded-full border border-black/10 bg-white px-2 text-[11px] font-semibold text-ink transition duration-200 hover:border-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs"
+          className="inline-flex h-10 min-h-10 min-w-0 flex-[1.2] items-center justify-center rounded-full bg-ink px-2 text-[11px] font-semibold text-white transition duration-200 hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs"
         >
           <span className="truncate">Ver catalogo</span>
         </Link>
@@ -74,7 +74,7 @@ export function ProductShopBlock({ shop }: ProductShopBlockProps) {
           longitude={shop.longitude}
           address={mapsAddress || shop.address}
           label="Ver ubicacion"
-          className="!h-10 !min-h-10 !w-auto flex-[1.15] px-2"
+          className="!h-10 !min-h-10 !w-auto flex-1 px-2"
         />
       </div>
     </aside>

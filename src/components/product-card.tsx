@@ -100,7 +100,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           {product.shopName ? (
             product.shopSlug ? (
               <Link
-                href={`/tiendas/${product.shopSlug}`}
+                href={`/productos?tienda=${encodeURIComponent(product.shopSlug)}`}
                 className="min-w-0 shrink truncate text-right text-[9px] font-medium text-ink-muted/75 transition hover:text-ink sm:text-[10px]"
               >
                 {product.shopName}
@@ -115,7 +115,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
         {(product.shopCity || product.shopNeighborhood || product.shopLocality) && product.shopSlug ? (
           <Link
-            href={`/tiendas/${product.shopSlug}`}
+            href={`/productos?tienda=${encodeURIComponent(product.shopSlug)}`}
             className="flex min-w-0 items-center gap-1 text-[9px] font-medium text-ink-muted/80 transition hover:text-ink sm:text-[10px]"
           >
             <span aria-hidden="true" className="shrink-0">

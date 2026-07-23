@@ -138,7 +138,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {shop ? (
                 <>
                   {" / "}
-                  <Link href={`/tiendas/${shop.slug}`} className="transition hover:text-brand">
+                  <Link
+                    href={`/productos?tienda=${encodeURIComponent(shop.slug)}`}
+                    className="transition hover:text-brand"
+                  >
                     {shop.title || shop.name}
                   </Link>
                 </>

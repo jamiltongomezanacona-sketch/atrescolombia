@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SafeProductImage } from "@/components/safe-product-image";
 import type { PublicShop } from "@/lib/public-store";
 import { ShopLocationButton, ShopLocationRow } from "@/components/shops/shop-location-row";
-import { buildMapsDirectionsUrl } from "@/lib/geo";
+import { buildMapsLocationUrl } from "@/lib/geo";
 
 export type ShopCardModel = PublicShop & {
   imageUrl: string;
@@ -20,7 +20,7 @@ export function ShopCard({ shop }: ShopCardProps) {
   const catalogHref = `/productos?tienda=${encodeURIComponent(shop.slug)}`;
   const profileHref = `/tiendas/${shop.slug}`;
   const hasLocation = Boolean(
-    buildMapsDirectionsUrl({
+    buildMapsLocationUrl({
       mapsUrl: shop.mapsUrl,
       latitude: shop.latitude,
       longitude: shop.longitude,
@@ -32,8 +32,8 @@ export function ShopCard({ shop }: ShopCardProps) {
     <li className="min-w-0">
       <article className="group flex h-full flex-col overflow-hidden rounded-[18px] bg-surface shadow-[0_8px_22px_rgba(18,18,18,0.06)] ring-1 ring-black/[0.06] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(18,18,18,0.1)]">
         <Link
-          href={profileHref}
-          aria-label={`Ver perfil de ${shopName}`}
+          href={catalogHref}
+          aria-label={`Ver catalogo de ${shopName}`}
           className="relative block aspect-[4/5] overflow-hidden rounded-[18px] bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
           <SafeProductImage
@@ -53,7 +53,7 @@ export function ShopCard({ shop }: ShopCardProps) {
           <div className="min-w-0">
             <h2 className="line-clamp-2 text-[13px] font-medium leading-[1.25] tracking-normal text-ink sm:text-sm">
               <Link
-                href={profileHref}
+                href={catalogHref}
                 className="transition-colors duration-200 hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
               >
                 {shopName}
@@ -64,6 +64,12 @@ export function ShopCard({ shop }: ShopCardProps) {
                 {description}
               </p>
             ) : null}
+            <Link
+              href={profileHref}
+              className="mt-1 inline-block text-[10px] font-medium text-ink-muted underline-offset-2 transition hover:text-ink hover:underline sm:text-[11px]"
+            >
+              Perfil e info
+            </Link>
           </div>
 
           <ShopLocationRow

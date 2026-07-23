@@ -79,6 +79,7 @@ export type PublicShop = {
   neighborhood: string;
   address: string;
   addressReference: string;
+  postalCode: string;
   latitude: number | null;
   longitude: number | null;
   mapsUrl: string | null;
@@ -366,7 +367,7 @@ export const getPublicShops = cache(async function getPublicShops(): Promise<Pub
   try {
     const supabase = createSupabasePublicClient();
     const selectWithLocation =
-      "id,name,title,slug,short_description,description,city,country,department,locality,neighborhood,address,address_reference,latitude,longitude,maps_url,delivery_radius_km,pickup_enabled,local_delivery_enabled,location_verified,verified,whatsapp,logo_url,cover_url,status,show_on_home";
+      "id,name,title,slug,short_description,description,city,country,department,locality,neighborhood,address,address_reference,postal_code,latitude,longitude,maps_url,delivery_radius_km,pickup_enabled,local_delivery_enabled,location_verified,verified,whatsapp,logo_url,cover_url,status,show_on_home";
     const selectLegacy =
       "id,name,title,slug,short_description,description,city,logo_url,cover_url,status,show_on_home";
 
@@ -433,6 +434,7 @@ function mapPublicShopRow(shop: Record<string, unknown>, productCount: number): 
     neighborhood: String(shop.neighborhood ?? ""),
     address: String(shop.address ?? ""),
     addressReference: String(shop.address_reference ?? ""),
+    postalCode: String(shop.postal_code ?? ""),
     latitude,
     longitude,
     mapsUrl: typeof shop.maps_url === "string" ? shop.maps_url : null,

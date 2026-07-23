@@ -59,11 +59,11 @@ export function buildMapsDirectionsUrl(input: {
   address?: string | null;
   mapsUrl?: string | null;
 }) {
-  if (input.mapsUrl?.trim()) return input.mapsUrl.trim();
-
   if (hasValidCoordinates(input.latitude, input.longitude)) {
     return `https://www.google.com/maps/dir/?api=1&destination=${input.latitude},${input.longitude}`;
   }
+
+  if (input.mapsUrl?.trim()) return input.mapsUrl.trim();
 
   const address = input.address?.trim();
   if (address) {
@@ -80,11 +80,11 @@ export function buildMapsLocationUrl(input: {
   address?: string | null;
   mapsUrl?: string | null;
 }) {
-  if (input.mapsUrl?.trim()) return input.mapsUrl.trim();
-
   if (hasValidCoordinates(input.latitude, input.longitude)) {
     return `https://www.google.com/maps/search/?api=1&query=${input.latitude},${input.longitude}`;
   }
+
+  if (input.mapsUrl?.trim()) return input.mapsUrl.trim();
 
   const address = input.address?.trim();
   if (address) {

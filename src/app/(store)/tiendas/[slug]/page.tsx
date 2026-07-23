@@ -6,7 +6,6 @@ import {
   ShopLocationRow,
 } from "@/components/shops/shop-location-row";
 import { getPublicShopBySlug } from "@/lib/public-store";
-import { buildMapsLocationUrl } from "@/lib/geo";
 import { buildWhatsAppUrl, resolveStoreWhatsapp } from "@/lib/whatsapp";
 
 type ShopProfilePageProps = {
@@ -32,17 +31,16 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
 
   const shopName = shop.title || shop.name;
   const image = shop.coverUrl || shop.logoUrl || "/assets/atres-curated/placeholder.webp";
+  const shortDescription = shop.shortDescription.trim();
+  const fullDescription = shop.description.trim();
+  const locationItems = [
+    { label: "Ciudad", value: shop.city },
+    { label: "Departamento", value: shop.department },
+    { label: "Barrio", value: shop.neighborhood || shop.locality },
+  ].filter((item) => item.value?.trim());
   const mapsAddress = [shop.address, shop.neighborhood, shop.locality, shop.city, shop.department, shop.country]
     .filter(Boolean)
     .join(", ");
-  const hasMaps = Boolean(
-    buildMapsLocationUrl({
-      latitude: shop.latitude,
-      longitude: shop.longitude,
-      address: mapsAddress || shop.address,
-      mapsUrl: shop.mapsUrl,
-    }),
-  );
   const whatsappUrl = shop.whatsapp
     ? buildWhatsAppUrl(
         resolveStoreWhatsapp(shop.whatsapp),
@@ -78,11 +76,19 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
                 Verificada
               </span>
             ) : null}
+            {shop.logoUrl ? (
+              <div className="absolute bottom-3 left-3 size-16 overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-black/10 sm:size-20">
+                <SafeProductImage src={shop.logoUrl} alt={`Logo ${shopName}`} className="object-cover" sizes="80px" />
+              </div>
+            ) : null}
           </div>
 
           <div className="grid gap-3 p-3 sm:gap-3.5 sm:p-4">
-            {shop.shortDescription ? (
-              <p className="text-sm leading-6 text-ink-muted">{shop.shortDescription}</p>
+            {shortDescription ? (
+              <p className="text-sm leading-6 text-ink-muted">{shortDescription}</p>
+            ) : null}
+            {fullDescription && fullDescription !== shortDescription ? (
+              <p className="text-sm leading-6 text-ink-muted">{fullDescription}</p>
             ) : null}
 
             <ShopLocationRow
@@ -95,6 +101,19 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
               address={mapsAddress || shop.address}
               className="border-t border-black/[0.05] pt-3 text-sm"
             />
+
+            {locationItems.length > 0 ? (
+              <dl className="grid gap-2 rounded-2xl bg-[#f7f8f9] px-3 py-2.5 sm:grid-cols-3">
+                {locationItems.map((item) => (
+                  <div key={item.label} className="min-w-0">
+                    <dt className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
+                      {item.label}
+                    </dt>
+                    <dd className="mt-1 truncate text-sm font-medium text-ink">{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
 
             {shop.address ? (
               <div className="min-w-0 rounded-2xl bg-[#f7f8f9] px-3 py-2.5">
@@ -120,7 +139,7 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
               ) : null}
             </div>
 
-            <div className={`grid gap-2 ${whatsappUrl ? "sm:grid-cols-3" : hasMaps ? "sm:grid-cols-2" : "sm:grid-cols-1"}`}>
+            <div className={`grid gap-2 ${whatsappUrl ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
               <Link
                 href={`/productos?tienda=${encodeURIComponent(shop.slug)}`}
                 className="inline-flex h-11 min-h-11 items-center justify-center rounded-full bg-ink px-4 text-sm font-semibold text-white transition-[background-color,transform] duration-200 ease-out hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98]"
@@ -134,6 +153,7 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
                 longitude={shop.longitude}
                 address={mapsAddress || shop.address}
                 fullWidth
+                showDisabled
                 className="!w-full px-4 text-sm"
               />
               {whatsappUrl ? (

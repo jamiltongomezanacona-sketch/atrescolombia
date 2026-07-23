@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SafeProductImage } from "@/components/safe-product-image";
 import type { PublicShop } from "@/lib/public-store";
 import { ShopLocationButton, ShopLocationRow } from "@/components/shops/shop-location-row";
-import { buildMapsLocationUrl } from "@/lib/geo";
+import { buildMapsDirectionsUrl } from "@/lib/geo";
 
 export type ShopCardModel = PublicShop & {
   imageUrl: string;
@@ -20,7 +20,7 @@ export function ShopCard({ shop }: ShopCardProps) {
   const catalogHref = `/productos?tienda=${encodeURIComponent(shop.slug)}`;
   const profileHref = `/tiendas/${shop.slug}`;
   const hasLocation = Boolean(
-    buildMapsLocationUrl({
+    buildMapsDirectionsUrl({
       mapsUrl: shop.mapsUrl,
       latitude: shop.latitude,
       longitude: shop.longitude,

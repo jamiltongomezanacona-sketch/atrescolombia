@@ -1,16 +1,6 @@
 -- Rollback for 0007_shop_location.sql
--- Drops only columns/indexes/constraints added by that migration.
+-- Drops only columns added by that migration.
 -- Does NOT drop city or other pre-existing shop columns.
-
-drop index if exists public.shops_lat_lng_idx;
-drop index if exists public.shops_neighborhood_idx;
-drop index if exists public.shops_locality_idx;
-drop index if exists public.shops_department_city_idx;
-drop index if exists public.shops_city_idx;
-
-alter table public.shops drop constraint if exists shops_delivery_radius_nonnegative;
-alter table public.shops drop constraint if exists shops_longitude_range;
-alter table public.shops drop constraint if exists shops_latitude_range;
 
 alter table public.shops
   drop column if exists location_verified,

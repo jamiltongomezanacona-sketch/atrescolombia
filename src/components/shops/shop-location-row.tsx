@@ -1,4 +1,4 @@
-import { buildMapsLocationUrl, formatDistanceKm } from "@/lib/geo";
+import { buildMapsDirectionsUrl, buildMapsLocationUrl, formatDistanceKm } from "@/lib/geo";
 
 export type ShopLocationRowProps = {
   city?: string | null;
@@ -56,6 +56,7 @@ export function ShopLocationButton({
   address,
   className = "",
   fullWidth = false,
+  showDisabled = false,
 }: {
   shopName: string;
   mapsUrl?: string | null;
@@ -64,22 +65,37 @@ export function ShopLocationButton({
   address?: string | null;
   className?: string;
   fullWidth?: boolean;
+  showDisabled?: boolean;
 }) {
-  const href = buildMapsLocationUrl({ mapsUrl, latitude, longitude, address });
-  if (!href) return null;
+  const href = buildMapsDirectionsUrl({ mapsUrl, latitude, longitude, address });
+  const buttonClass = `group/loc inline-flex h-11 min-h-11 min-w-0 items-center justify-center gap-1.5 rounded-full border border-black/10 bg-white px-3 text-[11px] font-semibold text-ink transition-[color,border-color,background-color,transform] duration-200 ease-out hover:border-emerald-300/80 hover:bg-emerald-50/70 hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs ${
+    fullWidth ? "w-full" : "w-1/2"
+  } ${className}`;
+
+  if (!href) {
+    if (!showDisabled) return null;
+
+    return (
+      <span
+        aria-disabled="true"
+        className={`${buttonClass} cursor-not-allowed opacity-45 hover:border-black/10 hover:bg-white hover:text-ink`}
+      >
+        <MapPinIcon className="size-3.5 shrink-0" />
+        <span className="truncate">Como llegar</span>
+      </span>
+    );
+  }
 
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Ver ubicacion de la tienda ${shopName}`}
-      className={`group/loc inline-flex h-11 min-h-11 min-w-0 items-center justify-center gap-1.5 rounded-full border border-black/10 bg-white px-3 text-[11px] font-semibold text-ink transition-[color,border-color,background-color,transform] duration-200 ease-out hover:border-emerald-300/80 hover:bg-emerald-50/70 hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs ${
-        fullWidth ? "w-full" : "w-1/2"
-      } ${className}`}
+      aria-label={`Como llegar a la tienda ${shopName}`}
+      className={buttonClass}
     >
       <MapPinIcon className="size-3.5 shrink-0 transition-transform duration-200 ease-out group-hover/loc:translate-x-0.5" />
-      <span className="truncate">Ver ubicacion</span>
+      <span className="truncate">Como llegar</span>
     </a>
   );
 }

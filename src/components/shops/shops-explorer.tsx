@@ -87,6 +87,9 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
     return list;
   }, [enriched, cityFilter, localityFilter, neighborhoodFilter, distanceFilter, sortNear, visitor]);
 
+  const hasActiveFilters =
+    Boolean(cityFilter || localityFilter || neighborhoodFilter) || distanceFilter !== "all" || sortNear;
+
   function requestLocation() {
     if (typeof navigator === "undefined" || !navigator.geolocation) {
       setGeoStatus("unavailable");
@@ -112,6 +115,14 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
     );
   }
 
+  function resetFilters() {
+    setDistanceFilter("all");
+    setCityFilter("");
+    setLocalityFilter("");
+    setNeighborhoodFilter("");
+    setSortNear(false);
+  }
+
   return (
     <div className="grid gap-3">
       <div className="flex flex-wrap items-center gap-2">
@@ -132,6 +143,15 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
             }`}
           >
             {sortNear ? "Orden: cercania" : "Ordenar por cercania"}
+          </button>
+        ) : null}
+        {hasActiveFilters ? (
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="inline-flex min-h-11 items-center rounded-full bg-white px-4 text-xs font-semibold text-ink ring-1 ring-black/10"
+          >
+            Reiniciar filtros
           </button>
         ) : null}
         <p className="min-w-0 flex-1 text-xs text-ink-muted" role="status" aria-live="polite">

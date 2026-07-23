@@ -36,6 +36,7 @@ type SupabaseServerClient = Awaited<ReturnType<typeof createSupabaseServerClient
 
 const MAX_QUICK_PRODUCT_IMAGE_BYTES = 900 * 1024;
 const MAX_IMAGE_URL_LENGTH = 1000;
+const MAX_MAPS_URL_LENGTH = 500;
 const ALLOWED_QUICK_PRODUCT_IMAGE_TYPES = new Set(["image/webp", "image/jpeg", "image/png"]);
 const BLOCKED_IMAGE_URL_PREFIXES = ["data:", "blob:", "file:", "javascript:", "vbscript:"];
 const PRODUCT_VARIANT_STATUSES: ProductVariantStatus[] = ["available", "sold_out", "hidden", "coming_soon"];
@@ -1342,7 +1343,10 @@ function parseShopLocationFromForm(formData: FormData): ActionState & {
   const neighborhood = stringValue(formData, "neighborhood").slice(0, 80);
   const country = (stringValue(formData, "country") || "Colombia").slice(0, 80);
   const postalCode = stringValue(formData, "postal_code").slice(0, 20);
-  const mapsUrl = nullableStringValue(formData, "maps_url");
+  const mapsUrl = externalUrlValue(formData, "maps_url", "Maps URL");
+  if (!mapsUrl.ok) {
+    return { ok: false, message: mapsUrl.message };
+  }
 
   const latitudeRaw = stringValue(formData, "latitude");
   const longitudeRaw = stringValue(formData, "longitude");
@@ -1392,7 +1396,7 @@ function parseShopLocationFromForm(formData: FormData): ActionState & {
       address_reference: addressReference,
       latitude,
       longitude,
-      maps_url: mapsUrl,
+      maps_url: mapsUrl.value,
       postal_code: postalCode,
       delivery_radius_km: deliveryRadiusKm,
       pickup_enabled: pickupEnabled,
@@ -1409,6 +1413,30 @@ function stringValue(formData: FormData, key: string) {
 
 function nullableStringValue(formData: FormData, key: string) {
   return stringValue(formData, key) || null;
+}
+
+function externalUrlValue(formData: FormData, key: string, label: string): ImageUrlValueResult {
+  const value = stringValue(formData, key);
+  if (!value) return { ok: true, message: "", value: null };
+
+  if (value.length > MAX_MAPS_URL_LENGTH) {
+    return { ok: false, message: `${label} es demasiado larga.` };
+  }
+
+  if (/[\r\n\t]/.test(value) || !/^https?:\/\//i.test(value)) {
+    return { ok: false, message: `${label} debe empezar por http:// o https://.` };
+  }
+
+  try {
+    const url = new URL(value);
+    if (!["http:", "https:"].includes(url.protocol)) {
+      return { ok: false, message: `${label} debe usar http:// o https://.` };
+    }
+  } catch {
+    return { ok: false, message: `${label} no es una URL valida.` };
+  }
+
+  return { ok: true, message: "", value };
 }
 
 function imageUrlValue(formData: FormData, key: string, label: string): ImageUrlValueResult {

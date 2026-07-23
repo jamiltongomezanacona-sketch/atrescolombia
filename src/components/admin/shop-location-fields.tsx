@@ -33,7 +33,7 @@ type GeoStatus = "idle" | "loading" | "success" | "denied" | "unavailable" | "er
 export function ShopLocationFields({
   values,
   onChange,
-  showAdvancedCoords = false,
+  showAdvancedCoords = true,
   inputClass,
   textareaClass,
 }: ShopLocationFieldsProps) {
@@ -80,7 +80,7 @@ export function ShopLocationFields({
           disabled={geoStatus === "loading"}
           className="inline-flex min-h-11 items-center rounded-full bg-[#0b1f3a] px-4 text-xs font-black text-white transition hover:bg-black disabled:opacity-60"
         >
-          {geoStatus === "loading" ? "Buscando ubicacion..." : "Usar mi ubicacion actual"}
+          {geoStatus === "loading" ? "Buscando ubicacion..." : "Usar mi ubicacion"}
         </button>
       </div>
 
@@ -89,23 +89,12 @@ export function ShopLocationFields({
       </p>
 
       <div className="grid min-w-0 gap-3 md:grid-cols-2">
-        <label className="grid min-w-0 gap-2 text-sm font-bold md:col-span-2">
-          Direccion
-          <input
-            name="address"
-            value={values.address}
-            onChange={(event) => onChange({ address: event.target.value.slice(0, 240) })}
-            className={inputClass}
-            placeholder="Calle, carrera, numero"
-            maxLength={240}
-          />
-        </label>
         <label className="grid min-w-0 gap-2 text-sm font-bold">
-          Ciudad
+          Pais
           <input
-            name="city"
-            value={values.city}
-            onChange={(event) => onChange({ city: event.target.value.slice(0, 80) })}
+            name="country"
+            value={values.country || "Colombia"}
+            onChange={(event) => onChange({ country: event.target.value.slice(0, 80) })}
             className={inputClass}
             maxLength={80}
           />
@@ -121,7 +110,17 @@ export function ShopLocationFields({
           />
         </label>
         <label className="grid min-w-0 gap-2 text-sm font-bold">
-          Localidad o municipio
+          Ciudad
+          <input
+            name="city"
+            value={values.city}
+            onChange={(event) => onChange({ city: event.target.value.slice(0, 80) })}
+            className={inputClass}
+            maxLength={80}
+          />
+        </label>
+        <label className="grid min-w-0 gap-2 text-sm font-bold">
+          Localidad
           <input
             name="locality"
             value={values.locality}
@@ -140,6 +139,27 @@ export function ShopLocationFields({
             maxLength={80}
           />
         </label>
+        <label className="grid min-w-0 gap-2 text-sm font-bold">
+          Codigo postal
+          <input
+            name="postal_code"
+            value={values.postal_code}
+            onChange={(event) => onChange({ postal_code: event.target.value.slice(0, 20) })}
+            className={inputClass}
+            maxLength={20}
+          />
+        </label>
+        <label className="grid min-w-0 gap-2 text-sm font-bold md:col-span-2">
+          Direccion
+          <input
+            name="address"
+            value={values.address}
+            onChange={(event) => onChange({ address: event.target.value.slice(0, 240) })}
+            className={inputClass}
+            placeholder="Calle, carrera, numero"
+            maxLength={240}
+          />
+        </label>
         <label className="grid min-w-0 gap-2 text-sm font-bold md:col-span-2">
           Referencia adicional
           <textarea
@@ -152,9 +172,18 @@ export function ShopLocationFields({
             placeholder="Ej: frente al parque, segundo piso"
           />
         </label>
-        <input type="hidden" name="country" value={values.country || "Colombia"} />
-        <input type="hidden" name="postal_code" value={values.postal_code} />
-        <input type="hidden" name="maps_url" value={values.maps_url} />
+        <label className="grid min-w-0 gap-2 text-sm font-bold md:col-span-2">
+          Maps URL
+          <input
+            name="maps_url"
+            type="url"
+            value={values.maps_url}
+            onChange={(event) => onChange({ maps_url: event.target.value.slice(0, 500) })}
+            className={inputClass}
+            maxLength={500}
+            placeholder="https://maps.google.com/..."
+          />
+        </label>
       </div>
 
       <div className="grid gap-2 sm:grid-cols-2">

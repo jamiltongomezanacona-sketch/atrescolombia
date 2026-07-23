@@ -1,8 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SafeProductImage } from "@/components/safe-product-image";
+import {
+  ShopLocationButton,
+  ShopLocationRow,
+} from "@/components/shops/shop-location-row";
 import { getPublicShopBySlug } from "@/lib/public-store";
-import { buildMapsDirectionsUrl } from "@/lib/geo";
+import { buildMapsLocationUrl } from "@/lib/geo";
 import { buildWhatsAppUrl, resolveStoreWhatsapp } from "@/lib/whatsapp";
 
 type ShopProfilePageProps = {
@@ -28,15 +32,17 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
 
   const shopName = shop.title || shop.name;
   const image = shop.coverUrl || shop.logoUrl || "/assets/atres-curated/placeholder.webp";
-  const sector = [shop.neighborhood, shop.locality, shop.city].filter(Boolean).join(" · ") || "Colombia";
-  const mapsUrl = buildMapsDirectionsUrl({
-    latitude: shop.latitude,
-    longitude: shop.longitude,
-    address: [shop.address, shop.neighborhood, shop.city, shop.department, shop.country]
-      .filter(Boolean)
-      .join(", "),
-    mapsUrl: shop.mapsUrl,
-  });
+  const mapsAddress = [shop.address, shop.neighborhood, shop.locality, shop.city, shop.department, shop.country]
+    .filter(Boolean)
+    .join(", ");
+  const hasMaps = Boolean(
+    buildMapsLocationUrl({
+      latitude: shop.latitude,
+      longitude: shop.longitude,
+      address: mapsAddress || shop.address,
+      mapsUrl: shop.mapsUrl,
+    }),
+  );
   const whatsappUrl = shop.whatsapp
     ? buildWhatsAppUrl(
         resolveStoreWhatsapp(shop.whatsapp),
@@ -53,19 +59,45 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
           </Link>
         </p>
         <h1 className="mt-1 text-2xl font-medium tracking-normal text-ink sm:text-3xl">{shopName}</h1>
-        <p className="mt-1 text-sm text-ink-muted">{sector}</p>
+        <ShopLocationRow
+          city={shop.city}
+          locality={shop.locality}
+          neighborhood={shop.neighborhood}
+          mapsUrl={shop.mapsUrl}
+          latitude={shop.latitude}
+          longitude={shop.longitude}
+          address={mapsAddress || shop.address}
+          className="mt-2 max-w-xl text-sm sm:text-sm"
+        />
 
-        <div className="mt-4 overflow-hidden rounded-[20px] bg-surface ring-1 ring-black/[0.06]">
+        <article className="mt-4 overflow-hidden rounded-[20px] bg-surface shadow-[0_8px_22px_rgba(18,18,18,0.06)] ring-1 ring-black/[0.06] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(18,18,18,0.1)]">
           <div className="relative aspect-[16/9] bg-surface-muted sm:aspect-[21/9]">
             <SafeProductImage src={image} alt="" className="object-cover" sizes="(max-width: 920px) 100vw, 920px" />
+            {shop.verified ? (
+              <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-emerald-800 ring-1 ring-emerald-100/80 backdrop-blur-sm">
+                Verificada
+              </span>
+            ) : null}
           </div>
-          <div className="grid gap-3 p-3 sm:p-4">
+
+          <div className="grid gap-3 p-3 sm:gap-3.5 sm:p-4">
             {shop.shortDescription ? (
               <p className="text-sm leading-6 text-ink-muted">{shop.shortDescription}</p>
             ) : null}
 
+            <ShopLocationRow
+              city={shop.city}
+              locality={shop.locality}
+              neighborhood={shop.neighborhood}
+              mapsUrl={shop.mapsUrl}
+              latitude={shop.latitude}
+              longitude={shop.longitude}
+              address={mapsAddress || shop.address}
+              className="border-t border-black/[0.05] pt-3 text-sm"
+            />
+
             {shop.address ? (
-              <div className="min-w-0">
+              <div className="min-w-0 rounded-2xl bg-[#f7f8f9] px-3 py-2.5">
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">Direccion</p>
                 <p className="mt-1 break-words text-sm font-medium text-ink">{shop.address}</p>
                 {shop.addressReference ? (
@@ -86,43 +118,37 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
                   {shop.deliveryRadiusKm != null ? ` · ~${shop.deliveryRadiusKm} km` : ""}
                 </span>
               ) : null}
-              {shop.verified ? (
-                <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700 ring-1 ring-emerald-100">
-                  Verificada
-                </span>
-              ) : null}
             </div>
 
-            <div className="grid gap-2 sm:grid-cols-3">
+            <div className={`grid gap-2 ${whatsappUrl ? "sm:grid-cols-3" : hasMaps ? "sm:grid-cols-2" : "sm:grid-cols-1"}`}>
               <Link
                 href={`/productos?tienda=${encodeURIComponent(shop.slug)}`}
-                className="inline-flex min-h-11 items-center justify-center rounded-full bg-ink px-4 text-sm font-semibold text-white"
+                className="inline-flex h-11 min-h-11 items-center justify-center rounded-full bg-ink px-4 text-sm font-semibold text-white transition-[background-color,transform] duration-200 ease-out hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98]"
               >
                 Ver catalogo
               </Link>
-              {mapsUrl ? (
-                <a
-                  href={mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-white px-4 text-sm font-semibold text-ink ring-1 ring-black/10"
-                >
-                  Como llegar
-                </a>
-              ) : null}
+              <ShopLocationButton
+                shopName={shopName}
+                mapsUrl={shop.mapsUrl}
+                latitude={shop.latitude}
+                longitude={shop.longitude}
+                address={mapsAddress || shop.address}
+                fullWidth
+                className="!w-full px-4 text-sm"
+              />
               {whatsappUrl ? (
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-semibold text-white"
+                  className="inline-flex h-11 min-h-11 items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-semibold text-white transition-[filter,transform] duration-200 ease-out hover:brightness-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98]"
                 >
                   WhatsApp
                 </a>
               ) : null}
             </div>
           </div>
-        </div>
+        </article>
       </section>
     </main>
   );

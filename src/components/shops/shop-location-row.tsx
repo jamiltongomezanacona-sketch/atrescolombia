@@ -54,12 +54,16 @@ export function ShopLocationButton({
   latitude,
   longitude,
   address,
+  className = "",
+  fullWidth = false,
 }: {
   shopName: string;
   mapsUrl?: string | null;
   latitude?: number | null;
   longitude?: number | null;
   address?: string | null;
+  className?: string;
+  fullWidth?: boolean;
 }) {
   const href = buildMapsLocationUrl({ mapsUrl, latitude, longitude, address });
   if (!href) return null;
@@ -70,12 +74,26 @@ export function ShopLocationButton({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Ver ubicacion de la tienda ${shopName}`}
-      className="group/loc inline-flex h-11 min-h-11 w-1/2 min-w-0 items-center justify-center gap-1.5 rounded-full border border-black/10 bg-white px-2 text-[11px] font-semibold text-ink transition-[color,border-color,background-color,transform] duration-200 ease-out hover:border-emerald-300/80 hover:bg-emerald-50/70 hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs"
+      className={`group/loc inline-flex h-11 min-h-11 min-w-0 items-center justify-center gap-1.5 rounded-full border border-black/10 bg-white px-3 text-[11px] font-semibold text-ink transition-[color,border-color,background-color,transform] duration-200 ease-out hover:border-emerald-300/80 hover:bg-emerald-50/70 hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs ${
+        fullWidth ? "w-full" : "w-1/2"
+      } ${className}`}
     >
       <MapPinIcon className="size-3.5 shrink-0 transition-transform duration-200 ease-out group-hover/loc:translate-x-0.5" />
       <span className="truncate">Ver ubicacion</span>
     </a>
   );
+}
+
+export function buildShopPlaceLabel({
+  city,
+  locality,
+  neighborhood,
+}: {
+  city?: string | null;
+  locality?: string | null;
+  neighborhood?: string | null;
+}) {
+  return buildPlaceLabel({ city, locality, neighborhood });
 }
 
 function buildPlaceLabel({

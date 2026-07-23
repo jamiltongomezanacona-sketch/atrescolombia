@@ -73,6 +73,27 @@ export function buildMapsDirectionsUrl(input: {
   return null;
 }
 
+/** Opens a place in Google Maps search (for public "Ver ubicacion" CTAs). */
+export function buildMapsLocationUrl(input: {
+  latitude?: number | null;
+  longitude?: number | null;
+  address?: string | null;
+  mapsUrl?: string | null;
+}) {
+  if (input.mapsUrl?.trim()) return input.mapsUrl.trim();
+
+  if (hasValidCoordinates(input.latitude, input.longitude)) {
+    return `https://www.google.com/maps/search/?api=1&query=${input.latitude},${input.longitude}`;
+  }
+
+  const address = input.address?.trim();
+  if (address) {
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  }
+
+  return null;
+}
+
 export function parseOptionalCoordinate(raw: string): number | null {
   const trimmed = raw.trim();
   if (!trimmed) return null;

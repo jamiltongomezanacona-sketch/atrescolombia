@@ -1,4 +1,4 @@
-import { buildMapsDirectionsUrl, buildMapsLocationUrl, formatDistanceKm } from "@/lib/geo";
+import { buildMapsLocationUrl, formatDistanceKm } from "@/lib/geo";
 
 export type ShopLocationRowProps = {
   city?: string | null;
@@ -57,6 +57,7 @@ export function ShopLocationButton({
   className = "",
   fullWidth = false,
   showDisabled = false,
+  label = "Ver ubicacion",
 }: {
   shopName: string;
   mapsUrl?: string | null;
@@ -66,8 +67,9 @@ export function ShopLocationButton({
   className?: string;
   fullWidth?: boolean;
   showDisabled?: boolean;
+  label?: string;
 }) {
-  const href = buildMapsDirectionsUrl({ mapsUrl, latitude, longitude, address });
+  const href = buildMapsLocationUrl({ mapsUrl, latitude, longitude, address });
   const buttonClass = `group/loc inline-flex h-11 min-h-11 min-w-0 items-center justify-center gap-1.5 rounded-full border border-black/10 bg-white px-3 text-[11px] font-semibold text-ink transition-[color,border-color,background-color,transform] duration-200 ease-out hover:border-emerald-300/80 hover:bg-emerald-50/70 hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs ${
     fullWidth ? "w-full" : "w-1/2"
   } ${className}`;
@@ -81,7 +83,7 @@ export function ShopLocationButton({
         className={`${buttonClass} cursor-not-allowed opacity-45 hover:border-black/10 hover:bg-white hover:text-ink`}
       >
         <MapPinIcon className="size-3.5 shrink-0" />
-        <span className="truncate">Como llegar</span>
+        <span className="truncate">{label}</span>
       </span>
     );
   }
@@ -91,11 +93,11 @@ export function ShopLocationButton({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Como llegar a la tienda ${shopName}`}
+      aria-label={`Ver ubicacion de la tienda ${shopName}`}
       className={buttonClass}
     >
       <MapPinIcon className="size-3.5 shrink-0 transition-transform duration-200 ease-out group-hover/loc:translate-x-0.5" />
-      <span className="truncate">Como llegar</span>
+      <span className="truncate">{label}</span>
     </a>
   );
 }

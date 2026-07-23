@@ -97,7 +97,13 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
   return (
     <div className="mt-4 space-y-3.5">
       <OptionGroup title="Color" value={color} items={product.colors} onChange={setColor} />
-      <OptionGroup title="Talla" value={size} items={product.sizes} onChange={setSize} />
+      <OptionGroup
+        title="Talla"
+        value={size}
+        items={product.sizes}
+        onChange={setSize}
+        selectedHint={size ? `Talla seleccionada: ${size}` : undefined}
+      />
 
       <div>
         <p className="mb-1.5 text-[10px] font-medium tracking-wide text-ink-muted sm:text-[11px]">Cantidad</p>
@@ -132,34 +138,50 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
         </div>
       </div>
 
-      <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
-        <Button type="button" onClick={() => addToCart(false)} disabled={outOfStock}>
+      <div className="grid gap-2">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
+          <Button
+            type="button"
+            variant="brand"
+            className="h-11 w-full"
+            onClick={() => addToCart(true)}
+            disabled={outOfStock}
+          >
+            Comprar
+          </Button>
+          <FavoriteButton productSlug={product.slug} compact />
+        </div>
+
+        {whatsappUrl ? (
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-11 w-full items-center justify-center rounded-[var(--radius-card)] bg-[#25D366] px-4 text-sm font-medium text-white transition hover:bg-[#1ebe57] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          >
+            Consultar por WhatsApp
+          </a>
+        ) : null}
+
+        <Button
+          type="button"
+          variant="secondary"
+          className="h-11 w-full"
+          onClick={() => addToCart(false)}
+          disabled={outOfStock}
+        >
           Agregar al carrito
         </Button>
-        <Button type="button" variant="brand" onClick={() => addToCart(true)} disabled={outOfStock}>
-          Comprar
-        </Button>
-        <FavoriteButton
-          productSlug={product.slug}
-          label="Agregar este producto a favoritos"
-          activeLabel="Quitar este producto de favoritos"
-        />
-      </div>
 
-      {whatsappUrl ? (
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex h-11 w-full items-center justify-center rounded-[var(--radius-card)] bg-[#25D366] px-4 text-sm font-medium text-white transition hover:bg-[#1ebe57]"
+        <button
+          type="button"
+          onClick={shareProduct}
+          className="mx-auto inline-flex min-h-10 items-center gap-1.5 text-xs font-medium text-ink-muted underline-offset-2 transition hover:text-ink hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
-          Consultar por WhatsApp
-        </a>
-      ) : null}
-
-      <Button type="button" variant="secondary" size="md" onClick={shareProduct}>
-        Compartir producto
-      </Button>
+          <ShareIcon className="size-3.5" />
+          Compartir
+        </button>
+      </div>
 
       {message ? (
         <p className="text-sm font-normal text-emerald-700" role="status" aria-live="polite">
@@ -207,15 +229,24 @@ function OptionGroup({
   value,
   items,
   onChange,
+  selectedHint,
 }: {
   title: string;
   value: string;
   items: string[];
   onChange: (value: string) => void;
+  selectedHint?: string;
 }) {
   return (
     <div>
-      <p className="mb-1.5 text-[10px] font-medium tracking-wide text-ink-muted sm:text-[11px]">{title}</p>
+      <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-2">
+        <p className="text-[10px] font-medium tracking-wide text-ink-muted sm:text-[11px]">{title}</p>
+        {selectedHint ? (
+          <p className="text-[11px] font-medium text-ink sm:text-xs" aria-live="polite">
+            {selectedHint}
+          </p>
+        ) : null}
+      </div>
       <div className="flex flex-wrap gap-1.5" role="group" aria-label={title}>
         {items.map((item) => (
           <button
@@ -234,5 +265,24 @@ function OptionGroup({
         ))}
       </div>
     </div>
+  );
+}
+
+function ShareIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+      <polyline points="16 6 12 2 8 6" />
+      <line x1="12" x2="12" y1="2" y2="15" />
+    </svg>
   );
 }

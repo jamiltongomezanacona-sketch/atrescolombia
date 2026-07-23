@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShopLocationRow } from "@/components/shops/shop-location-row";
+import { ShopLocationButton, ShopLocationRow } from "@/components/shops/shop-location-row";
 import type { PublicShop } from "@/lib/public-store";
 
 type ProductShopBlockProps = {
@@ -47,19 +47,35 @@ export function ProductShopBlock({ shop }: ProductShopBlockProps) {
         className="mt-2 border-t border-black/[0.05] pt-2"
       />
 
+      {shop.address ? (
+        <p className="mt-1.5 line-clamp-2 break-words text-[11px] leading-4 text-ink-muted sm:text-xs">
+          {shop.address}
+          {shop.addressReference ? ` · ${shop.addressReference}` : ""}
+        </p>
+      ) : null}
+
       <div className="mt-2.5 flex gap-1.5">
         <Link
           href={profileHref}
-          className="inline-flex h-10 min-h-10 flex-1 items-center justify-center rounded-full bg-ink px-3 text-[11px] font-semibold text-white transition duration-200 hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs"
+          className="inline-flex h-10 min-h-10 min-w-0 flex-1 items-center justify-center rounded-full bg-ink px-2 text-[11px] font-semibold text-white transition duration-200 hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs"
         >
-          Ver tienda
+          <span className="truncate">Ver tienda</span>
         </Link>
         <Link
           href={catalogHref}
-          className="inline-flex h-10 min-h-10 flex-1 items-center justify-center rounded-full border border-black/10 bg-white px-3 text-[11px] font-semibold text-ink transition duration-200 hover:border-black/20 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs"
+          className="inline-flex h-10 min-h-10 min-w-0 flex-1 items-center justify-center rounded-full border border-black/10 bg-white px-2 text-[11px] font-semibold text-ink transition duration-200 hover:border-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs"
         >
-          Ver catalogo
+          <span className="truncate">Ver catalogo</span>
         </Link>
+        <ShopLocationButton
+          shopName={shopName}
+          mapsUrl={shop.mapsUrl}
+          latitude={shop.latitude}
+          longitude={shop.longitude}
+          address={mapsAddress || shop.address}
+          label="Ver ubicacion"
+          className="!h-10 !min-h-10 !w-auto flex-[1.15] px-2"
+        />
       </div>
     </aside>
   );

@@ -213,11 +213,11 @@ export function ShopForm({
   }
 
   return (
-    <form action={formAction} className="grid gap-4 md:gap-5" encType="multipart/form-data">
+    <form action={formAction} className="grid min-w-0 max-w-full gap-3 md:gap-5" encType="multipart/form-data">
       {shop?.id ? <input type="hidden" name="id" value={shop.id} /> : null}
 
-      <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
-        <div className="flex flex-wrap items-start justify-between gap-3">
+      <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+        <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <SectionTitle
             eyebrow="Velocidad"
             title={isCreate ? "Creacion rapida" : "Edicion rapida"}
@@ -225,7 +225,7 @@ export function ShopForm({
           <button
             type="button"
             onClick={toggleQuickMode}
-            className="inline-flex h-10 items-center rounded-full bg-[#eef6ff] px-4 text-xs font-black text-[#0b1f3a] ring-1 ring-[#d8e7f5]"
+            className="inline-flex min-h-11 w-full min-w-0 items-center justify-center rounded-full bg-[#eef6ff] px-3 text-center text-xs font-black leading-4 text-[#0b1f3a] ring-1 ring-[#d8e7f5] sm:w-auto sm:px-4"
           >
             {quickMode ? "Ver formulario completo" : "Usar modo rapido"}
           </button>
@@ -233,20 +233,20 @@ export function ShopForm({
 
         {isCreate ? (
           <>
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid min-w-0 grid-cols-2 gap-2 sm:grid-cols-4">
               {SHOP_TEMPLATES.map((template) => (
                 <button
                   key={template.id}
                   type="button"
                   onClick={() => applyTemplate(template.id)}
-                  className={`rounded-xl border px-3 py-3 text-left transition ${
+                  className={`min-h-11 min-w-0 rounded-xl border px-2.5 py-2 text-left transition sm:px-3 sm:py-3 ${
                     templateId === template.id
                       ? "border-[#0b1f3a] bg-[#0b1f3a] text-white"
                       : "border-[#d8e7f5] bg-[#eef6ff]/70 text-zinc-900 hover:bg-white"
                   }`}
                 >
-                  <span className="block text-sm font-black">{template.label}</span>
-                  <span className={`mt-1 block text-xs font-medium ${templateId === template.id ? "text-white/75" : "text-zinc-500"}`}>
+                  <span className="block break-words text-sm font-black leading-4">{template.label}</span>
+                  <span className={`mt-1 block break-words text-xs font-medium leading-4 ${templateId === template.id ? "text-white/75" : "text-zinc-500"}`}>
                     {template.hint}
                   </span>
                 </button>
@@ -254,7 +254,7 @@ export function ShopForm({
             </div>
 
             {shops.length ? (
-              <label className="grid gap-2 text-sm font-bold">
+              <label className="grid min-w-0 gap-2 text-sm font-bold">
                 Duplicar tienda existente
                 <select
                   value={duplicateId}
@@ -271,7 +271,7 @@ export function ShopForm({
               </label>
             ) : null}
 
-            <p className="text-xs font-medium leading-5 text-zinc-500">
+            <p className="min-w-0 text-xs font-medium leading-5 text-zinc-500">
               Plantilla activa: <strong>{selectedTemplate.label}</strong>. Completa nombre + admin y crea. Lo demas queda
               con valores listos.
             </p>
@@ -283,10 +283,10 @@ export function ShopForm({
         )}
       </section>
 
-      <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+      <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-white p-3 md:p-4">
         <SectionTitle eyebrow="Informacion" title="Datos de la tienda" />
-        <div className="grid gap-3 md:grid-cols-2">
-          <label className="grid gap-2 text-sm font-bold">
+        <div className="grid min-w-0 gap-3 md:grid-cols-2">
+          <label className="grid min-w-0 gap-2 text-sm font-bold">
             Nombre de la tienda
             <input
               name="name"
@@ -297,14 +297,14 @@ export function ShopForm({
             />
           </label>
           {!quickMode ? (
-            <label className="grid gap-2 text-sm font-bold">
+            <label className="grid min-w-0 gap-2 text-sm font-bold">
               Titulo comercial
               <input name="title" value={title} onChange={(event) => setTitle(event.target.value)} className={inputClass} />
             </label>
           ) : (
             <input type="hidden" name="title" value={title || name} />
           )}
-          <label className="grid gap-2 text-sm font-bold">
+          <label className="grid min-w-0 gap-2 text-sm font-bold">
             Enlace de la tienda
             <input
               name="slug"
@@ -320,14 +320,14 @@ export function ShopForm({
             />
             <span id="shop-slug-hint" className="text-xs font-medium leading-5 text-zinc-500">
               Asi se vera en la web:{" "}
-              <span className="font-bold text-[#0b1f3a]">/tiendas/{slug || "nombre-tienda"}</span>
+              <span className="break-all font-bold text-[#0b1f3a]">/tiendas/{slug || "nombre-tienda"}</span>
             </span>
           </label>
-          <label className="grid gap-2 text-sm font-bold">
+          <label className="grid min-w-0 gap-2 text-sm font-bold">
             Ciudad
             <input name="city" value={city} onChange={(event) => setCity(event.target.value)} className={inputClass} />
           </label>
-          <label className="grid gap-2 text-sm font-bold">
+          <label className="grid min-w-0 gap-2 text-sm font-bold">
             WhatsApp {quickMode ? <span className="font-medium text-zinc-400">(opcional)</span> : null}
             <input
               name="whatsapp"
@@ -338,7 +338,7 @@ export function ShopForm({
             />
           </label>
           {!quickMode ? (
-            <label className="grid gap-2 text-sm font-bold">
+            <label className="grid min-w-0 gap-2 text-sm font-bold">
               Correo
               <input
                 name="email"
@@ -354,7 +354,7 @@ export function ShopForm({
         </div>
         {!quickMode ? (
           <>
-            <label className="grid gap-2 text-sm font-bold">
+            <label className="grid min-w-0 gap-2 text-sm font-bold">
               Descripcion corta
               <textarea
                 name="short_description"
@@ -364,7 +364,7 @@ export function ShopForm({
                 className={textareaClass}
               />
             </label>
-            <label className="grid gap-2 text-sm font-bold">
+            <label className="grid min-w-0 gap-2 text-sm font-bold">
               Descripcion completa
               <textarea
                 name="description"
@@ -383,9 +383,9 @@ export function ShopForm({
         )}
       </section>
 
-      <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-[#eef6ff]/60 p-3 md:p-4">
+      <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-[#eef6ff]/60 p-3 md:p-4">
         <SectionTitle eyebrow="Imagen" title="Identidad visual" />
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid min-w-0 gap-3 sm:grid-cols-2">
           <PreviewField
             label="Logo"
             name="logo_url"
@@ -416,10 +416,10 @@ export function ShopForm({
       </section>
 
       {showAdminFields ? (
-        <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+        <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-white p-3 md:p-4">
           <SectionTitle eyebrow="Administrador" title="Acceso inicial" />
-          <div className="grid gap-3 md:grid-cols-3">
-            <label className="grid gap-2 text-sm font-bold">
+          <div className="grid min-w-0 gap-3 md:grid-cols-3">
+            <label className="grid min-w-0 gap-2 text-sm font-bold">
               Nombre
               <input
                 name="admin_name"
@@ -429,7 +429,7 @@ export function ShopForm({
                 className={inputClass}
               />
             </label>
-            <label className="grid gap-2 text-sm font-bold">
+            <label className="grid min-w-0 gap-2 text-sm font-bold">
               Usuario / correo
               <input
                 name="admin_email"
@@ -440,9 +440,9 @@ export function ShopForm({
                 className={inputClass}
               />
             </label>
-            <label className="grid gap-2 text-sm font-bold">
+            <label className="grid min-w-0 gap-2 text-sm font-bold">
               Contrasena temporal
-              <div className="flex gap-2">
+              <div className="flex min-w-0 flex-col gap-2 min-[420px]:flex-row">
                 <input
                   name="admin_password"
                   type="text"
@@ -455,7 +455,7 @@ export function ShopForm({
                 <button
                   type="button"
                   onClick={() => setAdminPassword(generatePassword())}
-                  className="inline-flex h-11 shrink-0 items-center rounded-xl bg-[#0b1f3a] px-3 text-xs font-black text-white"
+                  className="inline-flex h-11 w-full shrink-0 items-center justify-center rounded-xl bg-[#0b1f3a] px-3 text-xs font-black text-white min-[420px]:w-auto"
                 >
                   Generar
                 </button>
@@ -469,13 +469,13 @@ export function ShopForm({
       ) : null}
 
       {allowStatusEdit ? (
-        <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
+        <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+          <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <SectionTitle eyebrow="Configuracion" title="Limites y visibilidad" />
             <button
               type="button"
               onClick={() => setShowAdvanced((value) => !value)}
-              className="text-xs font-black text-[#2f6f9f] underline-offset-2 hover:underline"
+              className="min-h-10 self-start text-xs font-black text-[#2f6f9f] underline-offset-2 hover:underline"
             >
               {showAdvanced ? "Ocultar avanzado" : "Mas opciones"}
             </button>
@@ -483,8 +483,8 @@ export function ShopForm({
 
           {showAdvanced ? (
             <>
-              <div className="grid gap-3 md:grid-cols-2">
-                <label className="grid gap-2 text-sm font-bold">
+              <div className="grid min-w-0 gap-3 md:grid-cols-2">
+                <label className="grid min-w-0 gap-2 text-sm font-bold">
                   Maximo de productos
                   <input
                     name="max_products"
@@ -494,7 +494,7 @@ export function ShopForm({
                     className={inputClass}
                   />
                 </label>
-                <label className="grid gap-2 text-sm font-bold">
+                <label className="grid min-w-0 gap-2 text-sm font-bold">
                   Maximo de imagenes
                   <input
                     name="max_images"
@@ -504,7 +504,7 @@ export function ShopForm({
                     className={inputClass}
                   />
                 </label>
-                <label className="grid gap-2 text-sm font-bold">
+                <label className="grid min-w-0 gap-2 text-sm font-bold">
                   Estado
                   <select name="status" value={status} onChange={(event) => setStatus(event.target.value as AdminShop["status"])} className={inputClass}>
                     <option value="active">Activa</option>
@@ -513,7 +513,7 @@ export function ShopForm({
                   </select>
                 </label>
               </div>
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="grid min-w-0 gap-3 sm:grid-cols-3">
                 <CheckField label="Tienda verificada" name="verified" checked={verified} onChange={setVerified} />
                 <CheckField label="Mostrar en pagina principal" name="show_on_home" checked={showOnHome} onChange={setShowOnHome} />
                 <CheckField label="Permitir promociones" name="allow_promotions" checked={allowPromotions} onChange={setAllowPromotions} />
@@ -527,16 +527,16 @@ export function ShopForm({
               {verified ? <input type="hidden" name="verified" value="on" /> : null}
               {showOnHome ? <input type="hidden" name="show_on_home" value="on" /> : null}
               {allowPromotions ? <input type="hidden" name="allow_promotions" value="on" /> : null}
-              <p className="text-xs font-medium text-zinc-500">
+              <p className="min-w-0 break-words text-xs font-medium text-zinc-500">
                 Actual: {maxProducts} productos, {maxImages} imagenes, estado {status}.
               </p>
             </>
           )}
         </section>
       ) : (
-        <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+        <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-white p-3 md:p-4">
           <SectionTitle eyebrow="Visibilidad" title="Opciones de tienda" />
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid min-w-0 gap-3 sm:grid-cols-2">
             <CheckField label="Mostrar en pagina principal" name="show_on_home" checked={showOnHome} onChange={setShowOnHome} />
             <CheckField label="Permitir promociones" name="allow_promotions" checked={allowPromotions} onChange={setAllowPromotions} />
           </div>
@@ -550,13 +550,13 @@ export function ShopForm({
           aria-live="polite"
           className={`${
             state.ok ? "bg-emerald-50 text-emerald-900 ring-emerald-100" : "bg-red-50 text-red-700 ring-red-100"
-          } rounded-[var(--radius-card)] p-3 text-sm font-medium ring-1`}
+          } min-w-0 break-words rounded-[var(--radius-card)] p-3 text-sm font-medium ring-1`}
         >
           {state.message}
         </p>
       ) : null}
 
-      <div className="sticky bottom-3 z-10 rounded-[var(--radius-card)] border border-black/8 bg-surface/95 p-2 shadow-soft backdrop-blur md:bottom-4">
+      <div className="sticky bottom-2 z-10 min-w-0 max-w-full rounded-[var(--radius-card)] border border-black/8 bg-surface/95 p-2 shadow-soft backdrop-blur md:bottom-4">
         <Button type="submit" disabled={pending} variant="primary" className="h-11 w-full">
           {pending ? "Guardando..." : isCreate ? "Crear tienda ahora" : submitLabel}
         </Button>
@@ -567,9 +567,9 @@ export function ShopForm({
 
 function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
-    <div>
+    <div className="min-w-0">
       <p className="text-[11px] font-black uppercase tracking-wide text-[#2f6f9f]">{eyebrow}</p>
-      <h2 className="mt-1 text-base font-black tracking-tight text-zinc-950 md:text-lg">{title}</h2>
+      <h2 className="mt-1 break-words text-base font-black tracking-tight text-zinc-950 md:text-lg">{title}</h2>
     </div>
   );
 }
@@ -658,14 +658,14 @@ function PreviewField({
   const previewSrc = localPreview || value;
 
   return (
-    <div className="grid gap-2 text-sm font-bold">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <span>{label}</span>
+    <div className="grid min-w-0 gap-2 text-sm font-bold">
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
+        <span className="min-w-0 break-words">{label}</span>
         <button
           type="button"
           disabled={!canPickFile || uploading}
           onClick={() => fileRef.current?.click()}
-          className="inline-flex h-9 items-center justify-center rounded-full bg-[#0b1f3a] px-3.5 text-xs font-black text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex min-h-11 min-w-0 items-center justify-center rounded-full bg-[#0b1f3a] px-3.5 text-center text-xs font-black leading-4 text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-50 max-[380px]:w-full"
         >
           {uploading ? "Preparando..." : compact ? "Subir" : "Subir del dispositivo"}
         </button>
@@ -683,7 +683,7 @@ function PreviewField({
       </div>
 
       {showUrlInput ? (
-        <label className="grid gap-1.5 text-xs font-bold text-zinc-500" htmlFor={`${inputId}-url`}>
+        <label className="grid min-w-0 gap-1.5 text-xs font-bold text-zinc-500" htmlFor={`${inputId}-url`}>
           URL opcional
           <input
             id={`${inputId}-url`}
@@ -699,13 +699,13 @@ function PreviewField({
       )}
 
       {message ? (
-        <p className="text-xs font-medium text-zinc-600" role="status" aria-live="polite">
+        <p className="min-w-0 break-words text-xs font-medium text-zinc-600" role="status" aria-live="polite">
           {message}
         </p>
       ) : null}
 
       <span
-        className={`relative overflow-hidden rounded-xl bg-white ring-1 ring-black/5 ${
+        className={`relative block max-w-full overflow-hidden rounded-xl bg-white ring-1 ring-black/5 ${
           compact ? "min-h-16" : "min-h-24"
         } ${previewClassName}`}
       >
@@ -734,15 +734,15 @@ function CheckField({
   onChange: (value: boolean) => void;
 }) {
   return (
-    <label className="flex min-h-12 items-center gap-3 rounded-xl border border-[#d8e7f5] bg-[#eef6ff]/70 px-3 text-sm font-bold transition hover:bg-white">
+    <label className="flex min-h-12 min-w-0 items-center gap-3 rounded-xl border border-[#d8e7f5] bg-[#eef6ff]/70 px-3 text-sm font-bold transition hover:bg-white">
       <input
         name={name}
         type="checkbox"
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
-        className="size-4 accent-black"
+        className="size-4 shrink-0 accent-black"
       />
-      {label}
+      <span className="min-w-0 break-words leading-5">{label}</span>
     </label>
   );
 }
@@ -817,5 +817,5 @@ function canvasToWebp(canvas: HTMLCanvasElement, quality: number) {
   });
 }
 
-const inputClass = "h-11 rounded-xl border border-[#c7ddf2] bg-[#f5f9ff] px-3 text-sm focus:border-[#0b1f3a] focus:bg-white";
-const textareaClass = "rounded-xl border border-[#c7ddf2] bg-[#f5f9ff] px-3 py-3 text-sm focus:border-[#0b1f3a] focus:bg-white";
+const inputClass = "h-11 w-full min-w-0 max-w-full rounded-xl border border-[#c7ddf2] bg-[#f5f9ff] px-3 text-sm focus:border-[#0b1f3a] focus:bg-white";
+const textareaClass = "w-full min-w-0 max-w-full rounded-xl border border-[#c7ddf2] bg-[#f5f9ff] px-3 py-3 text-sm focus:border-[#0b1f3a] focus:bg-white";

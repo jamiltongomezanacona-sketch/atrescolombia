@@ -9,11 +9,11 @@ export default async function NewShopPage() {
 
   return (
     <AdminShell isSuperAdmin={session.isSuperAdmin}>
-      <div className="grid gap-5">
-        <div className="rounded-2xl bg-white/92 p-4 shadow-sm ring-1 ring-black/5 md:p-5">
+      <div className="grid min-w-0 gap-4 md:gap-5">
+        <div className="min-w-0 rounded-xl bg-white/92 p-3 shadow-sm ring-1 ring-black/5 sm:p-4 md:p-5">
           <p className="text-xs font-black uppercase tracking-wide text-zinc-500">Multitienda</p>
-          <h1 className="mt-1 text-3xl font-black tracking-tight">Crear tienda</h1>
-          <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-zinc-500">
+          <h1 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Crear tienda</h1>
+          <p className="mt-1.5 max-w-2xl text-sm font-semibold leading-5 text-zinc-500 sm:leading-6">
             Modo rapido con plantillas, duplicado y subida de logo/portada en el mismo paso.
           </p>
         </div>

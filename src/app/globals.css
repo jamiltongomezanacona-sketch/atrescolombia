@@ -73,7 +73,7 @@
   }
 
   body {
-    min-width: 320px;
+    min-width: 0;
     background:
       linear-gradient(180deg, #ffffff 0%, var(--background) 52%, #f3f1ed 100%);
     color: var(--foreground);

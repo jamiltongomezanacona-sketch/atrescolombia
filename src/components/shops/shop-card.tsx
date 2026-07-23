@@ -19,14 +19,18 @@ export function ShopCard({ shop }: ShopCardProps) {
   const description = shop.shortDescription?.trim() || shop.categoryLabel?.trim() || "";
   const catalogHref = `/productos?tienda=${encodeURIComponent(shop.slug)}`;
   const profileHref = `/tiendas/${shop.slug}`;
+  const mapsQuery = [shop.address, shop.neighborhood, shop.locality, shop.city, shop.department, shop.country]
+    .filter(Boolean)
+    .join(", ");
   const hasLocation = Boolean(
     buildMapsLocationUrl({
       mapsUrl: shop.mapsUrl,
       latitude: shop.latitude,
       longitude: shop.longitude,
-      address: shop.address,
+      address: mapsQuery || shop.address || shop.city,
     }),
   );
+  const streetAddress = shop.address?.trim() || "";
 
   return (
     <li className="min-w-0">
@@ -72,17 +76,24 @@ export function ShopCard({ shop }: ShopCardProps) {
             </Link>
           </div>
 
-          <ShopLocationRow
-            city={shop.city}
-            locality={shop.locality}
-            neighborhood={shop.neighborhood}
-            distanceKm={shop.distanceKm}
-            mapsUrl={shop.mapsUrl}
-            latitude={shop.latitude}
-            longitude={shop.longitude}
-            address={shop.address}
-            className="mt-0.5 border-t border-black/[0.05] pt-2"
-          />
+          <div className="mt-0.5 min-w-0 border-t border-black/[0.05] pt-2">
+            <ShopLocationRow
+              city={shop.city}
+              locality={shop.locality}
+              neighborhood={shop.neighborhood}
+              distanceKm={shop.distanceKm}
+              mapsUrl={shop.mapsUrl}
+              latitude={shop.latitude}
+              longitude={shop.longitude}
+              address={mapsQuery || shop.address}
+            />
+            {streetAddress ? (
+              <p className="mt-1 line-clamp-2 break-words pl-6 text-[10px] leading-4 text-ink-muted sm:text-[11px]">
+                {streetAddress}
+                {shop.addressReference ? ` · ${shop.addressReference}` : ""}
+              </p>
+            ) : null}
+          </div>
 
           <div className="mt-auto flex w-full gap-1.5 pt-1">
             <Link
@@ -96,7 +107,7 @@ export function ShopCard({ shop }: ShopCardProps) {
               mapsUrl={shop.mapsUrl}
               latitude={shop.latitude}
               longitude={shop.longitude}
-              address={shop.address}
+              address={mapsQuery || shop.address || shop.city}
             />
           </div>
         </div>

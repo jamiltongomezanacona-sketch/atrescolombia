@@ -40,6 +40,15 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const showDiscount = Boolean(discount) && !ribbon;
   const displayImage = product.image;
   const hasOptions = sizes.length > 0 || swatches.length > 0;
+  const placeLabel = [product.shopCity, product.shopNeighborhood || product.shopLocality]
+    .filter(Boolean)
+    .join(" · ");
+  const shopName = product.shopName?.trim() || "";
+  const shopLine = shopName
+    ? placeLabel
+      ? `${shopName} · ${placeLabel}`
+      : shopName
+    : "";
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface ring-1 ring-black/[0.04] transition duration-300 hover:shadow-soft hover:ring-black/[0.08] motion-safe:hover:-translate-y-0.5">
@@ -92,43 +101,30 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         ) : null}
       </div>
 
-      <div className="flex min-w-0 flex-col gap-1 px-2 pb-2 pt-1.5 sm:px-2.5 sm:pb-2.5">
-        <div className="flex items-center justify-between gap-1.5 leading-none">
-          <p className="min-w-0 truncate text-[9px] font-medium tracking-wide text-ink-muted/80 sm:text-[10px]">
+      <div className="flex min-w-0 flex-col gap-0.5 px-2 pb-2 pt-1.5 sm:gap-1 sm:px-2.5 sm:pb-2.5">
+        {shopLine ? (
+          product.shopSlug ? (
+            <Link
+              href={`/productos?tienda=${encodeURIComponent(product.shopSlug)}`}
+              className="flex min-w-0 items-center gap-1 text-[9px] font-medium text-ink-muted transition hover:text-ink sm:text-[10px]"
+            >
+              {placeLabel ? <CardMapPinIcon className="size-3 shrink-0 text-ink/55" /> : null}
+              <span className="min-w-0 truncate">{shopLine}</span>
+            </Link>
+          ) : (
+            <p className="flex min-w-0 items-center gap-1 text-[9px] font-medium text-ink-muted sm:text-[10px]">
+              {placeLabel ? <CardMapPinIcon className="size-3 shrink-0 text-ink/55" /> : null}
+              <span className="min-w-0 truncate">{shopLine}</span>
+            </p>
+          )
+        ) : product.categoryName ? (
+          <p className="min-w-0 truncate text-[9px] font-medium tracking-wide text-ink-muted sm:text-[10px]">
             {product.categoryName}
           </p>
-          {product.shopName ? (
-            product.shopSlug ? (
-              <Link
-                href={`/productos?tienda=${encodeURIComponent(product.shopSlug)}`}
-                className="min-w-0 shrink truncate text-right text-[9px] font-medium text-ink-muted/75 transition hover:text-ink sm:text-[10px]"
-              >
-                {product.shopName}
-              </Link>
-            ) : (
-              <p className="min-w-0 shrink truncate text-right text-[9px] font-medium text-ink-muted/75 sm:text-[10px]">
-                {product.shopName}
-              </p>
-            )
-          ) : null}
-        </div>
-
-        {(product.shopCity || product.shopNeighborhood || product.shopLocality) && product.shopSlug ? (
-          <Link
-            href={`/productos?tienda=${encodeURIComponent(product.shopSlug)}`}
-            className="flex min-w-0 items-center gap-1 text-[9px] font-medium text-ink-muted/80 transition hover:text-ink sm:text-[10px]"
-          >
-            <span aria-hidden="true" className="shrink-0">
-              📍
-            </span>
-            <span className="truncate">
-              {[product.shopCity, product.shopNeighborhood || product.shopLocality].filter(Boolean).join(" · ")}
-            </span>
-          </Link>
         ) : null}
 
         <Link href={`/productos/${product.slug}`} className="block">
-          <h3 className="line-clamp-2 min-h-[2.05rem] text-[12px] font-medium leading-[1.24] text-ink transition group-hover:text-ink sm:min-h-[2.15rem] sm:text-[13px] sm:leading-[1.25]">
+          <h3 className="line-clamp-2 text-[12px] font-medium leading-[1.25] text-ink transition group-hover:text-ink sm:text-[13px]">
             {product.name}
           </h3>
         </Link>
@@ -136,7 +132,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         {hasOptions ? (
           <div className="flex items-center justify-between gap-1.5 leading-none">
             {sizes.length > 0 ? (
-              <p className="min-w-0 truncate text-[9px] font-normal text-ink-muted/85 sm:text-[10px]">
+              <p className="min-w-0 truncate text-[9px] font-normal text-ink-muted sm:text-[10px]">
                 {sizes.join(" / ")}
                 {meaningfulSizes(product.sizes).length > sizes.length ? " +" : ""}
               </p>
@@ -150,7 +146,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                     key={color}
                     title={color}
                     aria-label={color}
-                    className="size-2 rounded-full ring-1 ring-black/10"
+                    className="size-2.5 rounded-full ring-1 ring-black/15"
                     style={{ backgroundColor: colorToHex(color) }}
                   />
                 ))}
@@ -159,13 +155,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </div>
         ) : null}
 
-        <div className="flex items-center justify-between gap-1.5 pt-0.5">
+        <div className="mt-0.5 flex items-center justify-between gap-1.5">
           <ProductPrice
             price={product.price}
             previousPrice={previousPrice}
             size="sm"
             className="flex min-w-0 flex-wrap items-baseline gap-x-1 gap-y-0"
-            currentClassName="text-[0.9rem] leading-none sm:text-[0.95rem]"
+            currentClassName="text-[0.88rem] leading-none sm:text-[0.92rem]"
             previousClassName="mt-0 text-[9px] leading-none sm:text-[10px]"
           />
           <ProductCardActions product={product} />
@@ -193,4 +189,22 @@ function colorToHex(color: string) {
   if (normalized.includes("gris")) return "#9ca3af";
   if (normalized.includes("denim")) return "#1d4ed8";
   return "#d6d3d1";
+}
+
+function CardMapPinIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
 }

@@ -27,7 +27,7 @@ export default async function EditShopPage({ params, searchParams }: EditShopPag
           <p className="text-xs font-black uppercase tracking-wide text-zinc-500">Multitienda</p>
           <h1 className="mt-1 text-3xl font-black tracking-tight">Editar tienda</h1>
           <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-zinc-500">
-            Ajusta informacion publica, limites y estado operativo.
+            Misma experiencia que crear: modo rapido, enlace claro y logo/portada al instante.
           </p>
         </div>
         {query?.guardado ? (

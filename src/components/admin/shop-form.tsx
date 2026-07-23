@@ -125,8 +125,8 @@ export function ShopForm({
 }: ShopFormProps) {
   const isCreate = !shop?.id;
   const [state, formAction, pending] = useActionState(saveShop, initialState);
-  const [quickMode, setQuickMode] = useState(isCreate);
-  const [showAdvanced, setShowAdvanced] = useState(!isCreate);
+  const [quickMode, setQuickMode] = useState(true);
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [templateId, setTemplateId] = useState<ShopTemplateId>("blank");
   const [name, setName] = useState(shop?.name ?? "");
   const [title, setTitle] = useState(shop?.title ?? "");
@@ -204,70 +204,84 @@ export function ShopForm({
     if (!title) setTitle(value);
   }
 
+  function toggleQuickMode() {
+    setQuickMode((value) => {
+      const next = !value;
+      if (!next) setShowAdvanced(true);
+      return next;
+    });
+  }
+
   return (
     <form action={formAction} className="grid gap-4 md:gap-5" encType="multipart/form-data">
       {shop?.id ? <input type="hidden" name="id" value={shop.id} /> : null}
 
-      {isCreate ? (
-        <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <SectionTitle eyebrow="Velocidad" title="Creacion rapida" />
-            <button
-              type="button"
-              onClick={() => {
-                setQuickMode((value) => !value);
-                setShowAdvanced((value) => (quickMode ? true : value));
-              }}
-              className="inline-flex h-10 items-center rounded-full bg-[#eef6ff] px-4 text-xs font-black text-[#0b1f3a] ring-1 ring-[#d8e7f5]"
-            >
-              {quickMode ? "Ver formulario completo" : "Usar modo rapido"}
-            </button>
-          </div>
+      <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <SectionTitle
+            eyebrow="Velocidad"
+            title={isCreate ? "Creacion rapida" : "Edicion rapida"}
+          />
+          <button
+            type="button"
+            onClick={toggleQuickMode}
+            className="inline-flex h-10 items-center rounded-full bg-[#eef6ff] px-4 text-xs font-black text-[#0b1f3a] ring-1 ring-[#d8e7f5]"
+          >
+            {quickMode ? "Ver formulario completo" : "Usar modo rapido"}
+          </button>
+        </div>
 
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-            {SHOP_TEMPLATES.map((template) => (
-              <button
-                key={template.id}
-                type="button"
-                onClick={() => applyTemplate(template.id)}
-                className={`rounded-xl border px-3 py-3 text-left transition ${
-                  templateId === template.id
-                    ? "border-[#0b1f3a] bg-[#0b1f3a] text-white"
-                    : "border-[#d8e7f5] bg-[#eef6ff]/70 text-zinc-900 hover:bg-white"
-                }`}
-              >
-                <span className="block text-sm font-black">{template.label}</span>
-                <span className={`mt-1 block text-xs font-medium ${templateId === template.id ? "text-white/75" : "text-zinc-500"}`}>
-                  {template.hint}
-                </span>
-              </button>
-            ))}
-          </div>
+        {isCreate ? (
+          <>
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              {SHOP_TEMPLATES.map((template) => (
+                <button
+                  key={template.id}
+                  type="button"
+                  onClick={() => applyTemplate(template.id)}
+                  className={`rounded-xl border px-3 py-3 text-left transition ${
+                    templateId === template.id
+                      ? "border-[#0b1f3a] bg-[#0b1f3a] text-white"
+                      : "border-[#d8e7f5] bg-[#eef6ff]/70 text-zinc-900 hover:bg-white"
+                  }`}
+                >
+                  <span className="block text-sm font-black">{template.label}</span>
+                  <span className={`mt-1 block text-xs font-medium ${templateId === template.id ? "text-white/75" : "text-zinc-500"}`}>
+                    {template.hint}
+                  </span>
+                </button>
+              ))}
+            </div>
 
-          {shops.length ? (
-            <label className="grid gap-2 text-sm font-bold">
-              Duplicar tienda existente
-              <select
-                value={duplicateId}
-                onChange={(event) => applyDuplicate(event.target.value)}
-                className={inputClass}
-              >
-                <option value="">No duplicar</option>
-                {shops.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name} ({item.slug})
-                  </option>
-                ))}
-              </select>
-            </label>
-          ) : null}
+            {shops.length ? (
+              <label className="grid gap-2 text-sm font-bold">
+                Duplicar tienda existente
+                <select
+                  value={duplicateId}
+                  onChange={(event) => applyDuplicate(event.target.value)}
+                  className={inputClass}
+                >
+                  <option value="">No duplicar</option>
+                  {shops.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name} ({item.slug})
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
 
+            <p className="text-xs font-medium leading-5 text-zinc-500">
+              Plantilla activa: <strong>{selectedTemplate.label}</strong>. Completa nombre + admin y crea. Lo demas queda
+              con valores listos.
+            </p>
+          </>
+        ) : (
           <p className="text-xs font-medium leading-5 text-zinc-500">
-            Plantilla activa: <strong>{selectedTemplate.label}</strong>. Completa nombre + admin y crea. Lo demas queda
-            con valores listos.
+            Misma vista que crear tienda: edita lo esencial y usa <strong>Mas opciones</strong> solo si lo necesitas.
           </p>
-        </section>
-      ) : null}
+        )}
+      </section>
 
       <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
         <SectionTitle eyebrow="Informacion" title="Datos de la tienda" />
@@ -380,10 +394,10 @@ export function ShopForm({
             shopId={shop?.id}
             value={logoUrl}
             onChange={setLogoUrl}
-            previewClassName={quickMode && isCreate ? "aspect-square w-24" : "aspect-square max-w-[140px]"}
+            previewClassName={quickMode ? "aspect-square w-24" : "aspect-square max-w-[140px]"}
             allowCreateUpload
-            showUrlInput={!quickMode || !isCreate}
-            compact={quickMode && isCreate}
+            showUrlInput={!quickMode}
+            compact={quickMode}
           />
           <PreviewField
             label="Portada"
@@ -393,10 +407,10 @@ export function ShopForm({
             shopId={shop?.id}
             value={coverUrl}
             onChange={setCoverUrl}
-            previewClassName={quickMode && isCreate ? "aspect-[16/9] w-full max-w-[220px]" : "aspect-[16/9]"}
+            previewClassName={quickMode ? "aspect-[16/9] w-full max-w-[220px]" : "aspect-[16/9]"}
             allowCreateUpload
-            showUrlInput={!quickMode || !isCreate}
-            compact={quickMode && isCreate}
+            showUrlInput={!quickMode}
+            compact={quickMode}
           />
         </div>
       </section>
@@ -458,18 +472,16 @@ export function ShopForm({
         <section className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-white p-3 md:p-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <SectionTitle eyebrow="Configuracion" title="Limites y visibilidad" />
-            {isCreate ? (
-              <button
-                type="button"
-                onClick={() => setShowAdvanced((value) => !value)}
-                className="text-xs font-black text-[#2f6f9f] underline-offset-2 hover:underline"
-              >
-                {showAdvanced ? "Ocultar avanzado" : "Mas opciones"}
-              </button>
-            ) : null}
+            <button
+              type="button"
+              onClick={() => setShowAdvanced((value) => !value)}
+              className="text-xs font-black text-[#2f6f9f] underline-offset-2 hover:underline"
+            >
+              {showAdvanced ? "Ocultar avanzado" : "Mas opciones"}
+            </button>
           </div>
 
-          {showAdvanced || !isCreate ? (
+          {showAdvanced ? (
             <>
               <div className="grid gap-3 md:grid-cols-2">
                 <label className="grid gap-2 text-sm font-bold">
@@ -516,7 +528,7 @@ export function ShopForm({
               {showOnHome ? <input type="hidden" name="show_on_home" value="on" /> : null}
               {allowPromotions ? <input type="hidden" name="allow_promotions" value="on" /> : null}
               <p className="text-xs font-medium text-zinc-500">
-                Defaults listos: {maxProducts} productos, {maxImages} imagenes, estado {status}.
+                Actual: {maxProducts} productos, {maxImages} imagenes, estado {status}.
               </p>
             </>
           )}

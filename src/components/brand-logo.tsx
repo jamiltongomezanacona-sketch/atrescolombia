@@ -7,6 +7,8 @@ type BrandLogoProps = {
   sublabel?: string;
   dark?: boolean;
   compact?: boolean;
+  /** Show ATRES text beside the mark (useful when the icon alone is too small). */
+  withWordmark?: boolean;
 };
 
 export function BrandLogo({
@@ -15,9 +17,9 @@ export function BrandLogo({
   sublabel,
   dark = false,
   compact = false,
+  withWordmark = false,
 }: BrandLogoProps) {
-  // Full mark already includes the ATRES wordmark; avoid duplicating text next to it.
-  const showWordmark = Boolean(sublabel);
+  const showWordmark = withWordmark || Boolean(sublabel);
 
   const content = (
     <>

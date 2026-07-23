@@ -34,11 +34,11 @@ export async function SiteHeader() {
               </Suspense>
             </div>
             <div className="hidden lg:block">
-              <BrandLogo dark compact />
+              <BrandLogo dark compact withWordmark />
             </div>
           </div>
 
-          <div className="min-w-0">
+          <div className="min-w-0 lg:justify-self-center lg:w-full lg:max-w-[42rem] xl:max-w-[48rem]">
             <Suspense fallback={<div className="h-9 rounded-[var(--radius-card)] bg-white/10 lg:hidden" />}>
               <HeaderMobileSearch />
             </Suspense>

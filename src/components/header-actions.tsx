@@ -69,16 +69,16 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
   }
 
   return (
-    <nav className="hidden items-center justify-end gap-1 text-sm font-medium lg:flex" aria-label="Acciones">
+    <nav className="hidden items-center justify-end gap-1.5 text-sm font-medium lg:flex" aria-label="Acciones">
       <ActionLink href="/favoritos" label="Favoritos" icon="heart" iconOnly />
       <Link
         href="/carrito"
         aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
-        className="atres-interactive relative inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-gold-light"
+        className="atres-interactive relative inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-card)] text-white hover:bg-white/12 hover:text-gold-light"
       >
-        <HeaderIcon type="bag" />
+        <HeaderIcon type="bag" size="lg" />
         {count > 0 ? (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[9px] font-medium text-black-main">
+          <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[10px] font-semibold text-black-main">
             {count}
           </span>
         ) : null}
@@ -111,28 +111,32 @@ function ActionLink({
         compact
           ? "atres-interactive inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-gold-light"
           : iconOnly
-            ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-gold-light"
+            ? "atres-interactive inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-card)] text-white hover:bg-white/12 hover:text-gold-light"
             : "atres-interactive inline-flex h-9 items-center gap-2 rounded-[var(--radius-card)] px-2.5 text-white/85 hover:bg-white/10 hover:text-gold-light",
         active ? "bg-white/10 text-gold-light ring-1 ring-white/10" : null,
       )}
     >
-      <HeaderIcon type={icon} />
+      <HeaderIcon type={icon} size={iconOnly || compact ? "lg" : "md"} />
       {compact || iconOnly ? null : label}
     </Link>
   );
 }
 
 type HeaderIconType = "home" | "heart" | "bag" | "bell";
+type HeaderIconSize = "md" | "lg";
 
-function HeaderIcon({ type }: { type: HeaderIconType }) {
+function HeaderIcon({ type, size = "md" }: { type: HeaderIconType; size?: HeaderIconSize }) {
+  const iconClass = size === "lg" ? "size-6" : "size-5";
+  const stroke = size === "lg" ? "2.15" : "2";
+
   if (type === "home") {
     return (
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-6 fill-none"
+        className={`${iconClass} fill-none`}
         stroke="currentColor"
-        strokeWidth="2.25"
+        strokeWidth={stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
       >
@@ -148,9 +152,9 @@ function HeaderIcon({ type }: { type: HeaderIconType }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-[17px] fill-none"
+        className={`${iconClass} fill-none`}
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
       >
@@ -164,9 +168,9 @@ function HeaderIcon({ type }: { type: HeaderIconType }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-[18px] fill-none"
+        className={`${iconClass} fill-none`}
         stroke="currentColor"
-        strokeWidth="1.85"
+        strokeWidth={stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
       >
@@ -182,9 +186,9 @@ function HeaderIcon({ type }: { type: HeaderIconType }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-[17px] fill-none"
+        className={`${iconClass} fill-none`}
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
       >

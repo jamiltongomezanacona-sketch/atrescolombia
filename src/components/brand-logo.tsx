@@ -41,8 +41,8 @@ export function BrandLogo({
       {showWordmark ? (
         <span className={`min-w-0 ${compact ? "max-[360px]:hidden" : ""}`}>
           <span
-            className={`block font-semibold leading-none tracking-[0.18em] ${
-              compact ? "text-[0.95rem]" : "text-xl xl:text-2xl"
+            className={`block font-semibold leading-none tracking-[0.14em] ${
+              compact ? "text-[0.95rem]" : "text-2xl xl:text-3xl"
             } ${dark ? "text-badge-gold" : "text-ink"}`}
           >
             {label}
@@ -54,10 +54,6 @@ export function BrandLogo({
               }`}
             >
               {sublabel}
-            </span>
-          ) : dark && !compact ? (
-            <span className="mt-1 block text-[10px] font-normal tracking-[0.16em] text-white/55">
-              COLOMBIA
             </span>
           ) : null}
         </span>

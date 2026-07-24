@@ -97,7 +97,7 @@ export function getVisibleProductDetails(product: Product) {
 export function getToneClass(tone: CommercialTone) {
   const tones: Record<CommercialTone, string> = {
     dark: "bg-black/82 text-white ring-white/15",
-    sale: "bg-[#ff4d00] text-white ring-black/10",
+    sale: "bg-[#ff4d00] text-[#f0d48a] ring-[#f0d48a]/30",
     new: "bg-[#111827] text-white ring-white/15",
     trend: "bg-[#5b2bd6] text-white ring-white/15",
     stock: "bg-[#f7b500] text-black ring-black/10",

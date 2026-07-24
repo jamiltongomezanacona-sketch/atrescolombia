@@ -18,6 +18,7 @@
   --brand: #ff4d00;
   --brand-hover: #e64500;
   --price: #3d011a;
+  --badge-gold: #f0d48a;
   --promo: #ffe566;
   --ring: #ff4d00;
   --success: #15803d;
@@ -68,6 +69,7 @@
   --color-brand: var(--brand);
   --color-brand-hover: var(--brand-hover);
   --color-price: var(--price);
+  --color-badge-gold: var(--badge-gold);
   --color-promo: var(--promo);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);

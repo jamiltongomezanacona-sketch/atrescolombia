@@ -35,6 +35,19 @@
   --page-y-md: 1rem;
   --section-y: 0.75rem;
   --section-y-md: 1rem;
+
+  /* Store header chrome — charcoal glass (Phase 1) */
+  --header-bg: #1c1c1e;
+  --header-bg-soft: #2a2a2e;
+  --header-glass: rgba(255, 255, 255, 0.055);
+  --header-glass-strong: rgba(255, 255, 255, 0.08);
+  --header-border: rgba(255, 255, 255, 0.1);
+  --header-gradient: linear-gradient(
+    180deg,
+    rgba(42, 42, 46, 0.96) 0%,
+    rgba(28, 28, 30, 0.94) 55%,
+    rgba(22, 22, 24, 0.92) 100%
+  );
 }
 
 @theme inline {
@@ -348,6 +361,29 @@ h6 {
   max-width: none;
   margin-inline: 0;
   padding-inline: 0.375rem;
+}
+
+.store-header-shell {
+  background: var(--header-gradient);
+  background-color: color-mix(in srgb, var(--header-bg) 88%, transparent);
+  border-bottom: 1px solid var(--header-border);
+  box-shadow: 0 10px 28px rgba(18, 18, 18, 0.12);
+  -webkit-backdrop-filter: blur(18px) saturate(1.12);
+  backdrop-filter: blur(18px) saturate(1.12);
+}
+
+.store-header-glass {
+  background: var(--header-glass);
+  border-color: var(--header-border);
+}
+
+.store-header-nav {
+  background: linear-gradient(
+    180deg,
+    var(--header-glass-strong) 0%,
+    var(--header-glass) 100%
+  );
+  border-top: 1px solid var(--header-border);
 }
 
 .catalog-container {

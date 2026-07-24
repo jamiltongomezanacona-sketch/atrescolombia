@@ -13,13 +13,14 @@ export async function SiteHeader() {
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0a0a0a]/95 text-white shadow-soft backdrop-blur-xl lg:sticky lg:border-b-0 lg:shadow-none"
+      className="store-header-shell fixed inset-x-0 top-0 z-50 text-white lg:sticky lg:shadow-none"
       aria-label="Cabecera ATRES"
     >
-      <div className="hidden border-b border-white/10 bg-white/[0.03] lg:block">
+      <div className="store-header-glass hidden border-b lg:block">
         <div className="header-container flex items-center justify-between gap-2 py-0.5 text-[11px] font-normal tracking-wide text-white/70">
           <span>100% producto colombiano</span>
-          <span className="hidden md:inline">Compra por prenda o al por mayor</span>          <Link href="/ofertas" className="text-white/85 transition hover:text-white">
+          <span className="hidden md:inline">Compra por prenda o al por mayor</span>
+          <Link href="/ofertas" className="text-white/85 transition hover:text-white">
             Ofertas y novedades
           </Link>
         </div>
@@ -56,7 +57,7 @@ export async function SiteHeader() {
       </div>
 
       <div className="hidden lg:block">
-        <Suspense fallback={<div className="h-7 border-t border-white/10 bg-white/[0.03]" />}>
+        <Suspense fallback={<div className="store-header-nav h-7" />}>
           <HeaderNav items={navItems} />
         </Suspense>
       </div>

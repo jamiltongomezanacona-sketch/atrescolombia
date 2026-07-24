@@ -130,9 +130,9 @@ function HeaderIcon({ type }: { type: HeaderIconType }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-[17px] fill-none"
+        className="size-5 fill-none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="2.1"
         strokeLinecap="round"
         strokeLinejoin="round"
       >

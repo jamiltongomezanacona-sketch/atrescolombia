@@ -364,9 +364,9 @@ function MenuIcon() {
     <svg
       aria-hidden="true"
       viewBox="0 0 24 24"
-      className="size-[18px] fill-none"
+      className="size-5 fill-none"
       stroke="currentColor"
-      strokeWidth="2.1"
+      strokeWidth="2.25"
       strokeLinecap="round"
     >
       <path d="M4 7h16M4 12h16M4 17h16" />

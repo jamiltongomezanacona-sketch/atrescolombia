@@ -43,7 +43,7 @@ export function BrandLogo({
           <span
             className={`block font-semibold leading-none tracking-[0.18em] ${
               compact ? "text-[0.95rem]" : "text-xl xl:text-2xl"
-            } ${dark ? "text-white" : "text-ink"}`}
+            } ${dark ? "text-badge-gold" : "text-ink"}`}
           >
             {label}
           </span>

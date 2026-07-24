@@ -220,7 +220,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
       <button
         ref={triggerRef}
         type="button"
-        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-card)] text-white transition hover:bg-white/10 hover:text-gold-light lg:hidden"
+        className="atres-interactive inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-card)] text-white/90 transition hover:bg-white/10 hover:text-gold-light lg:hidden"
         aria-expanded={open}
         aria-controls="atres-mobile-drawer"
         aria-haspopup="dialog"
@@ -361,7 +361,14 @@ function DrawerIcon({ type }: { type: "user" | "store" | "logout" }) {
 
 function MenuIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5 fill-none" stroke="currentColor" strokeWidth="2">
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="size-[18px] fill-none"
+      stroke="currentColor"
+      strokeWidth="2.1"
+      strokeLinecap="round"
+    >
       <path d="M4 7h16M4 12h16M4 17h16" />
     </svg>
   );
@@ -372,9 +379,10 @@ function CloseIcon({ dark = false }: { dark?: boolean }) {
     <svg
       aria-hidden="true"
       viewBox="0 0 24 24"
-      className={cn("size-5 fill-none", dark ? "text-ink" : "text-white")}
+      className={cn("size-[18px] fill-none", dark ? "text-ink" : "text-white")}
       stroke="currentColor"
       strokeWidth="2"
+      strokeLinecap="round"
     >
       <path d="M6 6l12 12M18 6 6 18" />
     </svg>

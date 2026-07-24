@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/cn";
 
 type CartItem = {
   quantity: number;
@@ -23,6 +25,7 @@ function readCount() {
 
 export function HeaderActions({ compact = false, minimal = false }: HeaderActionsProps) {
   const [count, setCount] = useState(0);
+  const pathname = usePathname();
 
   useEffect(() => {
     function syncCount() {
@@ -42,7 +45,7 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
   if (compact) {
     return (
       <nav className="flex items-center justify-end gap-0 lg:hidden" aria-label="Acciones rapidas">
-        <ActionLink href="/" label="Ir al inicio" icon="home" compact />
+        <ActionLink href="/" label="Ir al inicio" icon="home" compact active={pathname === "/"} />
         {minimal ? null : (
           <>
             <ActionLink href="/promociones" label="Notificaciones" icon="bell" compact />
@@ -90,24 +93,28 @@ function ActionLink({
   icon,
   compact = false,
   iconOnly = false,
+  active = false,
 }: {
   href: string;
   label: string;
   icon: HeaderIconType;
   compact?: boolean;
   iconOnly?: boolean;
+  active?: boolean;
 }) {
   return (
     <Link
       href={href}
       aria-label={label}
-      className={
+      aria-current={active ? "page" : undefined}
+      className={cn(
         compact
-          ? "atres-interactive inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-gold-light"
+          ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-gold-light"
           : iconOnly
             ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-gold-light"
-            : "atres-interactive inline-flex h-9 items-center gap-2 rounded-[var(--radius-card)] px-2.5 text-white/85 hover:bg-white/10 hover:text-gold-light"
-      }
+            : "atres-interactive inline-flex h-9 items-center gap-2 rounded-[var(--radius-card)] px-2.5 text-white/85 hover:bg-white/10 hover:text-gold-light",
+        active ? "bg-white/10 text-gold-light ring-1 ring-white/10" : null,
+      )}
     >
       <HeaderIcon type={icon} />
       {compact || iconOnly ? null : label}
@@ -123,7 +130,7 @@ function HeaderIcon({ type }: { type: HeaderIconType }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-[18px] fill-none"
+        className="size-[17px] fill-none"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"

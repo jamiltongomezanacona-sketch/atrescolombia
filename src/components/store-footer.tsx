@@ -11,7 +11,7 @@ export function StoreFooter() {
   const categoryLinks = PRIMARY_NAV.filter((item) => item.kind === "route" || item.kind === "category");
 
   return (
-    <footer className="mt-6 border-t border-black/5 bg-ink pb-24 text-white md:pb-0">
+    <footer className="store-footer-shell mt-6 pb-24 text-white md:pb-0">
       <div className="catalog-container grid gap-6 py-7 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1fr] lg:gap-8">
         <div>
           <p className="text-xl font-medium tracking-[0.14em]">ATRES</p>
@@ -64,7 +64,7 @@ export function StoreFooter() {
           </Link>
         </div>
       </div>
-      <div className="border-t border-white/10">
+      <div className="store-footer-meta">
         <div className="catalog-container flex flex-wrap items-center justify-between gap-2 py-3 text-xs font-normal text-white/60">
           <p>&copy; {new Date().getFullYear()} ATRES Colombia</p>
           <p>Producto colombiano directo</p>

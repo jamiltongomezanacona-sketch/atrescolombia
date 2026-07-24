@@ -420,6 +420,25 @@ h6 {
   border-top: 1px solid var(--header-border);
 }
 
+.store-footer-shell {
+  background: linear-gradient(
+    0deg,
+    rgba(22, 22, 24, 0.96) 0%,
+    rgba(28, 28, 30, 0.94) 48%,
+    rgba(42, 42, 46, 0.92) 100%
+  );
+  background-color: color-mix(in srgb, var(--header-bg) 90%, transparent);
+  border-top: 1px solid var(--header-border);
+  box-shadow: 0 -12px 32px rgba(18, 18, 18, 0.1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  backdrop-filter: blur(18px) saturate(1.1);
+}
+
+.store-footer-meta {
+  background: var(--header-glass);
+  border-top: 1px solid var(--header-border);
+}
+
 .catalog-container {
   width: 100%;
   max-width: none;

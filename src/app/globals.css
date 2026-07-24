@@ -17,6 +17,7 @@
   /* Brand & status */
   --brand: #ff4d00;
   --brand-hover: #e64500;
+  --price: #3d011a;
   --promo: #ffe566;
   --ring: #ff4d00;
   --success: #15803d;
@@ -66,6 +67,7 @@
   --color-foreground: var(--foreground);
   --color-brand: var(--brand);
   --color-brand-hover: var(--brand-hover);
+  --color-price: var(--price);
   --color-promo: var(--promo);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);

@@ -42,20 +42,25 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
   if (compact) {
     return (
       <nav className="flex items-center justify-end gap-0 lg:hidden" aria-label="Acciones rapidas">
-        {minimal ? null : <ActionLink href="/promociones" label="Notificaciones" icon="bell" compact />}
-        <ActionLink href="/favoritos" label="Favoritos" icon="heart" compact />
-        <Link
-          href="/carrito"
-          aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
-          className="atres-interactive relative inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-gold-light"
-        >
-          <HeaderIcon type="bag" />
-          {count > 0 ? (
-            <span className="absolute right-0 top-0 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-card)] bg-brand px-1 text-[9px] font-medium text-black-main">
-              {count}
-            </span>
-          ) : null}
-        </Link>
+        <ActionLink href="/" label="Ir al inicio" icon="home" compact />
+        {minimal ? null : (
+          <>
+            <ActionLink href="/promociones" label="Notificaciones" icon="bell" compact />
+            <ActionLink href="/favoritos" label="Favoritos" icon="heart" compact />
+            <Link
+              href="/carrito"
+              aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
+              className="atres-interactive relative inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-gold-light"
+            >
+              <HeaderIcon type="bag" />
+              {count > 0 ? (
+                <span className="absolute right-0 top-0 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-card)] bg-brand px-1 text-[9px] font-medium text-black-main">
+                  {count}
+                </span>
+              ) : null}
+            </Link>
+          </>
+        )}
       </nav>
     );
   }
@@ -110,9 +115,27 @@ function ActionLink({
   );
 }
 
-type HeaderIconType = "heart" | "bag" | "bell";
+type HeaderIconType = "home" | "heart" | "bag" | "bell";
 
 function HeaderIcon({ type }: { type: HeaderIconType }) {
+  if (type === "home") {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="size-[18px] fill-none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="m3 11 9-8 9 8" />
+        <path d="M5 10v10h14V10" />
+        <path d="M9 20v-6h6v6" />
+      </svg>
+    );
+  }
+
   if (type === "heart") {
     return (
       <svg

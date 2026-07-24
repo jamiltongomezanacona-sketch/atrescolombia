@@ -7,7 +7,7 @@
   --gray-dark: #222222;
   --gray-medium: #3b3b3b;
   --gray-light: #6b7280;
-  --gray-smoke: #2a2a2a;
+  --gray-smoke: #303030;
   --gold: #c9a227;
   --gold-light: #d6b84a;
   --white: #ffffff;
@@ -15,38 +15,38 @@
   --foreground: var(--white);
   --ink: var(--white);
   --ink-muted: color-mix(in srgb, var(--white) 70%, var(--gray-light));
-  --surface: var(--black-secondary);
-  --surface-muted: var(--gray-dark);
-  --surface-elevated: rgba(21, 21, 21, 0.96);
-  --surface-glass: rgba(21, 21, 21, 0.84);
+  --surface: color-mix(in srgb, var(--black-secondary) 72%, var(--gray-smoke));
+  --surface-muted: color-mix(in srgb, var(--gray-dark) 76%, var(--gray-smoke));
+  --surface-elevated: rgba(30, 30, 30, 0.96);
+  --surface-glass: rgba(30, 30, 30, 0.86);
   --surface-wash-top: var(--black-main);
-  --surface-wash-mid: color-mix(in srgb, var(--gray-smoke) 42%, var(--black-main));
+  --surface-wash-mid: color-mix(in srgb, var(--gray-smoke) 68%, var(--black-main));
   --surface-wash-bottom: var(--black-secondary);
   --fade-premium: linear-gradient(
     180deg,
-    rgba(42, 42, 42, 0.72) 0%,
-    rgba(21, 21, 21, 0.92) 52%,
+    rgba(48, 48, 48, 0.82) 0%,
+    rgba(24, 24, 24, 0.94) 52%,
     rgba(11, 11, 11, 1) 100%
   );
-  --fade-card: linear-gradient(180deg, rgba(42, 42, 42, 0.88) 0%, rgba(21, 21, 21, 0.98) 100%);
-  --fade-panel: linear-gradient(180deg, rgba(42, 42, 42, 0.92) 0%, rgba(21, 21, 21, 0.98) 100%);
+  --fade-card: linear-gradient(180deg, rgba(48, 48, 48, 0.94) 0%, rgba(24, 24, 24, 0.98) 100%);
+  --fade-panel: linear-gradient(180deg, rgba(48, 48, 48, 0.96) 0%, rgba(24, 24, 24, 0.98) 100%);
   --fade-footer: linear-gradient(0deg, var(--black-main) 0%, var(--black-secondary) 58%, var(--gray-smoke) 100%);
-  --fade-page-gold: radial-gradient(ellipse 80% 46% at 50% -14%, rgba(201, 162, 39, 0.1), transparent 56%);
-  --fade-store-gold-left: radial-gradient(ellipse 55% 32% at 12% 0%, rgba(201, 162, 39, 0.08), transparent 56%);
-  --fade-store-gold-right: radial-gradient(ellipse 42% 30% at 92% 3%, rgba(214, 184, 74, 0.06), transparent 54%);
-  --fade-gold-soft: radial-gradient(circle at top, rgba(201, 162, 39, 0.14), transparent 42%);
+  --fade-page-gold: radial-gradient(ellipse 80% 46% at 50% -14%, rgba(201, 162, 39, 0.14), transparent 58%);
+  --fade-store-gold-left: radial-gradient(ellipse 55% 32% at 12% 0%, rgba(201, 162, 39, 0.12), transparent 58%);
+  --fade-store-gold-right: radial-gradient(ellipse 42% 30% at 92% 3%, rgba(214, 184, 74, 0.09), transparent 56%);
+  --fade-gold-soft: radial-gradient(circle at top, rgba(201, 162, 39, 0.18), transparent 44%);
   --fade-hero: linear-gradient(
     108deg,
     rgba(11, 11, 11, 0.92) 0%,
-    rgba(42, 42, 42, 0.58) 42%,
-    rgba(42, 42, 42, 0.18) 68%,
+    rgba(48, 48, 48, 0.62) 42%,
+    rgba(48, 48, 48, 0.22) 68%,
     rgba(11, 11, 11, 0.08) 100%
   );
-  --fade-showcase: linear-gradient(90deg, rgba(11, 11, 11, 0.76) 0%, rgba(42, 42, 42, 0.38) 54%, rgba(201, 162, 39, 0.12) 100%);
-  --fade-media: linear-gradient(0deg, rgba(11, 11, 11, 0.84) 0%, rgba(42, 42, 42, 0.26) 48%, transparent 100%);
-  --fade-media-strong: linear-gradient(0deg, rgba(11, 11, 11, 0.9) 0%, rgba(42, 42, 42, 0.32) 55%, transparent 100%);
-  --fade-media-soft: linear-gradient(0deg, rgba(11, 11, 11, 0.28) 0%, rgba(42, 42, 42, 0.1) 52%, transparent 100%);
-  --fade-media-balanced: linear-gradient(180deg, rgba(11, 11, 11, 0.58) 0%, rgba(42, 42, 42, 0.28) 50%, rgba(11, 11, 11, 0.52) 100%);
+  --fade-showcase: linear-gradient(90deg, rgba(11, 11, 11, 0.72) 0%, rgba(48, 48, 48, 0.48) 54%, rgba(201, 162, 39, 0.16) 100%);
+  --fade-media: linear-gradient(0deg, rgba(11, 11, 11, 0.78) 0%, rgba(48, 48, 48, 0.34) 48%, transparent 100%);
+  --fade-media-strong: linear-gradient(0deg, rgba(11, 11, 11, 0.86) 0%, rgba(48, 48, 48, 0.4) 55%, transparent 100%);
+  --fade-media-soft: linear-gradient(0deg, rgba(11, 11, 11, 0.24) 0%, rgba(48, 48, 48, 0.16) 52%, transparent 100%);
+  --fade-media-balanced: linear-gradient(180deg, rgba(11, 11, 11, 0.54) 0%, rgba(48, 48, 48, 0.36) 50%, rgba(11, 11, 11, 0.5) 100%);
 
   /* Brand & status */
   --brand: var(--gold);
@@ -80,12 +80,12 @@
   --swatch-default: #d4d4d8;
 
   /* Borders & elevation */
-  --border-soft: rgba(255, 255, 255, 0.1);
+  --border-soft: rgba(255, 255, 255, 0.13);
   --border-strong: rgba(201, 162, 39, 0.32);
-  --border-gold-soft: rgba(201, 162, 39, 0.18);
-  --border-gold-strong: rgba(214, 184, 74, 0.5);
-  --shadow-soft: 0 14px 34px rgba(0, 0, 0, 0.28);
-  --shadow-lift: 0 22px 56px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(201, 162, 39, 0.12);
+  --border-gold-soft: rgba(201, 162, 39, 0.24);
+  --border-gold-strong: rgba(214, 184, 74, 0.56);
+  --shadow-soft: 0 14px 34px rgba(0, 0, 0, 0.24);
+  --shadow-lift: 0 22px 56px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(201, 162, 39, 0.16);
   --shadow-press: 0 10px 26px rgba(0, 0, 0, 0.34), 0 0 20px rgba(201, 162, 39, 0.08);
 
   /* Shape & layout */

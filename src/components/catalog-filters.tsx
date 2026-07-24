@@ -57,69 +57,6 @@ export function CatalogFiltersForm({
         </FilterGroup>
       ) : null}
 
-      {options.sizes.length > 0 ? (
-        <FilterGroup title="Talla">
-          <label htmlFor={`${idPrefix}-talla`} className="sr-only">
-            Talla
-          </label>
-          <select
-            id={`${idPrefix}-talla`}
-            name="talla"
-            defaultValue={filters.talla ?? ""}
-            className={fieldClass}
-          >
-            <option value="">Todas</option>
-            {options.sizes.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-        </FilterGroup>
-      ) : null}
-
-      {options.colors.length > 0 ? (
-        <FilterGroup title="Color">
-          <label htmlFor={`${idPrefix}-color`} className="sr-only">
-            Color
-          </label>
-          <select
-            id={`${idPrefix}-color`}
-            name="color"
-            defaultValue={filters.color ?? ""}
-            className={fieldClass}
-          >
-            <option value="">Todos</option>
-            {options.colors.map((color) => (
-              <option key={color} value={color}>
-                {color}
-              </option>
-            ))}
-          </select>
-        </FilterGroup>
-      ) : null}
-
-      {options.collections.length > 0 ? (
-        <FilterGroup title="Coleccion">
-          <label htmlFor={`${idPrefix}-coleccion`} className="sr-only">
-            Coleccion
-          </label>
-          <select
-            id={`${idPrefix}-coleccion`}
-            name="coleccion"
-            defaultValue={filters.coleccion ?? ""}
-            className={fieldClass}
-          >
-            <option value="">Todas</option>
-            {options.collections.map((collection) => (
-              <option key={collection} value={collection}>
-                {collection}
-              </option>
-            ))}
-          </select>
-        </FilterGroup>
-      ) : null}
-
       {(options.priceMin > 0 || options.priceMax > 0) && options.priceMax > options.priceMin ? (
         <FilterGroup title="Precio">
           <div className="grid grid-cols-2 gap-1.5">
@@ -149,12 +86,121 @@ export function CatalogFiltersForm({
         </FilterGroup>
       ) : null}
 
-      <FilterGroup title="Estado">
-        <div className="grid gap-1">
-          <FilterToggle name="novedades" label="Novedades" checked={filters.novedades} />
-          <FilterToggle name="ofertas" label="Ofertas" checked={filters.ofertas} />
-          <FilterToggle name="disponible" label="Disponibles" checked={filters.disponible} />
-        </div>
+      {options.cities.length > 0 ? (
+        <FilterGroup title="Ciudad">
+          <label htmlFor={`${idPrefix}-ciudad`} className="sr-only">
+            Ciudad
+          </label>
+          <select
+            id={`${idPrefix}-ciudad`}
+            name="ciudad"
+            defaultValue={filters.ciudad ?? ""}
+            className={fieldClass}
+          >
+            <option value="">Todas</option>
+            {options.cities.map((city) => (
+              <option key={city} value={city}>
+                {city}
+              </option>
+            ))}
+          </select>
+        </FilterGroup>
+      ) : null}
+
+      {options.shops.length > 0 ? (
+        <FilterGroup title="Tienda">
+          <label htmlFor={`${idPrefix}-tienda`} className="sr-only">
+            Tienda
+          </label>
+          <select
+            id={`${idPrefix}-tienda`}
+            name="tienda"
+            defaultValue={filters.tienda ?? ""}
+            className={fieldClass}
+          >
+            <option value="">Todas</option>
+            {options.shops.map((shop) => (
+              <option key={shop.slug} value={shop.slug}>
+                {shop.city ? `${shop.label} - ${shop.city}` : shop.label}
+              </option>
+            ))}
+          </select>
+        </FilterGroup>
+      ) : null}
+
+      {options.colors.length > 0 ? (
+        <FilterGroup title="Color">
+          <label htmlFor={`${idPrefix}-color`} className="sr-only">
+            Color
+          </label>
+          <select
+            id={`${idPrefix}-color`}
+            name="color"
+            defaultValue={filters.color ?? ""}
+            className={fieldClass}
+          >
+            <option value="">Todos</option>
+            {options.colors.map((color) => (
+              <option key={color} value={color}>
+                {color}
+              </option>
+            ))}
+          </select>
+        </FilterGroup>
+      ) : null}
+
+      {options.sizes.length > 0 ? (
+        <FilterGroup title="Talla">
+          <label htmlFor={`${idPrefix}-talla`} className="sr-only">
+            Talla
+          </label>
+          <select
+            id={`${idPrefix}-talla`}
+            name="talla"
+            defaultValue={filters.talla ?? ""}
+            className={fieldClass}
+          >
+            <option value="">Todas</option>
+            {options.sizes.map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </select>
+        </FilterGroup>
+      ) : null}
+
+      {options.collections.length > 0 ? (
+        <FilterGroup title="Coleccion">
+          <label htmlFor={`${idPrefix}-coleccion`} className="sr-only">
+            Coleccion
+          </label>
+          <select
+            id={`${idPrefix}-coleccion`}
+            name="coleccion"
+            defaultValue={filters.coleccion ?? ""}
+            className={fieldClass}
+          >
+            <option value="">Todas</option>
+            {options.collections.map((collection) => (
+              <option key={collection} value={collection}>
+                {collection}
+              </option>
+            ))}
+          </select>
+        </FilterGroup>
+      ) : null}
+
+      <FilterGroup title="Disponibilidad">
+        <FilterToggle name="disponible" label="Solo disponibles" checked={filters.disponible} />
+      </FilterGroup>
+
+      <FilterGroup title="Ofertas">
+        <FilterToggle name="ofertas" label="Ver ofertas" checked={filters.ofertas} />
+      </FilterGroup>
+
+      <FilterGroup title="Novedades">
+        <FilterToggle name="novedades" label="Ver novedades" checked={filters.novedades} />
       </FilterGroup>
 
       <div className="grid gap-1.5 pt-0.5">

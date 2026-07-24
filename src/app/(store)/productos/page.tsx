@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CatalogSortDrawer } from "@/components/catalog-sort-drawer";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FilterDrawer } from "@/components/filter-drawer";
 import { ProductCard } from "@/components/product-card";
@@ -53,8 +54,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   const orderLinks = [
     { label: "Para ti", value: "relevancia" },
-    { label: "Tendencias", value: "tendencias" },
-    { label: "Nuevos", value: "nuevos" },
+    { label: "Más vendidos", value: "tendencias" },
+    { label: "Más recientes", value: "nuevos" },
     { label: "Menor precio", value: "precio-menor" },
     { label: "Mayor precio", value: "precio-mayor" },
     { label: "Mayor descuento", value: "descuento" },
@@ -92,8 +93,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   return (
     <main>
       <section className="catalog-container products-catalog-container pb-3 pt-1 md:pb-4 md:pt-1.5 lg:pb-5 lg:pt-2">
-        {/* Mobile/tablet only: desktop already has HeaderNav departments */}
-        <div className="catalog-sticky-chrome -mx-3 mb-1.5 px-3 py-1.5 lg:hidden">
+        {/* Tablet only: mobile uses drawer navigation, desktop already has HeaderNav departments. */}
+        <div className="catalog-sticky-chrome -mx-3 mb-1.5 hidden px-3 py-1.5 sm:block lg:hidden">
           <nav
             className="flex gap-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Departamentos del catalogo"
@@ -117,8 +118,19 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
         <div className="min-w-0">
           {/* Single chrome band: title + filters + sort — stays under fixed header */}
-          <div className="catalog-sticky-chrome -mx-3 mb-2.5 px-3 py-2 lg:mb-3">
-            <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+          <div className="catalog-sticky-chrome -mx-3 mb-2 px-3 py-1.5 sm:mb-2.5 sm:py-2 lg:mb-3">
+            <div className="flex items-center justify-between gap-2 sm:hidden">
+              <p className="shrink-0 text-sm font-medium tracking-tight text-ink">
+                {filteredProducts.length}
+                <span className="ml-1 text-xs font-normal text-ink-muted">productos</span>
+              </p>
+              <div className="flex shrink-0 items-center gap-2">
+                <FilterDrawer filters={filters} options={options} label="Filtrar" />
+                <CatalogSortDrawer filters={filters} options={orderLinks} />
+              </div>
+            </div>
+
+            <div className="hidden flex-col gap-1.5 sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-3">
               <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-2.5">
                 <h1 className="shrink-0 text-sm font-medium tracking-tight text-ink sm:text-base lg:text-lg">
                   {pageTitle}

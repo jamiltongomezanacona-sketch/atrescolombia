@@ -24,7 +24,7 @@ export function HeaderNav({ items }: HeaderNavProps) {
 
   return (
     <nav className="store-header-nav" aria-label="Categorias ATRES">
-      <div className="atres-scroll flex w-full items-center gap-0.5 overflow-x-auto px-1 py-0.5 text-xs font-normal sm:px-1.5 sm:text-sm lg:justify-between lg:gap-0 lg:overflow-visible lg:px-2 xl:px-3">
+      <div className="atres-scroll flex w-full items-center justify-center gap-1 overflow-x-auto px-2 py-1.5 text-xs font-normal sm:px-3 sm:text-sm lg:gap-5 lg:overflow-visible xl:gap-7">
         {links.map((link) => {
           const active = isStoreNavActive(link, navContext);
 
@@ -34,10 +34,10 @@ export function HeaderNav({ items }: HeaderNavProps) {
               href={link.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "atres-interactive shrink-0 rounded-[var(--radius-card)] px-2.5 py-1 leading-none transition lg:px-2 lg:py-1.5 xl:px-2.5",
+                "atres-interactive shrink-0 px-1.5 py-1 leading-none tracking-wide transition",
                 active
-                  ? "bg-white text-ink shadow-sm"
-                  : "text-white/78 hover:bg-white/10 hover:text-white",
+                  ? "font-medium text-white underline decoration-white decoration-2 underline-offset-[10px]"
+                  : "text-white/72 hover:text-white",
               )}
             >
               <span className="text-current">{link.label}</span>

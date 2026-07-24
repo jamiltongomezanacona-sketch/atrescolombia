@@ -61,17 +61,16 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
   }
 
   return (
-    <nav className="hidden items-center justify-end gap-0.5 text-sm font-medium lg:flex" aria-label="Acciones">
-      <ActionLink href="/promociones" label="Notificaciones" icon="bell" iconOnly />
+    <nav className="hidden items-center justify-end gap-1 text-sm font-medium lg:flex" aria-label="Acciones">
       <ActionLink href="/favoritos" label="Favoritos" icon="heart" iconOnly />
       <Link
         href="/carrito"
         aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
-        className="atres-interactive relative inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-white"
+        className="atres-interactive relative inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-white"
       >
         <HeaderIcon type="bag" />
         {count > 0 ? (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-card)] bg-brand px-1 text-[9px] font-medium text-white">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[9px] font-medium text-white">
             {count}
           </span>
         ) : null}
@@ -135,14 +134,15 @@ function HeaderIcon({ type }: { type: HeaderIconType }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-[17px] fill-none"
+        className="size-[18px] fill-none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.85"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M6 8h12l-1 13H7L6 8Z" />
-        <path d="M9 8a3 3 0 0 1 6 0" />
+        <path d="M6.5 8.5h11l-.7 11.2a1.6 1.6 0 0 1-1.6 1.5H8.8a1.6 1.6 0 0 1-1.6-1.5L6.5 8.5Z" />
+        <path d="M9.2 8.5V7.2a2.8 2.8 0 0 1 5.6 0v1.3" />
+        <path d="M6.5 11.5h11" />
       </svg>
     );
   }

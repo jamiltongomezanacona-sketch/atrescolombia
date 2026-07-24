@@ -14,16 +14,16 @@ export async function SiteHeader() {
   return (
     <header className="store-header-shell text-white" aria-label="Cabecera ATRES">
       <div className="store-header-glass hidden border-b lg:block">
-        <div className="header-container flex items-center justify-between gap-2 py-0.5 text-[11px] font-normal tracking-wide text-white/70">
+        <div className="header-container flex items-center justify-between gap-3 py-1.5 text-[11px] font-normal tracking-wide text-white/75">
           <span>100% producto colombiano</span>
           <span className="hidden md:inline">Compra por prenda o al por mayor</span>
-          <Link href="/productos?ofertas=1" className="text-white/85 transition hover:text-white">
+          <Link href="/productos?ofertas=1" className="text-white/90 transition hover:text-white">
             Ofertas y novedades
           </Link>
         </div>
       </div>
 
-      <div className="header-container py-1.5 lg:py-1">
+      <div className="header-container py-2 lg:py-2">
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 xl:gap-3">
           <div className="flex shrink-0 items-center gap-1.5">
             <div className="lg:hidden">

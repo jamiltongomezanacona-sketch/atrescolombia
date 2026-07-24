@@ -455,10 +455,11 @@ h6 {
   position: sticky;
   top: var(--store-header-offset);
   z-index: 30;
-  background: color-mix(in srgb, var(--surface-wash-top) 94%, transparent);
-  -webkit-backdrop-filter: blur(16px) saturate(1.05);
-  backdrop-filter: blur(16px) saturate(1.05);
-  border-bottom: 1px solid var(--border-soft);
+  background: color-mix(in srgb, var(--surface-wash-top) 88%, white);
+  -webkit-backdrop-filter: blur(14px) saturate(1.04);
+  backdrop-filter: blur(14px) saturate(1.04);
+  border-bottom: 1px solid color-mix(in srgb, var(--border-soft) 80%, transparent);
+  box-shadow: 0 8px 18px rgba(28, 28, 32, 0.03);
 }
 
 .catalog-container {

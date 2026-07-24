@@ -36,7 +36,7 @@ export function HeaderNav({ items }: HeaderNavProps) {
               className={cn(
                 "atres-interactive shrink-0 px-1.5 py-1 leading-none tracking-wide transition",
                 active
-                  ? "font-medium text-white underline decoration-white decoration-2 underline-offset-[10px]"
+                  ? "font-medium text-white underline decoration-brand decoration-2 underline-offset-[10px]"
                   : "text-white/72 hover:text-white",
               )}
             >

@@ -116,7 +116,8 @@ export function ShopCard({ shop, index = 0 }: ShopCardProps) {
               href={catalogHref}
               className="theme-primary-button inline-flex h-8 min-h-8 flex-1 items-center justify-center rounded-full px-2.5 text-[10px] font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98] sm:h-9 sm:min-h-9 sm:text-[11px]"
             >
-              Ver catalogo
+              <span className="sm:hidden">Catalogo</span>
+              <span className="hidden sm:inline">Ver catalogo</span>
             </Link>
 
             <ShopLocationButton

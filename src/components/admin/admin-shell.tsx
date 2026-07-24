@@ -34,8 +34,16 @@ export function AdminShell({
   return (
     <main className="admin-theme min-h-screen overflow-x-hidden text-ink">
       <aside className="fixed inset-y-0 left-0 hidden w-64 overflow-hidden border-r border-[var(--border-gold-soft)] bg-black-main p-4 text-white lg:block">
-        <div className="relative">
+        <div className="relative flex items-start justify-between gap-2">
           <BrandLogo href="/admin" compact dark sublabel="Panel privado" />
+          <Link
+            href="/"
+            aria-label="Ir a la tienda"
+            title="Ir a la tienda"
+            className="atres-interactive inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-card)] text-white/90 ring-1 ring-white/10 hover:bg-white/10 hover:text-gold-light"
+          >
+            <HomeIcon />
+          </Link>
         </div>
         <nav className="relative mt-8 grid gap-1" aria-label="Admin">
           {visibleItems.map((item) => {
@@ -86,14 +94,24 @@ export function AdminShell({
         <header className="sticky top-0 z-30 border-b border-[var(--border-gold-soft)] bg-black-main/96 px-3 py-2 text-white backdrop-blur sm:px-4 lg:hidden">
           <div className="flex min-w-0 items-center justify-between gap-2">
             <BrandLogo href="/admin" compact dark sublabel="Admin" />
-            <form action={signOutAdmin} className="shrink-0">
-              <button
-                type="submit"
-                className="theme-primary-button h-9 rounded-[var(--radius-card)] px-3 text-xs font-medium"
+            <div className="flex shrink-0 items-center gap-1.5">
+              <Link
+                href="/"
+                aria-label="Ir a la tienda"
+                title="Ir a la tienda"
+                className="atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/90 ring-1 ring-white/10 hover:bg-white/10 hover:text-gold-light"
               >
-                Salir
-              </button>
-            </form>
+                <HomeIcon />
+              </Link>
+              <form action={signOutAdmin}>
+                <button
+                  type="submit"
+                  className="theme-primary-button h-9 rounded-[var(--radius-card)] px-3 text-xs font-medium"
+                >
+                  Salir
+                </button>
+              </form>
+            </div>
           </div>
           <nav
             className="mt-2 flex max-w-full gap-1.5 overflow-x-auto scroll-smooth pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -145,5 +163,23 @@ export function StatCard({ label, value }: { label: string; value: string | numb
       <p className="text-[11px] font-medium tracking-wide text-ink-muted">{label}</p>
       <p className="mt-2 text-3xl font-medium tracking-normal text-gold-light">{value}</p>
     </div>
+  );
+}
+
+function HomeIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="size-5 fill-none"
+      stroke="currentColor"
+      strokeWidth="2.15"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m3 11 9-8 9 8" />
+      <path d="M5 10v10h14V10" />
+      <path d="M9 20v-6h6v6" />
+    </svg>
   );
 }

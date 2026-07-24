@@ -104,7 +104,7 @@ export function HomeFeaturedCollections(props: HomeFeaturedCollectionsProps) {
               sizes="(max-width: 640px) 42vw, (max-width: 1024px) 30vw, 18vw"
               className="object-cover opacity-62 transition duration-500 group-hover:scale-[1.04] group-hover:opacity-72"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/28 to-transparent" />
+            <div className="premium-media-fade-strong absolute inset-0" />
             <div className="absolute inset-x-0 bottom-0 p-3 sm:p-3.5">
               <p className="line-clamp-2 text-sm font-medium leading-tight sm:text-base">{tile.title}</p>
               {tile.subtitle ? (

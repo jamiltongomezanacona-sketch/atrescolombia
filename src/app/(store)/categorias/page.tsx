@@ -41,7 +41,7 @@ export default async function CategoriesIndexPage() {
                       className="object-cover opacity-45 transition duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/58 via-black/28 to-black/48" />
+                  <div className="premium-media-fade-balanced absolute inset-0" />
                   <div className="relative flex h-full min-h-[128px] flex-col justify-between sm:min-h-[150px]">
                     <p className={`text-xs font-medium ${theme.accentClass}`}>{theme.eyebrow}</p>
                     <div>

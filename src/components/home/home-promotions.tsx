@@ -121,7 +121,7 @@ export function HomePromotions(props: HomePromotionsProps) {
               sizes="(max-width: 640px) 78vw, (max-width: 1024px) 48vw, 24vw"
               className="object-cover opacity-50 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-58"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/35 to-black/10" />
+            <div className="premium-media-fade absolute inset-0" />
             <div className="relative flex h-full min-h-[148px] flex-col justify-end p-3.5 sm:p-4">
               <p className="text-base font-medium leading-tight sm:text-lg">{tile.title}</p>
               <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-white/78 sm:text-sm">{tile.subtitle}</p>

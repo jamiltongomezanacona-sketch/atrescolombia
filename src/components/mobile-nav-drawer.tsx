@@ -202,7 +202,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
 
           <div className="border-t border-black/6 p-3.5">
             <Link
-              href="/ofertas"
+              href="/productos?ofertas=1"
               className="flex min-h-10 items-center justify-center rounded-[var(--radius-card)] bg-brand px-4 text-sm font-medium text-white hover:bg-brand-hover"
               onClick={() => setOpen(false)}
               tabIndex={open ? undefined : -1}

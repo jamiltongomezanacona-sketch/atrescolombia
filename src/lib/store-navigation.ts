@@ -21,13 +21,13 @@ export type NavItem = {
  * el resto vive como subcategorias bajo esos departamentos.
  */
 export const PRIMARY_NAV: NavItem[] = [
-  { key: "novedades", label: "Novedades", href: "/novedades", kind: "route" },
-  { key: "hombre", label: "Hombre", href: "/categoria/hombre", kind: "category" },
-  { key: "mujer", label: "Mujer", href: "/categoria/mujer", kind: "category" },
-  { key: "ninos", label: "Niños", href: "/categoria/ninos", kind: "category" },
-  { key: "hogar", label: "Hogar", href: "/categoria/hogar", kind: "category" },
+  { key: "novedades", label: "Novedades", href: "/productos?novedades=1", kind: "route" },
+  { key: "hombre", label: "Hombre", href: "/productos?categoria=hombre", kind: "category" },
+  { key: "mujer", label: "Mujer", href: "/productos?categoria=mujer", kind: "category" },
+  { key: "ninos", label: "Niños", href: "/productos?categoria=ninos", kind: "category" },
+  { key: "hogar", label: "Hogar", href: "/productos?categoria=hogar", kind: "category" },
   { key: "tiendas", label: "Tiendas", href: "/tiendas", kind: "route" },
-  { key: "ofertas", label: "Ofertas", href: "/ofertas", kind: "route" },
+  { key: "ofertas", label: "Ofertas", href: "/productos?ofertas=1", kind: "route" },
 ];
 
 /** Slugs equivalentes por departamento (DB + alias legacy). */
@@ -137,10 +137,10 @@ export function getDepartmentKeyForSlug(slug: string): string | null {
 
 /** Secciones del home: solo los 4 departamentos principales. */
 export const HOME_DEPARTMENT_SECTIONS = [
-  { key: "hombre", title: "Hombre", href: "/categoria/hombre", id: "seccion-hombre" },
-  { key: "mujer", title: "Mujer", href: "/categoria/mujer", id: "seccion-mujer" },
-  { key: "ninos", title: "Niños", href: "/categoria/ninos", id: "seccion-ninos" },
-  { key: "hogar", title: "Hogar", href: "/categoria/hogar", id: "seccion-hogar" },
+  { key: "hombre", title: "Hombre", href: "/productos?categoria=hombre", id: "seccion-hombre" },
+  { key: "mujer", title: "Mujer", href: "/productos?categoria=mujer", id: "seccion-mujer" },
+  { key: "ninos", title: "Niños", href: "/productos?categoria=ninos", id: "seccion-ninos" },
+  { key: "hogar", title: "Hogar", href: "/productos?categoria=hogar", id: "seccion-hogar" },
 ] as const;
 
 export function filterProductsByDepartmentKeys<
@@ -306,7 +306,7 @@ export function isStoreNavActive(
     return pathname === "/productos" && !hasCatalogFilter;
   }
 
-  if (link.key === "novedades" || link.href === "/novedades") {
+  if (link.key === "novedades" || link.href.includes("novedades=1") || link.href === "/novedades") {
     return pathname === "/novedades" || (pathname === "/productos" && Boolean(novedades));
   }
 
@@ -314,7 +314,12 @@ export function isStoreNavActive(
     return pathname === "/tiendas" || pathname.startsWith("/tiendas/") || (pathname === "/productos" && Boolean(tienda));
   }
 
-  if (link.key === "ofertas" || link.href === "/ofertas" || link.href === "/promociones") {
+  if (
+    link.key === "ofertas" ||
+    link.href.includes("ofertas=1") ||
+    link.href === "/ofertas" ||
+    link.href === "/promociones"
+  ) {
     return (
       pathname === "/ofertas" ||
       pathname === "/promociones" ||
@@ -326,8 +331,8 @@ export function isStoreNavActive(
     return true;
   }
 
-  if (pathname === "/productos" && categoria && link.href.startsWith("/categoria/")) {
-    const linkSlug = link.href.replace(/^\/categoria\//, "");
+  if (pathname === "/productos" && categoria && link.kind === "category") {
+    const linkSlug = catalogCategoriaFromHref(link.href) ?? link.href.replace(/^\/categoria\//, "");
     const departmentSlugs = DEPARTMENT_SLUGS[link.key] ?? [linkSlug];
     return (
       categorySlugMatches(categoria, departmentSlugs) ||
@@ -336,5 +341,14 @@ export function isStoreNavActive(
   }
 
   return false;
+}
+
+function catalogCategoriaFromHref(href: string) {
+  if (!href.includes("categoria=")) return null;
+  try {
+    return new URL(href, "https://atres.local").searchParams.get("categoria");
+  } catch {
+    return null;
+  }
 }
 

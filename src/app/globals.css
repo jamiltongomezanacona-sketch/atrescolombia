@@ -19,9 +19,11 @@
   --surface-muted: color-mix(in srgb, var(--gray-dark) 76%, var(--gray-smoke));
   --surface-elevated: rgba(30, 30, 30, 0.96);
   --surface-glass: rgba(30, 30, 30, 0.86);
-  --surface-wash-top: var(--black-main);
-  --surface-wash-mid: color-mix(in srgb, var(--gray-smoke) 68%, var(--black-main));
-  --surface-wash-bottom: var(--black-secondary);
+  /* Store content wash: graphite layers (header stays black) */
+  --surface-wash-top: #171717;
+  --surface-wash-mid: #1d1d1d;
+  --surface-wash-bottom: #222222;
+  --store-surface-mid: #1a1a1a;
   --fade-premium: linear-gradient(
     180deg,
     rgba(48, 48, 48, 0.82) 0%,
@@ -270,7 +272,7 @@ h6 {
     linear-gradient(
       180deg,
       var(--surface-wash-top) 0%,
-      var(--background) 46%,
+      var(--store-surface-mid) 46%,
       var(--surface-wash-bottom) 100%
     );
 }

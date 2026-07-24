@@ -51,6 +51,14 @@
     rgba(28, 28, 30, 0.94) 55%,
     rgba(22, 22, 24, 0.92) 100%
   );
+  /* Mobile: logo/search row only. Desktop: top bar + search + category nav. */
+  --store-header-offset: 3.25rem;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --store-header-offset: 7.25rem;
+  }
 }
 
 @theme inline {
@@ -398,6 +406,10 @@ h6 {
 }
 
 .store-header-shell {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 50;
   background: var(--header-gradient);
   background-color: color-mix(in srgb, var(--header-bg) 88%, transparent);
   border-bottom: 1px solid var(--header-border);
@@ -437,6 +449,16 @@ h6 {
 .store-footer-meta {
   background: var(--header-glass);
   border-top: 1px solid var(--header-border);
+}
+
+.catalog-sticky-chrome {
+  position: sticky;
+  top: var(--store-header-offset);
+  z-index: 30;
+  background: color-mix(in srgb, var(--surface-wash-top) 94%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.05);
+  backdrop-filter: blur(16px) saturate(1.05);
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .catalog-container {

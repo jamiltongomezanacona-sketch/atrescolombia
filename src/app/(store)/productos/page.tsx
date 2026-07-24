@@ -93,7 +93,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     <main>
       <section className="catalog-container products-catalog-container pb-3 pt-1 md:pb-4 md:pt-1.5 lg:pb-5 lg:pt-2">
         {/* Mobile/tablet only: desktop already has HeaderNav departments */}
-        <div className="sticky top-[3.5rem] z-30 -mx-4 mb-1.5 border-y border-black/[0.06] bg-background/95 px-4 py-1 backdrop-blur-xl sm:mx-0 sm:mb-2 sm:rounded-[var(--radius-card)] sm:border sm:bg-surface/90 sm:py-1 sm:shadow-soft lg:hidden">
+        <div className="catalog-sticky-chrome -mx-4 mb-1.5 border-y px-4 py-1 sm:mx-0 sm:mb-2 sm:rounded-[var(--radius-card)] sm:border sm:bg-surface/90 sm:py-1 sm:shadow-soft lg:hidden">
           <nav
             className="flex gap-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Departamentos del catalogo"
@@ -116,55 +116,57 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
 
         <div className="min-w-0">
-          {/* Single chrome band: title + filters + sort */}
-          <div className="mb-2 flex flex-col gap-1.5 border-b border-black/[0.06] pb-2 sm:mb-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3 lg:mb-3 lg:pb-2.5">
-            <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-2.5">
-              <h1 className="shrink-0 text-base font-medium tracking-tight text-ink sm:text-lg lg:text-xl">
-                {pageTitle}
-              </h1>
-              {activeShop ? (
-                <Link
-                  href="/tiendas"
-                  className="text-[11px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline"
-                >
-                  Todas las tiendas
-                </Link>
-              ) : null}
-              <FilterDrawer filters={filters} options={options} />
-              <p className="text-xs font-medium text-ink-muted">
-                {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
-                {activeFilters > 0 ? (
-                  <span className="ml-1.5 text-[11px] font-normal text-ink-muted/80">
-                    {activeFilters} filtro{activeFilters === 1 ? "" : "s"}
-                  </span>
-                ) : null}
-              </p>
-            </div>
-
-            <div
-              className="flex items-center gap-0.5 overflow-x-auto pb-0 [scrollbar-width:none] sm:overflow-visible [&::-webkit-scrollbar]:hidden"
-              aria-label="Ordenar catalogo"
-            >
-              <span className="hidden shrink-0 pr-1.5 text-[10px] font-medium uppercase tracking-wide text-ink-muted/70 md:inline">
-                Ordenar
-              </span>
-              {orderLinks.map((link) => {
-                const active = (filters.orden ?? "relevancia") === link.value;
-                return (
+          {/* Single chrome band: title + filters + sort — stays under fixed header */}
+          <div className="catalog-sticky-chrome -mx-4 mb-2 px-4 py-2 sm:mx-0 sm:mb-2.5 sm:rounded-[var(--radius-card)] sm:border sm:bg-surface/92 sm:px-3 sm:shadow-soft lg:mb-3">
+            <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+              <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-2.5">
+                <h1 className="shrink-0 text-base font-medium tracking-tight text-ink sm:text-lg lg:text-xl">
+                  {pageTitle}
+                </h1>
+                {activeShop ? (
                   <Link
-                    key={link.value}
-                    href={buildCatalogQuery({ ...filters, orden: link.value })}
-                    className={`inline-flex h-7 shrink-0 items-center px-2 text-[11px] font-medium transition sm:h-8 sm:px-2.5 sm:text-xs ${
-                      active
-                        ? "text-ink underline decoration-brand decoration-2 underline-offset-4"
-                        : "text-ink-muted hover:text-ink"
-                    }`}
-                    aria-current={active ? "page" : undefined}
+                    href="/tiendas"
+                    className="text-[11px] font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline"
                   >
-                    <span className="text-current">{link.label}</span>
+                    Todas las tiendas
                   </Link>
-                );
-              })}
+                ) : null}
+                <FilterDrawer filters={filters} options={options} />
+                <p className="text-xs font-medium text-ink-muted">
+                  {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
+                  {activeFilters > 0 ? (
+                    <span className="ml-1.5 text-[11px] font-normal text-ink-muted/80">
+                      {activeFilters} filtro{activeFilters === 1 ? "" : "s"}
+                    </span>
+                  ) : null}
+                </p>
+              </div>
+
+              <div
+                className="flex items-center gap-0.5 overflow-x-auto pb-0 [scrollbar-width:none] sm:overflow-visible [&::-webkit-scrollbar]:hidden"
+                aria-label="Ordenar catalogo"
+              >
+                <span className="hidden shrink-0 pr-1.5 text-[10px] font-medium uppercase tracking-wide text-ink-muted/70 md:inline">
+                  Ordenar
+                </span>
+                {orderLinks.map((link) => {
+                  const active = (filters.orden ?? "relevancia") === link.value;
+                  return (
+                    <Link
+                      key={link.value}
+                      href={buildCatalogQuery({ ...filters, orden: link.value })}
+                      className={`inline-flex h-7 shrink-0 items-center px-2 text-[11px] font-medium transition sm:h-8 sm:px-2.5 sm:text-xs ${
+                        active
+                          ? "text-ink underline decoration-brand decoration-2 underline-offset-4"
+                          : "text-ink-muted hover:text-ink"
+                      }`}
+                      aria-current={active ? "page" : undefined}
+                    >
+                      <span className="text-current">{link.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           </div>
 

@@ -12,10 +12,7 @@ export async function SiteHeader() {
   const navItems = await getStoreNavigation();
 
   return (
-    <header
-      className="store-header-shell fixed inset-x-0 top-0 z-50 text-white lg:sticky lg:shadow-none"
-      aria-label="Cabecera ATRES"
-    >
+    <header className="store-header-shell text-white" aria-label="Cabecera ATRES">
       <div className="store-header-glass hidden border-b lg:block">
         <div className="header-container flex items-center justify-between gap-2 py-0.5 text-[11px] font-normal tracking-wide text-white/70">
           <span>100% producto colombiano</span>

@@ -176,7 +176,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
         ))}
       </div>
 
-      <div className="grid w-full gap-2 sm:grid-cols-3 sm:gap-2.5">
+      <div className="grid w-full max-w-4xl gap-2 sm:grid-cols-3 sm:gap-2.5">
         <label className="grid gap-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
           Ciudad
           <select
@@ -239,7 +239,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
           actionLabel="Ver catalogo"
         />
       ) : (
-        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-[repeat(auto-fit,minmax(260px,1fr))]">
           {filtered.map((shop) => (
             <ShopCard key={shop.id} shop={shop} />
           ))}

@@ -47,6 +47,12 @@
   --fade-media-strong: linear-gradient(0deg, rgba(11, 11, 11, 0.86) 0%, rgba(48, 48, 48, 0.4) 55%, transparent 100%);
   --fade-media-soft: linear-gradient(0deg, rgba(11, 11, 11, 0.24) 0%, rgba(48, 48, 48, 0.16) 52%, transparent 100%);
   --fade-media-balanced: linear-gradient(180deg, rgba(11, 11, 11, 0.54) 0%, rgba(48, 48, 48, 0.36) 50%, rgba(11, 11, 11, 0.5) 100%);
+  --catalog-field: linear-gradient(180deg, rgba(56, 56, 56, 0.84) 0%, rgba(24, 24, 24, 0.94) 100%);
+  --catalog-field-glow: radial-gradient(ellipse 82% 36% at 50% 0%, rgba(201, 162, 39, 0.13), transparent 62%);
+  --search-bg: linear-gradient(180deg, rgba(56, 56, 56, 0.9) 0%, rgba(14, 14, 14, 0.98) 100%);
+  --search-bg-focus: linear-gradient(180deg, rgba(64, 64, 64, 0.94) 0%, rgba(18, 18, 18, 0.98) 100%);
+  --search-border: rgba(214, 184, 74, 0.38);
+  --search-shadow: 0 14px 30px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(201, 162, 39, 0.08);
 
   /* Brand & status */
   --brand: var(--gold);
@@ -339,6 +345,48 @@ h6 {
 
 .premium-media-fade-balanced {
   background: var(--fade-media-balanced);
+}
+
+.store-search-form {
+  background: var(--search-bg);
+  border: 1px solid var(--search-border);
+  box-shadow: var(--search-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.store-search-form:hover {
+  border-color: rgba(214, 184, 74, 0.56);
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(214, 184, 74, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.store-search-form:focus-within {
+  background: var(--search-bg-focus);
+  border-color: var(--gold-light);
+  box-shadow:
+    0 0 0 3px rgba(201, 162, 39, 0.16),
+    0 18px 38px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.store-search-icon {
+  color: var(--gold-light);
+  background: rgba(201, 162, 39, 0.12);
+  border: 1px solid rgba(214, 184, 74, 0.22);
+}
+
+.store-search-form input {
+  color: var(--white);
+}
+
+.store-search-form input::placeholder {
+  color: color-mix(in srgb, var(--white) 66%, var(--gray-light));
 }
 
 .theme-field {
@@ -786,6 +834,15 @@ h6 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
   align-items: stretch;
+  padding: 0.375rem;
+  border: 1px solid var(--border-soft);
+  border-radius: calc(var(--radius-card) + 0.35rem);
+  background:
+    var(--catalog-field-glow),
+    var(--catalog-field);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 14px 32px rgba(0, 0, 0, 0.18);
 }
 
 @media (max-width: 380px) {
@@ -819,6 +876,15 @@ h6 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.5rem;
   align-items: stretch;
+  padding: 0.375rem;
+  border: 1px solid var(--border-soft);
+  border-radius: calc(var(--radius-card) + 0.35rem);
+  background:
+    var(--catalog-field-glow),
+    var(--catalog-field);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 14px 32px rgba(0, 0, 0, 0.18);
 }
 
 @media (max-width: 380px) {

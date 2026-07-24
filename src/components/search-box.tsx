@@ -87,8 +87,8 @@ export function SearchBox({
         onSubmit={submitSearch}
         className={
           compact
-            ? "flex h-9 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-black-main text-ink shadow-soft ring-1 ring-[var(--border-gold-soft)]"
-            : "flex h-10 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-black-main text-ink shadow-soft ring-1 ring-[var(--border-gold-soft)]"
+            ? "store-search-form flex h-10 w-full items-center overflow-hidden rounded-[var(--radius-card)] text-ink"
+            : "store-search-form flex h-11 w-full items-center overflow-hidden rounded-[var(--radius-card)] text-ink"
         }
         role="search"
       >
@@ -98,8 +98,8 @@ export function SearchBox({
         <span
           className={
             compact
-              ? "ml-2.5 grid size-5 shrink-0 place-items-center text-ink-muted"
-              : "ml-2.5 grid size-6 shrink-0 place-items-center rounded-[var(--radius-card)] bg-surface-muted text-gold-light"
+              ? "store-search-icon ml-2.5 grid size-6 shrink-0 place-items-center rounded-[var(--radius-card)]"
+              : "store-search-icon ml-2.5 grid size-7 shrink-0 place-items-center rounded-[var(--radius-card)]"
           }
         >
           <SearchIcon />
@@ -120,8 +120,8 @@ export function SearchBox({
           role="combobox"
           className={
             compact
-              ? "min-w-0 flex-1 bg-transparent px-2 text-sm font-normal outline-none placeholder:text-ink-muted/70"
-              : "min-w-0 flex-1 bg-transparent px-2.5 text-sm font-normal outline-none placeholder:text-ink-muted/70"
+              ? "min-w-0 flex-1 bg-transparent px-2 text-sm font-normal outline-none"
+              : "min-w-0 flex-1 bg-transparent px-2.5 text-sm font-normal outline-none"
           }
         />
         <button type="submit" className="sr-only" aria-label="Buscar">

@@ -24,10 +24,10 @@ export async function SiteHeader() {
       </div>
 
       <div className="header-container py-2 lg:py-2">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 xl:gap-3">
-          <div className="flex shrink-0 items-center gap-1.5">
+        <div className="grid grid-cols-[2.25rem_minmax(0,1fr)_2.25rem] items-center gap-1.5 sm:gap-2 lg:grid-cols-[auto_minmax(0,1fr)_auto] xl:gap-3">
+          <div className="flex shrink-0 items-center justify-start gap-1.5">
             <div className="lg:hidden">
-              <Suspense fallback={<div className="h-8 w-8 rounded-[var(--radius-card)] bg-white/10" />}>
+              <Suspense fallback={<div className="h-9 w-9 rounded-[var(--radius-card)] bg-white/10" />}>
                 <MobileNavDrawer items={navItems} />
               </Suspense>
             </div>
@@ -37,7 +37,7 @@ export async function SiteHeader() {
           </div>
 
           <div className="min-w-0 lg:justify-self-center lg:w-full lg:max-w-[28rem] xl:max-w-[32rem] 2xl:max-w-[36rem]">
-            <Suspense fallback={<div className="h-9 rounded-[var(--radius-card)] bg-white/10 lg:hidden" />}>
+            <Suspense fallback={<div className="h-10 rounded-[var(--radius-card)] bg-white/10 lg:hidden" />}>
               <HeaderMobileSearch />
             </Suspense>
             <SearchBox

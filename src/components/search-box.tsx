@@ -98,7 +98,7 @@ export function SearchBox({
         <span
           className={
             compact
-              ? "store-search-icon ml-2.5 grid size-6 shrink-0 place-items-center rounded-[var(--radius-card)]"
+              ? "store-search-icon ml-2 grid size-[1.625rem] shrink-0 place-items-center rounded-[var(--radius-card)]"
               : "store-search-icon ml-2.5 grid size-7 shrink-0 place-items-center rounded-[var(--radius-card)]"
           }
         >

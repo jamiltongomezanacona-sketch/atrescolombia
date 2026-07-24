@@ -13,12 +13,12 @@ type ShopsExplorerProps = {
 
 type GeoStatus = "idle" | "loading" | "success" | "denied" | "unavailable" | "error";
 
-const DISTANCE_FILTERS: Array<{ id: DistanceFilter; label: string }> = [
-  { id: "all", label: "Toda Colombia" },
-  { id: "near", label: "Cerca de mi" },
-  { id: "5", label: "Hasta 5 km" },
-  { id: "10", label: "Hasta 10 km" },
-  { id: "20", label: "Hasta 20 km" },
+const DISTANCE_FILTERS: Array<{ id: DistanceFilter; label: string; icon: string }> = [
+  { id: "all", label: "Toda Colombia", icon: "CO" },
+  { id: "near", label: "Cerca de mi", icon: "•" },
+  { id: "5", label: "5 km", icon: "5" },
+  { id: "10", label: "10 km", icon: "10" },
+  { id: "20", label: "20 km", icon: "20" },
 ];
 
 export function ShopsExplorer({ shops }: ShopsExplorerProps) {
@@ -65,7 +65,6 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
 
       if (distanceFilter === "all" || !visitor) return true;
 
-      // Radius filters need real coordinates; text-only shops stay via city/locality/barrio filters.
       if (shop.distanceKm == null) {
         return Boolean(cityFilter || localityFilter || neighborhoodFilter);
       }
@@ -124,21 +123,21 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
   }
 
   return (
-    <div className="grid gap-2.5">
+    <div className="grid gap-2">
       <div className="flex flex-wrap items-center gap-1.5">
         <button
           type="button"
           onClick={requestLocation}
           disabled={geoStatus === "loading"}
-          className="theme-primary-button inline-flex h-9 min-h-9 items-center rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
+          className="theme-primary-button inline-flex h-8 min-h-8 items-center rounded-full px-3 text-[11px] font-semibold disabled:opacity-60 sm:h-9 sm:min-h-9 sm:text-xs"
         >
-          {geoStatus === "loading" ? "Buscando ubicacion..." : "Usar mi ubicacion"}
+          {geoStatus === "loading" ? "Buscando..." : "Usar mi ubicacion"}
         </button>
         {visitor ? (
           <button
             type="button"
             onClick={() => setSortNear((value) => !value)}
-            className={`inline-flex h-9 min-h-9 items-center rounded-full px-3.5 text-xs font-semibold ring-1 ${
+            className={`inline-flex h-8 min-h-8 items-center rounded-full px-3 text-[11px] font-semibold ring-1 sm:h-9 sm:min-h-9 sm:text-xs ${
               sortNear ? "bg-gold text-black-main ring-gold" : "bg-surface text-ink ring-white/10"
             }`}
           >
@@ -149,12 +148,12 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
           <button
             type="button"
             onClick={resetFilters}
-            className="theme-secondary-button inline-flex h-9 min-h-9 items-center rounded-full px-3.5 text-xs font-semibold"
+            className="theme-secondary-button inline-flex h-8 min-h-8 items-center rounded-full px-3 text-[11px] font-semibold sm:h-9 sm:min-h-9 sm:text-xs"
           >
             Reiniciar
           </button>
         ) : null}
-        <p className="min-w-0 flex-1 text-[11px] text-ink-muted sm:text-xs" role="status" aria-live="polite">
+        <p className="min-w-0 flex-1 text-[10px] text-ink-muted sm:text-[11px]" role="status" aria-live="polite">
           {visitorStatusLabel(geoStatus)}
         </p>
       </div>
@@ -165,19 +164,27 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
             key={item.id}
             type="button"
             onClick={() => setDistanceFilter(item.id)}
-            className={`inline-flex h-8 min-h-8 shrink-0 items-center rounded-full px-3 text-[11px] font-semibold ring-1 sm:text-xs ${
+            className={`inline-flex h-8 min-h-8 shrink-0 items-center gap-1.5 rounded-full px-2.5 text-[11px] font-semibold ring-1 sm:px-3 sm:text-xs ${
               distanceFilter === item.id
                 ? "bg-gold text-black-main ring-gold"
                 : "bg-surface text-ink-muted ring-white/10 hover:text-gold-light"
             }`}
           >
+            <span
+              className={`grid size-5 place-items-center rounded-full text-[9px] font-bold ${
+                distanceFilter === item.id ? "bg-black/15 text-black-main" : "bg-white/8 text-ink-muted"
+              }`}
+              aria-hidden="true"
+            >
+              {item.icon}
+            </span>
             {item.label}
           </button>
         ))}
       </div>
 
-      <div className="grid w-full max-w-4xl gap-2 sm:grid-cols-3 sm:gap-2.5">
-        <label className="grid gap-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
+      <div className="grid w-full max-w-4xl gap-1.5 sm:grid-cols-3 sm:gap-2">
+        <label className="grid gap-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
           Ciudad
           <select
             value={cityFilter}
@@ -186,7 +193,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
               setLocalityFilter("");
               setNeighborhoodFilter("");
             }}
-            className="theme-field h-9 w-full rounded-[var(--radius-card)] px-2.5 text-sm font-medium"
+            className="theme-field h-8 w-full rounded-[var(--radius-card)] px-2.5 text-sm font-medium sm:h-9"
           >
             <option value="">Todas</option>
             {cities.map((city) => (
@@ -196,7 +203,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
             ))}
           </select>
         </label>
-        <label className="grid gap-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
+        <label className="grid gap-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
           Localidad
           <select
             value={localityFilter}
@@ -204,7 +211,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
               setLocalityFilter(event.target.value);
               setNeighborhoodFilter("");
             }}
-            className="theme-field h-9 w-full rounded-[var(--radius-card)] px-2.5 text-sm font-medium"
+            className="theme-field h-8 w-full rounded-[var(--radius-card)] px-2.5 text-sm font-medium sm:h-9"
           >
             <option value="">Todas</option>
             {localities.map((locality) => (
@@ -214,12 +221,12 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
             ))}
           </select>
         </label>
-        <label className="grid gap-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
+        <label className="grid gap-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
           Barrio
           <select
             value={neighborhoodFilter}
             onChange={(event) => setNeighborhoodFilter(event.target.value)}
-            className="theme-field h-9 w-full rounded-[var(--radius-card)] px-2.5 text-sm font-medium"
+            className="theme-field h-8 w-full rounded-[var(--radius-card)] px-2.5 text-sm font-medium sm:h-9"
           >
             <option value="">Todos</option>
             {neighborhoods.map((neighborhood) => (
@@ -239,9 +246,9 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
           actionLabel="Ver catalogo"
         />
       ) : (
-        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-[repeat(auto-fit,minmax(260px,1fr))]">
-          {filtered.map((shop) => (
-            <ShopCard key={shop.id} shop={shop} />
+        <ul className="grid grid-cols-2 gap-2 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] sm:gap-2.5 lg:grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
+          {filtered.map((shop, index) => (
+            <ShopCard key={shop.id} shop={shop} index={index} />
           ))}
         </ul>
       )}

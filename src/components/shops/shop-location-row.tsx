@@ -58,6 +58,7 @@ export function ShopLocationButton({
   fullWidth = false,
   showDisabled = false,
   label = "Ver ubicacion",
+  iconOnly = false,
 }: {
   shopName: string;
   mapsUrl?: string | null;
@@ -68,11 +69,14 @@ export function ShopLocationButton({
   fullWidth?: boolean;
   showDisabled?: boolean;
   label?: string;
+  iconOnly?: boolean;
 }) {
   const href = buildMapsLocationUrl({ mapsUrl, latitude, longitude, address });
-  const buttonClass = `theme-secondary-button group/loc inline-flex h-11 min-h-11 min-w-0 items-center justify-center gap-1.5 rounded-full px-3 text-[11px] font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs ${
-    fullWidth ? "w-full" : "w-1/2"
-  } ${className}`;
+  const buttonClass = iconOnly
+    ? `theme-secondary-button group/loc inline-flex h-8 w-8 min-h-8 min-w-8 items-center justify-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:h-9 sm:w-9 sm:min-h-9 sm:min-w-9 ${className}`
+    : `theme-secondary-button group/loc inline-flex h-11 min-h-11 min-w-0 items-center justify-center gap-1.5 rounded-full px-3 text-[11px] font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs ${
+        fullWidth ? "w-full" : "w-1/2"
+      } ${className}`;
 
   if (!href) {
     if (!showDisabled) return null;
@@ -83,7 +87,7 @@ export function ShopLocationButton({
         className={`${buttonClass} cursor-not-allowed opacity-45`}
       >
         <MapPinIcon className="size-3.5 shrink-0" />
-        <span className="truncate">{label}</span>
+        {!iconOnly && label ? <span className="truncate">{label}</span> : null}
       </span>
     );
   }
@@ -97,7 +101,7 @@ export function ShopLocationButton({
       className={buttonClass}
     >
       <MapPinIcon className="size-3.5 shrink-0 transition-transform duration-200 ease-out group-hover/loc:translate-x-0.5" />
-      <span className="truncate">{label}</span>
+      {!iconOnly && label ? <span className="truncate">{label}</span> : null}
     </a>
   );
 }

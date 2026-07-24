@@ -12,10 +12,10 @@ export default async function AdminSettingsPage() {
     const shop = await getPrimaryAdminShop(session);
     return (
       <AdminShell isSuperAdmin={session.isSuperAdmin}>
-        <section className="max-w-3xl bg-white p-4 shadow-sm">
-          <p className="text-xs font-black uppercase text-zinc-500">Tienda</p>
+        <section className="theme-panel max-w-3xl p-4">
+          <p className="theme-kicker">Tienda</p>
           <h1 className="text-3xl font-black">Datos de mi tienda</h1>
-          <p className="mt-2 text-sm font-semibold leading-6 text-zinc-500">
+          <p className="mt-2 text-sm font-semibold leading-6 text-ink-muted">
             Actualiza la informacion visible de tu tienda dentro de ATRES.
           </p>
           <div className="mt-5">
@@ -30,8 +30,8 @@ export default async function AdminSettingsPage() {
 
   return (
     <AdminShell isSuperAdmin={session.isSuperAdmin}>
-      <section className="max-w-3xl bg-white p-4 shadow-sm">
-        <p className="text-xs font-black uppercase text-zinc-500">Tienda</p>
+      <section className="theme-panel max-w-3xl p-4">
+        <p className="theme-kicker">Tienda</p>
         <h1 className="text-3xl font-black">Configuracion general</h1>
         <div className="mt-5">
           <ActionStateForm action={saveSettings} submitLabel="Guardar configuracion">

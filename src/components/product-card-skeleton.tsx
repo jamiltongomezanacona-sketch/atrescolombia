@@ -1,7 +1,7 @@
 export function ProductCardSkeleton() {
   return (
     <div
-      className="overflow-hidden rounded-[var(--radius-card)] bg-surface ring-1 ring-black/[0.04]"
+      className="overflow-hidden rounded-[var(--radius-card)] bg-surface ring-1 ring-white/10"
       aria-hidden="true"
     >
       <div className="atres-skeleton aspect-[3/4] rounded-none" />

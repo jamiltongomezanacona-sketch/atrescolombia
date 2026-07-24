@@ -132,7 +132,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
         <button
           type="button"
           className={cn(
-            "absolute inset-0 bg-ink/50 transition-opacity",
+            "absolute inset-0 bg-black-main/72 transition-opacity",
             open ? "opacity-100" : "opacity-0",
           )}
           aria-label="Cerrar menu"
@@ -146,11 +146,11 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
           aria-modal="true"
           aria-labelledby={titleId}
           className={cn(
-            "absolute inset-y-0 left-0 flex w-[min(88vw,330px)] flex-col bg-surface text-ink shadow-lift transition-transform duration-300",
+            "theme-panel absolute inset-y-0 left-0 flex w-[min(88vw,330px)] flex-col text-ink shadow-lift transition-transform duration-300",
             open ? "translate-x-0" : "-translate-x-full",
           )}
         >
-          <div className="flex items-center justify-between border-b border-black/6 px-3.5 py-3">
+          <div className="flex items-center justify-between border-b border-white/10 px-3.5 py-3">
             <Link href="/" className="min-w-0" onClick={() => setOpen(false)} tabIndex={open ? undefined : -1}>
               <p id={titleId} className="text-lg font-medium tracking-[0.14em]">
                 ATRES
@@ -180,7 +180,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
                       href={link.href}
                       className={cn(
                         "flex min-h-10 items-center rounded-[var(--radius-card)] px-3 text-sm font-normal transition",
-                        active ? "bg-ink text-white" : "text-ink hover:bg-surface-muted",
+                        active ? "bg-gold text-black-main" : "text-ink hover:bg-surface-muted hover:text-gold-light",
                       )}
                       aria-current={active ? "page" : undefined}
                       onClick={() => setOpen(false)}
@@ -200,10 +200,10 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
             onNavigate={() => setOpen(false)}
           />
 
-          <div className="border-t border-black/6 p-3.5">
+          <div className="border-t border-white/10 p-3.5">
             <Link
               href="/productos?ofertas=1"
-              className="flex min-h-10 items-center justify-center rounded-[var(--radius-card)] bg-brand px-4 text-sm font-medium text-white hover:bg-brand-hover"
+              className="theme-primary-button flex min-h-10 items-center justify-center rounded-[var(--radius-card)] px-4 text-sm font-medium"
               onClick={() => setOpen(false)}
               tabIndex={open ? undefined : -1}
             >
@@ -220,7 +220,7 @@ export function MobileNavDrawer({ items }: MobileNavDrawerProps) {
       <button
         ref={triggerRef}
         type="button"
-        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-card)] text-white transition hover:bg-white/10 lg:hidden"
+        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-card)] text-white transition hover:bg-white/10 hover:text-gold-light lg:hidden"
         aria-expanded={open}
         aria-controls="atres-mobile-drawer"
         aria-haspopup="dialog"
@@ -246,7 +246,7 @@ function DrawerAccountSection({
   const signedIn = authStatus === "signed-in";
 
   return (
-    <section className="border-t border-black/6 px-2.5 py-3" aria-label="Cuenta">
+    <section className="border-t border-white/10 px-2.5 py-3" aria-label="Cuenta">
       <p className="px-2 text-[11px] font-medium tracking-wide text-ink-muted">Cuenta</p>
       <div className="mt-2 grid gap-0.5">
         {authStatus === "unknown" ? (
@@ -261,7 +261,7 @@ function DrawerAccountSection({
             <form action={signOutAdmin} onSubmit={onNavigate}>
               <button
                 type="submit"
-                className="flex min-h-10 w-full items-center gap-2 rounded-[var(--radius-card)] px-3 text-left text-sm font-normal text-ink transition hover:bg-surface-muted"
+                className="flex min-h-10 w-full items-center gap-2 rounded-[var(--radius-card)] px-3 text-left text-sm font-normal text-ink transition hover:bg-surface-muted hover:text-gold-light"
                 tabIndex={open ? undefined : -1}
               >
                 <DrawerIcon type="logout" />
@@ -296,7 +296,7 @@ function DrawerLink({
   return (
     <Link
       href={href}
-      className="flex min-h-10 items-center gap-2 rounded-[var(--radius-card)] px-3 text-sm font-normal text-ink transition hover:bg-surface-muted"
+      className="flex min-h-10 items-center gap-2 rounded-[var(--radius-card)] px-3 text-sm font-normal text-ink transition hover:bg-surface-muted hover:text-gold-light"
       onClick={onNavigate}
       tabIndex={open ? undefined : -1}
     >

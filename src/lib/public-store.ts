@@ -479,7 +479,7 @@ export const getPublicPromos = cache(async function getPublicPromos(): Promise<P
       subtitle: banner.subtitle,
       href: banner.link_url || "/productos",
       image: resolveStoreImageUrl(banner.desktop_image_url, ATRES_PLACEHOLDER_IMAGE),
-      tone: index === 0 ? "bg-promo text-black" : index === 1 ? "bg-black text-white" : "bg-white text-black",
+      tone: index === 0 ? "bg-gold text-black-main" : index === 1 ? "bg-black-main text-white" : "bg-surface text-ink",
     }));
 
     return supabasePromos;

@@ -217,7 +217,7 @@ export function ShopForm({
     <form action={formAction} className="grid min-w-0 max-w-full gap-3 md:gap-5" encType="multipart/form-data">
       {shop?.id ? <input type="hidden" name="id" value={shop.id} /> : null}
 
-      <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+      <section className="theme-panel grid min-w-0 max-w-full gap-3 rounded-xl p-3 md:p-4">
         <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <SectionTitle
             eyebrow="Velocidad"
@@ -226,7 +226,7 @@ export function ShopForm({
           <button
             type="button"
             onClick={toggleQuickMode}
-            className="inline-flex min-h-11 w-full min-w-0 items-center justify-center rounded-full bg-[#eef6ff] px-3 text-center text-xs font-black leading-4 text-[#0b1f3a] ring-1 ring-[#d8e7f5] sm:w-auto sm:px-4"
+            className="theme-secondary-button inline-flex min-h-11 w-full min-w-0 items-center justify-center rounded-full px-3 text-center text-xs font-black leading-4 sm:w-auto sm:px-4"
           >
             {quickMode ? "Ver formulario completo" : "Usar modo rapido"}
           </button>
@@ -242,12 +242,12 @@ export function ShopForm({
                   onClick={() => applyTemplate(template.id)}
                   className={`min-h-11 min-w-0 rounded-xl border px-2.5 py-2 text-left transition sm:px-3 sm:py-3 ${
                     templateId === template.id
-                      ? "border-[#0b1f3a] bg-[#0b1f3a] text-white"
-                      : "border-[#d8e7f5] bg-[#eef6ff]/70 text-zinc-900 hover:bg-white"
+                      ? "border-gold bg-gold text-black-main"
+                      : "border-white/10 bg-black-main/40 text-ink hover:border-[var(--border-gold-soft)] hover:bg-surface"
                   }`}
                 >
                   <span className="block break-words text-sm font-black leading-4">{template.label}</span>
-                  <span className={`mt-1 block break-words text-xs font-medium leading-4 ${templateId === template.id ? "text-white/75" : "text-zinc-500"}`}>
+                  <span className={`mt-1 block break-words text-xs font-medium leading-4 ${templateId === template.id ? "text-black-main/70" : "text-ink-muted"}`}>
                     {template.hint}
                   </span>
                 </button>
@@ -272,19 +272,19 @@ export function ShopForm({
               </label>
             ) : null}
 
-            <p className="min-w-0 text-xs font-medium leading-5 text-zinc-500">
+            <p className="min-w-0 text-xs font-medium leading-5 text-ink-muted">
               Plantilla activa: <strong>{selectedTemplate.label}</strong>. Completa nombre + admin y crea. Lo demas queda
               con valores listos.
             </p>
           </>
         ) : (
-          <p className="text-xs font-medium leading-5 text-zinc-500">
+          <p className="text-xs font-medium leading-5 text-ink-muted">
             Misma vista que crear tienda: edita lo esencial y usa <strong>Mas opciones</strong> solo si lo necesitas.
           </p>
         )}
       </section>
 
-      <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+      <section className="theme-panel grid min-w-0 max-w-full gap-3 rounded-xl p-3 md:p-4">
         <SectionTitle eyebrow="Informacion" title="Datos de la tienda" />
         <div className="grid min-w-0 gap-3 md:grid-cols-2">
           <label className="grid min-w-0 gap-2 text-sm font-bold">
@@ -319,13 +319,13 @@ export function ShopForm({
               placeholder="ej: moda-bogota"
               aria-describedby="shop-slug-hint"
             />
-            <span id="shop-slug-hint" className="text-xs font-medium leading-5 text-zinc-500">
+            <span id="shop-slug-hint" className="text-xs font-medium leading-5 text-ink-muted">
               Asi se vera en la web:{" "}
-              <span className="break-all font-bold text-[#0b1f3a]">/tiendas/{slug || "nombre-tienda"}</span>
+              <span className="break-all font-bold text-gold-light">/tiendas/{slug || "nombre-tienda"}</span>
             </span>
           </label>
           <label className="grid min-w-0 gap-2 text-sm font-bold">
-            WhatsApp {quickMode ? <span className="font-medium text-zinc-400">(opcional)</span> : null}
+            WhatsApp {quickMode ? <span className="font-medium text-ink-muted">(opcional)</span> : null}
             <input
               name="whatsapp"
               value={whatsapp}
@@ -387,7 +387,7 @@ export function ShopForm({
         textareaClass={textareaClass}
       />
 
-      <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-[#eef6ff]/60 p-3 md:p-4">
+      <section className="theme-panel grid min-w-0 max-w-full gap-3 rounded-xl p-3 md:p-4">
         <SectionTitle eyebrow="Imagen" title="Identidad visual" />
         <div className="grid min-w-0 gap-3 sm:grid-cols-2">
           <PreviewField
@@ -420,7 +420,7 @@ export function ShopForm({
       </section>
 
       {showAdminFields ? (
-        <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+        <section className="theme-panel grid min-w-0 max-w-full gap-3 rounded-xl p-3 md:p-4">
           <SectionTitle eyebrow="Administrador" title="Acceso inicial" />
           <div className="grid min-w-0 gap-3 md:grid-cols-3">
             <label className="grid min-w-0 gap-2 text-sm font-bold">
@@ -459,27 +459,27 @@ export function ShopForm({
                 <button
                   type="button"
                   onClick={() => setAdminPassword(generatePassword())}
-                  className="inline-flex h-11 w-full shrink-0 items-center justify-center rounded-xl bg-[#0b1f3a] px-3 text-xs font-black text-white min-[420px]:w-auto"
+                  className="theme-primary-button inline-flex h-11 w-full shrink-0 items-center justify-center rounded-xl px-3 text-xs font-black min-[420px]:w-auto"
                 >
                   Generar
                 </button>
               </div>
             </label>
           </div>
-          <p className="text-xs font-medium leading-5 text-zinc-500">
+          <p className="text-xs font-medium leading-5 text-ink-muted">
             Se crea el usuario en Supabase Auth con rol de tienda y se vincula automaticamente.
           </p>
         </section>
       ) : null}
 
       {allowStatusEdit ? (
-        <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+        <section className="theme-panel grid min-w-0 max-w-full gap-3 rounded-xl p-3 md:p-4">
           <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <SectionTitle eyebrow="Configuracion" title="Limites y visibilidad" />
             <button
               type="button"
               onClick={() => setShowAdvanced((value) => !value)}
-              className="min-h-10 self-start text-xs font-black text-[#2f6f9f] underline-offset-2 hover:underline"
+              className="min-h-10 self-start text-xs font-black text-gold-light underline-offset-2 hover:underline"
             >
               {showAdvanced ? "Ocultar avanzado" : "Mas opciones"}
             </button>
@@ -531,14 +531,14 @@ export function ShopForm({
               {verified ? <input type="hidden" name="verified" value="on" /> : null}
               {showOnHome ? <input type="hidden" name="show_on_home" value="on" /> : null}
               {allowPromotions ? <input type="hidden" name="allow_promotions" value="on" /> : null}
-              <p className="min-w-0 break-words text-xs font-medium text-zinc-500">
+              <p className="min-w-0 break-words text-xs font-medium text-ink-muted">
                 Actual: {maxProducts} productos, {maxImages} imagenes, estado {status}.
               </p>
             </>
           )}
         </section>
       ) : (
-        <section className="grid min-w-0 max-w-full gap-3 rounded-xl border border-[#d8e7f5] bg-white p-3 md:p-4">
+        <section className="theme-panel grid min-w-0 max-w-full gap-3 rounded-xl p-3 md:p-4">
           <SectionTitle eyebrow="Visibilidad" title="Opciones de tienda" />
           <div className="grid min-w-0 gap-3 sm:grid-cols-2">
             <CheckField label="Mostrar en pagina principal" name="show_on_home" checked={showOnHome} onChange={setShowOnHome} />
@@ -553,14 +553,14 @@ export function ShopForm({
           role="status"
           aria-live="polite"
           className={`${
-            state.ok ? "bg-emerald-50 text-emerald-900 ring-emerald-100" : "bg-red-50 text-red-700 ring-red-100"
-          } min-w-0 break-words rounded-[var(--radius-card)] p-3 text-sm font-medium ring-1`}
+            state.ok ? "theme-ok" : "theme-error"
+          } min-w-0 break-words rounded-[var(--radius-card)] p-3 text-sm font-medium`}
         >
           {state.message}
         </p>
       ) : null}
 
-      <div className="sticky bottom-2 z-10 min-w-0 max-w-full rounded-[var(--radius-card)] border border-black/8 bg-surface/95 p-2 shadow-soft backdrop-blur md:bottom-4">
+      <div className="theme-panel sticky bottom-2 z-10 min-w-0 max-w-full rounded-[var(--radius-card)] p-2 backdrop-blur md:bottom-4">
         <Button type="submit" disabled={pending} variant="primary" className="h-11 w-full">
           {pending ? "Guardando..." : isCreate ? "Crear tienda ahora" : submitLabel}
         </Button>
@@ -572,8 +572,8 @@ export function ShopForm({
 function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <div className="min-w-0">
-      <p className="text-[11px] font-black uppercase tracking-wide text-[#2f6f9f]">{eyebrow}</p>
-      <h2 className="mt-1 break-words text-base font-black tracking-tight text-zinc-950 md:text-lg">{title}</h2>
+      <p className="theme-kicker">{eyebrow}</p>
+      <h2 className="mt-1 break-words text-base font-black tracking-normal text-ink md:text-lg">{title}</h2>
     </div>
   );
 }
@@ -669,7 +669,7 @@ function PreviewField({
           type="button"
           disabled={!canPickFile || uploading}
           onClick={() => fileRef.current?.click()}
-          className="inline-flex min-h-11 min-w-0 items-center justify-center rounded-full bg-[#0b1f3a] px-3.5 text-center text-xs font-black leading-4 text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-50 max-[380px]:w-full"
+          className="theme-primary-button inline-flex min-h-11 min-w-0 items-center justify-center rounded-full px-3.5 text-center text-xs font-black leading-4 disabled:cursor-not-allowed disabled:opacity-50 max-[380px]:w-full"
         >
           {uploading ? "Preparando..." : compact ? "Subir" : "Subir del dispositivo"}
         </button>
@@ -687,7 +687,7 @@ function PreviewField({
       </div>
 
       {showUrlInput ? (
-        <label className="grid min-w-0 gap-1.5 text-xs font-bold text-zinc-500" htmlFor={`${inputId}-url`}>
+        <label className="grid min-w-0 gap-1.5 text-xs font-bold text-ink-muted" htmlFor={`${inputId}-url`}>
           URL opcional
           <input
             id={`${inputId}-url`}
@@ -703,13 +703,13 @@ function PreviewField({
       )}
 
       {message ? (
-        <p className="min-w-0 break-words text-xs font-medium text-zinc-600" role="status" aria-live="polite">
+        <p className="min-w-0 break-words text-xs font-medium text-ink-muted" role="status" aria-live="polite">
           {message}
         </p>
       ) : null}
 
       <span
-        className={`relative block max-w-full overflow-hidden rounded-xl bg-white ring-1 ring-black/5 ${
+        className={`relative block max-w-full overflow-hidden rounded-xl bg-black-main ring-1 ring-white/10 ${
           compact ? "min-h-16" : "min-h-24"
         } ${previewClassName}`}
       >
@@ -717,7 +717,7 @@ function PreviewField({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={previewSrc} alt={`Vista previa ${label}`} className="h-full w-full object-cover" />
         ) : (
-          <span className="grid h-full min-h-16 place-items-center px-2 text-center text-[11px] font-medium text-zinc-400">
+          <span className="grid h-full min-h-16 place-items-center px-2 text-center text-[11px] font-medium text-ink-muted">
             Sin imagen
           </span>
         )}
@@ -738,13 +738,13 @@ function CheckField({
   onChange: (value: boolean) => void;
 }) {
   return (
-    <label className="flex min-h-12 min-w-0 items-center gap-3 rounded-xl border border-[#d8e7f5] bg-[#eef6ff]/70 px-3 text-sm font-bold transition hover:bg-white">
+    <label className="flex min-h-12 min-w-0 items-center gap-3 rounded-xl border border-white/10 bg-black-main/40 px-3 text-sm font-bold transition hover:border-[var(--border-gold-soft)] hover:bg-surface">
       <input
         name={name}
         type="checkbox"
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
-        className="size-4 shrink-0 accent-black"
+        className="size-4 shrink-0 accent-gold"
       />
       <span className="min-w-0 break-words leading-5">{label}</span>
     </label>
@@ -841,5 +841,5 @@ function canvasToWebp(canvas: HTMLCanvasElement, quality: number) {
   });
 }
 
-const inputClass = "h-11 w-full min-w-0 max-w-full rounded-xl border border-[#c7ddf2] bg-[#f5f9ff] px-3 text-sm focus:border-[#0b1f3a] focus:bg-white";
-const textareaClass = "w-full min-w-0 max-w-full rounded-xl border border-[#c7ddf2] bg-[#f5f9ff] px-3 py-3 text-sm focus:border-[#0b1f3a] focus:bg-white";
+const inputClass = "theme-field h-11 w-full min-w-0 max-w-full rounded-xl px-3 text-sm";
+const textareaClass = "theme-field w-full min-w-0 max-w-full rounded-xl px-3 py-3 text-sm";

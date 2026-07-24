@@ -24,7 +24,7 @@ export function BrandLogo({
   const content = (
     <>
       <span
-        className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-[var(--radius-card)] bg-white ring-1 ring-black/10 ${
+        className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-[var(--radius-card)] bg-black-main ring-1 ring-gold/25 shadow-[0_10px_30px_rgba(0,0,0,0.26)] ${
           compact ? "h-9 w-9" : "h-12 w-12"
         }`}
       >

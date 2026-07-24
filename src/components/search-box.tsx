@@ -87,8 +87,8 @@ export function SearchBox({
         onSubmit={submitSearch}
         className={
           compact
-            ? "flex h-9 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-white text-ink shadow-soft ring-1 ring-white/30"
-            : "flex h-10 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-white text-ink shadow-soft ring-1 ring-white/35"
+            ? "flex h-9 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-black-main text-ink shadow-soft ring-1 ring-[var(--border-gold-soft)]"
+            : "flex h-10 w-full items-center overflow-hidden rounded-[var(--radius-card)] bg-black-main text-ink shadow-soft ring-1 ring-[var(--border-gold-soft)]"
         }
         role="search"
       >
@@ -99,7 +99,7 @@ export function SearchBox({
           className={
             compact
               ? "ml-2.5 grid size-5 shrink-0 place-items-center text-ink-muted"
-              : "ml-2.5 grid size-6 shrink-0 place-items-center rounded-[var(--radius-card)] bg-surface-muted text-ink-muted"
+              : "ml-2.5 grid size-6 shrink-0 place-items-center rounded-[var(--radius-card)] bg-surface-muted text-gold-light"
           }
         >
           <SearchIcon />
@@ -120,8 +120,8 @@ export function SearchBox({
           role="combobox"
           className={
             compact
-              ? "min-w-0 flex-1 bg-transparent px-2 text-sm font-normal outline-none placeholder:text-stone-400"
-              : "min-w-0 flex-1 bg-transparent px-2.5 text-sm font-normal outline-none placeholder:text-stone-400"
+              ? "min-w-0 flex-1 bg-transparent px-2 text-sm font-normal outline-none placeholder:text-ink-muted/70"
+              : "min-w-0 flex-1 bg-transparent px-2.5 text-sm font-normal outline-none placeholder:text-ink-muted/70"
           }
         />
         <button type="submit" className="sr-only" aria-label="Buscar">
@@ -132,7 +132,7 @@ export function SearchBox({
       {open && suggestions.length > 0 ? (
         <div
           id={listId}
-          className="absolute inset-x-0 top-[calc(100%+0.45rem)] z-50 overflow-hidden rounded-[var(--radius-card)] bg-surface p-2 text-ink shadow-lift ring-1 ring-black/8"
+          className="theme-panel absolute inset-x-0 top-[calc(100%+0.45rem)] z-50 overflow-hidden rounded-[var(--radius-card)] p-2 text-ink shadow-lift"
         >
           <div className="mb-1 flex items-center justify-between px-2">
             <p className="text-[11px] font-medium text-ink-muted">
@@ -158,7 +158,7 @@ export function SearchBox({
                 key={item}
                 href={`/buscar?q=${encodeURIComponent(item)}`}
                 onMouseDown={() => persistSearch(item)}
-                className="flex min-h-10 items-center gap-2 rounded-[var(--radius-card)] px-2 text-sm text-ink-muted hover:bg-surface-muted hover:text-ink"
+                className="flex min-h-10 items-center gap-2 rounded-[var(--radius-card)] px-2 text-sm text-ink-muted hover:bg-surface-muted hover:text-gold-light"
               >
                 <SearchIcon />
                 <span className="truncate">{item}</span>

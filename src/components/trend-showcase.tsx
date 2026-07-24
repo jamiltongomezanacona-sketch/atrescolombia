@@ -45,7 +45,7 @@ export function TrendShowcase({
             className="object-cover opacity-[0.16]"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/15 via-white/10 to-white/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black-main/75 via-black-main/35 to-gold/12" />
         <div
           className={cn(
             "relative grid md:p-5",
@@ -79,7 +79,7 @@ export function TrendShowcase({
               {theme.chips.slice(0, compact ? 3 : 4).map((chip) => (
                 <span
                   key={chip}
-                  className="rounded-full bg-white/25 px-3 py-1 text-[11px] font-medium ring-1 ring-current/10"
+                  className="rounded-full bg-black-main/35 px-3 py-1 text-[11px] font-medium ring-1 ring-white/10"
                 >
                   {chip}
                 </span>
@@ -105,9 +105,9 @@ export function TrendShowcase({
                 <Link
                   key={`${theme.trendTag}-${product.slug}`}
                   href={`/productos/${product.slug}`}
-                  className="group relative overflow-hidden rounded-lg border-[5px] border-white/60 bg-white/85 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift"
+                  className="group relative overflow-hidden rounded-lg border border-white/10 bg-black-main/50 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-lift"
                 >
-                  <div className="relative aspect-[3/4] bg-stone-100">
+                  <div className="relative aspect-[3/4] bg-surface-muted">
                     <SafeProductImage
                       src={product.image}
                       alt={product.name}
@@ -115,7 +115,7 @@ export function TrendShowcase({
                       className="object-cover transition duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="absolute inset-x-2 bottom-2 rounded-full bg-white/90 px-2 py-1 text-center shadow-sm">
+                  <div className="absolute inset-x-2 bottom-2 rounded-full bg-black-main/82 px-2 py-1 text-center shadow-sm ring-1 ring-white/10 backdrop-blur-sm">
                     <ProductPrice price={product.price} className="text-center [&>p]:w-full" />
                   </div>
                 </Link>

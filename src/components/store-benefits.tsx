@@ -16,7 +16,7 @@ const benefits = [
 export function StoreBenefits() {
   return (
     <section className="home-section catalog-container pb-5 md:pb-6" aria-labelledby="beneficios-titulo">
-      <div className="grid gap-3 rounded-[var(--radius-card)] bg-ink p-3.5 text-white ring-1 ring-black/[0.08] sm:gap-4 sm:p-4 lg:grid-cols-[1.05fr_1.45fr] lg:items-end">
+      <div className="theme-gold-panel grid gap-3 rounded-[var(--radius-card)] p-3.5 text-white sm:gap-4 sm:p-4 lg:grid-cols-[1.05fr_1.45fr] lg:items-end">
         <div>
           <p className="text-[11px] font-medium tracking-wide text-white/60">ATRES Colombia</p>
           <h2 id="beneficios-titulo" className="mt-1 text-xl font-medium tracking-tight !text-white sm:text-2xl md:text-3xl">

@@ -76,8 +76,8 @@ export function ProductCardActions(props: ProductCardActionsProps) {
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
         "active:scale-95 disabled:cursor-not-allowed disabled:opacity-35",
         added
-          ? "atres-pop text-emerald-600"
-          : "text-ink hover:bg-black/[0.04] hover:text-black",
+          ? "atres-pop text-gold-light"
+          : "text-ink hover:bg-surface-muted hover:text-gold-light",
         className,
       )}
     >

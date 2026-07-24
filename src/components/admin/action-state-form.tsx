@@ -27,16 +27,12 @@ export function ActionStateForm({ action, children, submitLabel }: ActionStateFo
         <p
           role="status"
           aria-live="polite"
-          className={`${
-            state.ok
-              ? "bg-emerald-50 text-emerald-900 ring-emerald-100"
-              : "bg-red-50 text-red-700 ring-red-100"
-          } rounded-[var(--radius-card)] p-3 text-sm font-medium ring-1`}
+          className={`${state.ok ? "theme-ok" : "theme-error"} rounded-[var(--radius-card)] p-3 text-sm font-medium`}
         >
           {state.message}
         </p>
       ) : null}
-      <div className="sticky bottom-3 z-10 rounded-[var(--radius-card)] border border-black/8 bg-surface/95 p-2 shadow-soft backdrop-blur md:bottom-4">
+      <div className="theme-panel sticky bottom-3 z-10 rounded-[var(--radius-card)] p-2 backdrop-blur md:bottom-4">
         <Button type="submit" disabled={pending} variant="primary" className="h-11 w-full md:h-11">
           {pending ? "Guardando..." : submitLabel}
         </Button>

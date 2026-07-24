@@ -49,8 +49,8 @@ export function HomeCategoryPills({ categories }: HomeCategoryPillsProps) {
               href={item.href}
               className={`atres-interactive home-scroll-item inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full px-3.5 py-2 text-xs font-medium transition sm:min-h-11 sm:px-4 sm:text-sm ${
                 isPrimary
-                  ? "bg-ink text-white shadow-soft ring-1 ring-ink"
-                  : "bg-surface text-ink ring-1 ring-black/[0.08] hover:bg-surface-muted hover:shadow-soft"
+                  ? "bg-gold text-black-main shadow-soft ring-1 ring-gold"
+                  : "bg-surface text-ink ring-1 ring-white/10 hover:bg-surface-muted hover:text-gold-light hover:shadow-soft"
               }`}
             >
               <CategoryPillIcon kind={item.kind} className="size-4" />

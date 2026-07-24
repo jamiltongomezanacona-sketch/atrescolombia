@@ -16,27 +16,27 @@ export default async function AdminCategoriesPage() {
   return (
     <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-4 lg:grid-cols-[420px_1fr]">
-        <section className="bg-white p-4 shadow-sm">
-          <p className="text-xs font-black uppercase text-zinc-500">Catalogo</p>
+        <section className="theme-panel p-4">
+          <p className="theme-kicker">Catalogo</p>
           <h1 className="text-2xl font-black">Crear categoria</h1>
           <div className="mt-4">
             <CategoryForm categories={categories} />
           </div>
         </section>
-        <section className="bg-white p-4 shadow-sm">
+        <section className="theme-panel p-4">
           <h2 className="text-2xl font-black">Categorias</h2>
           <div className="mt-4 grid gap-2">
             {tree.map((category) => (
               <details
                 key={category.id}
-                className="border border-zinc-200 p-3"
+                className="theme-muted-panel p-3"
                 style={{ marginLeft: category.depth * 16 }}
               >
                 <summary className="flex cursor-pointer flex-wrap items-center gap-2 text-sm font-black">
                   <span>{category.name}</span>
                   <AdminStatusBadge status={category.status} />
                   {category.parent_id ? (
-                    <span className="text-xs font-semibold text-zinc-500">
+                    <span className="text-xs font-semibold text-ink-muted">
                       hijo de {parentNameById.get(category.parent_id) ?? "categoria"}
                     </span>
                   ) : null}
@@ -46,7 +46,7 @@ export default async function AdminCategoriesPage() {
                 </div>
               </details>
             ))}
-            {!categories.length ? <p className="text-sm font-semibold text-zinc-500">No hay categorias.</p> : null}
+            {!categories.length ? <p className="text-sm font-semibold text-ink-muted">No hay categorias.</p> : null}
           </div>
         </section>
       </div>

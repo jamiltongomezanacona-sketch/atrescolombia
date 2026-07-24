@@ -38,7 +38,7 @@ export function ShopCard({ shop }: ShopCardProps) {
             className="object-cover transition duration-200 ease-out group-hover:scale-[1.02]"
           />
           {shop.verified ? (
-            <span className="absolute left-2 top-2 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-semibold leading-4 text-emerald-800 ring-1 ring-emerald-100/80 backdrop-blur-sm sm:text-[11px]">
+            <span className="absolute left-2 top-2 rounded-full bg-gold px-2 py-0.5 text-[10px] font-semibold leading-4 text-black-main ring-1 ring-gold-light/40 backdrop-blur-sm sm:text-[11px]">
               Verificada
             </span>
           ) : null}
@@ -49,7 +49,7 @@ export function ShopCard({ shop }: ShopCardProps) {
             <h2 className="line-clamp-2 text-[13px] font-medium leading-[1.25] tracking-normal text-ink sm:text-sm">
               <Link
                 href={catalogHref}
-                className="transition-colors duration-200 hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                className="transition-colors duration-200 hover:text-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
               >
                 {shopName}
               </Link>
@@ -67,7 +67,7 @@ export function ShopCard({ shop }: ShopCardProps) {
             </Link>
           </div>
 
-          <div className="mt-0.5 min-w-0 border-t border-black/[0.05] pt-2">
+          <div className="mt-0.5 min-w-0 border-t border-white/10 pt-2">
             <ShopLocationRow
               city={shop.city}
               locality={shop.locality}
@@ -89,7 +89,7 @@ export function ShopCard({ shop }: ShopCardProps) {
           <div className="mt-auto grid w-full gap-1.5 pt-1">
             <Link
               href={catalogHref}
-              className="inline-flex h-10 min-h-10 w-full items-center justify-center rounded-full bg-ink px-3 text-[11px] font-semibold text-white transition-[background-color,transform] duration-200 ease-out hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98] sm:h-11 sm:min-h-11 sm:text-xs"
+              className="theme-primary-button inline-flex h-10 min-h-10 w-full items-center justify-center rounded-full px-3 text-[11px] font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98] sm:h-11 sm:min-h-11 sm:text-xs"
             >
               Ver catalogo
             </Link>

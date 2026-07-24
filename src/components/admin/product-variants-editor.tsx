@@ -130,28 +130,28 @@ export function ProductVariantsEditor({
   }
 
   return (
-    <section className="grid gap-4 rounded-2xl border border-[#c7ddf2] bg-white/95 p-4 shadow-sm ring-1 ring-white/70 md:p-5">
+    <section className="theme-panel grid gap-4 rounded-2xl p-4 md:p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-[11px] font-black uppercase tracking-wide text-[#2f6f9f]">Variantes</p>
-          <h2 className="mt-1 text-xl font-black tracking-tight text-zinc-950">Colores y tallas</h2>
-          <p className="mt-1 max-w-2xl text-sm font-semibold leading-6 text-zinc-500">
+          <p className="theme-kicker">Variantes</p>
+          <h2 className="mt-1 text-xl font-black tracking-normal text-ink">Colores y tallas</h2>
+          <p className="mt-1 max-w-2xl text-sm font-semibold leading-6 text-ink-muted">
             Activa esta opcion solo cuando una misma prenda tenga inventario por color o talla.
           </p>
         </div>
-        <label className="flex min-h-11 items-center gap-3 rounded-full border border-[#d8e7f5] bg-[#eef6ff] px-4 text-sm font-black text-[#0b1f3a]">
+        <label className="flex min-h-11 items-center gap-3 rounded-full border border-[var(--border-gold-soft)] bg-black-main/40 px-4 text-sm font-black text-gold-light">
           <input
             type="checkbox"
             checked={enabled}
             onChange={(event) => setEnabled(event.target.checked)}
-            className="size-4 accent-black"
+            className="size-4 accent-gold"
           />
           Usar variantes
         </label>
       </div>
 
       {!enabled ? (
-        <p className="rounded-xl bg-[#f5f9ff] p-3 text-sm font-semibold text-zinc-500">
+        <p className="theme-muted-panel rounded-xl p-3 text-sm font-semibold text-ink-muted">
           Producto simple activo: se conserva el inventario principal actual.
         </p>
       ) : (
@@ -179,14 +179,14 @@ export function ProductVariantsEditor({
             />
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-[#eef6ff]/80 p-3">
-            <div className="text-sm font-bold text-[#0b1f3a]">
+          <div className="theme-muted-panel flex flex-wrap items-center justify-between gap-3 rounded-2xl p-3">
+            <div className="text-sm font-bold text-gold-light">
               {variants.length} variantes · {inventoryTotal} unidades totales
             </div>
             <button
               type="button"
               onClick={generateVariants}
-              className="h-11 rounded-full bg-[#0b1f3a] px-5 text-sm font-black text-white transition hover:bg-black"
+              className="theme-primary-button h-11 rounded-full px-5 text-sm font-black"
             >
               Generar combinaciones
             </button>
@@ -194,7 +194,7 @@ export function ProductVariantsEditor({
 
           {variants.length ? (
             <div className="grid gap-2">
-              <div className="hidden grid-cols-[1.05fr_0.75fr_0.75fr_1.2fr_0.9fr_1fr_44px] gap-2 px-2 text-[11px] font-black uppercase tracking-wide text-zinc-500 lg:grid">
+              <div className="hidden grid-cols-[1.05fr_0.75fr_0.75fr_1.2fr_0.9fr_1fr_44px] gap-2 px-2 text-[11px] font-black uppercase tracking-wide text-ink-muted lg:grid">
                 <span>Color</span>
                 <span>Talla</span>
                 <span>Stock</span>
@@ -204,7 +204,7 @@ export function ProductVariantsEditor({
                 <span />
               </div>
               {variants.map((variant, index) => (
-                <article key={`${variant.color}-${variant.size}-${index}`} className="grid gap-2 rounded-2xl border border-[#d8e7f5] bg-white p-3 lg:grid-cols-[1.05fr_0.75fr_0.75fr_1.2fr_0.9fr_1fr_44px] lg:items-center">
+                <article key={`${variant.color}-${variant.size}-${index}`} className="theme-muted-panel grid gap-2 rounded-2xl p-3 lg:grid-cols-[1.05fr_0.75fr_0.75fr_1.2fr_0.9fr_1fr_44px] lg:items-center">
                   <InlineLabel label="Color">
                     <input
                       value={variant.color}
@@ -263,7 +263,7 @@ export function ProductVariantsEditor({
                   <button
                     type="button"
                     onClick={() => removeVariant(index)}
-                    className="h-10 rounded-full bg-red-50 px-3 text-xs font-black text-red-700 lg:size-10 lg:px-0"
+                    className="theme-danger-button h-10 rounded-full px-3 text-xs font-black lg:size-10 lg:px-0"
                     aria-label="Eliminar variante"
                   >
                     X
@@ -279,18 +279,18 @@ export function ProductVariantsEditor({
                 type="button"
                 onClick={saveEditVariants}
                 disabled={isPending || !variants.length}
-                className="h-12 rounded-full bg-[#0b1f3a] px-5 text-sm font-black text-white disabled:opacity-50"
+                className="theme-primary-button h-12 rounded-full px-5 text-sm font-black disabled:opacity-50"
               >
                 {isPending ? "Guardando..." : "Guardar variantes"}
               </button>
               {message ? (
-                <p className={`rounded-full px-4 py-2 text-sm font-bold ${message.type === "ok" ? "bg-[#eef6ff] text-[#0b1f3a]" : "bg-red-50 text-red-700"}`}>
+                <p className={`rounded-full px-4 py-2 text-sm font-bold ${message.type === "ok" ? "theme-ok" : "theme-error"}`}>
                   {message.text}
                 </p>
               ) : null}
             </div>
           ) : message ? (
-            <p className={`rounded-xl p-3 text-sm font-bold ${message.type === "ok" ? "bg-[#eef6ff] text-[#0b1f3a]" : "bg-red-50 text-red-700"}`}>
+            <p className={`rounded-xl p-3 text-sm font-bold ${message.type === "ok" ? "theme-ok" : "theme-error"}`}>
               {message.text}
             </p>
           ) : null}
@@ -320,15 +320,15 @@ function VariantPicker({
   onRemove: (value: string) => void;
 }) {
   return (
-    <div className="grid gap-3 rounded-2xl border border-[#d8e7f5] bg-[#f5f9ff] p-3">
-      <p className="text-sm font-black text-[#0b1f3a]">{label}</p>
+    <div className="theme-muted-panel grid gap-3 rounded-2xl p-3">
+      <p className="text-sm font-black text-gold-light">{label}</p>
       <div className="flex flex-wrap gap-2">
         {suggestions.map((item) => (
           <button
             key={item}
             type="button"
             onClick={() => onAdd(item)}
-            className="min-h-9 rounded-full border border-zinc-200 bg-white px-3 text-xs font-black transition hover:border-black"
+            className="min-h-9 rounded-full border border-white/10 bg-black-main/50 px-3 text-xs font-black transition hover:border-[var(--border-gold-soft)] hover:text-gold-light"
           >
             {item}
           </button>
@@ -347,17 +347,17 @@ function VariantPicker({
           placeholder={placeholder}
           className={inputClass}
         />
-        <button type="button" onClick={() => onAdd(inputValue)} className="rounded-full bg-black px-4 text-sm font-black text-white">
+        <button type="button" onClick={() => onAdd(inputValue)} className="theme-primary-button rounded-full px-4 text-sm font-black">
           Agregar
         </button>
       </div>
       {values.length ? (
         <div className="flex flex-wrap gap-2">
           {values.map((item) => (
-            <span key={item} className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-xs font-black text-zinc-900 ring-1 ring-zinc-200">
-              {label === "Colores" ? <span className="size-3 rounded-full ring-1 ring-zinc-300" style={{ backgroundColor: colorToHex(item) }} /> : null}
+            <span key={item} className="inline-flex items-center gap-2 rounded-full bg-black-main/50 px-3 py-2 text-xs font-black text-ink ring-1 ring-white/10">
+              {label === "Colores" ? <span className="size-3 rounded-full ring-1 ring-white/20" style={{ backgroundColor: colorToHex(item) }} /> : null}
               {item}
-              <button type="button" onClick={() => onRemove(item)} className="text-zinc-400 hover:text-red-600" aria-label={`Quitar ${item}`}>
+              <button type="button" onClick={() => onRemove(item)} className="text-ink-muted hover:text-red-400" aria-label={`Quitar ${item}`}>
                 x
               </button>
             </span>
@@ -370,14 +370,14 @@ function VariantPicker({
 
 function InlineLabel({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <label className="grid gap-1 text-xs font-black uppercase tracking-wide text-zinc-500 lg:block">
+    <label className="grid gap-1 text-xs font-black uppercase tracking-wide text-ink-muted lg:block">
       <span className="lg:hidden">{label}</span>
       {children}
     </label>
   );
 }
 
-const inputClass = "h-11 w-full rounded-xl border border-[#c7ddf2] bg-white px-3 text-sm font-bold text-zinc-950 outline-none transition focus:border-[#0b1f3a]";
+const inputClass = "theme-field h-11 w-full rounded-xl px-3 text-sm font-bold";
 
 function unique(values: string[]) {
   return Array.from(new Set(values.map((value) => value.trim()).filter(Boolean)));
@@ -402,14 +402,14 @@ function shortCode(value: string) {
 
 function colorToHex(value: string) {
   const key = value.toLowerCase();
-  if (key.includes("negro")) return "#111111";
-  if (key.includes("blanco")) return "#f8fafc";
-  if (key.includes("azul")) return "#2563eb";
-  if (key.includes("ros")) return "#f9a8d4";
-  if (key.includes("beige")) return "#d6b98c";
-  if (key.includes("rojo")) return "#dc2626";
-  if (key.includes("verde")) return "#16a34a";
-  if (key.includes("morado")) return "#8b5cf6";
-  if (key.includes("denim")) return "#1e3a8a";
-  return "#d4d4d8";
+  if (key.includes("negro")) return "var(--swatch-black)";
+  if (key.includes("blanco")) return "var(--swatch-white)";
+  if (key.includes("azul")) return "var(--swatch-blue)";
+  if (key.includes("ros")) return "var(--swatch-pink)";
+  if (key.includes("beige")) return "var(--swatch-beige)";
+  if (key.includes("rojo")) return "var(--swatch-red)";
+  if (key.includes("verde")) return "var(--swatch-green)";
+  if (key.includes("morado")) return "var(--swatch-lilac)";
+  if (key.includes("denim")) return "var(--swatch-denim)";
+  return "var(--swatch-default)";
 }

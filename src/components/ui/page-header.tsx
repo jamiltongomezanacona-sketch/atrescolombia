@@ -22,7 +22,7 @@ export function PageHeader({
     return (
       <div
         className={cn(
-          "atres-rise mb-3 overflow-hidden rounded-[var(--radius-card)] bg-[linear-gradient(145deg,#111111_0%,#1c1917_58%,#2a211c_100%)] px-3.5 py-3 text-white shadow-soft ring-1 ring-white/10 sm:px-4 sm:py-3.5 md:mb-3.5",
+          "theme-gold-panel atres-rise mb-3 overflow-hidden rounded-[var(--radius-card)] px-3.5 py-3 text-white sm:px-4 sm:py-3.5 md:mb-3.5",
           className,
         )}
       >
@@ -44,7 +44,7 @@ export function PageHeader({
     return (
       <div
         className={cn(
-          "atres-rise mb-3 overflow-hidden rounded-[var(--radius-card)] bg-[linear-gradient(135deg,var(--promo)_0%,#fff8d6_55%,#ffffff_100%)] px-3.5 py-3 text-ink shadow-soft ring-1 ring-black/5 sm:px-4 sm:py-3.5 md:mb-3.5",
+          "theme-gold-panel atres-rise mb-3 overflow-hidden rounded-[var(--radius-card)] px-3.5 py-3 text-ink sm:px-4 sm:py-3.5 md:mb-3.5",
           className,
         )}
       >
@@ -53,7 +53,7 @@ export function PageHeader({
           {title}
         </h1>
         {description ? (
-          <p className="mt-1 max-w-xl text-xs font-normal leading-5 text-stone-700 sm:text-sm sm:leading-5">
+          <p className="mt-1 max-w-xl text-xs font-normal leading-5 text-ink-muted sm:text-sm sm:leading-5">
             {description}
           </p>
         ) : null}

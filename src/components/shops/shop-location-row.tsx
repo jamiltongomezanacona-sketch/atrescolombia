@@ -70,7 +70,7 @@ export function ShopLocationButton({
   label?: string;
 }) {
   const href = buildMapsLocationUrl({ mapsUrl, latitude, longitude, address });
-  const buttonClass = `group/loc inline-flex h-11 min-h-11 min-w-0 items-center justify-center gap-1.5 rounded-full border border-black/10 bg-white px-3 text-[11px] font-semibold text-ink transition-[color,border-color,background-color,transform] duration-200 ease-out hover:border-emerald-300/80 hover:bg-emerald-50/70 hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs ${
+  const buttonClass = `theme-secondary-button group/loc inline-flex h-11 min-h-11 min-w-0 items-center justify-center gap-1.5 rounded-full px-3 text-[11px] font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs ${
     fullWidth ? "w-full" : "w-1/2"
   } ${className}`;
 
@@ -80,7 +80,7 @@ export function ShopLocationButton({
     return (
       <span
         aria-disabled="true"
-        className={`${buttonClass} cursor-not-allowed opacity-45 hover:border-black/10 hover:bg-white hover:text-ink`}
+        className={`${buttonClass} cursor-not-allowed opacity-45`}
       >
         <MapPinIcon className="size-3.5 shrink-0" />
         <span className="truncate">{label}</span>

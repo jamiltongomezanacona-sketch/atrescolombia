@@ -69,22 +69,21 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
       {subcategories.length > 0 ? (
         <section className="catalog-container products-catalog-container pb-1.5 md:pb-3" aria-label="Subcategorias">
-          <p className="mb-1 text-xs font-medium text-stone-500 md:mb-2">
+          <p className="mb-1 text-xs font-medium text-ink-muted md:mb-2">
             Subcategorias
           </p>
           <div className="flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] [-ms-overflow-style:none] md:flex-wrap md:gap-2 [&::-webkit-scrollbar]:hidden">
             <Link
               href={`/categoria/${category.slug}`}
-              className="shrink-0 rounded-full bg-black px-3 py-1.5 text-xs font-medium shadow-sm md:px-4 md:py-2"
-              style={{ color: "#fff" }}
+              className="shrink-0 rounded-full bg-gold px-3 py-1.5 text-xs font-medium text-black-main shadow-sm md:px-4 md:py-2"
             >
-              <span className="text-white">Todo {category.shortName}</span>
+              <span>Todo {category.shortName}</span>
             </Link>
             {subcategories.map((child) => (
               <Link
                 key={child.slug}
                 href={`/categoria/${child.slug}`}
-                className="shrink-0 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-stone-800 ring-1 ring-black/5 transition hover:bg-black hover:text-white md:px-4 md:py-2"
+                className="theme-secondary-button shrink-0 rounded-full px-3 py-1.5 text-xs font-medium md:px-4 md:py-2"
               >
                 {child.shortName}
               </Link>
@@ -95,7 +94,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
       <section className="catalog-container products-catalog-container py-2 md:py-3">
         {categoryProducts.length === 0 ? (
-          <p className="text-sm font-normal text-stone-500">
+          <p className="text-sm font-normal text-ink-muted">
             No hay productos en esta categoria por ahora. Explora otras colecciones ATRES.
           </p>
         ) : (

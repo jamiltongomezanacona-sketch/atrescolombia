@@ -18,7 +18,7 @@ export function LoginForm() {
         <p
           role="status"
           aria-live="polite"
-          className="rounded-[var(--radius-card)] bg-red-50 p-3 text-sm font-medium text-red-700"
+          className="theme-error rounded-[var(--radius-card)] p-3 text-sm font-medium"
         >
           {state.message}
         </p>

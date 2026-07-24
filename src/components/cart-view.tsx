@@ -152,7 +152,7 @@ export function CartView({ whatsapp }: CartViewProps) {
 
   if (!ready) {
     return (
-      <p className="text-sm font-normal text-stone-500" role="status" aria-live="polite">
+      <p className="text-sm font-normal text-ink-muted" role="status" aria-live="polite">
         Cargando carrito…
       </p>
     );
@@ -186,7 +186,7 @@ export function CartView({ whatsapp }: CartViewProps) {
         {rows.map(({ item, product }) => (
           <article
             key={`${item.slug}-${item.color}-${item.size}`}
-            className="grid grid-cols-[96px_1fr] gap-3 rounded-lg bg-white/85 p-3 shadow-soft ring-1 ring-white/65"
+            className="theme-panel grid grid-cols-[96px_1fr] gap-3 rounded-lg p-3"
           >
             <Link
               href={`/productos/${product.slug}`}
@@ -198,12 +198,12 @@ export function CartView({ whatsapp }: CartViewProps) {
               <Link href={`/productos/${product.slug}`} className="line-clamp-2 text-base font-medium text-ink">
                 {product.name}
               </Link>
-              <p className="mt-1 text-xs font-normal text-stone-500">
+              <p className="mt-1 text-xs font-normal text-ink-muted">
                 {item.color} / {item.size}
               </p>
               <ProductPrice price={product.price * item.quantity} className="mt-3" />
               <div className="mt-3 flex flex-wrap items-center gap-2">
-                <div className="grid grid-cols-[36px_44px_36px] overflow-hidden rounded-full bg-stone-100 text-center">
+                <div className="grid grid-cols-[36px_44px_36px] overflow-hidden rounded-full bg-surface-muted text-center ring-1 ring-white/10">
                   <button
                     type="button"
                     aria-label={`Reducir cantidad de ${product.name}`}
@@ -212,7 +212,7 @@ export function CartView({ whatsapp }: CartViewProps) {
                   >
                     -
                   </button>
-                  <span className="flex h-11 items-center justify-center bg-white text-sm font-medium">
+                  <span className="flex h-11 items-center justify-center bg-black-main text-sm font-medium">
                     {item.quantity}
                   </span>
                   <button
@@ -227,7 +227,7 @@ export function CartView({ whatsapp }: CartViewProps) {
                 <button
                   type="button"
                   onClick={() => removeItem(item)}
-                  className="h-11 rounded-full bg-stone-100 px-3 text-xs font-medium text-stone-700"
+                  className="theme-secondary-button h-11 rounded-full px-3 text-xs font-medium"
                 >
                   Eliminar
                 </button>
@@ -238,16 +238,16 @@ export function CartView({ whatsapp }: CartViewProps) {
       </div>
       <GlassPanel as="aside" className="p-5">
         <h2 className="text-2xl font-medium text-ink">Resumen</h2>
-        <div className="mt-4 flex items-center justify-between border-t border-black/10 pt-4">
-          <span className="text-sm font-normal text-stone-500">Subtotal</span>
-          <span className="text-xl font-medium">{formatCOP(subtotal)}</span>
+        <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
+          <span className="text-sm font-normal text-ink-muted">Subtotal</span>
+          <span className="text-xl font-medium text-gold-light">{formatCOP(subtotal)}</span>
         </div>
         {whatsappUrl ? (
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-5 inline-flex h-12 w-full items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-medium text-white transition hover:bg-[#1ebe57]"
+            className="theme-secondary-button mt-5 inline-flex h-12 w-full items-center justify-center rounded-full px-4 text-sm font-medium"
           >
             Continuar por WhatsApp
           </a>

@@ -96,7 +96,7 @@ export function HomeFeaturedCollections(props: HomeFeaturedCollectionsProps) {
           <Link
             key={tile.key}
             href={tile.href}
-            className="home-scroll-item group relative aspect-[4/5] min-w-[42%] overflow-hidden rounded-[var(--radius-card)] bg-ink text-white shadow-soft ring-1 ring-black/[0.06] sm:min-w-0"
+            className="home-scroll-item group relative aspect-[4/5] min-w-[42%] overflow-hidden rounded-[var(--radius-card)] bg-black-main text-white shadow-soft ring-1 ring-white/10 sm:min-w-0"
           >
             <SafeProductImage
               src={tile.image}

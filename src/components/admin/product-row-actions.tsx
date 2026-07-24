@@ -92,7 +92,7 @@ export function ProductRowActions({ productId, status, productName = "este produ
             onClick={runDelete}
             variant="brand"
             size="sm"
-            className="h-10 rounded-full !bg-red-600 px-3 !text-white hover:!bg-red-700"
+            className="theme-danger-button h-10 rounded-full px-3"
           >
             Eliminar
           </Button>
@@ -103,13 +103,13 @@ export function ProductRowActions({ productId, status, productName = "este produ
             onClick={() => run("archived")}
             variant="secondary"
             size="sm"
-            className="h-10 rounded-full !bg-red-50 px-3 !text-red-700 hover:!bg-red-100"
+            className="theme-danger-button h-10 rounded-full px-3"
           >
             Archivar
           </Button>
         )}
       </div>
-      {message ? <p className="text-xs font-bold text-red-700">{message}</p> : null}
+      {message ? <p className="text-xs font-bold text-red-300">{message}</p> : null}
     </div>
   );
 }

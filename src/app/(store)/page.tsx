@@ -148,7 +148,7 @@ function EditorialTile({ product, featured = false }: { product: Product; featur
   return (
     <Link
       href={`/productos/${product.slug}`}
-      className={`group relative overflow-hidden rounded-[var(--radius-card)] bg-ink ring-1 ring-black/[0.06] ${
+      className={`group relative overflow-hidden rounded-[var(--radius-card)] bg-black-main ring-1 ring-white/10 ${
         featured ? "min-h-[220px] md:min-h-[340px]" : "min-h-[132px] md:min-h-[168px]"
       }`}
     >
@@ -171,7 +171,7 @@ function EditorialTile({ product, featured = false }: { product: Product; featur
           <ProductPrice
             price={product.price}
             previousPrice={product.previousPrice}
-            className="inline-flex rounded-[var(--radius-card)] bg-white/92 px-2 py-1 text-ink backdrop-blur-sm"
+            className="inline-flex rounded-[var(--radius-card)] bg-black-main/80 px-2 py-1 text-ink backdrop-blur-sm ring-1 ring-white/10"
             currentClassName={featured ? "text-base" : "text-sm"}
             previousClassName="mt-0 text-[10px]"
           />
@@ -209,7 +209,7 @@ function FlashSection({ products }: { products: Product[] }) {
             <Link
               key={`flash-${product.slug}`}
               href={`/productos/${product.slug}`}
-              className="atres-interactive grid grid-cols-[84px_1fr] gap-2.5 rounded-[var(--radius-card)] bg-surface p-2 ring-1 ring-black/[0.05] sm:grid-cols-[96px_1fr] sm:p-2.5"
+              className="atres-interactive theme-panel grid grid-cols-[84px_1fr] gap-2.5 rounded-[var(--radius-card)] p-2 sm:grid-cols-[96px_1fr] sm:p-2.5"
             >
               <div className="relative aspect-square overflow-hidden rounded-[var(--radius-card)] bg-surface-muted">
                 <SafeProductImage src={product.image} alt={product.name} sizes="96px" className="object-cover" />

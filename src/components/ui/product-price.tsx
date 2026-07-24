@@ -30,7 +30,7 @@ export function ProductPrice({
     <div className={cn("min-w-0", className)}>
       <p
         className={cn(
-          "font-bold leading-none tracking-tight text-price underline decoration-badge-gold decoration-8 underline-offset-[6px]",
+          "font-bold leading-none tracking-normal text-price",
           sizeClass[size],
           currentClassName,
         )}

@@ -21,7 +21,7 @@ export default async function CategoriesIndexPage() {
           description="Hombre, Mujer, Niños y Hogar. Entra a cada uno para ver sus subcategorias."
         />
         {categories.length === 0 ? (
-          <p className="text-sm font-normal text-stone-500">No hay categorias con productos disponibles.</p>
+          <p className="text-sm font-normal text-ink-muted">No hay categorias con productos disponibles.</p>
         ) : (
           <div className="grid grid-cols-2 gap-2.5 md:gap-3 lg:grid-cols-4">
             {categories.map((category) => {
@@ -31,7 +31,7 @@ export default async function CategoriesIndexPage() {
                 <Link
                   key={category.slug}
                   href={`/categoria/${category.slug}`}
-                  className={`group relative isolate min-h-[156px] overflow-hidden rounded-lg p-3.5 shadow-soft ring-1 ring-white/60 transition hover:-translate-y-1 sm:min-h-[178px] ${theme.washClass}`}
+                  className={`group relative isolate min-h-[156px] overflow-hidden rounded-lg p-3.5 shadow-soft ring-1 ring-white/15 transition hover:-translate-y-1 hover:ring-gold/35 sm:min-h-[178px] ${theme.washClass}`}
                 >
                   <div className="pointer-events-none absolute inset-0">
                     <SafeProductImage

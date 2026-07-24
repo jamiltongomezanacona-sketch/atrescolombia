@@ -451,7 +451,7 @@ export const promos: Promo[] = [
     href: "/ofertas",
     image:
       "/assets/atres-curated/banners/banner-campana_atres-001.webp",
-    tone: "bg-promo text-black",
+    tone: "bg-gold text-black-main",
   },
   {
     title: "Novedades de la semana",
@@ -459,7 +459,7 @@ export const promos: Promo[] = [
     href: "/novedades",
     image:
       "/assets/atres-curated/banners/banner-campana_atres-003.webp",
-    tone: "bg-black text-white",
+    tone: "bg-black-main text-white",
   },
   {
     title: "Denim Club",
@@ -467,7 +467,7 @@ export const promos: Promo[] = [
     href: "/categoria/jeans",
     image:
       "/assets/atres-curated/banners/banner-campana_atres-007.webp",
-    tone: "bg-white text-black",
+    tone: "bg-surface text-ink",
   },
 ];
 

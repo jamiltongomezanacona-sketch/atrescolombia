@@ -3,14 +3,14 @@ import { cn } from "@/lib/cn";
 
 const variants = {
   primary:
-    "bg-ink text-white shadow-soft hover:bg-stone-800 hover:shadow-press",
+    "theme-primary-button",
   metal:
-    "bg-[#161616] text-white shadow-soft hover:bg-[#2a2a2a] hover:shadow-press",
+    "theme-secondary-button",
   brand:
-    "bg-brand text-white shadow-soft hover:bg-brand-hover hover:shadow-press",
+    "theme-primary-button",
   secondary:
-    "bg-surface text-ink ring-1 ring-black/10 shadow-sm hover:bg-surface-muted hover:ring-black/15",
-  ghost: "bg-transparent text-inherit hover:bg-black/[0.04]",
+    "theme-secondary-button",
+  ghost: "bg-transparent text-inherit hover:bg-white/[0.06]",
 } as const;
 
 const sizes = {

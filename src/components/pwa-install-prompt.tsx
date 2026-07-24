@@ -75,9 +75,9 @@ export function PwaInstallPrompt() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-x-3 bottom-20 z-50 mx-auto max-w-md overflow-hidden rounded-[10px] bg-black text-white shadow-[0_24px_70px_rgba(0,0,0,0.35)] ring-1 ring-white/10 md:bottom-5">
+    <div className="theme-panel fixed inset-x-3 bottom-20 z-50 mx-auto max-w-md overflow-hidden rounded-[10px] text-white shadow-lift md:bottom-5">
       <div className="flex gap-3 p-4">
-        <div className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-[10px] bg-white p-1">
+        <div className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-[10px] bg-black-main p-1 ring-1 ring-gold/25">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/icon-192.png" alt="" className="h-full w-full object-contain" />
         </div>
@@ -94,7 +94,7 @@ export function PwaInstallPrompt() {
                 type="button"
                 onClick={install}
                 aria-label="Instalar aplicacion ATRES"
-                className="rounded-full bg-white px-4 py-2 text-xs font-medium text-black"
+                className="theme-primary-button rounded-full px-4 py-2 text-xs font-medium"
               >
                 Instalar
               </button>
@@ -103,7 +103,7 @@ export function PwaInstallPrompt() {
               type="button"
               onClick={dismiss}
               aria-label="Cerrar aviso de instalacion"
-              className="rounded-full bg-white/10 px-4 py-2 text-xs font-medium text-white"
+              className="theme-secondary-button rounded-full px-4 py-2 text-xs font-medium"
             >
               Ahora no
             </button>

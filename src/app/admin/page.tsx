@@ -19,7 +19,7 @@ export default async function AdminDashboardPage() {
   return (
     <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-5">
-        <div className="rounded-[var(--radius-card)] bg-ink p-5 text-white md:p-6">
+        <div className="theme-gold-panel rounded-[var(--radius-card)] p-5 text-white md:p-6">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-[11px] font-medium tracking-wide text-white/55">ATRES Studio</p>
@@ -30,7 +30,7 @@ export default async function AdminDashboardPage() {
             </div>
             <Link
               href="/admin/productos/nuevo"
-              className="rounded-[var(--radius-card)] bg-white px-4 py-2.5 text-sm font-medium text-ink transition hover:bg-surface-muted active:scale-[0.98]"
+              className="theme-primary-button rounded-[var(--radius-card)] px-4 py-2.5 text-sm font-medium active:scale-[0.98]"
             >
               Crear producto
             </Link>
@@ -46,7 +46,7 @@ export default async function AdminDashboardPage() {
           <StatCard label="Banners" value={banners.length} />
         </div>
         <section className="grid gap-4 lg:grid-cols-[1fr_320px]">
-          <div className="rounded-[var(--radius-card)] border border-black/[0.06] bg-surface p-4 md:p-5">
+          <div className="theme-panel rounded-[var(--radius-card)] p-4 md:p-5">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-[11px] font-medium tracking-wide text-ink-muted">Edicion rapida</p>
@@ -54,7 +54,7 @@ export default async function AdminDashboardPage() {
               </div>
               <Link
                 href="/admin/productos"
-                className="rounded-[var(--radius-card)] bg-surface-muted px-3 py-2 text-xs font-medium text-ink-muted transition hover:bg-ink hover:text-white"
+                className="theme-secondary-button rounded-[var(--radius-card)] px-3 py-2 text-xs font-medium"
               >
                 Ver todos
               </Link>
@@ -64,7 +64,7 @@ export default async function AdminDashboardPage() {
                 <Link
                   key={product.id}
                   href={`/admin/productos/${product.id}/editar`}
-                  className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-[var(--radius-card)] px-3 py-3 text-sm transition hover:bg-surface-muted"
+                  className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-[var(--radius-card)] px-3 py-3 text-sm transition hover:bg-surface-muted hover:text-gold-light"
                 >
                   <span>
                     <span className="block font-medium text-ink">{product.name}</span>
@@ -72,7 +72,7 @@ export default async function AdminDashboardPage() {
                       {product.sku || "Sin SKU"}
                     </span>
                   </span>
-                  <span className="rounded-[var(--radius-card)] bg-surface-muted px-2.5 py-1 text-xs font-medium text-ink-muted">
+                  <span className="rounded-[var(--radius-card)] bg-surface-muted px-2.5 py-1 text-xs font-medium text-gold-light">
                     Editar
                   </span>
                 </Link>
@@ -93,7 +93,7 @@ export default async function AdminDashboardPage() {
               <Link
                 key={href}
                 href={href}
-                className="rounded-[var(--radius-card)] border border-black/[0.06] bg-surface p-4 text-sm font-medium transition hover:border-black/10 hover:shadow-soft"
+                className="theme-panel rounded-[var(--radius-card)] p-4 text-sm font-medium transition hover:border-[var(--border-gold-soft)] hover:shadow-lift"
               >
                 <span className="block text-ink">{label}</span>
                 <span className="mt-1 block text-xs font-normal text-ink-muted">Gestionar modulo</span>

@@ -27,9 +27,9 @@ export default async function EditProductPage({ params, searchParams }: EditProd
   return (
     <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-4 md:gap-5">
-        <div className="relative overflow-hidden rounded-2xl bg-[#0b1f3a] p-4 text-white shadow-sm ring-1 ring-[#284a68] md:p-6">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[#6ea8d9]" />
-          <p className="relative text-xs font-black uppercase tracking-[0.18em] text-[#9fd2ff]">Catalogo studio</p>
+        <div className="theme-gold-panel relative overflow-hidden rounded-2xl p-4 text-white md:p-6">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gold" />
+          <p className="theme-kicker relative">Catalogo studio</p>
           <div className="relative mt-2 flex flex-wrap items-end justify-between gap-4">
             <div>
               <h1 className="text-2xl font-black tracking-tight md:text-4xl">Editar producto</h1>
@@ -41,20 +41,20 @@ export default async function EditProductPage({ params, searchParams }: EditProd
               href={`/productos/${product.slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-white px-4 py-2.5 text-sm font-black text-black transition hover:bg-zinc-100"
+              className="theme-primary-button rounded-full px-4 py-2.5 text-sm font-black"
             >
               Ver en tienda
             </a>
           </div>
         </div>
         {query?.guardado ? (
-          <p className="rounded-xl bg-[#eef6ff] p-3 text-sm font-bold text-[#0b1f3a] ring-1 ring-[#d8e7f5]">
+          <p className="theme-ok rounded-xl p-3 text-sm font-bold">
             Producto guardado.
           </p>
         ) : null}
         <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_420px] xl:items-start">
           <div className="grid gap-4">
-            <div className="rounded-2xl bg-white/95 p-3 shadow-sm ring-1 ring-[#d8e7f5] md:p-5">
+            <div className="theme-panel rounded-2xl p-3 md:p-5">
               <ProductForm product={product} categories={categories} />
             </div>
             <ProductVariantsEditor

@@ -61,8 +61,8 @@ export function FavoriteButton({
       aria-label={active ? activeLabel : label}
       className={
         compact
-          ? "grid size-9 place-items-center rounded-full bg-white/95 text-black shadow-sm ring-1 ring-black/10 transition hover:scale-105 hover:bg-white"
-          : "inline-flex h-11 items-center gap-2 rounded-full bg-white px-4 text-sm font-medium text-black shadow-sm ring-1 ring-black/10 transition hover:bg-amber-100"
+          ? "grid size-9 place-items-center rounded-full bg-black-main/88 text-white shadow-sm ring-1 ring-[var(--border-gold-soft)] transition hover:scale-105 hover:text-gold-light hover:ring-[var(--border-gold-strong)]"
+          : "inline-flex h-11 items-center gap-2 rounded-full bg-surface px-4 text-sm font-medium text-white shadow-sm ring-1 ring-[var(--border-gold-soft)] transition hover:bg-surface-muted hover:text-gold-light"
       }
     >
       <HeartIcon filled={active} />
@@ -76,7 +76,7 @@ function HeartIcon({ filled }: { filled: boolean }) {
     <svg
       aria-hidden="true"
       viewBox="0 0 24 24"
-      className={`size-5 ${filled ? "fill-red-600 text-red-600" : "fill-none text-black"}`}
+      className={`size-5 ${filled ? "fill-red-500 text-red-500" : "fill-none text-current"}`}
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"

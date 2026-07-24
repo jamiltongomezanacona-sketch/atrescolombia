@@ -35,11 +35,11 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
   return (
     <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-5">
-        <div className="relative overflow-hidden rounded-2xl bg-[#0b1f3a] p-4 text-white shadow-sm ring-1 ring-[#284a68] md:p-5">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[#6ea8d9]" />
+        <div className="theme-gold-panel relative overflow-hidden rounded-2xl p-4 text-white md:p-5">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gold" />
           <div className="relative flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold tracking-wide text-[#9fd2ff]">Catalogo studio</p>
+            <p className="text-xs font-semibold tracking-wide text-gold-light">Catalogo studio</p>
             <h1 className="mt-1 text-3xl font-semibold tracking-tight">Productos</h1>
             <p className="mt-1 text-sm font-normal text-white/72">
               {statusSummary}. Usa Editar para cambiar precio, fotos, stock y contenido.
@@ -61,7 +61,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
           </Button>
           </div>
         </div>
-        <form className="grid gap-3 rounded-2xl bg-white/95 p-3 shadow-sm ring-1 ring-[#d8e7f5] md:grid-cols-[1fr_180px_auto] md:p-4">
+        <form className="theme-panel grid gap-3 rounded-2xl p-3 md:grid-cols-[1fr_180px_auto] md:p-4">
           <Input name="q" defaultValue={params?.q ?? ""} placeholder="Buscar producto o SKU" />
           <AdminSelect name="estado" defaultValue={estado} aria-label="Estado">
             <option value="">Todos</option>
@@ -76,8 +76,8 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
 
         <div className="grid gap-3 lg:hidden">
           {filtered.map((product) => (
-            <article key={product.id} className="overflow-hidden rounded-2xl bg-white/92 p-4 shadow-sm ring-1 ring-black/5">
-              <div className="mb-3 h-1 rounded-full bg-[#2f6f9f]" />
+            <article key={product.id} className="theme-panel overflow-hidden rounded-2xl p-4">
+              <div className="mb-3 h-1 rounded-full bg-gold" />
               <div className="flex items-start gap-3">
                 <ProductThumb image={imageByProduct.get(product.id)} name={safeText(product.name) || "Producto"} />
                 <div className="min-w-0 flex-1">
@@ -87,20 +87,20 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
                     </Link>
                     <AdminStatusBadge status={safeText(product.status) || "hidden"} />
                   </div>
-                  <p className="mt-1 text-xs font-normal text-zinc-500">{safeText(product.sku) || "Sin SKU"}</p>
+                  <p className="mt-1 text-xs font-normal text-ink-muted">{safeText(product.sku) || "Sin SKU"}</p>
                 </div>
               </div>
               <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
                 <div>
-                  <dt className="text-xs font-semibold text-zinc-500">Precio</dt>
-                  <dd className="font-semibold">${safeNumber(product.price).toLocaleString("es-CO")}</dd>
+                  <dt className="text-xs font-semibold text-ink-muted">Precio</dt>
+                  <dd className="font-semibold text-gold-light">${safeNumber(product.price).toLocaleString("es-CO")}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-semibold text-zinc-500">Inventario</dt>
+                  <dt className="text-xs font-semibold text-ink-muted">Inventario</dt>
                   <dd className="font-semibold">{safeNumber(product.inventory_total)}</dd>
                 </div>
                 <div className="col-span-2">
-                  <dt className="text-xs font-semibold text-zinc-500">Categoria</dt>
+                  <dt className="text-xs font-semibold text-ink-muted">Categoria</dt>
                   <dd className="font-normal">
                     {product.category_id ? categoryById.get(product.category_id) : "Sin categoria"}
                     {product.subcategory_id && categoryById.get(product.subcategory_id)
@@ -118,15 +118,15 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
               </div>
             </article>
           ))}
-          {!filtered.length ? <p className="rounded-2xl bg-white p-6 text-sm font-semibold text-zinc-500 shadow-sm">No hay productos para mostrar.</p> : null}
+          {!filtered.length ? <p className="theme-panel rounded-2xl p-6 text-sm font-semibold text-ink-muted">No hay productos para mostrar.</p> : null}
         </div>
 
-        <div className="hidden overflow-hidden rounded-2xl bg-white/95 shadow-sm ring-1 ring-black/5 lg:block">
+        <div className="theme-panel hidden overflow-hidden rounded-2xl lg:block">
           <div className="overflow-x-auto">
           <table className="w-full min-w-[720px] text-left text-sm">
-            <thead className="bg-[#0b1f3a] text-xs uppercase text-white/75">
+            <thead className="bg-black-main text-xs uppercase text-white/75">
               <tr>
-                <th className="sticky left-0 bg-zinc-950 p-4">Producto</th>
+                <th className="sticky left-0 bg-black-main p-4">Producto</th>
                 <th className="p-3">Estado</th>
                 <th className="p-3">Categoria</th>
                 <th className="p-3">Precio</th>
@@ -137,15 +137,15 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
             </thead>
             <tbody>
               {filtered.map((product) => (
-                <tr key={product.id} className="group border-t border-zinc-100 transition hover:bg-[#eef6ff]">
-                  <td className="sticky left-0 bg-white p-4 transition group-hover:bg-[#eef6ff]">
+                <tr key={product.id} className="group border-t border-white/10 transition hover:bg-surface-muted">
+                  <td className="sticky left-0 bg-surface p-4 transition group-hover:bg-surface-muted">
                     <div className="flex items-center gap-3">
                       <ProductThumb image={imageByProduct.get(product.id)} name={safeText(product.name) || "Producto"} />
                       <div className="min-w-0">
                         <Link href={`/admin/productos/${product.id}/editar`} className="font-semibold hover:underline">
                           {safeText(product.name) || "Producto sin nombre"}
                         </Link>
-                        <p className="text-xs font-normal text-zinc-500">{safeText(product.sku) || "Sin SKU"}</p>
+                        <p className="text-xs font-normal text-ink-muted">{safeText(product.sku) || "Sin SKU"}</p>
                       </div>
                     </div>
                   </td>
@@ -158,7 +158,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
                       ? ` / ${categoryById.get(product.subcategory_id)}`
                       : ""}
                   </td>
-                  <td className="p-3 font-semibold">${safeNumber(product.price).toLocaleString("es-CO")}</td>
+                  <td className="p-3 font-semibold text-gold-light">${safeNumber(product.price).toLocaleString("es-CO")}</td>
                   <td className="p-3">{safeNumber(product.inventory_total)}</td>
                   <td className="p-3">{formatDate(product.created_at)}</td>
                   <td className="p-3">
@@ -173,7 +173,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
             </tbody>
           </table>
           </div>
-          {!filtered.length ? <p className="p-6 text-sm font-semibold text-zinc-500">No hay productos para mostrar.</p> : null}
+          {!filtered.length ? <p className="p-6 text-sm font-semibold text-ink-muted">No hay productos para mostrar.</p> : null}
         </div>
       </div>
     </AdminShell>
@@ -230,7 +230,7 @@ function getStatusSummary(
 
 function ProductThumb({ image, name }: { image?: AdminProductImage; name: string }) {
   return (
-    <div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-zinc-100 ring-1 ring-black/5">
+    <div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-surface-muted ring-1 ring-white/10">
       {image?.public_url ? (
         <SafeProductImage
           src={image.public_url}
@@ -239,7 +239,7 @@ function ProductThumb({ image, name }: { image?: AdminProductImage; name: string
           className="h-full w-full object-cover"
         />
       ) : (
-        <div className="grid h-full w-full place-items-center text-[10px] font-semibold text-zinc-400">
+        <div className="grid h-full w-full place-items-center text-[10px] font-semibold text-ink-muted">
           Sin foto
         </div>
       )}

@@ -25,7 +25,7 @@ export default async function ShopsPage() {
   return (
     <main>
       <section className="catalog-container products-catalog-container pb-3 pt-1 md:pb-4 md:pt-1.5 lg:pb-5 lg:pt-2">
-        <div className="mb-2.5 flex flex-col gap-1 border-b border-black/[0.06] pb-2 sm:mb-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+        <div className="mb-2.5 flex flex-col gap-1 border-b border-white/10 pb-2 sm:mb-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
           <div className="min-w-0">
             <h1 className="text-sm font-medium tracking-tight text-ink sm:text-base lg:text-lg">
               Tiendas

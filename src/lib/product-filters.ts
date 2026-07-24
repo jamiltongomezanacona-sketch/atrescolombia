@@ -5,6 +5,7 @@ export type CatalogFilterState = {
   q?: string;
   categoria?: string;
   tienda?: string;
+  ciudad?: string;
   talla?: string;
   color?: string;
   coleccion?: string;
@@ -18,6 +19,8 @@ export type CatalogFilterState = {
 
 export type CatalogFilterOptions = {
   categories: Array<{ slug: string; label: string }>;
+  cities: string[];
+  shops: Array<{ slug: string; label: string; city?: string }>;
   sizes: string[];
   colors: string[];
   collections: string[];
@@ -43,6 +46,7 @@ export function parseCatalogFilters(
     q: value("q")?.trim() || undefined,
     categoria: value("categoria")?.trim() || undefined,
     tienda: value("tienda")?.trim() || undefined,
+    ciudad: value("ciudad")?.trim() || undefined,
     talla: value("talla")?.trim() || undefined,
     color: value("color")?.trim() || undefined,
     coleccion: value("coleccion")?.trim() || undefined,
@@ -61,6 +65,7 @@ export function buildCatalogQuery(filters: CatalogFilterState, basePath = "/prod
   if (filters.q) params.set("q", filters.q);
   if (filters.categoria) params.set("categoria", filters.categoria);
   if (filters.tienda) params.set("tienda", filters.tienda);
+  if (filters.ciudad) params.set("ciudad", filters.ciudad);
   if (filters.talla) params.set("talla", filters.talla);
   if (filters.color) params.set("color", filters.color);
   if (filters.coleccion) params.set("coleccion", filters.coleccion);
@@ -82,6 +87,8 @@ export function collectFilterOptions(
   const sizes = new Set<string>();
   const colors = new Set<string>();
   const collections = new Set<string>();
+  const cities = new Set<string>();
+  const shops = new Map<string, { slug: string; label: string; city?: string }>();
   let priceMin = Number.POSITIVE_INFINITY;
   let priceMax = 0;
 
@@ -98,6 +105,16 @@ export function collectFilterOptions(
     if (product.collection?.trim() && product.collection.trim().toLowerCase() !== "atres") {
       collections.add(product.collection.trim());
     }
+    if (product.shopCity?.trim()) {
+      cities.add(product.shopCity.trim());
+    }
+    if (product.shopSlug?.trim() && product.shopName?.trim()) {
+      shops.set(product.shopSlug.trim(), {
+        slug: product.shopSlug.trim(),
+        label: product.shopName.trim(),
+        city: product.shopCity?.trim() || undefined,
+      });
+    }
   }
 
   const topCategories = categories
@@ -106,6 +123,8 @@ export function collectFilterOptions(
 
   return {
     categories: topCategories,
+    cities: Array.from(cities).sort((a, b) => a.localeCompare(b, "es")),
+    shops: Array.from(shops.values()).sort((a, b) => a.label.localeCompare(b.label, "es")),
     sizes: Array.from(sizes).sort((a, b) => a.localeCompare(b, "es")),
     colors: Array.from(colors).sort((a, b) => a.localeCompare(b, "es")),
     collections: Array.from(collections).sort((a, b) => a.localeCompare(b, "es")),
@@ -145,6 +164,11 @@ export function applyCatalogFilters(
   if (filters.tienda) {
     const target = normalizeNavSlug(filters.tienda);
     list = list.filter((product) => normalizeNavSlug(product.shopSlug ?? "") === target);
+  }
+
+  if (filters.ciudad) {
+    const target = normalizeNavSlug(filters.ciudad);
+    list = list.filter((product) => normalizeNavSlug(product.shopCity ?? "") === target);
   }
 
   if (filters.talla) {
@@ -192,7 +216,7 @@ export function sortCatalogProducts(products: Product[], order: string) {
     return sorted.sort((a, b) => Number(b.isNew) - Number(a.isNew));
   }
 
-  if (order === "tendencias") {
+  if (order === "tendencias" || order === "mas-vendidos") {
     return sorted.sort((a, b) => trendScore(b) - trendScore(a));
   }
 
@@ -223,6 +247,8 @@ function shuffleProducts(products: Product[]) {
 export function countActiveFilters(filters: CatalogFilterState) {
   let count = 0;
   if (filters.categoria) count += 1;
+  if (filters.tienda) count += 1;
+  if (filters.ciudad) count += 1;
   if (filters.talla) count += 1;
   if (filters.color) count += 1;
   if (filters.coleccion) count += 1;

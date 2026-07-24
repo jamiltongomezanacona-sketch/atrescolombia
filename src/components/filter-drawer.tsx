@@ -14,16 +14,24 @@ type FilterDrawerProps = {
   filters: CatalogFilterState;
   options: CatalogFilterOptions;
   action?: string;
+  label?: string;
 };
 
 function subscribe() {
   return () => {};
 }
 
-export function FilterDrawer({ filters, options, action = "/productos" }: FilterDrawerProps) {
+export function FilterDrawer({
+  filters,
+  options,
+  action = "/productos",
+  label = "Filtros",
+}: FilterDrawerProps) {
   const [open, setOpen] = useState(false);
   const mounted = useSyncExternalStore(subscribe, () => true, () => false);
-  const titleId = useId();
+  const baseTitleId = useId();
+  const mobileTitleId = `${baseTitleId}-mobile`;
+  const dropdownTitleId = `${baseTitleId}-dropdown`;
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -108,14 +116,14 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
           id="atres-filter-drawer"
           role="dialog"
           aria-modal="true"
-          aria-labelledby={titleId}
+          aria-labelledby={mobileTitleId}
           className={cn(
             "theme-panel absolute inset-x-0 bottom-0 flex max-h-[84vh] flex-col rounded-t-[var(--radius-card)] shadow-lift transition-transform duration-300",
             open ? "translate-y-0" : "translate-y-full",
           )}
         >
           <FilterPanelHeader
-            titleId={titleId}
+            titleId={mobileTitleId}
             closeRef={closeRef}
             activeCount={activeCount}
             onClose={() => setOpen(false)}
@@ -157,7 +165,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         aria-controls="atres-filter-dropdown"
       >
         <FilterIcon />
-        <span className="text-current">Filtros</span>
+        <span className="text-current">{label}</span>
         {activeCount > 0 ? (
           <span
             className={cn(
@@ -176,7 +184,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         id="atres-filter-dropdown"
         role="dialog"
         aria-modal="true"
-        aria-labelledby={titleId}
+        aria-labelledby={dropdownTitleId}
         hidden={!open}
         className={cn(
           "theme-panel absolute left-0 top-[calc(100%+0.4rem)] hidden w-[min(92vw,22rem)] overflow-hidden rounded-[var(--radius-card)] shadow-lift sm:block",
@@ -184,7 +192,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         )}
       >
         <FilterPanelHeader
-          titleId={titleId}
+          titleId={dropdownTitleId}
           closeRef={closeRef}
           activeCount={activeCount}
           onClose={() => setOpen(false)}
@@ -235,7 +243,7 @@ function FilterPanelHeader({
         onClick={onClose}
       >
         <span aria-hidden="true" className="text-xl leading-none">
-          ×
+          x
         </span>
       </button>
     </div>

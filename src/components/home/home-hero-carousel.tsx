@@ -49,7 +49,7 @@ export function HomeHeroCarousel({ slides }: HomeHeroCarouselProps) {
   return (
     <section
       className="home-hero relative isolate overflow-hidden bg-black-main text-white"
-      aria-labelledby="home-hero-title"
+      aria-labelledby="home-hero-brand"
       aria-roledescription={hasMany ? "carrusel" : undefined}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -74,38 +74,42 @@ export function HomeHeroCarousel({ slides }: HomeHeroCarouselProps) {
               alt=""
               priority={index === 0}
               sizes="100vw"
-              className="object-cover object-[center_32%] opacity-85 sm:object-[center_28%] lg:object-[68%_32%] lg:opacity-90"
+              className="object-cover object-[center_28%] opacity-80 sm:object-[center_24%] lg:object-[72%_30%] lg:opacity-88"
             />
           </div>
         ))}
-        <div className="premium-fade-hero absolute inset-0" />
-        <div className="premium-fade-gold absolute inset-0" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/78 to-black/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+        <div className="premium-fade-gold absolute inset-0 opacity-70" />
       </div>
 
-      <div className="catalog-container relative flex min-h-[300px] max-h-[440px] flex-col justify-end pb-4 pt-8 sm:min-h-[340px] sm:pb-6 sm:pt-10 lg:min-h-[400px] lg:max-h-[480px] lg:pb-7">
+      <div className="catalog-container relative flex min-h-[340px] max-h-[520px] flex-col justify-end pb-5 pt-10 sm:min-h-[380px] sm:pb-7 sm:pt-12 lg:min-h-[440px] lg:max-h-[560px] lg:pb-8">
         <div className="max-w-xl lg:max-w-2xl">
-          <p className="inline-flex items-center rounded-full bg-white/12 px-2.5 py-1 text-[10px] font-medium tracking-[0.16em] text-white/90 ring-1 ring-white/20 backdrop-blur-sm sm:text-[11px]">
-            {HOME_HERO_CONTENT.eyebrow.toUpperCase()}
-          </p>
-          <h1
-            id="home-hero-title"
-            className="mt-3 text-[1.85rem] font-medium leading-[0.98] tracking-tight !text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.45)] sm:text-[2.65rem] lg:text-6xl"
+          <p
+            id="home-hero-brand"
+            className="font-semibold tracking-[0.22em] text-gold-light [text-shadow:0_2px_20px_rgba(0,0,0,0.55)] text-[1.35rem] sm:text-[1.75rem] lg:text-[2.15rem]"
           >
+            ATRES
+          </p>
+          <p className="mt-1 text-[11px] font-medium tracking-[0.28em] text-white/75 sm:text-xs">
+            COLOMBIA · MARKETPLACE
+          </p>
+          <h1 className="mt-3 text-[1.55rem] font-medium leading-[1.05] tracking-tight !text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.5)] sm:mt-3.5 sm:text-[2.15rem] lg:text-[2.75rem]">
             {slide.title}
           </h1>
-          <p className="mt-2 max-w-md text-sm font-normal leading-6 text-white/88 sm:mt-2.5 sm:text-base sm:leading-7">
+          <p className="mt-2 max-w-md text-sm font-normal leading-6 text-white/86 sm:mt-2.5 sm:text-base sm:leading-7">
             {slide.subtitle}
           </p>
-          <div className="mt-3.5 flex flex-wrap gap-2 sm:mt-4 sm:gap-2.5">
+          <div className="mt-4 flex flex-wrap gap-2.5 sm:mt-5">
             <Link
               href={slide.primaryHref}
-              className="theme-primary-button atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] px-5 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:min-h-12 sm:px-6"
+              className="theme-primary-button atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] px-5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:min-h-12 sm:px-6"
             >
               {slide.primaryLabel}
             </Link>
             <Link
               href={HOME_HERO_CONTENT.secondaryHref}
-              className="atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-white/10 px-5 text-sm font-medium text-white ring-1 ring-white/35 backdrop-blur-sm transition hover:bg-white/18 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:min-h-12 sm:px-6"
+              className="atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-white/12 px-5 text-sm font-semibold text-white ring-1 ring-white/40 backdrop-blur-sm transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:min-h-12 sm:px-6"
             >
               {HOME_HERO_CONTENT.secondaryLabel}
             </Link>
@@ -114,7 +118,7 @@ export function HomeHeroCarousel({ slides }: HomeHeroCarouselProps) {
 
         {hasMany ? (
           <div
-            className="mt-4 flex items-center justify-center gap-2 pb-1 sm:mt-5"
+            className="mt-5 flex items-center gap-2 pb-0.5 sm:mt-6"
             role="tablist"
             aria-label="Slides del banner principal"
           >
@@ -125,8 +129,8 @@ export function HomeHeroCarousel({ slides }: HomeHeroCarouselProps) {
                 role="tab"
                 aria-selected={index === active}
                 aria-label={`Slide ${index + 1}: ${item.title}`}
-                className={`h-2 rounded-full transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
-                  index === active ? "w-6 bg-white" : "w-2 bg-white/45 hover:bg-white/70"
+                className={`h-1.5 rounded-full transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
+                  index === active ? "w-8 bg-gold" : "w-2.5 bg-white/40 hover:bg-white/70"
                 }`}
                 onClick={() => goTo(index)}
               />

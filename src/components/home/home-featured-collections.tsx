@@ -85,34 +85,33 @@ export function HomeFeaturedCollections(props: HomeFeaturedCollectionsProps) {
     <section className="home-section catalog-container" aria-labelledby="home-collections-title">
       <HomeSectionHeader
         id="home-collections-title"
-        eyebrow="Colecciones"
-        title="Colecciones destacadas"
+        eyebrow="Descubre"
+        title="Colecciones para explorar"
         href="/categorias"
         linkLabel="Ver todas"
       />
 
-      <div className="home-scroll-row atres-scroll -mx-0.5 flex gap-2.5 overflow-x-auto px-0.5 pb-1 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 lg:grid-cols-5 xl:grid-cols-6 lg:gap-3">
+      <div className="home-scroll-row atres-scroll -mx-0.5 flex gap-2.5 overflow-x-auto px-0.5 pb-1 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 lg:grid-cols-6 lg:gap-3">
         {tiles.map((tile) => (
           <Link
             key={tile.key}
             href={tile.href}
-            className="home-scroll-item group relative aspect-[4/5] min-w-[42%] overflow-hidden rounded-[var(--radius-card)] bg-black-main text-white shadow-soft ring-1 ring-white/10 sm:min-w-0"
+            className="home-scroll-item group relative aspect-[3/4] min-w-[38%] overflow-hidden rounded-[var(--radius-card)] bg-black-main text-white ring-1 ring-white/10 sm:min-w-0"
           >
             <SafeProductImage
               src={tile.image}
               alt={tile.title}
-              sizes="(max-width: 640px) 42vw, (max-width: 1024px) 30vw, 18vw"
-              className="object-cover opacity-62 transition duration-500 group-hover:scale-[1.04] group-hover:opacity-72"
+              sizes="(max-width: 640px) 38vw, (max-width: 1024px) 30vw, 16vw"
+              className="object-cover opacity-70 transition duration-500 group-hover:scale-[1.05] group-hover:opacity-80"
             />
-            <div className="premium-media-fade-strong absolute inset-0" />
-            <div className="absolute inset-x-0 bottom-0 p-3 sm:p-3.5">
-              <p className="line-clamp-2 text-sm font-medium leading-tight sm:text-base">{tile.title}</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-2.5 sm:p-3">
+              <p className="line-clamp-2 text-sm font-semibold leading-tight sm:text-[0.95rem]">{tile.title}</p>
               {tile.subtitle ? (
-                <p className="mt-1 line-clamp-1 text-[11px] text-white/70 sm:text-xs">{tile.subtitle}</p>
+                <p className="mt-0.5 line-clamp-1 text-[10px] uppercase tracking-wide text-white/65 sm:text-[11px]">
+                  {tile.subtitle}
+                </p>
               ) : null}
-              <span className="mt-2 inline-flex text-[11px] font-medium text-white/85 underline-offset-2 group-hover:underline">
-                Ver coleccion
-              </span>
             </div>
           </Link>
         ))}

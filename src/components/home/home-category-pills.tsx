@@ -31,33 +31,30 @@ export function HomeCategoryPills({ categories }: HomeCategoryPillsProps) {
     <section className="home-section catalog-container" aria-labelledby="home-categories-title">
       <HomeSectionHeader
         id="home-categories-title"
-        eyebrow="Categorias"
-        title="Explora por estilo"
+        eyebrow="Explorar"
+        title="Categorias"
         href="/categorias"
         linkLabel="Ver todas"
       />
 
       <nav
-        className="home-scroll-row atres-scroll -mx-0.5 flex gap-2 overflow-x-auto px-0.5 pb-0.5"
+        className="home-scroll-row atres-scroll -mx-0.5 flex gap-2.5 overflow-x-auto px-0.5 pb-1"
         aria-label="Categorias destacadas"
       >
-        {items.map((item, index) => {
-          const isPrimary = index === 0;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`atres-interactive home-scroll-item inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full px-3.5 py-2 text-xs font-medium transition sm:min-h-11 sm:px-4 sm:text-sm ${
-                isPrimary
-                  ? "bg-gold text-black-main shadow-soft ring-1 ring-gold"
-                  : "bg-surface text-ink ring-1 ring-white/10 hover:bg-surface-muted hover:text-gold-light hover:shadow-soft"
-              }`}
-            >
-              <CategoryPillIcon kind={item.kind} className="size-4" />
-              <span className="whitespace-nowrap">{item.label}</span>
-            </Link>
-          );
-        })}
+        {items.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="atres-interactive home-scroll-item group flex w-[4.75rem] shrink-0 flex-col items-center gap-1.5 sm:w-[5.25rem]"
+          >
+            <span className="grid size-12 place-items-center rounded-full bg-surface text-gold-light ring-1 ring-white/12 transition duration-200 group-hover:bg-gold group-hover:text-black-main group-hover:ring-gold sm:size-14">
+              <CategoryPillIcon kind={item.kind} className="size-5 sm:size-6" />
+            </span>
+            <span className="line-clamp-2 text-center text-[10px] font-medium leading-tight text-ink sm:text-[11px]">
+              {item.label}
+            </span>
+          </Link>
+        ))}
       </nav>
     </section>
   );

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { HomeCategoryPills } from "@/components/home/home-category-pills";
 import { HomeFeaturedCollections } from "@/components/home/home-featured-collections";
 import { HomeHero } from "@/components/home/home-hero";
-import { HomeIdentityStrip } from "@/components/home/home-identity-strip";
 import { HomePromotions } from "@/components/home/home-promotions";
 import { HomeTrustStrip } from "@/components/home/home-trust-strip";
 import { ProductRail } from "@/components/product-rail";
@@ -59,8 +58,8 @@ export default async function Home() {
   return (
     <main className="home-page">
       <HomeHero promos={promos} product={heroProduct} />
-      <HomeCategoryPills categories={categories} />
       <HomeTrustStrip />
+      <HomeCategoryPills categories={categories} />
       <HomePromotions
         promos={promos}
         categories={categories}
@@ -73,7 +72,6 @@ export default async function Home() {
         promoProducts={promoProducts}
         newProducts={newProducts}
       />
-      <HomeIdentityStrip />
       <ProductRail
         title="Destacados ATRES"
         subtitle="Seleccion actual para explorar primero."
@@ -81,6 +79,7 @@ export default async function Home() {
         products={featuredProducts}
         priorityCount={4}
         maxItems={12}
+        variant="home"
       />
       <FlashSection products={promoProducts} />
       <ProductRail
@@ -89,6 +88,7 @@ export default async function Home() {
         href="/novedades"
         products={newProducts.length ? newProducts : products}
         maxItems={12}
+        variant="home"
       />
       <EditorialGallery products={editorialProducts} />
       <ProductRail
@@ -97,6 +97,7 @@ export default async function Home() {
         href="/productos"
         products={recommended}
         maxItems={12}
+        variant="home"
       />
       <StoreBenefits />
     </main>
@@ -117,25 +118,28 @@ function EditorialGallery({ products }: { products: Product[] }) {
 
   return (
     <section className="home-section catalog-container" aria-labelledby="editorial-gallery-title">
-      <div className="mb-2 flex items-end justify-between gap-3 sm:mb-2.5">
+      <div className="mb-2.5 flex items-end justify-between gap-3 sm:mb-3">
         <div>
-          <p className="text-[11px] font-medium tracking-wide text-ink-muted">Editorial</p>
-          <h2 id="editorial-gallery-title" className="mt-0.5 text-lg font-medium tracking-tight text-ink sm:text-xl md:text-2xl">
+          <p className="text-[11px] font-medium tracking-wide text-brand">Editorial</p>
+          <h2
+            id="editorial-gallery-title"
+            className="mt-0.5 text-lg font-medium tracking-tight text-ink sm:text-xl md:text-2xl"
+          >
             Comprar por foto
           </h2>
         </div>
         <Link
           href="/productos"
-          className="shrink-0 text-xs font-medium text-ink-muted underline-offset-4 transition hover:text-ink hover:underline sm:text-sm"
+          className="shrink-0 text-xs font-medium text-gold-light underline-offset-4 transition hover:underline sm:text-sm"
         >
           Ver catalogo
         </Link>
       </div>
 
-      <div className="grid gap-2.5 md:grid-cols-[1.2fr_0.8fr] md:gap-3">
+      <div className="grid gap-2.5 md:grid-cols-[1.35fr_0.65fr] md:gap-3">
         {featured ? <EditorialTile product={featured} featured /> : null}
-        <div className="grid grid-cols-2 gap-2.5 md:gap-3">
-          {supporting.map((product) => (
+        <div className="grid grid-cols-2 gap-2.5 md:grid-cols-1 md:gap-3">
+          {supporting.slice(0, 2).map((product) => (
             <EditorialTile key={`editorial-${product.slug}`} product={product} />
           ))}
         </div>
@@ -149,22 +153,24 @@ function EditorialTile({ product, featured = false }: { product: Product; featur
     <Link
       href={`/productos/${product.slug}`}
       className={`group relative overflow-hidden rounded-[var(--radius-card)] bg-black-main ring-1 ring-white/10 ${
-        featured ? "min-h-[220px] md:min-h-[340px]" : "min-h-[132px] md:min-h-[168px]"
+        featured ? "min-h-[240px] md:min-h-[360px]" : "min-h-[140px] md:min-h-[174px]"
       }`}
     >
       <SafeProductImage
         src={product.image}
         alt={product.name}
-        sizes={featured ? "(max-width: 768px) 100vw, 52vw" : "(max-width: 768px) 50vw, 22vw"}
+        sizes={featured ? "(max-width: 768px) 100vw, 58vw" : "(max-width: 768px) 50vw, 28vw"}
         className="object-cover opacity-95 transition duration-500 group-hover:scale-[1.04]"
       />
-      <div className="premium-media-fade absolute inset-0" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-transparent" />
       <div className="absolute left-2.5 top-2.5 flex flex-wrap gap-1.5">
         {product.isPromo ? <Badge tone="brand">Oferta</Badge> : null}
         {product.isNew ? <Badge tone="soft">Nuevo</Badge> : null}
       </div>
       <div className="absolute inset-x-0 bottom-0 p-3 text-white sm:p-3.5">
-        <p className={`${featured ? "text-lg leading-6 sm:text-2xl" : "text-sm leading-5"} line-clamp-2 font-medium`}>
+        <p
+          className={`${featured ? "text-lg leading-6 sm:text-2xl" : "text-sm leading-5"} line-clamp-2 font-medium`}
+        >
           {product.name}
         </p>
         <div className="mt-2">
@@ -187,21 +193,21 @@ function FlashSection({ products }: { products: Product[] }) {
 
   return (
     <section className="home-section catalog-container">
-      <div className="mb-2 flex items-end justify-between gap-3 sm:mb-2.5">
+      <div className="mb-2.5 flex items-end justify-between gap-3 sm:mb-3">
         <div>
-          <p className="text-[11px] font-medium tracking-wide text-brand">Ofertas</p>
+          <p className="text-[11px] font-medium tracking-wide text-brand">Ofertas flash</p>
           <h2 className="mt-0.5 text-lg font-medium tracking-tight text-ink sm:text-xl md:text-2xl">
-            Productos con precio especial
+            Precio especial ahora
           </h2>
         </div>
         <Link
           href="/ofertas"
-          className="text-xs font-medium text-ink-muted underline-offset-4 transition hover:text-ink hover:underline sm:text-sm"
+          className="text-xs font-medium text-gold-light underline-offset-4 transition hover:underline sm:text-sm"
         >
           Ver todo
         </Link>
       </div>
-      <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="home-scroll-row atres-scroll -mx-0.5 flex gap-2.5 overflow-x-auto px-0.5 pb-1 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
         {flashProducts.map((product) => {
           const discount = getDiscountPercent(product);
 
@@ -209,16 +215,18 @@ function FlashSection({ products }: { products: Product[] }) {
             <Link
               key={`flash-${product.slug}`}
               href={`/productos/${product.slug}`}
-              className="atres-interactive theme-panel grid grid-cols-[84px_1fr] gap-2.5 rounded-[var(--radius-card)] p-2 sm:grid-cols-[96px_1fr] sm:p-2.5"
+              className="atres-interactive home-scroll-item grid min-w-[78%] grid-cols-[88px_1fr] gap-2.5 rounded-[var(--radius-card)] bg-surface p-2 ring-1 ring-white/10 sm:min-w-0 sm:grid-cols-[96px_1fr] sm:p-2.5"
             >
               <div className="relative aspect-square overflow-hidden rounded-[var(--radius-card)] bg-surface-muted">
                 <SafeProductImage src={product.image} alt={product.name} sizes="96px" className="object-cover" />
+                {discount ? (
+                  <span className="absolute left-1 top-1 rounded bg-gold px-1.5 py-0.5 text-[10px] font-semibold text-black-main">
+                    -{discount}%
+                  </span>
+                ) : null}
               </div>
               <div className="min-w-0 py-0.5">
-                <div className="flex flex-wrap gap-1.5">
-                  <Badge tone="brand">Oferta</Badge>
-                  {discount ? <Badge tone="amber">-{discount}%</Badge> : null}
-                </div>
+                <Badge tone="brand">Oferta</Badge>
                 <p className="mt-1.5 line-clamp-2 text-sm font-medium leading-5 text-ink">{product.name}</p>
                 <ProductPrice price={product.price} previousPrice={product.previousPrice} className="mt-1.5" />
               </div>

@@ -109,7 +109,7 @@ function ActionLink({
       aria-current={active ? "page" : undefined}
       className={cn(
         compact
-          ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-gold-light"
+          ? "atres-interactive inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-gold-light"
           : iconOnly
             ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-gold-light"
             : "atres-interactive inline-flex h-9 items-center gap-2 rounded-[var(--radius-card)] px-2.5 text-white/85 hover:bg-white/10 hover:text-gold-light",
@@ -130,9 +130,9 @@ function HeaderIcon({ type }: { type: HeaderIconType }) {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-5 fill-none"
+        className="size-6 fill-none"
         stroke="currentColor"
-        strokeWidth="2.1"
+        strokeWidth="2.25"
         strokeLinecap="round"
         strokeLinejoin="round"
       >

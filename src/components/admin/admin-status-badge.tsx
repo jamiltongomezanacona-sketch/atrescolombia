@@ -3,12 +3,14 @@ import { Badge } from "@/components/ui/badge";
 const STATUS_LABELS: Record<string, string> = {
   active: "Activo",
   hidden: "Oculto",
+  suspended: "Suspendida",
   archived: "Archivado",
 };
 
 const STATUS_TONES = {
-  active: "metal",
-  hidden: "soft",
+  active: "success",
+  hidden: "danger",
+  suspended: "danger",
   archived: "steel",
 } as const;
 

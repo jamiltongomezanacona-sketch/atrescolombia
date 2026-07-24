@@ -8,6 +8,8 @@ const tones = {
   soft: "bg-surface-muted text-ink-muted ring-white/10",
   amber: "bg-gold-light text-black-main ring-gold-light/40",
   emerald: "bg-gold/12 text-gold-light ring-gold/30",
+  success: "bg-[rgba(34,197,94,0.16)] text-[var(--success-soft-text)] ring-[rgba(34,197,94,0.45)]",
+  danger: "bg-[rgba(239,68,68,0.16)] text-[var(--danger-soft-text)] ring-[rgba(239,68,68,0.45)]",
 } as const;
 
 type BadgeProps = {

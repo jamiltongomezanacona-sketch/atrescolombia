@@ -7,6 +7,7 @@
   --gray-dark: #222222;
   --gray-medium: #3b3b3b;
   --gray-light: #6b7280;
+  --gray-smoke: #2a2a2a;
   --gold: #c9a227;
   --gold-light: #d6b84a;
   --white: #ffffff;
@@ -19,8 +20,33 @@
   --surface-elevated: rgba(21, 21, 21, 0.96);
   --surface-glass: rgba(21, 21, 21, 0.84);
   --surface-wash-top: var(--black-main);
-  --surface-wash-mid: #101010;
+  --surface-wash-mid: color-mix(in srgb, var(--gray-smoke) 42%, var(--black-main));
   --surface-wash-bottom: var(--black-secondary);
+  --fade-premium: linear-gradient(
+    180deg,
+    rgba(42, 42, 42, 0.72) 0%,
+    rgba(21, 21, 21, 0.92) 52%,
+    rgba(11, 11, 11, 1) 100%
+  );
+  --fade-card: linear-gradient(180deg, rgba(42, 42, 42, 0.88) 0%, rgba(21, 21, 21, 0.98) 100%);
+  --fade-panel: linear-gradient(180deg, rgba(42, 42, 42, 0.92) 0%, rgba(21, 21, 21, 0.98) 100%);
+  --fade-footer: linear-gradient(0deg, var(--black-main) 0%, var(--black-secondary) 58%, var(--gray-smoke) 100%);
+  --fade-page-gold: radial-gradient(ellipse 80% 46% at 50% -14%, rgba(201, 162, 39, 0.1), transparent 56%);
+  --fade-store-gold-left: radial-gradient(ellipse 55% 32% at 12% 0%, rgba(201, 162, 39, 0.08), transparent 56%);
+  --fade-store-gold-right: radial-gradient(ellipse 42% 30% at 92% 3%, rgba(214, 184, 74, 0.06), transparent 54%);
+  --fade-gold-soft: radial-gradient(circle at top, rgba(201, 162, 39, 0.14), transparent 42%);
+  --fade-hero: linear-gradient(
+    108deg,
+    rgba(11, 11, 11, 0.92) 0%,
+    rgba(42, 42, 42, 0.58) 42%,
+    rgba(42, 42, 42, 0.18) 68%,
+    rgba(11, 11, 11, 0.08) 100%
+  );
+  --fade-showcase: linear-gradient(90deg, rgba(11, 11, 11, 0.76) 0%, rgba(42, 42, 42, 0.38) 54%, rgba(201, 162, 39, 0.12) 100%);
+  --fade-media: linear-gradient(0deg, rgba(11, 11, 11, 0.84) 0%, rgba(42, 42, 42, 0.26) 48%, transparent 100%);
+  --fade-media-strong: linear-gradient(0deg, rgba(11, 11, 11, 0.9) 0%, rgba(42, 42, 42, 0.32) 55%, transparent 100%);
+  --fade-media-soft: linear-gradient(0deg, rgba(11, 11, 11, 0.28) 0%, rgba(42, 42, 42, 0.1) 52%, transparent 100%);
+  --fade-media-balanced: linear-gradient(180deg, rgba(11, 11, 11, 0.58) 0%, rgba(42, 42, 42, 0.28) 50%, rgba(11, 11, 11, 0.52) 100%);
 
   /* Brand & status */
   --brand: var(--gold);
@@ -101,6 +127,7 @@
   --color-gray-dark: var(--gray-dark);
   --color-gray-medium: var(--gray-medium);
   --color-gray-light: var(--gray-light);
+  --color-gray-smoke: var(--gray-smoke);
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
   --color-white: var(--white);
@@ -142,7 +169,7 @@
   body {
     min-width: 0;
     background:
-      radial-gradient(ellipse 80% 46% at 50% -14%, rgba(201, 162, 39, 0.1), transparent 56%),
+      var(--fade-page-gold),
       linear-gradient(
         180deg,
         var(--surface-wash-top) 0%,
@@ -228,8 +255,8 @@ h6 {
 
 .store-surface {
   background:
-    radial-gradient(ellipse 55% 32% at 12% 0%, rgba(201, 162, 39, 0.08), transparent 56%),
-    radial-gradient(ellipse 42% 30% at 92% 3%, rgba(214, 184, 74, 0.06), transparent 54%),
+    var(--fade-store-gold-left),
+    var(--fade-store-gold-right),
     linear-gradient(
       180deg,
       var(--surface-wash-top) 0%,
@@ -248,7 +275,7 @@ h6 {
 
 /* Catalog / shop cards — soft gray glass edge (Phase 3) */
 .store-card {
-  background: linear-gradient(180deg, rgba(34, 34, 34, 0.92) 0%, rgba(21, 21, 21, 0.98) 100%);
+  background: var(--fade-card);
   border: 1px solid var(--border-soft);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), var(--shadow-soft);
   -webkit-backdrop-filter: blur(10px) saturate(1.02);
@@ -266,7 +293,7 @@ h6 {
 
 .theme-panel {
   color: var(--ink);
-  background: linear-gradient(180deg, rgba(34, 34, 34, 0.94) 0%, rgba(21, 21, 21, 0.98) 100%);
+  background: var(--fade-panel);
   border: 1px solid var(--border-soft);
   box-shadow: var(--shadow-soft);
 }
@@ -280,10 +307,38 @@ h6 {
 .theme-gold-panel {
   color: var(--ink);
   background:
-    linear-gradient(135deg, rgba(201, 162, 39, 0.18), transparent 42%),
-    linear-gradient(180deg, var(--surface-muted), var(--surface));
+    var(--fade-gold-soft),
+    var(--fade-premium);
   border: 1px solid var(--border-gold-soft);
   box-shadow: var(--shadow-soft);
+}
+
+.premium-fade-hero {
+  background: var(--fade-hero);
+}
+
+.premium-fade-gold {
+  background: var(--fade-gold-soft);
+}
+
+.premium-fade-showcase {
+  background: var(--fade-showcase);
+}
+
+.premium-media-fade {
+  background: var(--fade-media);
+}
+
+.premium-media-fade-strong {
+  background: var(--fade-media-strong);
+}
+
+.premium-media-fade-soft {
+  background: var(--fade-media-soft);
+}
+
+.premium-media-fade-balanced {
+  background: var(--fade-media-balanced);
 }
 
 .theme-field {
@@ -645,12 +700,7 @@ h6 {
 }
 
 .store-footer-shell {
-  background: linear-gradient(
-    0deg,
-    var(--black-main) 0%,
-    var(--black-secondary) 58%,
-    var(--gray-dark) 100%
-  );
+  background: var(--fade-footer);
   background-color: var(--black-main);
   border-top: 1px solid var(--header-border);
   box-shadow: 0 -18px 42px rgba(0, 0, 0, 0.4);

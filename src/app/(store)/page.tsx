@@ -158,7 +158,7 @@ function EditorialTile({ product, featured = false }: { product: Product; featur
         sizes={featured ? "(max-width: 768px) 100vw, 52vw" : "(max-width: 768px) 50vw, 22vw"}
         className="object-cover opacity-95 transition duration-500 group-hover:scale-[1.04]"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
+      <div className="premium-media-fade absolute inset-0" />
       <div className="absolute left-2.5 top-2.5 flex flex-wrap gap-1.5">
         {product.isPromo ? <Badge tone="brand">Oferta</Badge> : null}
         {product.isNew ? <Badge tone="soft">Nuevo</Badge> : null}

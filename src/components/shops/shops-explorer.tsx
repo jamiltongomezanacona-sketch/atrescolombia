@@ -124,13 +124,13 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
   }
 
   return (
-    <div className="grid gap-3">
-      <div className="flex flex-wrap items-center gap-2">
+    <div className="grid gap-2.5">
+      <div className="flex flex-wrap items-center gap-1.5">
         <button
           type="button"
           onClick={requestLocation}
           disabled={geoStatus === "loading"}
-          className="inline-flex min-h-11 items-center rounded-full bg-ink px-4 text-xs font-semibold text-white disabled:opacity-60"
+          className="inline-flex h-9 min-h-9 items-center rounded-full bg-ink px-3.5 text-xs font-semibold text-white disabled:opacity-60"
         >
           {geoStatus === "loading" ? "Buscando ubicacion..." : "Usar mi ubicacion"}
         </button>
@@ -138,8 +138,8 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
           <button
             type="button"
             onClick={() => setSortNear((value) => !value)}
-            className={`inline-flex min-h-11 items-center rounded-full px-4 text-xs font-semibold ring-1 ${
-              sortNear ? "bg-[#0b1f3a] text-white ring-[#0b1f3a]" : "bg-white text-ink ring-black/10"
+            className={`inline-flex h-9 min-h-9 items-center rounded-full px-3.5 text-xs font-semibold ring-1 ${
+              sortNear ? "bg-ink text-white ring-ink" : "bg-surface text-ink ring-black/10"
             }`}
           >
             {sortNear ? "Orden: cercania" : "Ordenar por cercania"}
@@ -149,26 +149,26 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
           <button
             type="button"
             onClick={resetFilters}
-            className="inline-flex min-h-11 items-center rounded-full bg-white px-4 text-xs font-semibold text-ink ring-1 ring-black/10"
+            className="inline-flex h-9 min-h-9 items-center rounded-full bg-surface px-3.5 text-xs font-semibold text-ink ring-1 ring-black/10"
           >
-            Reiniciar filtros
+            Reiniciar
           </button>
         ) : null}
-        <p className="min-w-0 flex-1 text-xs text-ink-muted" role="status" aria-live="polite">
+        <p className="min-w-0 flex-1 text-[11px] text-ink-muted sm:text-xs" role="status" aria-live="polite">
           {visitorStatusLabel(geoStatus)}
         </p>
       </div>
 
-      <div className="atres-scroll -mx-0.5 flex gap-2 overflow-x-auto px-0.5 pb-1">
+      <div className="atres-scroll -mx-0.5 flex gap-1.5 overflow-x-auto px-0.5 pb-0.5">
         {DISTANCE_FILTERS.map((item) => (
           <button
             key={item.id}
             type="button"
             onClick={() => setDistanceFilter(item.id)}
-            className={`inline-flex min-h-11 shrink-0 items-center rounded-full px-3 text-xs font-semibold ring-1 ${
+            className={`inline-flex h-8 min-h-8 shrink-0 items-center rounded-full px-3 text-[11px] font-semibold ring-1 sm:text-xs ${
               distanceFilter === item.id
                 ? "bg-ink text-white ring-ink"
-                : "bg-white text-ink-muted ring-black/10"
+                : "bg-surface text-ink-muted ring-black/10 hover:text-ink"
             }`}
           >
             {item.label}
@@ -176,8 +176,8 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
         ))}
       </div>
 
-      <div className="grid gap-2 sm:grid-cols-3">
-        <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
+      <div className="grid w-full gap-2 sm:grid-cols-3 sm:gap-2.5">
+        <label className="grid gap-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
           Ciudad
           <select
             value={cityFilter}
@@ -186,7 +186,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
               setLocalityFilter("");
               setNeighborhoodFilter("");
             }}
-            className="h-11 rounded-xl border border-black/10 bg-white px-3 text-sm font-medium text-ink"
+            className="h-9 w-full rounded-[var(--radius-card)] border border-black/10 bg-surface px-2.5 text-sm font-medium text-ink"
           >
             <option value="">Todas</option>
             {cities.map((city) => (
@@ -196,7 +196,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
             ))}
           </select>
         </label>
-        <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
+        <label className="grid gap-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
           Localidad
           <select
             value={localityFilter}
@@ -204,7 +204,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
               setLocalityFilter(event.target.value);
               setNeighborhoodFilter("");
             }}
-            className="h-11 rounded-xl border border-black/10 bg-white px-3 text-sm font-medium text-ink"
+            className="h-9 w-full rounded-[var(--radius-card)] border border-black/10 bg-surface px-2.5 text-sm font-medium text-ink"
           >
             <option value="">Todas</option>
             {localities.map((locality) => (
@@ -214,12 +214,12 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
             ))}
           </select>
         </label>
-        <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
+        <label className="grid gap-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
           Barrio
           <select
             value={neighborhoodFilter}
             onChange={(event) => setNeighborhoodFilter(event.target.value)}
-            className="h-11 rounded-xl border border-black/10 bg-white px-3 text-sm font-medium text-ink"
+            className="h-9 w-full rounded-[var(--radius-card)] border border-black/10 bg-surface px-2.5 text-sm font-medium text-ink"
           >
             <option value="">Todos</option>
             {neighborhoods.map((neighborhood) => (
@@ -239,7 +239,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
           actionLabel="Ver catalogo"
         />
       ) : (
-        <ul className="catalog-grid-with-sidebar">
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">
           {filtered.map((shop) => (
             <ShopCard key={shop.id} shop={shop} />
           ))}

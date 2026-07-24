@@ -25,14 +25,16 @@ export default async function ShopsPage() {
   return (
     <main>
       <section className="catalog-container products-catalog-container pb-3 pt-1 md:pb-4 md:pt-1.5 lg:pb-5 lg:pt-2">
-        <div className="mb-2 flex flex-col gap-1 border-b border-black/[0.06] pb-2 sm:mb-2.5 sm:flex-row sm:items-end sm:justify-between sm:gap-3 lg:mb-3 lg:pb-2.5">
+        <div className="mb-2.5 flex flex-col gap-1 border-b border-black/[0.06] pb-2 sm:mb-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
           <div className="min-w-0">
-            <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-ink-muted">Multitienda</p>
-            <h1 className="mt-0.5 text-base font-medium tracking-tight text-ink sm:text-lg lg:text-xl">Tiendas</h1>
+            <h1 className="text-sm font-medium tracking-tight text-ink sm:text-base lg:text-lg">
+              Tiendas
+              <span className="ml-1.5 text-xs font-normal text-ink-muted sm:text-sm">· {cards.length}</span>
+            </h1>
+            <p className="mt-0.5 text-[11px] font-normal text-ink-muted sm:text-xs">
+              Elige una tienda para ver su catalogo. La ubicacion es opcional.
+            </p>
           </div>
-          <p className="max-w-xl text-xs font-normal text-ink-muted sm:text-right sm:text-sm">
-            Elige una tienda para ver su perfil o catalogo. La ubicacion del visitante es opcional.
-          </p>
         </div>
 
         {shops.length === 0 ? (

@@ -108,14 +108,14 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
       <div>
         <p className="mb-1.5 text-[10px] font-medium tracking-wide text-ink-muted sm:text-[11px]">Cantidad</p>
         <div
-          className="inline-grid grid-cols-[40px_48px_40px] overflow-hidden rounded-[var(--radius-card)] bg-surface-muted text-center ring-1 ring-black/8"
+          className="inline-grid grid-cols-[40px_48px_40px] overflow-hidden rounded-[var(--radius-card)] bg-surface-muted text-center ring-1 ring-white/10"
           role="group"
           aria-label="Cantidad"
         >
           <button
             type="button"
             aria-label="Reducir cantidad"
-            className="h-10 font-medium text-ink transition hover:bg-white"
+            className="h-10 font-medium text-ink transition hover:bg-black-main hover:text-gold-light"
             onClick={() => setQuantity((current) => Math.max(1, current - 1))}
           >
             −
@@ -130,7 +130,7 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
           <button
             type="button"
             aria-label="Aumentar cantidad"
-            className="h-10 font-medium text-ink transition hover:bg-white"
+            className="h-10 font-medium text-ink transition hover:bg-black-main hover:text-gold-light"
             onClick={() => setQuantity((current) => Math.min(9, current + 1))}
           >
             +
@@ -157,7 +157,7 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-11 w-full items-center justify-center rounded-[var(--radius-card)] bg-[#25D366] px-4 text-sm font-medium text-white transition hover:bg-[#1ebe57] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+            className="theme-secondary-button inline-flex h-11 w-full items-center justify-center rounded-[var(--radius-card)] px-4 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
           >
             Consultar por WhatsApp
           </a>
@@ -176,7 +176,7 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
         <button
           type="button"
           onClick={shareProduct}
-          className="mx-auto inline-flex min-h-10 items-center gap-1.5 text-xs font-medium text-ink-muted underline-offset-2 transition hover:text-ink hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          className="mx-auto inline-flex min-h-10 items-center gap-1.5 text-xs font-medium text-ink-muted underline-offset-2 transition hover:text-gold-light hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
           <ShareIcon className="size-3.5" />
           Compartir
@@ -184,7 +184,7 @@ export function ProductActions({ product, whatsapp }: ProductActionsProps) {
       </div>
 
       {message ? (
-        <p className="text-sm font-normal text-emerald-700" role="status" aria-live="polite">
+        <p className="text-sm font-normal text-gold-light" role="status" aria-live="polite">
           {message}
         </p>
       ) : null}
@@ -256,8 +256,8 @@ function OptionGroup({
             onClick={() => onChange(item)}
             className={`min-h-9 min-w-9 rounded-[var(--radius-card)] px-2.5 py-1.5 text-sm font-normal transition ${
               value === item
-                ? "bg-ink text-white"
-                : "bg-surface text-ink-muted ring-1 ring-black/10 hover:bg-surface-muted hover:text-ink"
+                ? "bg-gold text-black-main"
+                : "bg-surface text-ink-muted ring-1 ring-white/10 hover:bg-surface-muted hover:text-gold-light"
             }`}
           >
             {item}

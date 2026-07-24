@@ -96,7 +96,7 @@ export function FloatingWhatsApp() {
       rel="noopener noreferrer"
       aria-label={product ? `Consultar ${product.name} por WhatsApp` : "Consultar por WhatsApp"}
       title={product ? `Consultar ${product.name}` : "WhatsApp"}
-      className={`atres-interactive fixed z-20 grid size-12 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_10px_28px_rgba(37,211,102,0.32)] ring-1 ring-black/8 transition duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#20bd5a] hover:shadow-[0_14px_32px_rgba(37,211,102,0.4)] active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] md:size-[3.25rem] ${
+      className={`theme-primary-button atres-interactive fixed z-20 grid size-12 place-items-center rounded-full transition duration-200 ease-out hover:-translate-y-0.5 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold md:size-[3.25rem] ${
         compactCatalog
           ? "bottom-[calc(5.1rem+env(safe-area-inset-bottom))] right-3 md:bottom-6 md:right-6"
           : "bottom-[calc(5.9rem+env(safe-area-inset-bottom))] right-3 md:bottom-6 md:right-6"

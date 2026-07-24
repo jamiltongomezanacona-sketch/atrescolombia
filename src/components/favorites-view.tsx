@@ -72,7 +72,7 @@ export function FavoritesView() {
 
   if (!ready) {
     return (
-      <p className="text-sm font-normal text-stone-500" role="status" aria-live="polite">
+      <p className="text-sm font-normal text-ink-muted" role="status" aria-live="polite">
         Cargando favoritos…
       </p>
     );

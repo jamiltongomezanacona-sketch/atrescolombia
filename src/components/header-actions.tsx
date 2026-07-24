@@ -47,11 +47,11 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
         <Link
           href="/carrito"
           aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
-          className="atres-interactive relative inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-white"
+          className="atres-interactive relative inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-gold-light"
         >
           <HeaderIcon type="bag" />
           {count > 0 ? (
-            <span className="absolute right-0 top-0 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-card)] bg-brand px-1 text-[9px] font-medium text-white">
+            <span className="absolute right-0 top-0 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-card)] bg-brand px-1 text-[9px] font-medium text-black-main">
               {count}
             </span>
           ) : null}
@@ -66,11 +66,11 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
       <Link
         href="/carrito"
         aria-label={count > 0 ? `Carrito, ${count} productos` : "Carrito"}
-        className="atres-interactive relative inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-white"
+        className="atres-interactive relative inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-gold-light"
       >
         <HeaderIcon type="bag" />
         {count > 0 ? (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[9px] font-medium text-white">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[9px] font-medium text-black-main">
             {count}
           </span>
         ) : null}
@@ -98,10 +98,10 @@ function ActionLink({
       aria-label={label}
       className={
         compact
-          ? "atres-interactive inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-white"
+          ? "atres-interactive inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-card)] text-white/90 hover:bg-white/10 hover:text-gold-light"
           : iconOnly
-            ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-white"
-            : "atres-interactive inline-flex h-9 items-center gap-2 rounded-[var(--radius-card)] px-2.5 text-white/85 hover:bg-white/10 hover:text-white"
+            ? "atres-interactive inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-white/85 hover:bg-white/10 hover:text-gold-light"
+            : "atres-interactive inline-flex h-9 items-center gap-2 rounded-[var(--radius-card)] px-2.5 text-white/85 hover:bg-white/10 hover:text-gold-light"
       }
     >
       <HeaderIcon type={icon} />

@@ -32,8 +32,8 @@ export function AdminShell({
   const visibleItems = navItems.filter((item) => isSuperAdmin || !item.superadminOnly);
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-ink text-ink">
-      <aside className="fixed inset-y-0 left-0 hidden w-64 overflow-hidden border-r border-white/10 bg-ink p-4 text-white lg:block">
+    <main className="admin-theme min-h-screen overflow-x-hidden text-ink">
+      <aside className="fixed inset-y-0 left-0 hidden w-64 overflow-hidden border-r border-[var(--border-gold-soft)] bg-black-main p-4 text-white lg:block">
         <div className="relative">
           <BrandLogo href="/admin" compact dark sublabel="Panel privado" />
         </div>
@@ -48,8 +48,8 @@ export function AdminShell({
                 className={cn(
                   "rounded-[var(--radius-card)] px-3 py-2.5 text-sm font-medium transition duration-200",
                   active
-                    ? "bg-white text-ink"
-                    : "text-white/70 hover:bg-white/8 hover:text-white",
+                    ? "bg-gold text-black-main shadow-soft"
+                    : "text-white/70 hover:bg-white/8 hover:text-gold-light",
                 )}
               >
                 <span className="flex items-center justify-between gap-3">
@@ -57,7 +57,7 @@ export function AdminShell({
                   <span
                     className={cn(
                       "text-[10px] font-medium tracking-wide",
-                      active ? "text-ink-muted" : "text-white/35",
+                      active ? "text-black-main/70" : "text-white/35",
                     )}
                   >
                     {item.hint}
@@ -67,8 +67,8 @@ export function AdminShell({
             );
           })}
         </nav>
-        <div className="relative mt-8 rounded-[var(--radius-card)] border border-white/10 bg-white/[0.04] p-3">
-          <p className="text-[11px] font-medium tracking-wide text-white/55">ATRES Studio</p>
+        <div className="relative mt-8 rounded-[var(--radius-card)] border border-[var(--border-gold-soft)] bg-white/[0.04] p-3">
+          <p className="text-[11px] font-medium tracking-wide text-gold-light">ATRES Studio</p>
           <p className="mt-1.5 text-sm font-normal leading-5 text-white/70">
             Edita productos, imagenes y campanas con una vista clara del catalogo.
           </p>
@@ -76,20 +76,20 @@ export function AdminShell({
         <form action={signOutAdmin} className="absolute inset-x-4 bottom-4">
           <button
             type="submit"
-            className="h-10 w-full rounded-[var(--radius-card)] bg-white text-sm font-medium text-ink transition hover:bg-surface-muted active:scale-[0.98]"
+            className="theme-secondary-button h-10 w-full rounded-[var(--radius-card)] text-sm font-medium active:scale-[0.98]"
           >
             Cerrar sesion
           </button>
         </form>
       </aside>
       <div className="min-w-0 lg:pl-64">
-        <header className="sticky top-0 z-30 border-b border-white/10 bg-ink/96 px-3 py-2 text-white backdrop-blur sm:px-4 lg:hidden">
+        <header className="sticky top-0 z-30 border-b border-[var(--border-gold-soft)] bg-black-main/96 px-3 py-2 text-white backdrop-blur sm:px-4 lg:hidden">
           <div className="flex min-w-0 items-center justify-between gap-2">
             <BrandLogo href="/admin" compact dark sublabel="Admin" />
             <form action={signOutAdmin} className="shrink-0">
               <button
                 type="submit"
-                className="h-9 rounded-[var(--radius-card)] bg-white px-3 text-xs font-medium text-ink"
+                className="theme-primary-button h-9 rounded-[var(--radius-card)] px-3 text-xs font-medium"
               >
                 Salir
               </button>
@@ -109,8 +109,8 @@ export function AdminShell({
                   className={cn(
                     "min-h-9 shrink-0 whitespace-nowrap rounded-[var(--radius-card)] px-2.5 py-1.5 text-[11px] font-medium transition sm:px-3 sm:py-2 sm:text-xs",
                     active
-                      ? "bg-white text-ink"
-                      : "bg-white/8 text-white/75 ring-1 ring-white/10 hover:bg-white/12",
+                      ? "bg-gold text-black-main"
+                      : "bg-white/8 text-white/75 ring-1 ring-white/10 hover:bg-white/12 hover:text-gold-light",
                   )}
                 >
                   {item.label}
@@ -130,7 +130,7 @@ export function AdminShell({
 export function AdminNotice({ title, body }: { title: string; body: string }) {
   return (
     <div
-      className="rounded-[var(--radius-card)] border border-black/8 bg-surface p-4 text-ink shadow-soft"
+      className="theme-panel rounded-[var(--radius-card)] p-4"
       role="status"
     >
       <p className="text-sm font-medium text-ink">{title}</p>
@@ -141,9 +141,9 @@ export function AdminNotice({ title, body }: { title: string; body: string }) {
 
 export function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="rounded-[var(--radius-card)] border border-black/[0.06] bg-surface p-4 transition hover:-translate-y-0.5 hover:shadow-soft">
+    <div className="theme-panel rounded-[var(--radius-card)] p-4 transition hover:-translate-y-0.5 hover:border-[var(--border-gold-soft)] hover:shadow-lift">
       <p className="text-[11px] font-medium tracking-wide text-ink-muted">{label}</p>
-      <p className="mt-2 text-3xl font-medium tracking-tight text-ink">{value}</p>
+      <p className="mt-2 text-3xl font-medium tracking-normal text-gold-light">{value}</p>
     </div>
   );
 }

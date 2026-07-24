@@ -2836,83 +2836,83 @@ export const curatedAtresPromos: Promo[] = [
     "subtitle": "Nuevas prendas y vitrinas listas para descubrir.",
     "href": "/categoria/infantil",
     "image": "/assets/atres-curated/banners/banner-campana_atres-001.webp",
-    "tone": "bg-promo text-black"
+    "tone": "bg-gold text-black-main"
   },
   {
     "title": "Coleccion destacada",
     "subtitle": "Seleccion visual publicada sin revision adicional de marca externa.",
     "href": "/categoria/infantil",
     "image": "/assets/atres-curated/banners/banner-campana_atres-002.webp",
-    "tone": "bg-black text-white"
+    "tone": "bg-black-main text-white"
   },
   {
     "title": "Coleccion destacada",
     "subtitle": "Seleccion visual publicada sin revision adicional de marca externa.",
     "href": "/categoria/infantil",
     "image": "/assets/atres-curated/banners/banner-campana_atres-003.webp",
-    "tone": "bg-white text-black"
+    "tone": "bg-surface text-ink"
   },
   {
     "title": "Coleccion destacada",
     "subtitle": "Seleccion visual publicada sin revision adicional de marca externa.",
     "href": "/categoria/infantil",
     "image": "/assets/atres-curated/banners/banner-campana_atres-004.webp",
-    "tone": "bg-promo text-black"
+    "tone": "bg-gold text-black-main"
   },
   {
     "title": "Coleccion destacada",
     "subtitle": "Seleccion visual publicada sin revision adicional de marca externa.",
     "href": "/categoria/infantil",
     "image": "/assets/atres-curated/banners/banner-campana_atres-005.webp",
-    "tone": "bg-black text-white"
+    "tone": "bg-black-main text-white"
   },
   {
     "title": "Coleccion destacada",
     "subtitle": "Seleccion visual publicada sin revision adicional de marca externa.",
     "href": "/categoria/infantil",
     "image": "/assets/atres-curated/banners/banner-campana_atres-006.webp",
-    "tone": "bg-white text-black"
+    "tone": "bg-surface text-ink"
   },
   {
     "title": "Denim en tendencia",
     "subtitle": "Seleccion visual publicada sin revision adicional de marca externa.",
     "href": "/productos",
     "image": "/assets/atres-curated/banners/banner-campana_atres-007.webp",
-    "tone": "bg-promo text-black"
+    "tone": "bg-gold text-black-main"
   },
   {
     "title": "Denim en tendencia",
     "subtitle": "Seleccion visual publicada sin revision adicional de marca externa.",
     "href": "/productos",
     "image": "/assets/atres-curated/banners/banner-campana_atres-008.webp",
-    "tone": "bg-black text-white"
+    "tone": "bg-black-main text-white"
   },
   {
     "title": "Denim en tendencia",
     "subtitle": "Seleccion visual publicada sin revision adicional de marca externa.",
     "href": "/productos",
     "image": "/assets/atres-curated/banners/banner-campana_atres-009.webp",
-    "tone": "bg-white text-black"
+    "tone": "bg-surface text-ink"
   },
   {
     "title": "Denim en tendencia",
     "subtitle": "Seleccion visual publicada sin revision adicional de marca externa.",
     "href": "/productos",
     "image": "/assets/atres-curated/banners/banner-campana_revision_marca-010.webp",
-    "tone": "bg-promo text-black"
+    "tone": "bg-gold text-black-main"
   },
   {
     "title": "Denim en tendencia",
     "subtitle": "Seleccion visual publicada sin revision adicional de marca externa.",
     "href": "/productos",
     "image": "/assets/atres-curated/banners/banner-campana_revision_marca-011.webp",
-    "tone": "bg-black text-white"
+    "tone": "bg-black-main text-white"
   },
   {
     "title": "Denim en tendencia",
     "subtitle": "Seleccion visual publicada sin revision adicional de marca externa.",
     "href": "/productos",
     "image": "/assets/atres-curated/banners/banner-campana_revision_marca-012.webp",
-    "tone": "bg-white text-black"
+    "tone": "bg-surface text-ink"
   }
 ];

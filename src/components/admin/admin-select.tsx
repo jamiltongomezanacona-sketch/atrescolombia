@@ -6,7 +6,7 @@ type AdminSelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 };
 
 const selectClass =
-  "h-11 w-full rounded-[var(--radius-card)] border border-black/12 bg-surface px-3 text-sm font-normal text-ink outline-none transition focus:border-ink focus-visible:ring-2 focus-visible:ring-ring/30 md:h-11 md:px-3.5";
+  "theme-field h-11 w-full rounded-[var(--radius-card)] px-3 text-sm font-normal md:h-11 md:px-3.5";
 
 export function AdminSelect({ label, hint, className, id, children, ...props }: AdminSelectProps) {
   const selectId = id ?? props.name;

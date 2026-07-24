@@ -10,8 +10,8 @@ export default function AdminLoginPage() {
   const configured = hasSupabaseEnv();
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-ink px-4">
-      <section className="w-full max-w-md rounded-[var(--radius-card)] bg-surface p-6 shadow-lift ring-1 ring-black/5 sm:p-7">
+    <main className="admin-theme flex min-h-screen items-center justify-center bg-background px-4">
+      <section className="theme-panel w-full max-w-md rounded-[var(--radius-card)] p-6 shadow-lift sm:p-7">
         <div className="mb-5">
           <BrandLogo href="/admin/login" label="ATRES" sublabel="Admin" />
         </div>
@@ -21,7 +21,7 @@ export default function AdminLoginPage() {
           Ingresa con el correo del administrador principal.
         </p>
         {!configured ? (
-          <p className="mt-4 rounded-[var(--radius-card)] bg-surface-muted p-3 text-sm font-medium text-ink">
+          <p className="theme-muted-panel mt-4 rounded-[var(--radius-card)] p-3 text-sm font-medium text-ink">
             Supabase no esta configurado. Agrega las variables de entorno para habilitar el acceso.
           </p>
         ) : null}

@@ -52,7 +52,7 @@ export function ShopRowActions({ shopId, status }: ShopRowActionsProps) {
           Restablecer clave
         </Button>
       </div>
-      {message ? <p className="text-xs font-bold text-red-700">{message}</p> : null}
+      {message ? <p className="text-xs font-bold text-gold-light">{message}</p> : null}
     </div>
   );
 }

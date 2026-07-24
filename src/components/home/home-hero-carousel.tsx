@@ -48,7 +48,7 @@ export function HomeHeroCarousel({ slides }: HomeHeroCarouselProps) {
 
   return (
     <section
-      className="home-hero relative isolate overflow-hidden bg-ink text-white"
+      className="home-hero relative isolate overflow-hidden bg-black-main text-white"
       aria-labelledby="home-hero-title"
       aria-roledescription={hasMany ? "carrusel" : undefined}
       onMouseEnter={() => setPaused(true)}
@@ -79,7 +79,7 @@ export function HomeHeroCarousel({ slides }: HomeHeroCarouselProps) {
           </div>
         ))}
         <div className="absolute inset-0 bg-[linear-gradient(108deg,rgba(8,8,8,0.92)_0%,rgba(8,8,8,0.58)_42%,rgba(8,8,8,0.18)_68%,rgba(8,8,8,0.08)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_82%,rgba(255,77,0,0.22),transparent_42%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_82%,rgba(201,162,39,0.16),transparent_42%)]" />
       </div>
 
       <div className="catalog-container relative flex min-h-[300px] max-h-[440px] flex-col justify-end pb-4 pt-8 sm:min-h-[340px] sm:pb-6 sm:pt-10 lg:min-h-[400px] lg:max-h-[480px] lg:pb-7">
@@ -99,7 +99,7 @@ export function HomeHeroCarousel({ slides }: HomeHeroCarouselProps) {
           <div className="mt-3.5 flex flex-wrap gap-2 sm:mt-4 sm:gap-2.5">
             <Link
               href={slide.primaryHref}
-              className="atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] bg-white px-5 text-sm font-medium text-ink shadow-soft transition hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:min-h-12 sm:px-6"
+              className="theme-primary-button atres-interactive inline-flex min-h-11 items-center justify-center rounded-[var(--radius-card)] px-5 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:min-h-12 sm:px-6"
             >
               {slide.primaryLabel}
             </Link>

@@ -16,7 +16,7 @@ export function ProductShopBlock({ shop }: ProductShopBlockProps) {
 
   return (
     <aside
-      className="mt-3 rounded-2xl border border-black/[0.06] bg-[#fafbfc] p-3 sm:p-3.5"
+      className="theme-muted-panel mt-3 rounded-2xl p-3 sm:p-3.5"
       aria-label={`Tienda ${shopName}`}
     >
       <div className="flex flex-wrap items-start justify-between gap-2">
@@ -24,7 +24,7 @@ export function ProductShopBlock({ shop }: ProductShopBlockProps) {
           <p className="text-[10px] font-medium uppercase tracking-wide text-ink-muted">Vendido por</p>
           <Link
             href={catalogHref}
-            className="mt-0.5 block truncate text-sm font-semibold text-ink transition hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+            className="mt-0.5 block truncate text-sm font-semibold text-ink transition hover:text-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
           >
             {shopName}
           </Link>
@@ -36,7 +36,7 @@ export function ProductShopBlock({ shop }: ProductShopBlockProps) {
           </Link>
         </div>
         {shop.verified ? (
-          <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-800 ring-1 ring-emerald-100">
+          <span className="shrink-0 rounded-full bg-gold/16 px-2 py-0.5 text-[10px] font-semibold text-gold-light ring-1 ring-gold/30">
             Verificada
           </span>
         ) : null}
@@ -50,7 +50,7 @@ export function ProductShopBlock({ shop }: ProductShopBlockProps) {
         latitude={shop.latitude}
         longitude={shop.longitude}
         address={mapsAddress || shop.address}
-        className="mt-2 border-t border-black/[0.05] pt-2"
+        className="mt-2 border-t border-white/10 pt-2"
       />
 
       {shop.address ? (
@@ -63,7 +63,7 @@ export function ProductShopBlock({ shop }: ProductShopBlockProps) {
       <div className="mt-2.5 flex gap-1.5">
         <Link
           href={catalogHref}
-          className="inline-flex h-10 min-h-10 min-w-0 flex-[1.2] items-center justify-center rounded-full bg-ink px-2 text-[11px] font-semibold text-white transition duration-200 hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs"
+          className="theme-primary-button inline-flex h-10 min-h-10 min-w-0 flex-[1.2] items-center justify-center rounded-full px-2 text-[11px] font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:text-xs"
         >
           <span className="truncate">Ver catalogo</span>
         </Link>

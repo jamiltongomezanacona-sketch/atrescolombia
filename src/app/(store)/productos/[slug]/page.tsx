@@ -181,7 +181,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <ProductActions product={product} whatsapp={productWhatsapp} />
 
-            <div className="mt-4 border-t border-black/[0.06] pt-3">
+            <div className="mt-4 border-t border-white/10 pt-3">
               <p className="text-[10px] font-medium tracking-wide text-ink sm:text-[11px]">Guia rapida</p>
               <ul className="mt-1.5 grid gap-1 text-xs font-normal leading-5 text-ink-muted sm:text-sm">
                 <li>Disponibilidad: {product.stock} unidades</li>
@@ -204,7 +204,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </ul>
             </div>
 
-            <div className="mt-3 border-t border-black/[0.06] pt-3">
+            <div className="mt-3 border-t border-white/10 pt-3">
               <p className="mb-1.5 text-[10px] font-medium tracking-wide text-ink-muted sm:text-[11px]">
                 Cualidades
               </p>
@@ -212,7 +212,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {visibleDetails.map((detail) => (
                   <li
                     key={detail}
-                    className="border-b border-black/[0.04] py-1.5 leading-5 last:border-b-0"
+                    className="border-b border-white/10 py-1.5 leading-5 last:border-b-0"
                   >
                     {detail}
                   </li>

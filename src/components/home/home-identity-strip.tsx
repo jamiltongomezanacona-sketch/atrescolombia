@@ -10,7 +10,7 @@ const IDENTITY_ITEMS = [
 export function HomeIdentityStrip() {
   return (
     <section className="home-section catalog-container" aria-labelledby="home-identity-title">
-      <div className="rounded-[var(--radius-card)] bg-surface px-3 py-3 ring-1 ring-black/[0.05] sm:px-4 sm:py-3.5">
+      <div className="rounded-[var(--radius-card)] bg-surface px-3 py-3 ring-1 ring-white/10 sm:px-4 sm:py-3.5">
         <h2 id="home-identity-title" className="text-base font-medium tracking-tight text-ink sm:text-lg">
           Moda y productos colombianos en un solo lugar.
         </h2>

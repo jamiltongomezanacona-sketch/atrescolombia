@@ -11,17 +11,17 @@ export default async function AdminBannersPage() {
   return (
     <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-4 lg:grid-cols-[420px_1fr]">
-        <section className="bg-white p-4 shadow-sm">
+        <section className="theme-panel p-4">
           <h1 className="text-2xl font-black">Crear banner</h1>
           <div className="mt-4">
             <BannerForm />
           </div>
         </section>
-        <section className="bg-white p-4 shadow-sm">
+        <section className="theme-panel p-4">
           <h2 className="text-2xl font-black">Banners</h2>
           <div className="mt-4 grid gap-3">
             {banners.map((banner) => (
-              <details key={banner.id} className="border border-zinc-200 p-3">
+              <details key={banner.id} className="theme-muted-panel p-3">
                 <summary className="cursor-pointer text-sm font-black">
                   {banner.title} - {banner.status}
                 </summary>
@@ -30,7 +30,7 @@ export default async function AdminBannersPage() {
                 </div>
               </details>
             ))}
-            {!banners.length ? <p className="text-sm font-semibold text-zinc-500">No hay banners.</p> : null}
+            {!banners.length ? <p className="text-sm font-semibold text-ink-muted">No hay banners.</p> : null}
           </div>
         </section>
       </div>
@@ -66,7 +66,7 @@ function BannerForm({ banner }: { banner?: Awaited<ReturnType<typeof getAdminBan
       </div>
       <label className="grid gap-2 text-sm font-bold">
         Posicion
-        <select name="position" defaultValue={banner?.position ?? "home_hero"} className="h-11 border border-zinc-300 px-3">
+        <select name="position" defaultValue={banner?.position ?? "home_hero"} className="theme-field h-11 rounded-[var(--radius-card)] px-3">
           <option value="home_hero">Hero Home</option>
           <option value="home_promo">Promo Home</option>
           <option value="category_top">Categoria</option>
@@ -74,7 +74,7 @@ function BannerForm({ banner }: { banner?: Awaited<ReturnType<typeof getAdminBan
       </label>
       <label className="grid gap-2 text-sm font-bold">
         Estado
-        <select name="status" defaultValue={banner?.status ?? "hidden"} className="h-11 border border-zinc-300 px-3">
+        <select name="status" defaultValue={banner?.status ?? "hidden"} className="theme-field h-11 rounded-[var(--radius-card)] px-3">
           <option value="active">Activo</option>
           <option value="hidden">Oculto</option>
           <option value="archived">Archivado</option>

@@ -1,13 +1,13 @@
 import { cn } from "@/lib/cn";
 
 const tones = {
-  black: "bg-ink/90 text-white ring-white/10",
-  metal: "bg-[#161616] text-white ring-white/10",
-  steel: "bg-stone-100 text-stone-800 ring-stone-200/80",
-  brand: "bg-ink text-badge-gold ring-[#f0d48a]/28",
-  soft: "bg-white/92 text-stone-700 ring-black/10",
-  amber: "bg-[#fff3c4] text-[#7a5a00] ring-amber-200/80",
-  emerald: "bg-emerald-50 text-emerald-900 ring-emerald-200/70",
+  black: "bg-black-main/92 text-white ring-white/10",
+  metal: "bg-gray-dark text-white ring-white/10",
+  steel: "bg-gray-dark text-ink-muted ring-white/10",
+  brand: "bg-gold text-black-main ring-gold-light/30",
+  soft: "bg-surface-muted text-ink-muted ring-white/10",
+  amber: "bg-gold-light text-black-main ring-gold-light/40",
+  emerald: "bg-gold/12 text-gold-light ring-gold/30",
 } as const;
 
 type BadgeProps = {

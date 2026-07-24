@@ -97,7 +97,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         <button
           type="button"
           className={cn(
-            "absolute inset-0 bg-ink/45 transition-opacity",
+            "absolute inset-0 bg-black-main/70 transition-opacity",
             open ? "opacity-100" : "opacity-0",
           )}
           aria-label="Cerrar filtros"
@@ -110,7 +110,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
           aria-modal="true"
           aria-labelledby={titleId}
           className={cn(
-            "absolute inset-x-0 bottom-0 flex max-h-[84vh] flex-col rounded-t-[var(--radius-card)] bg-surface shadow-lift transition-transform duration-300",
+            "theme-panel absolute inset-x-0 bottom-0 flex max-h-[84vh] flex-col rounded-t-[var(--radius-card)] shadow-lift transition-transform duration-300",
             open ? "translate-y-0" : "translate-y-full",
           )}
         >
@@ -142,8 +142,8 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         className={cn(
           "atres-interactive inline-flex h-9 items-center gap-2 rounded-[var(--radius-card)] px-3 text-xs font-medium transition sm:h-10 sm:px-3.5 sm:text-sm",
           activeCount > 0
-            ? "bg-ink text-white shadow-soft ring-1 ring-ink"
-            : "bg-surface text-ink ring-1 ring-black/12 hover:bg-surface-muted",
+            ? "bg-gold text-black-main shadow-soft ring-1 ring-gold"
+            : "bg-surface text-ink ring-1 ring-white/10 hover:bg-surface-muted hover:text-gold-light",
         )}
         aria-label={
           open
@@ -162,7 +162,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
           <span
             className={cn(
               "inline-flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-medium",
-              "bg-brand text-white",
+              "bg-brand text-black-main",
             )}
           >
             {activeCount}
@@ -179,7 +179,7 @@ export function FilterDrawer({ filters, options, action = "/productos" }: Filter
         aria-labelledby={titleId}
         hidden={!open}
         className={cn(
-          "absolute left-0 top-[calc(100%+0.4rem)] hidden w-[min(92vw,22rem)] overflow-hidden rounded-[var(--radius-card)] bg-surface shadow-lift ring-1 ring-black/10 sm:block",
+          "theme-panel absolute left-0 top-[calc(100%+0.4rem)] hidden w-[min(92vw,22rem)] overflow-hidden rounded-[var(--radius-card)] shadow-lift sm:block",
           open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         )}
       >
@@ -216,13 +216,13 @@ function FilterPanelHeader({
   onClose: () => void;
 }) {
   return (
-    <div className="flex items-center justify-between border-b border-black/[0.06] px-3.5 py-2.5">
+    <div className="flex items-center justify-between border-b border-white/10 px-3.5 py-2.5">
       <div className="flex items-center gap-2">
         <h2 id={titleId} className="text-sm font-medium tracking-tight text-ink sm:text-base">
           Filtros
         </h2>
         {activeCount > 0 ? (
-          <span className="rounded-full bg-ink px-1.5 py-0.5 text-[10px] font-medium text-white">
+          <span className="rounded-full bg-gold px-1.5 py-0.5 text-[10px] font-medium text-black-main">
             {activeCount}
           </span>
         ) : null}
@@ -230,7 +230,7 @@ function FilterPanelHeader({
       <button
         ref={closeRef}
         type="button"
-        className="inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-ink-muted hover:bg-surface-muted hover:text-ink"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] text-ink-muted hover:bg-surface-muted hover:text-gold-light"
         aria-label="Cerrar filtros"
         onClick={onClose}
       >

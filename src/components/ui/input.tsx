@@ -9,10 +9,10 @@ type TextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
 };
 
 const fieldClass =
-  "h-11 w-full rounded-[var(--radius-card)] border border-black/12 bg-surface px-3 text-sm font-normal text-ink outline-none transition placeholder:text-ink-muted/70 focus:border-ink focus-visible:ring-2 focus-visible:ring-ring/35 focus-visible:ring-offset-1";
+  "theme-field h-11 w-full rounded-[var(--radius-card)] px-3 text-sm font-normal";
 
 const storeFieldClass =
-  "h-11 w-full rounded-[var(--radius-card)] border border-black/10 bg-surface px-3.5 text-sm font-normal text-ink outline-none transition placeholder:text-ink-muted/70 focus:border-brand focus-visible:ring-2 focus-visible:ring-ring/35 focus-visible:ring-offset-1";
+  "theme-field h-11 w-full rounded-[var(--radius-card)] px-3.5 text-sm font-normal";
 
 export function Input({ label, className, id, ...props }: InputProps) {
   const inputId = id ?? props.name;
@@ -49,7 +49,7 @@ export function TextArea({ label, className, id, ...props }: TextAreaProps) {
       <textarea
         id={areaId}
         className={cn(
-          "w-full rounded-[var(--radius-card)] border border-black/12 bg-surface px-3 py-2.5 text-sm font-normal text-ink outline-none transition placeholder:text-ink-muted/70 focus:border-ink focus-visible:ring-2 focus-visible:ring-ring/35 focus-visible:ring-offset-1",
+          "theme-field w-full rounded-[var(--radius-card)] px-3 py-2.5 text-sm font-normal",
           className,
         )}
         {...props}

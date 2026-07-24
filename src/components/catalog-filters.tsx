@@ -17,7 +17,7 @@ type CatalogFiltersFormProps = {
 };
 
 const fieldClass =
-  "h-9 w-full rounded-[var(--radius-card)] border border-black/10 bg-surface px-2.5 text-sm font-normal text-ink outline-none transition focus:border-ink focus-visible:ring-2 focus-visible:ring-ring/30";
+  "theme-field h-9 w-full rounded-[var(--radius-card)] px-2.5 text-sm font-normal";
 
 export function CatalogFiltersForm({
   filters,
@@ -160,14 +160,14 @@ export function CatalogFiltersForm({
       <div className="grid gap-1.5 pt-0.5">
         <button
           type="submit"
-          className="atres-interactive inline-flex h-9 items-center justify-center rounded-[var(--radius-card)] bg-ink px-3 text-sm font-medium text-white hover:bg-stone-800"
+          className="theme-primary-button atres-interactive inline-flex h-9 items-center justify-center rounded-[var(--radius-card)] px-3 text-sm font-medium"
         >
           Aplicar filtros
         </button>
         {activeCount > 0 ? (
           <Link
             href={clearHref}
-            className="atres-interactive inline-flex h-9 items-center justify-center rounded-[var(--radius-card)] bg-surface-muted px-3 text-sm font-medium text-ink-muted hover:bg-stone-200 hover:text-ink"
+            className="theme-secondary-button atres-interactive inline-flex h-9 items-center justify-center rounded-[var(--radius-card)] px-3 text-sm font-medium"
           >
             Limpiar ({activeCount})
           </Link>
@@ -179,7 +179,7 @@ export function CatalogFiltersForm({
 
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <fieldset className="grid gap-1.5 border-b border-black/[0.06] pb-3 last:border-b-0 last:pb-0">
+    <fieldset className="grid gap-1.5 border-b border-white/10 pb-3 last:border-b-0 last:pb-0">
       <legend className="mb-0.5 text-[11px] font-medium tracking-wide text-ink-muted">{title}</legend>
       {children}
     </fieldset>
@@ -196,12 +196,12 @@ function FilterToggle({
   checked?: boolean;
 }) {
   return (
-    <label className="group relative flex min-h-9 cursor-pointer items-center gap-2 rounded-[var(--radius-card)] px-1.5 text-sm font-normal text-ink-muted transition hover:bg-surface-muted hover:text-ink">
+    <label className="group relative flex min-h-9 cursor-pointer items-center gap-2 rounded-[var(--radius-card)] px-1.5 text-sm font-normal text-ink-muted transition hover:bg-surface-muted hover:text-gold-light">
       <input type="checkbox" name={name} value="1" defaultChecked={checked} className="peer sr-only" />
-      <span className="grid size-4 place-items-center rounded-[3px] bg-surface text-transparent ring-1 ring-black/15 transition peer-checked:bg-ink peer-checked:text-white peer-checked:ring-ink">
+      <span className="grid size-4 place-items-center rounded-[3px] bg-black-main text-transparent ring-1 ring-white/15 transition peer-checked:bg-gold peer-checked:text-black-main peer-checked:ring-gold">
         <CheckIcon />
       </span>
-      <span className="peer-checked:text-ink">{label}</span>
+      <span className="peer-checked:text-gold-light">{label}</span>
     </label>
   );
 }

@@ -301,11 +301,11 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
 
   return (
     <div className="grid gap-5 pb-28 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
-      <section ref={imagesRef} className="grid gap-4 rounded-2xl bg-white/95 p-4 shadow-sm ring-1 ring-[#d8e7f5] lg:sticky lg:top-24">
+      <section ref={imagesRef} className="theme-panel grid gap-4 rounded-2xl p-4 lg:sticky lg:top-24">
         <div>
-          <p className="text-xs font-black uppercase text-zinc-500">Paso 1</p>
+          <p className="theme-kicker">Paso 1</p>
           <h2 className="text-2xl font-black">Imagenes del producto</h2>
-          <p className="mt-1 text-sm font-semibold text-zinc-500">
+          <p className="mt-1 text-sm font-semibold text-ink-muted">
             Sube de 1 a 10 imagenes. Maximo 8MB cada una; se guardan optimizadas en WebP.
           </p>
         </div>
@@ -318,17 +318,17 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
           onDragLeave={() => setDragActive(false)}
           onDrop={handleDrop}
           className={`grid min-h-40 place-items-center rounded-2xl border-2 border-dashed p-4 text-center transition ${
-            dragActive ? "border-[#0b1f3a] bg-[#eef6ff]" : "border-[#c7ddf2] bg-[#f5f9ff]"
+            dragActive ? "border-gold bg-gold/10" : "border-white/15 bg-black-main/45"
           }`}
         >
           <div>
             <p className="text-base font-black">Arrastra imagenes o seleccionalas desde galeria</p>
-            <p className="mt-1 text-sm font-semibold text-zinc-500">{images.length}/{MAX_IMAGES} imagenes agregadas</p>
+            <p className="mt-1 text-sm font-semibold text-ink-muted">{images.length}/{MAX_IMAGES} imagenes agregadas</p>
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={saving || images.length >= MAX_IMAGES}
-              className="mt-4 h-12 rounded-full bg-[#0b1f3a] px-5 text-sm font-black text-white disabled:opacity-50"
+              className="theme-primary-button mt-4 h-12 rounded-full px-5 text-sm font-black disabled:opacity-50"
             >
               Seleccionar imagenes
             </button>
@@ -346,7 +346,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         <button
           type="button"
           disabled
-          className="h-11 rounded-full border border-dashed border-zinc-300 text-sm font-black text-zinc-400"
+          className="h-11 rounded-full border border-dashed border-white/15 text-sm font-black text-ink-muted"
         >
           Optimizar imagenes con IA
         </button>
@@ -354,28 +354,28 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         {images.length ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
             {orderImages(images).map((image, index) => (
-              <article key={image.id} className="rounded-xl border border-zinc-200 bg-white p-2 shadow-sm">
-                <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-zinc-100">
+              <article key={image.id} className="theme-muted-panel rounded-xl p-2 shadow-sm">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-black-main">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={image.previewUrl} alt={image.file.name} className="h-full w-full object-cover" />
                   {image.isPrimary ? (
-                    <span className="absolute left-2 top-2 rounded-full bg-[#0b1f3a] px-2 py-1 text-[10px] font-black text-white">
+                    <span className="absolute left-2 top-2 rounded-full bg-gold px-2 py-1 text-[10px] font-black text-black-main">
                       Principal
                     </span>
                   ) : null}
                 </div>
                 <div className="mt-2 grid gap-2">
-                  <button type="button" onClick={() => setPrimary(image.id)} className="h-10 rounded-full bg-[#0b1f3a] text-xs font-black text-white">
+                  <button type="button" onClick={() => setPrimary(image.id)} className="theme-primary-button h-10 rounded-full text-xs font-black">
                     Usar como principal
                   </button>
                   <div className="grid grid-cols-3 gap-1">
-                    <button type="button" onClick={() => moveImage(image.id, -1)} disabled={index === 0} className="h-10 rounded-full bg-zinc-100 text-xs font-black disabled:opacity-40">
+                    <button type="button" onClick={() => moveImage(image.id, -1)} disabled={index === 0} className="theme-secondary-button h-10 rounded-full text-xs font-black disabled:opacity-40">
                       Subir
                     </button>
-                    <button type="button" onClick={() => moveImage(image.id, 1)} disabled={index === images.length - 1} className="h-10 rounded-full bg-zinc-100 text-xs font-black disabled:opacity-40">
+                    <button type="button" onClick={() => moveImage(image.id, 1)} disabled={index === images.length - 1} className="theme-secondary-button h-10 rounded-full text-xs font-black disabled:opacity-40">
                       Bajar
                     </button>
-                    <button type="button" onClick={() => removeImage(image.id)} className="h-10 rounded-full bg-red-50 text-xs font-black text-red-700">
+                    <button type="button" onClick={() => removeImage(image.id)} className="theme-danger-button h-10 rounded-full text-xs font-black">
                       Quitar
                     </button>
                   </div>
@@ -386,9 +386,9 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         ) : null}
       </section>
 
-      <section className="grid gap-4 rounded-2xl bg-white/95 p-4 shadow-sm ring-1 ring-[#d8e7f5]">
+      <section className="theme-panel grid gap-4 rounded-2xl p-4">
         <div>
-          <p className="text-xs font-black uppercase text-zinc-500">Carga rapida</p>
+          <p className="theme-kicker">Carga rapida</p>
           <h1 className="text-3xl font-black">Crear producto</h1>
         </div>
 
@@ -418,7 +418,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         </div>
 
         {discountPercent ? (
-          <p className="bg-[#eef6ff] p-3 text-sm font-black text-[#0b1f3a]">
+          <p className="theme-ok p-3 text-sm font-black">
             Descuento calculado automaticamente: -{discountPercent}%
           </p>
         ) : null}
@@ -432,7 +432,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
               <option value="hidden">Oculto</option>
               <option value="active">Publicado</option>
             </select>
-            <span className="text-xs font-bold text-zinc-500">
+            <span className="text-xs font-bold text-ink-muted">
               Oculto solo queda en admin. Publicado aparece en la tienda.
             </span>
           </Field>
@@ -445,8 +445,8 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
           onChange={setVariantValue}
         />
 
-        <details open={showAdvanced} onToggle={(event) => setShowAdvanced(event.currentTarget.open)} className="rounded-2xl border border-[#d8e7f5]">
-          <summary className="cursor-pointer rounded-2xl bg-[#eef6ff] px-4 py-3 text-sm font-black text-[#0b1f3a]">Opciones avanzadas</summary>
+        <details open={showAdvanced} onToggle={(event) => setShowAdvanced(event.currentTarget.open)} className="rounded-2xl border border-white/10">
+          <summary className="cursor-pointer rounded-2xl bg-surface-muted px-4 py-3 text-sm font-black text-gold-light">Opciones avanzadas</summary>
           <div className="grid gap-4 p-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Slug manual">
@@ -470,7 +470,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
             </Field>
             <Field label="Etiquetas separadas por coma">
               <input value={advanced.tags} onChange={(event) => setAdvancedValue("tags", event.target.value)} className={inputClass} />
-              <span className="text-xs font-bold leading-5 text-zinc-500">
+              <span className="text-xs font-bold leading-5 text-ink-muted">
                 Ej: badge:Top ventas, copy:pocas piezas, tono:sale, rank:Ahorra $5.000.
               </span>
             </Field>
@@ -482,9 +482,9 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
           </div>
         </details>
 
-        {progress ? <p className="bg-zinc-100 p-3 text-sm font-black">{progress}</p> : null}
+        {progress ? <p className="theme-muted-panel p-3 text-sm font-black">{progress}</p> : null}
         {message ? (
-          <div className={`${message.type === "ok" ? "bg-[#eef6ff] text-[#0b1f3a]" : "bg-red-50 text-red-700"} p-3 text-sm font-bold`}>
+          <div className={`${message.type === "ok" ? "theme-ok" : "theme-error"} p-3 text-sm font-bold`}>
             <p>{message.text}</p>
             {message.productId ? (
               <a href={`/admin/productos/${message.productId}/editar`} className="mt-2 inline-block underline">
@@ -495,21 +495,21 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
         ) : null}
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <button type="button" disabled={saving} onClick={() => save("status")} className="h-12 rounded-full bg-[#0b1f3a] px-4 text-sm font-black text-white disabled:opacity-50">
+          <button type="button" disabled={saving} onClick={() => save("status")} className="theme-primary-button h-12 rounded-full px-4 text-sm font-black disabled:opacity-50">
             {saving ? "Guardando..." : "Guardar producto"}
           </button>
-          <button type="button" disabled={saving} onClick={() => save("another")} className="h-12 rounded-full border border-[#0b1f3a] px-4 text-sm font-black text-[#0b1f3a] disabled:opacity-50">
+          <button type="button" disabled={saving} onClick={() => save("another")} className="theme-secondary-button h-12 rounded-full px-4 text-sm font-black disabled:opacity-50">
             Guardar y crear otro
           </button>
         </div>
       </section>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#d8e7f5] bg-white/95 p-3 shadow-[0_-14px_40px_rgba(3,16,34,0.16)] backdrop-blur">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--border-gold-soft)] bg-black-main/95 p-3 shadow-[0_-14px_40px_rgba(0,0,0,0.45)] backdrop-blur">
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3">
-          <button type="button" disabled={saving} onClick={() => save("draft")} className="h-12 rounded-full border border-[#0b1f3a] text-sm font-black text-[#0b1f3a] disabled:opacity-50">
+          <button type="button" disabled={saving} onClick={() => save("draft")} className="theme-secondary-button h-12 rounded-full text-sm font-black disabled:opacity-50">
             Guardar borrador
           </button>
-          <button type="button" disabled={saving} onClick={() => save("publish")} className="h-12 rounded-full bg-[#0b1f3a] text-sm font-black text-white disabled:opacity-50">
+          <button type="button" disabled={saving} onClick={() => save("publish")} className="theme-primary-button h-12 rounded-full text-sm font-black disabled:opacity-50">
             Publicar
           </button>
         </div>
@@ -524,7 +524,7 @@ export function QuickProductForm({ categories }: QuickProductFormProps) {
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <label className="grid gap-2 text-sm font-bold">
+    <label className="grid gap-2 text-sm font-bold text-ink">
       {label}
       {children}
     </label>
@@ -533,15 +533,15 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 function CheckField({ label, checked, onChange }: { label: string; checked: boolean; onChange: (checked: boolean) => void }) {
   return (
-    <label className="flex min-h-11 items-center gap-3 bg-[#eef6ff] px-3 text-sm font-bold">
+    <label className="flex min-h-11 items-center gap-3 rounded-xl border border-white/10 bg-black-main/40 px-3 text-sm font-bold">
       <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} />
       {label}
     </label>
   );
 }
 
-const inputClass = "h-12 w-full rounded-xl border border-[#c7ddf2] bg-[#f5f9ff] px-3 text-base focus:border-[#0b1f3a] focus:bg-white";
-const textareaClass = "w-full rounded-xl border border-[#c7ddf2] bg-[#f5f9ff] px-3 py-3 text-base focus:border-[#0b1f3a] focus:bg-white";
+const inputClass = "theme-field h-12 w-full rounded-xl px-3 text-base";
+const textareaClass = "theme-field w-full rounded-xl px-3 py-3 text-base";
 
 function ensurePrimary(images: LocalImage[]) {
   if (!images.length || images.some((image) => image.isPrimary)) return images;

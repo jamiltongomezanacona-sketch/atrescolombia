@@ -10,7 +10,7 @@ export function GlassPanel({ children, className, as: Tag = "div" }: GlassPanelP
   return (
     <Tag
       className={cn(
-        "glass-surface rounded-[var(--radius-card)] ring-1 ring-black/[0.04] transition duration-300",
+        "glass-surface rounded-[var(--radius-card)] ring-1 ring-white/10 transition duration-300",
         className,
       )}
     >

@@ -67,7 +67,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </Link>
 
         {ribbon ? (
-          <div className="absolute left-1.5 top-1.5 max-w-[72%] rounded-[var(--radius-card)] bg-ink px-1.5 py-px text-[9px] font-semibold tracking-wide text-badge-gold ring-1 ring-[#f0d48a]/28 sm:text-[10px]">
+          <div className="absolute left-1.5 top-1.5 max-w-[72%] rounded-[var(--radius-card)] bg-black-main px-1.5 py-px text-[9px] font-semibold tracking-wide text-badge-gold ring-1 ring-gold-light/30 sm:text-[10px]">
             <span className="truncate">{ribbon}</span>
           </div>
         ) : null}
@@ -146,7 +146,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                     key={color}
                     title={color}
                     aria-label={color}
-                    className="size-2.5 rounded-full ring-1 ring-black/15"
+                    className="size-2.5 rounded-full ring-1 ring-white/25"
                     style={{ backgroundColor: colorToHex(color) }}
                   />
                 ))}
@@ -177,18 +177,18 @@ function colorToHex(color: string) {
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 
-  if (normalized.includes("azul")) return "#2563eb";
-  if (normalized.includes("rosa")) return "#f9a8d4";
-  if (normalized.includes("lila") || normalized.includes("morado")) return "#a78bfa";
-  if (normalized.includes("blanco")) return "#f8fafc";
-  if (normalized.includes("negro")) return "#111827";
-  if (normalized.includes("rojo")) return "#ef4444";
-  if (normalized.includes("verde")) return "#22c55e";
-  if (normalized.includes("amarillo")) return "#facc15";
-  if (normalized.includes("beige") || normalized.includes("crema")) return "#e7d8bd";
-  if (normalized.includes("gris")) return "#9ca3af";
-  if (normalized.includes("denim")) return "#1d4ed8";
-  return "#d6d3d1";
+  if (normalized.includes("azul")) return "var(--swatch-blue)";
+  if (normalized.includes("rosa")) return "var(--swatch-pink)";
+  if (normalized.includes("lila") || normalized.includes("morado")) return "var(--swatch-lilac)";
+  if (normalized.includes("blanco")) return "var(--swatch-white)";
+  if (normalized.includes("negro")) return "var(--swatch-black)";
+  if (normalized.includes("rojo")) return "var(--swatch-red)";
+  if (normalized.includes("verde")) return "var(--swatch-green)";
+  if (normalized.includes("amarillo")) return "var(--swatch-yellow)";
+  if (normalized.includes("beige") || normalized.includes("crema")) return "var(--swatch-beige)";
+  if (normalized.includes("gris")) return "var(--swatch-gray)";
+  if (normalized.includes("denim")) return "var(--swatch-denim)";
+  return "var(--swatch-default)";
 }
 
 function CardMapPinIcon({ className }: { className?: string }) {

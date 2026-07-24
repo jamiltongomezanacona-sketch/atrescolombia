@@ -68,16 +68,16 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
           className="mt-2 max-w-xl text-sm sm:text-sm"
         />
 
-        <article className="mt-4 overflow-hidden rounded-[20px] bg-surface shadow-[0_8px_22px_rgba(18,18,18,0.06)] ring-1 ring-black/[0.06] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(18,18,18,0.1)]">
+        <article className="theme-panel mt-4 overflow-hidden rounded-[20px] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lift">
           <div className="relative aspect-[16/9] bg-surface-muted sm:aspect-[21/9]">
             <SafeProductImage src={image} alt="" className="object-cover" sizes="(max-width: 920px) 100vw, 920px" />
             {shop.verified ? (
-              <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-emerald-800 ring-1 ring-emerald-100/80 backdrop-blur-sm">
+              <span className="absolute left-3 top-3 rounded-full bg-gold px-2.5 py-1 text-[11px] font-semibold text-black-main ring-1 ring-gold-light/40 backdrop-blur-sm">
                 Verificada
               </span>
             ) : null}
             {shop.logoUrl ? (
-              <div className="absolute bottom-3 left-3 size-16 overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-black/10 sm:size-20">
+              <div className="absolute bottom-3 left-3 size-16 overflow-hidden rounded-2xl bg-black-main shadow-lg ring-1 ring-white/15 sm:size-20">
                 <SafeProductImage src={shop.logoUrl} alt={`Logo ${shopName}`} className="object-cover" sizes="80px" />
               </div>
             ) : null}
@@ -99,11 +99,11 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
               latitude={shop.latitude}
               longitude={shop.longitude}
               address={mapsAddress || shop.address}
-              className="border-t border-black/[0.05] pt-3 text-sm"
+              className="border-t border-white/10 pt-3 text-sm"
             />
 
             {locationItems.length > 0 ? (
-              <dl className="grid gap-2 rounded-2xl bg-[#f7f8f9] px-3 py-2.5 sm:grid-cols-3">
+              <dl className="theme-muted-panel grid gap-2 rounded-2xl px-3 py-2.5 sm:grid-cols-3">
                 {locationItems.map((item) => (
                   <div key={item.label} className="min-w-0">
                     <dt className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
@@ -116,7 +116,7 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
             ) : null}
 
             {shop.address ? (
-              <div className="min-w-0 rounded-2xl bg-[#f7f8f9] px-3 py-2.5">
+              <div className="theme-muted-panel min-w-0 rounded-2xl px-3 py-2.5">
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">Direccion</p>
                 <p className="mt-1 break-words text-sm font-medium text-ink">{shop.address}</p>
                 {shop.addressReference ? (
@@ -127,12 +127,12 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
 
             <div className="flex flex-wrap gap-1.5">
               {shop.pickupEnabled ? (
-                <span className="rounded-full bg-[#eef6ff] px-2.5 py-1 text-[11px] font-medium text-[#0b1f3a] ring-1 ring-[#d8e7f5]">
+                <span className="rounded-full bg-gold/16 px-2.5 py-1 text-[11px] font-medium text-gold-light ring-1 ring-gold/30">
                   Recogida disponible
                 </span>
               ) : null}
               {shop.localDeliveryEnabled ? (
-                <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-800 ring-1 ring-emerald-100">
+                <span className="rounded-full bg-gold/12 px-2.5 py-1 text-[11px] font-medium text-gold-light ring-1 ring-gold/30">
                   Entrega local
                   {shop.deliveryRadiusKm != null ? ` · ~${shop.deliveryRadiusKm} km` : ""}
                 </span>
@@ -142,7 +142,7 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
             <div className={`grid gap-2 ${whatsappUrl ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
               <Link
                 href={`/productos?tienda=${encodeURIComponent(shop.slug)}`}
-                className="inline-flex h-11 min-h-11 items-center justify-center rounded-full bg-ink px-4 text-sm font-semibold text-white transition-[background-color,transform] duration-200 ease-out hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98]"
+                  className="theme-primary-button inline-flex h-11 min-h-11 items-center justify-center rounded-full px-4 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98]"
               >
                 Ver catalogo
               </Link>
@@ -161,7 +161,7 @@ export default async function ShopProfilePage({ params }: ShopProfilePageProps) 
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-11 min-h-11 items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-semibold text-white transition-[filter,transform] duration-200 ease-out hover:brightness-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98]"
+                  className="theme-secondary-button inline-flex h-11 min-h-11 items-center justify-center rounded-full px-4 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink active:scale-[0.98]"
                 >
                   WhatsApp
                 </a>

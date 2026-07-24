@@ -113,7 +113,7 @@ export function HomePromotions(props: HomePromotionsProps) {
           <Link
             key={tile.key}
             href={tile.href}
-            className="home-scroll-item group relative min-h-[148px] min-w-[78%] overflow-hidden rounded-[var(--radius-card)] bg-ink text-white shadow-soft ring-1 ring-black/[0.06] sm:min-h-[156px] sm:min-w-0 lg:min-h-[168px]"
+            className="home-scroll-item group relative min-h-[148px] min-w-[78%] overflow-hidden rounded-[var(--radius-card)] bg-black-main text-white shadow-soft ring-1 ring-white/10 sm:min-h-[156px] sm:min-w-0 lg:min-h-[168px]"
           >
             <SafeProductImage
               src={tile.image}

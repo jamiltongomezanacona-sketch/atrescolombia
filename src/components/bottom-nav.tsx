@@ -20,7 +20,7 @@ export function BottomNav() {
       className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-2.5 pb-[max(0.35rem,env(safe-area-inset-bottom))] md:hidden"
       aria-label="Navegacion principal"
     >
-      <div className="pointer-events-auto mx-auto grid max-w-[23rem] grid-cols-5 rounded-[var(--radius-card)] border border-black/8 bg-surface/95 px-1 py-1.5 shadow-soft backdrop-blur-xl">
+      <div className="pointer-events-auto mx-auto grid max-w-[23rem] grid-cols-5 rounded-[var(--radius-card)] border border-white/10 bg-surface/95 px-1 py-1.5 shadow-soft backdrop-blur-xl">
         {items.map((item) => {
           const active =
             item.href === "/tiendas"
@@ -37,8 +37,8 @@ export function BottomNav() {
               className={cn(
                 "flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-[var(--radius-card)] px-1 text-[10px] font-medium leading-none transition duration-200 active:scale-95",
                 active
-                  ? "bg-ink text-white [&_svg]:text-white [&_span]:text-white"
-                  : "text-ink-muted hover:bg-surface-muted hover:text-ink",
+                  ? "bg-gold text-black-main [&_svg]:text-black-main [&_span]:text-black-main"
+                  : "text-ink-muted hover:bg-surface-muted hover:text-gold-light",
               )}
             >
               <NavIcon type={item.icon} active={active} />
@@ -58,7 +58,7 @@ function NavIcon({
   type: "home" | "grid" | "store" | "heart" | "bag";
   active: boolean;
 }) {
-  const className = cn("size-3.5", active ? "text-white" : "text-current");
+  const className = cn("size-3.5", active ? "text-black-main" : "text-current");
 
   if (type === "home") {
     return (

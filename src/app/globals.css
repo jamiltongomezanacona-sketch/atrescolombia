@@ -2,35 +2,61 @@
 
 :root {
   /* Surfaces & text — soft cool gray wash (Phase 2) */
-  --background: #f2f3f5;
-  --foreground: #1a1b1e;
-  --ink: #141518;
-  --ink-muted: #5a5c63;
-  --surface: #fafafb;
-  --surface-muted: #e8eaee;
-  --surface-elevated: rgba(250, 250, 252, 0.92);
-  --surface-glass: rgba(242, 243, 246, 0.72);
-  --surface-wash-top: #f7f8fa;
-  --surface-wash-mid: #f0f1f4;
-  --surface-wash-bottom: #e6e8ed;
+  --black-main: #0b0b0b;
+  --black-secondary: #151515;
+  --gray-dark: #222222;
+  --gray-medium: #3b3b3b;
+  --gray-light: #6b7280;
+  --gold: #c9a227;
+  --gold-light: #d6b84a;
+  --white: #ffffff;
+  --background: var(--black-main);
+  --foreground: var(--white);
+  --ink: var(--white);
+  --ink-muted: color-mix(in srgb, var(--white) 70%, var(--gray-light));
+  --surface: var(--black-secondary);
+  --surface-muted: var(--gray-dark);
+  --surface-elevated: rgba(21, 21, 21, 0.96);
+  --surface-glass: rgba(21, 21, 21, 0.84);
+  --surface-wash-top: var(--black-main);
+  --surface-wash-mid: #101010;
+  --surface-wash-bottom: var(--black-secondary);
 
   /* Brand & status */
-  --brand: #ff4d00;
-  --brand-hover: #e64500;
-  --price: #141518;
-  --badge-gold: #f0d48a;
-  --promo: #ffe566;
-  --ring: #ff4d00;
-  --success: #15803d;
-  --info: #0f766e;
-  --danger: #dc2626;
+  --brand: var(--gold);
+  --brand-hover: var(--gold-light);
+  --price: var(--gold-light);
+  --badge-gold: var(--gold-light);
+  --promo: var(--gold);
+  --ring: var(--gold);
+  --success: #22c55e;
+  --info: var(--gold-light);
+  --danger: #ef4444;
+  --success-soft-text: #dcfce7;
+  --danger-soft-text: #fecaca;
+
+  /* Semantic product swatches */
+  --swatch-black: #111111;
+  --swatch-white: #f8fafc;
+  --swatch-blue: #2563eb;
+  --swatch-pink: #f9a8d4;
+  --swatch-lilac: #a78bfa;
+  --swatch-beige: #d6b98c;
+  --swatch-red: #dc2626;
+  --swatch-green: #16a34a;
+  --swatch-yellow: #facc15;
+  --swatch-gray: #9ca3af;
+  --swatch-denim: #1d4ed8;
+  --swatch-default: #d4d4d8;
 
   /* Borders & elevation */
-  --border-soft: rgba(28, 28, 32, 0.07);
-  --border-strong: rgba(28, 28, 32, 0.12);
-  --shadow-soft: 0 10px 28px rgba(28, 28, 32, 0.05);
-  --shadow-lift: 0 18px 44px rgba(28, 28, 32, 0.08);
-  --shadow-press: 0 8px 20px rgba(28, 28, 32, 0.07);
+  --border-soft: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(201, 162, 39, 0.32);
+  --border-gold-soft: rgba(201, 162, 39, 0.18);
+  --border-gold-strong: rgba(214, 184, 74, 0.5);
+  --shadow-soft: 0 14px 34px rgba(0, 0, 0, 0.28);
+  --shadow-lift: 0 22px 56px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(201, 162, 39, 0.12);
+  --shadow-press: 0 10px 26px rgba(0, 0, 0, 0.34), 0 0 20px rgba(201, 162, 39, 0.08);
 
   /* Shape & layout */
   --radius-card: 0.5rem;
@@ -42,16 +68,16 @@
   --section-y-md: 1rem;
 
   /* Store header chrome — charcoal glass (Phase 1) */
-  --header-bg: #1c1c1e;
-  --header-bg-soft: #2a2a2e;
-  --header-glass: rgba(255, 255, 255, 0.055);
-  --header-glass-strong: rgba(255, 255, 255, 0.08);
-  --header-border: rgba(255, 255, 255, 0.1);
+  --header-bg: var(--black-main);
+  --header-bg-soft: var(--black-secondary);
+  --header-glass: rgba(255, 255, 255, 0.04);
+  --header-glass-strong: rgba(201, 162, 39, 0.08);
+  --header-border: rgba(201, 162, 39, 0.18);
   --header-gradient: linear-gradient(
     180deg,
-    rgba(42, 42, 46, 0.96) 0%,
-    rgba(28, 28, 30, 0.94) 55%,
-    rgba(22, 22, 24, 0.92) 100%
+    var(--black-main) 0%,
+    var(--black-main) 58%,
+    var(--black-secondary) 100%
   );
   /* Mobile: logo/search row only. Desktop: top bar + search + category nav. */
   --store-header-offset: 3.25rem;
@@ -66,6 +92,14 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-black-main: var(--black-main);
+  --color-black-secondary: var(--black-secondary);
+  --color-gray-dark: var(--gray-dark);
+  --color-gray-medium: var(--gray-medium);
+  --color-gray-light: var(--gray-light);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-white: var(--white);
   --color-brand: var(--brand);
   --color-brand-hover: var(--brand-hover);
   --color-price: var(--price);
@@ -103,7 +137,7 @@
   body {
     min-width: 0;
     background:
-      radial-gradient(ellipse 90% 55% at 50% -12%, rgba(170, 176, 188, 0.28), transparent 58%),
+      radial-gradient(ellipse 80% 46% at 50% -14%, rgba(201, 162, 39, 0.1), transparent 56%),
       linear-gradient(
         180deg,
         var(--surface-wash-top) 0%,
@@ -160,8 +194,8 @@
   }
 
   ::selection {
-    background: color-mix(in srgb, var(--promo) 72%, white);
-    color: var(--ink);
+    background: color-mix(in srgb, var(--promo) 74%, var(--white));
+    color: var(--black-main);
   }
 }
 
@@ -179,17 +213,21 @@ h5,
 h6 {
   color: var(--ink);
   font-weight: 550;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   line-height: 1.15;
+}
+
+.tracking-tight {
+  letter-spacing: 0 !important;
 }
 
 .store-surface {
   background:
-    radial-gradient(ellipse 65% 42% at 8% 0%, rgba(155, 162, 175, 0.16), transparent 52%),
-    radial-gradient(ellipse 55% 38% at 94% 4%, rgba(140, 148, 162, 0.12), transparent 50%),
+    radial-gradient(ellipse 55% 32% at 12% 0%, rgba(201, 162, 39, 0.08), transparent 56%),
+    radial-gradient(ellipse 42% 30% at 92% 3%, rgba(214, 184, 74, 0.06), transparent 54%),
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--surface-wash-top) 92%, white) 0%,
+      var(--surface-wash-top) 0%,
       var(--background) 46%,
       var(--surface-wash-bottom) 100%
     );
@@ -205,11 +243,11 @@ h6 {
 
 /* Catalog / shop cards — soft gray glass edge (Phase 3) */
 .store-card {
-  background: color-mix(in srgb, var(--surface) 88%, var(--surface-muted));
+  background: linear-gradient(180deg, rgba(34, 34, 34, 0.92) 0%, rgba(21, 21, 21, 0.98) 100%);
   border: 1px solid var(--border-soft);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset, var(--shadow-soft);
-  -webkit-backdrop-filter: blur(10px) saturate(1.04);
-  backdrop-filter: blur(10px) saturate(1.04);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), var(--shadow-soft);
+  -webkit-backdrop-filter: blur(10px) saturate(1.02);
+  backdrop-filter: blur(10px) saturate(1.02);
   transition:
     transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -217,8 +255,137 @@ h6 {
 }
 
 .store-card:hover {
-  border-color: var(--border-strong);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75) inset, var(--shadow-lift);
+  border-color: var(--border-gold-soft);
+  box-shadow: inset 0 1px 0 rgba(214, 184, 74, 0.12), var(--shadow-lift);
+}
+
+.theme-panel {
+  color: var(--ink);
+  background: linear-gradient(180deg, rgba(34, 34, 34, 0.94) 0%, rgba(21, 21, 21, 0.98) 100%);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+}
+
+.theme-muted-panel {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface-muted) 84%, var(--surface));
+  border: 1px solid var(--border-soft);
+}
+
+.theme-gold-panel {
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(201, 162, 39, 0.18), transparent 42%),
+    linear-gradient(180deg, var(--surface-muted), var(--surface));
+  border: 1px solid var(--border-gold-soft);
+  box-shadow: var(--shadow-soft);
+}
+
+.theme-field {
+  color: var(--ink);
+  background: var(--black-main);
+  border: 1px solid var(--gray-medium);
+  outline: none;
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background-color 220ms ease;
+}
+
+.theme-field::placeholder {
+  color: color-mix(in srgb, var(--ink-muted) 72%, transparent);
+}
+
+.theme-field:focus,
+.theme-field:focus-visible {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.16);
+}
+
+.theme-field:disabled {
+  opacity: 0.55;
+}
+
+.theme-primary-button {
+  color: var(--black-main);
+  background: var(--brand);
+  box-shadow: 0 12px 26px rgba(201, 162, 39, 0.18), var(--shadow-soft);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.theme-primary-button:hover {
+  background: var(--brand-hover);
+  box-shadow: 0 14px 32px rgba(214, 184, 74, 0.22), var(--shadow-press);
+}
+
+.theme-secondary-button {
+  color: var(--white);
+  background: var(--gray-dark);
+  border: 1px solid var(--border-gold-soft);
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.theme-secondary-button:hover {
+  background: var(--black-main);
+  border-color: var(--border-gold-strong);
+}
+
+.theme-danger-button {
+  color: var(--danger-soft-text);
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.28);
+}
+
+.theme-danger-button:hover {
+  background: rgba(239, 68, 68, 0.18);
+  color: var(--white);
+}
+
+.theme-ok {
+  color: var(--success-soft-text);
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.26);
+}
+
+.theme-error {
+  color: var(--danger-soft-text);
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.28);
+}
+
+.theme-kicker {
+  color: var(--brand-hover);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.theme-divider {
+  border-color: var(--border-soft);
+}
+
+.admin-theme {
+  color-scheme: dark;
+  background: var(--background);
+  color: var(--ink);
+}
+
+.admin-theme :is(input, textarea, select) {
+  color-scheme: dark;
+}
+
+.admin-theme option {
+  background: var(--surface);
+  color: var(--ink);
 }
 
 .atres-interactive {
@@ -249,7 +416,7 @@ h6 {
 
 .atres-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgba(28, 25, 23, 0.28) transparent;
+  scrollbar-color: rgba(201, 162, 39, 0.38) transparent;
 }
 
 .atres-scroll::-webkit-scrollbar {
@@ -258,7 +425,7 @@ h6 {
 }
 
 .atres-scroll::-webkit-scrollbar-thumb {
-  background: rgba(28, 25, 23, 0.24);
+  background: rgba(201, 162, 39, 0.38);
   border-radius: var(--radius-card);
 }
 
@@ -339,7 +506,7 @@ h6 {
 .atres-skeleton {
   position: relative;
   overflow: hidden;
-  background: color-mix(in srgb, var(--surface-muted) 88%, #d6d3d1);
+  background: color-mix(in srgb, var(--surface-muted) 88%, var(--gray-medium));
   border-radius: calc(var(--radius-card) - 1px);
 }
 
@@ -351,7 +518,7 @@ h6 {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.55),
+    rgba(214, 184, 74, 0.16),
     transparent
   );
   animation: atres-shimmer 1.4s ease-in-out infinite;
@@ -415,11 +582,11 @@ h6 {
   top: 0;
   z-index: 50;
   background: var(--header-gradient);
-  background-color: color-mix(in srgb, var(--header-bg) 88%, transparent);
+  background-color: var(--header-bg);
   border-bottom: 1px solid var(--header-border);
-  box-shadow: 0 10px 28px rgba(18, 18, 18, 0.12);
-  -webkit-backdrop-filter: blur(18px) saturate(1.12);
-  backdrop-filter: blur(18px) saturate(1.12);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.46);
+  -webkit-backdrop-filter: blur(14px) saturate(1.05);
+  backdrop-filter: blur(14px) saturate(1.05);
 }
 
 .store-header-glass {
@@ -428,26 +595,22 @@ h6 {
 }
 
 .store-header-nav {
-  background: linear-gradient(
-    180deg,
-    var(--header-glass-strong) 0%,
-    var(--header-glass) 100%
-  );
+  background: var(--black-main);
   border-top: 1px solid var(--header-border);
 }
 
 .store-footer-shell {
   background: linear-gradient(
     0deg,
-    rgba(22, 22, 24, 0.96) 0%,
-    rgba(28, 28, 30, 0.94) 48%,
-    rgba(42, 42, 46, 0.92) 100%
+    var(--black-main) 0%,
+    var(--black-secondary) 58%,
+    var(--gray-dark) 100%
   );
-  background-color: color-mix(in srgb, var(--header-bg) 90%, transparent);
+  background-color: var(--black-main);
   border-top: 1px solid var(--header-border);
-  box-shadow: 0 -12px 32px rgba(18, 18, 18, 0.1);
-  -webkit-backdrop-filter: blur(18px) saturate(1.1);
-  backdrop-filter: blur(18px) saturate(1.1);
+  box-shadow: 0 -18px 42px rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.04);
+  backdrop-filter: blur(14px) saturate(1.04);
 }
 
 .store-footer-meta {
@@ -459,11 +622,11 @@ h6 {
   position: sticky;
   top: var(--store-header-offset);
   z-index: 30;
-  background: color-mix(in srgb, var(--surface-wash-top) 88%, white);
-  -webkit-backdrop-filter: blur(14px) saturate(1.04);
-  backdrop-filter: blur(14px) saturate(1.04);
-  border-bottom: 1px solid color-mix(in srgb, var(--border-soft) 80%, transparent);
-  box-shadow: 0 8px 18px rgba(28, 28, 32, 0.03);
+  background: color-mix(in srgb, var(--black-main) 92%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.04);
+  backdrop-filter: blur(16px) saturate(1.04);
+  border-bottom: 1px solid var(--border-soft);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
 }
 
 .catalog-container {

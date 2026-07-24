@@ -11,17 +11,17 @@ export default async function AdminPromotionsPage() {
   return (
     <AdminShell isSuperAdmin={session.isSuperAdmin}>
       <div className="grid gap-4 lg:grid-cols-[420px_1fr]">
-        <section className="bg-white p-4 shadow-sm">
+        <section className="theme-panel p-4">
           <h1 className="text-2xl font-black">Crear promocion</h1>
           <div className="mt-4">
             <PromotionForm />
           </div>
         </section>
-        <section className="bg-white p-4 shadow-sm">
+        <section className="theme-panel p-4">
           <h2 className="text-2xl font-black">Promociones</h2>
           <div className="mt-4 grid gap-3">
             {promotions.map((promotion) => (
-              <details key={promotion.id} className="border border-zinc-200 p-3">
+              <details key={promotion.id} className="theme-muted-panel p-3">
                 <summary className="cursor-pointer text-sm font-black">
                   {promotion.name} - {promotion.status}
                 </summary>
@@ -30,7 +30,7 @@ export default async function AdminPromotionsPage() {
                 </div>
               </details>
             ))}
-            {!promotions.length ? <p className="text-sm font-semibold text-zinc-500">No hay promociones.</p> : null}
+            {!promotions.length ? <p className="text-sm font-semibold text-ink-muted">No hay promociones.</p> : null}
           </div>
         </section>
       </div>
@@ -47,7 +47,7 @@ function PromotionForm({ promotion }: { promotion?: Awaited<ReturnType<typeof ge
       <TextAreaField label="Descripcion" name="description" defaultValue={promotion?.description} />
       <label className="grid gap-2 text-sm font-bold">
         Tipo descuento
-        <select name="discount_type" defaultValue={promotion?.discount_type ?? "percent"} className="h-11 border border-zinc-300 px-3">
+        <select name="discount_type" defaultValue={promotion?.discount_type ?? "percent"} className="theme-field h-11 rounded-[var(--radius-card)] px-3">
           <option value="percent">Porcentaje</option>
           <option value="fixed_price">Precio especial</option>
         </select>
@@ -59,7 +59,7 @@ function PromotionForm({ promotion }: { promotion?: Awaited<ReturnType<typeof ge
       </div>
       <label className="grid gap-2 text-sm font-bold">
         Estado
-        <select name="status" defaultValue={promotion?.status ?? "hidden"} className="h-11 border border-zinc-300 px-3">
+        <select name="status" defaultValue={promotion?.status ?? "hidden"} className="theme-field h-11 rounded-[var(--radius-card)] px-3">
           <option value="active">Activa</option>
           <option value="hidden">Oculta</option>
           <option value="archived">Archivada</option>

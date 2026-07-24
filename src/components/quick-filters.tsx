@@ -34,8 +34,8 @@ export function QuickFilters({ items, className }: QuickFiltersProps) {
               className={cn(
                 "inline-flex min-h-9 shrink-0 items-center rounded-[var(--radius-card)] px-3 text-xs font-medium transition sm:min-h-10 sm:px-3.5 sm:text-sm",
                 active
-                  ? "bg-ink text-white"
-                  : "bg-surface text-ink-muted ring-1 ring-black/8 hover:bg-surface-muted hover:text-ink",
+                  ? "bg-gold text-black-main"
+                  : "bg-surface text-ink-muted ring-1 ring-white/10 hover:bg-surface-muted hover:text-gold-light",
               )}
             >
               <span className="text-current">{item.label}</span>

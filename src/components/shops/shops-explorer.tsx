@@ -130,7 +130,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
           type="button"
           onClick={requestLocation}
           disabled={geoStatus === "loading"}
-          className="inline-flex h-9 min-h-9 items-center rounded-full bg-ink px-3.5 text-xs font-semibold text-white disabled:opacity-60"
+          className="theme-primary-button inline-flex h-9 min-h-9 items-center rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
         >
           {geoStatus === "loading" ? "Buscando ubicacion..." : "Usar mi ubicacion"}
         </button>
@@ -139,7 +139,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
             type="button"
             onClick={() => setSortNear((value) => !value)}
             className={`inline-flex h-9 min-h-9 items-center rounded-full px-3.5 text-xs font-semibold ring-1 ${
-              sortNear ? "bg-ink text-white ring-ink" : "bg-surface text-ink ring-black/10"
+              sortNear ? "bg-gold text-black-main ring-gold" : "bg-surface text-ink ring-white/10"
             }`}
           >
             {sortNear ? "Orden: cercania" : "Ordenar por cercania"}
@@ -149,7 +149,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
           <button
             type="button"
             onClick={resetFilters}
-            className="inline-flex h-9 min-h-9 items-center rounded-full bg-surface px-3.5 text-xs font-semibold text-ink ring-1 ring-black/10"
+            className="theme-secondary-button inline-flex h-9 min-h-9 items-center rounded-full px-3.5 text-xs font-semibold"
           >
             Reiniciar
           </button>
@@ -167,8 +167,8 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
             onClick={() => setDistanceFilter(item.id)}
             className={`inline-flex h-8 min-h-8 shrink-0 items-center rounded-full px-3 text-[11px] font-semibold ring-1 sm:text-xs ${
               distanceFilter === item.id
-                ? "bg-ink text-white ring-ink"
-                : "bg-surface text-ink-muted ring-black/10 hover:text-ink"
+                ? "bg-gold text-black-main ring-gold"
+                : "bg-surface text-ink-muted ring-white/10 hover:text-gold-light"
             }`}
           >
             {item.label}
@@ -186,7 +186,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
               setLocalityFilter("");
               setNeighborhoodFilter("");
             }}
-            className="h-9 w-full rounded-[var(--radius-card)] border border-black/10 bg-surface px-2.5 text-sm font-medium text-ink"
+            className="theme-field h-9 w-full rounded-[var(--radius-card)] px-2.5 text-sm font-medium"
           >
             <option value="">Todas</option>
             {cities.map((city) => (
@@ -204,7 +204,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
               setLocalityFilter(event.target.value);
               setNeighborhoodFilter("");
             }}
-            className="h-9 w-full rounded-[var(--radius-card)] border border-black/10 bg-surface px-2.5 text-sm font-medium text-ink"
+            className="theme-field h-9 w-full rounded-[var(--radius-card)] px-2.5 text-sm font-medium"
           >
             <option value="">Todas</option>
             {localities.map((locality) => (
@@ -219,7 +219,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
           <select
             value={neighborhoodFilter}
             onChange={(event) => setNeighborhoodFilter(event.target.value)}
-            className="h-9 w-full rounded-[var(--radius-card)] border border-black/10 bg-surface px-2.5 text-sm font-medium text-ink"
+            className="theme-field h-9 w-full rounded-[var(--radius-card)] px-2.5 text-sm font-medium"
           >
             <option value="">Todos</option>
             {neighborhoods.map((neighborhood) => (

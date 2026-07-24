@@ -51,10 +51,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     : "";
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface ring-1 ring-black/[0.04] transition duration-300 hover:shadow-soft hover:ring-black/[0.08] motion-safe:hover:-translate-y-0.5">
-      <div className="relative bg-surface-muted">
+    <article className="store-card group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] motion-safe:hover:-translate-y-0.5">
+      <div className="relative bg-surface-muted/80">
         <Link href={`/productos/${product.slug}`} className="block">
-          <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted">
+          <div className="relative aspect-[3/4] overflow-hidden bg-surface-muted/90">
             <SafeProductImage
               src={displayImage}
               alt={product.name}
@@ -62,7 +62,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               priority={priority}
               className="h-full w-full object-cover transition duration-500 ease-out motion-safe:group-hover:scale-[1.03]"
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 transition duration-300 motion-safe:group-hover:opacity-100" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(28,28,32,0.18)] via-transparent to-transparent opacity-0 transition duration-300 motion-safe:group-hover:opacity-100" />
           </div>
         </Link>
 

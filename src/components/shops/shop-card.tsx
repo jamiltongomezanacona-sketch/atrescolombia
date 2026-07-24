@@ -25,11 +25,11 @@ export function ShopCard({ shop }: ShopCardProps) {
 
   return (
     <li className="min-w-0">
-      <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-surface ring-1 ring-black/[0.04] transition duration-300 hover:shadow-soft hover:ring-black/[0.08] motion-safe:hover:-translate-y-0.5">
+      <article className="store-card group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] motion-safe:hover:-translate-y-0.5">
         <Link
           href={catalogHref}
           aria-label={`Ver catalogo de ${shopName}`}
-          className="relative block aspect-[3/4] overflow-hidden bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          className="relative block aspect-[3/4] overflow-hidden bg-surface-muted/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
           <SafeProductImage
             src={shop.imageUrl}

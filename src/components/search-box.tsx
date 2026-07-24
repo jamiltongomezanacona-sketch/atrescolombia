@@ -95,15 +95,6 @@ export function SearchBox({
         {hiddenInputs.map((input) => (
           <input key={`${input.name}:${input.value}`} type="hidden" name={input.name} value={input.value} />
         ))}
-        <span
-          className={
-            compact
-              ? "store-search-icon ml-2 grid size-[1.625rem] shrink-0 place-items-center rounded-[var(--radius-card)]"
-              : "store-search-icon ml-2.5 grid size-7 shrink-0 place-items-center rounded-[var(--radius-card)]"
-          }
-        >
-          <SearchIcon />
-        </span>
         <input
           name="q"
           value={query}
@@ -120,12 +111,20 @@ export function SearchBox({
           role="combobox"
           className={
             compact
-              ? "min-w-0 flex-1 bg-transparent px-2 text-sm font-normal outline-none"
-              : "min-w-0 flex-1 bg-transparent px-2.5 text-sm font-normal outline-none"
+              ? "min-w-0 flex-1 bg-transparent px-3 text-sm font-normal outline-none"
+              : "min-w-0 flex-1 bg-transparent px-3.5 text-sm font-normal outline-none"
           }
         />
-        <button type="submit" className="sr-only" aria-label="Buscar">
-          {buttonLabel}
+        <button
+          type="submit"
+          aria-label={buttonLabel}
+          className={
+            compact
+              ? "store-search-icon mr-2 grid size-[1.625rem] shrink-0 place-items-center rounded-[var(--radius-card)]"
+              : "store-search-icon mr-2.5 grid size-7 shrink-0 place-items-center rounded-[var(--radius-card)]"
+          }
+        >
+          <SearchIcon />
         </button>
       </form>
 

@@ -45,7 +45,7 @@ export function TrendShowcase({
             className="object-cover opacity-[0.16]"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black-main/75 via-black-main/35 to-gold/12" />
+        <div className="premium-fade-showcase absolute inset-0" />
         <div
           className={cn(
             "relative grid md:p-5",

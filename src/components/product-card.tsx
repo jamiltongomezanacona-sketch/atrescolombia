@@ -62,7 +62,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               priority={priority}
               className="h-full w-full object-cover transition duration-500 ease-out motion-safe:group-hover:scale-[1.03]"
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(28,28,32,0.18)] via-transparent to-transparent opacity-0 transition duration-300 motion-safe:group-hover:opacity-100" />
+            <div className="premium-media-fade-soft pointer-events-none absolute inset-0 opacity-0 transition duration-300 motion-safe:group-hover:opacity-100" />
           </div>
         </Link>
 

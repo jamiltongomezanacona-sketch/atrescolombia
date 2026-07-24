@@ -82,7 +82,7 @@ export function ProductGallery({ productName, images }: ProductGalleryProps) {
             sizes="(max-width: 1024px) 100vw, 55vw"
             className="object-cover transition duration-500 ease-out group-hover:scale-[1.03]"
           />
-          <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+          <span className="premium-media-fade-soft pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100" />
           <span className="pointer-events-none absolute bottom-3 right-3 rounded-[var(--radius-card)] bg-black-main/80 px-2.5 py-1 text-[11px] font-medium text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100">
             Ampliar
           </span>

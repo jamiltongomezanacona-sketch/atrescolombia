@@ -78,8 +78,8 @@ export function HomeHeroCarousel({ slides }: HomeHeroCarouselProps) {
             />
           </div>
         ))}
-        <div className="absolute inset-0 bg-[linear-gradient(108deg,rgba(8,8,8,0.92)_0%,rgba(8,8,8,0.58)_42%,rgba(8,8,8,0.18)_68%,rgba(8,8,8,0.08)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_82%,rgba(201,162,39,0.16),transparent_42%)]" />
+        <div className="premium-fade-hero absolute inset-0" />
+        <div className="premium-fade-gold absolute inset-0" />
       </div>
 
       <div className="catalog-container relative flex min-h-[300px] max-h-[440px] flex-col justify-end pb-4 pt-8 sm:min-h-[340px] sm:pb-6 sm:pt-10 lg:min-h-[400px] lg:max-h-[480px] lg:pb-7">

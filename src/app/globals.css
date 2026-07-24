@@ -15,27 +15,28 @@
   --foreground: var(--white);
   --ink: var(--white);
   --ink-muted: color-mix(in srgb, var(--white) 70%, var(--gray-light));
-  --surface: color-mix(in srgb, var(--black-secondary) 72%, var(--gray-smoke));
-  --surface-muted: color-mix(in srgb, var(--gray-dark) 76%, var(--gray-smoke));
-  --surface-elevated: rgba(30, 30, 30, 0.96);
-  --surface-glass: rgba(30, 30, 30, 0.86);
-  /* Store content wash: graphite layers (header stays black) */
-  --surface-wash-top: #171717;
-  --surface-wash-mid: #1d1d1d;
-  --surface-wash-bottom: #222222;
-  --store-surface-mid: #1a1a1a;
+  --surface: #262626;
+  --surface-muted: #303030;
+  --surface-elevated: rgba(52, 52, 52, 0.96);
+  --surface-glass: rgba(44, 44, 44, 0.86);
+  /* Store content wash: graphite base, always darker than cards so they lift */
+  --surface-wash-top: #1c1c1c;
+  --surface-wash-mid: #1f1f1f;
+  --surface-wash-bottom: #232323;
+  --store-surface-mid: #1e1e1e;
   --fade-premium: linear-gradient(
     180deg,
-    rgba(48, 48, 48, 0.82) 0%,
-    rgba(24, 24, 24, 0.94) 52%,
-    rgba(11, 11, 11, 1) 100%
+    rgba(56, 56, 56, 0.82) 0%,
+    rgba(38, 38, 38, 0.94) 52%,
+    rgba(28, 28, 28, 1) 100%
   );
-  --fade-card: linear-gradient(180deg, rgba(48, 48, 48, 0.94) 0%, rgba(24, 24, 24, 0.98) 100%);
-  --fade-panel: linear-gradient(180deg, rgba(48, 48, 48, 0.96) 0%, rgba(24, 24, 24, 0.98) 100%);
+  --fade-card: linear-gradient(180deg, rgba(46, 46, 46, 0.96) 0%, rgba(38, 38, 38, 0.98) 100%);
+  --fade-panel: linear-gradient(180deg, rgba(50, 50, 50, 0.97) 0%, rgba(42, 42, 42, 0.98) 100%);
   --fade-footer: linear-gradient(0deg, var(--black-main) 0%, var(--black-secondary) 58%, var(--gray-smoke) 100%);
-  --fade-page-gold: radial-gradient(ellipse 80% 46% at 50% -14%, rgba(201, 162, 39, 0.14), transparent 58%);
-  --fade-store-gold-left: radial-gradient(ellipse 55% 32% at 12% 0%, rgba(201, 162, 39, 0.12), transparent 58%);
-  --fade-store-gold-right: radial-gradient(ellipse 42% 30% at 92% 3%, rgba(214, 184, 74, 0.09), transparent 56%);
+  /* Ambient gold stays faint: gold must read as a signal, not as haze */
+  --fade-page-gold: radial-gradient(ellipse 80% 46% at 50% -14%, rgba(201, 162, 39, 0.05), transparent 58%);
+  --fade-store-gold-left: radial-gradient(ellipse 55% 32% at 12% 0%, rgba(201, 162, 39, 0.05), transparent 58%);
+  --fade-store-gold-right: radial-gradient(ellipse 42% 30% at 92% 3%, rgba(214, 184, 74, 0.04), transparent 56%);
   --fade-gold-soft: radial-gradient(circle at top, rgba(201, 162, 39, 0.18), transparent 44%);
   --fade-hero: linear-gradient(
     108deg,
@@ -49,8 +50,8 @@
   --fade-media-strong: linear-gradient(0deg, rgba(11, 11, 11, 0.86) 0%, rgba(48, 48, 48, 0.4) 55%, transparent 100%);
   --fade-media-soft: linear-gradient(0deg, rgba(11, 11, 11, 0.24) 0%, rgba(48, 48, 48, 0.16) 52%, transparent 100%);
   --fade-media-balanced: linear-gradient(180deg, rgba(11, 11, 11, 0.54) 0%, rgba(48, 48, 48, 0.36) 50%, rgba(11, 11, 11, 0.5) 100%);
-  --catalog-field: linear-gradient(180deg, rgba(56, 56, 56, 0.84) 0%, rgba(24, 24, 24, 0.94) 100%);
-  --catalog-field-glow: radial-gradient(ellipse 82% 36% at 50% 0%, rgba(201, 162, 39, 0.13), transparent 62%);
+  --catalog-field: linear-gradient(180deg, rgba(56, 56, 56, 0.9) 0%, rgba(42, 42, 42, 0.96) 100%);
+  --catalog-field-glow: radial-gradient(ellipse 82% 36% at 50% 0%, rgba(201, 162, 39, 0.07), transparent 62%);
   --search-bg: #f5f3ed;
   --search-bg-focus: #faf8f3;
   --search-border: rgba(201, 162, 39, 0.42);
@@ -92,7 +93,7 @@
   --swatch-default: #d4d4d8;
 
   /* Borders & elevation */
-  --border-soft: rgba(255, 255, 255, 0.13);
+  --border-soft: rgba(255, 255, 255, 0.18);
   --border-strong: rgba(201, 162, 39, 0.32);
   --border-gold-soft: rgba(201, 162, 39, 0.24);
   --border-gold-strong: rgba(214, 184, 74, 0.56);

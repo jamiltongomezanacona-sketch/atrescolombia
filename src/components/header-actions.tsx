@@ -43,16 +43,6 @@ export function HeaderActions({ compact = false, minimal = false }: HeaderAction
   }, []);
 
   if (compact) {
-    // Movil catalogo/tiendas: solo sidebar + buscador (inicio vive en bottom nav).
-    if (
-      pathname === "/productos" ||
-      pathname.startsWith("/productos/") ||
-      pathname === "/tiendas" ||
-      pathname.startsWith("/tiendas/")
-    ) {
-      return null;
-    }
-
     return (
       <nav className="flex shrink-0 items-center justify-end gap-0 lg:hidden" aria-label="Acciones rapidas">
         <ActionLink href="/" label="Ir al inicio" icon="home" compact active={pathname === "/"} />

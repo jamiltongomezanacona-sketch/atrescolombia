@@ -67,7 +67,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </Link>
 
         {ribbon ? (
-          <div className="absolute left-1.5 top-1.5 max-w-[72%] rounded-[var(--radius-card)] bg-brand px-1.5 py-px text-[9px] font-semibold tracking-wide text-badge-gold sm:text-[10px]">
+          <div className="absolute left-1.5 top-1.5 max-w-[72%] rounded-[var(--radius-card)] bg-ink px-1.5 py-px text-[9px] font-semibold tracking-wide text-badge-gold ring-1 ring-[#f0d48a]/28 sm:text-[10px]">
             <span className="truncate">{ribbon}</span>
           </div>
         ) : null}

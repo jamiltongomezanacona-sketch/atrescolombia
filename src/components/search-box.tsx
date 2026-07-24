@@ -87,8 +87,8 @@ export function SearchBox({
         onSubmit={submitSearch}
         className={
           compact
-            ? "store-search-form flex h-10 w-full items-center overflow-hidden rounded-[var(--radius-card)]"
-            : "store-search-form flex h-11 w-full items-center overflow-hidden rounded-[var(--radius-card)]"
+            ? "store-search-form flex h-9 w-full items-center overflow-hidden rounded-[var(--radius-card)]"
+            : "store-search-form flex h-9 w-full items-center overflow-hidden rounded-[var(--radius-card)]"
         }
         role="search"
       >
@@ -120,8 +120,8 @@ export function SearchBox({
           aria-label={buttonLabel}
           className={
             compact
-              ? "store-search-icon mr-2 grid size-[1.625rem] shrink-0 place-items-center rounded-[var(--radius-card)]"
-              : "store-search-icon mr-2.5 grid size-7 shrink-0 place-items-center rounded-[var(--radius-card)]"
+              ? "store-search-icon mr-1.5 grid size-6 shrink-0 place-items-center rounded-[var(--radius-card)]"
+              : "store-search-icon mr-2 grid size-6 shrink-0 place-items-center rounded-[var(--radius-card)]"
           }
         >
           <SearchIcon />

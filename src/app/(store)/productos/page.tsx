@@ -94,7 +94,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     <main>
       <section className="catalog-container products-catalog-container pb-3 pt-1 md:pb-4 md:pt-1.5 lg:pb-5 lg:pt-2">
         {/* Tablet only: mobile uses drawer navigation, desktop already has HeaderNav departments. */}
-        <div className="catalog-sticky-chrome -mx-3 mb-1.5 hidden px-3 py-1.5 sm:block lg:hidden">
+        <div className="catalog-sticky-chrome -mx-3 mb-1.5 hidden px-3 py-1 sm:block lg:hidden">
           <nav
             className="flex gap-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Departamentos del catalogo"
@@ -118,7 +118,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
         <div className="min-w-0">
           {/* Single chrome band: title + filters + sort — stays under fixed header */}
-          <div className="catalog-sticky-chrome -mx-3 mb-2 px-3 py-1.5 sm:mb-2.5 sm:py-2 lg:mb-3">
+          <div className="catalog-sticky-chrome -mx-3 mb-1.5 px-3 py-1 sm:mb-2 sm:py-1.5 lg:mb-2.5">
             <div className="flex items-center justify-between gap-2 sm:hidden">
               <p className="shrink-0 text-sm font-medium tracking-tight text-ink">
                 {filteredProducts.length}

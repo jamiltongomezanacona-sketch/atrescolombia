@@ -123,12 +123,12 @@
     var(--black-secondary) 100%
   );
   /* Mobile: logo/search row only. Desktop: top bar + search + category nav. */
-  --store-header-offset: 3.25rem;
+  --store-header-offset: 2.85rem;
 }
 
 @media (min-width: 1024px) {
   :root {
-    --store-header-offset: 7.85rem;
+    --store-header-offset: 6.35rem;
   }
 }
 

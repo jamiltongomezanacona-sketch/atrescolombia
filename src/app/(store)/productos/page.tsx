@@ -92,7 +92,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <main>
-      <section className="catalog-container products-catalog-container pb-3 pt-1 md:pb-4 md:pt-1.5 lg:pb-5 lg:pt-2">
+      <section className="catalog-container products-catalog-container pb-2 pt-0 md:pb-4 md:pt-1.5 lg:pb-5 lg:pt-2">
         {/* Tablet only: mobile uses drawer navigation, desktop already has HeaderNav departments. */}
         <div className="catalog-sticky-chrome -mx-3 mb-1.5 hidden px-3 py-1 sm:block lg:hidden">
           <nav
@@ -117,17 +117,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
 
         <div className="min-w-0">
-          {/* Single chrome band: title + filters + sort — stays under fixed header */}
-          <div className="catalog-sticky-chrome -mx-3 mb-1.5 px-3 py-1 sm:mb-2 sm:py-1.5 lg:mb-2.5">
-            <div className="flex items-center justify-between gap-2 sm:hidden">
-              <p className="shrink-0 text-sm font-medium tracking-tight text-ink">
+          {/* Mobile: compact filter strip. Desktop/tablet: full chrome. */}
+          <div className="catalog-sticky-chrome mb-0 px-2 py-0.5 sm:-mx-3 sm:mb-2 sm:px-3 sm:py-1.5 lg:mb-2.5">
+            <div className="flex items-center justify-end gap-1.5 sm:hidden">
+              <p className="mr-auto text-[11px] font-medium tabular-nums text-ink-muted">
                 {filteredProducts.length}
-                <span className="ml-1 text-xs font-normal text-ink-muted">productos</span>
               </p>
-              <div className="flex shrink-0 items-center gap-2">
-                <FilterDrawer filters={filters} options={options} label="Filtrar" />
-                <CatalogSortDrawer filters={filters} options={orderLinks} />
-              </div>
+              <FilterDrawer filters={filters} options={options} label="Filtrar" />
+              <CatalogSortDrawer filters={filters} options={orderLinks} />
             </div>
 
             <div className="hidden flex-col gap-1.5 sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-3">

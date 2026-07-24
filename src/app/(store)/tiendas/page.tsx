@@ -24,13 +24,15 @@ export default async function ShopsPage() {
 
   return (
     <main>
-      <section className="catalog-container products-catalog-container pb-3 pt-1 md:pb-3 lg:pb-4">
-        <div className="mb-1.5 flex items-baseline justify-between gap-2 border-b border-white/10 pb-1.5">
+      <section className="catalog-container products-catalog-container pb-3 pt-0 md:pb-3 md:pt-1 lg:pb-4">
+        <div className="mb-1.5 hidden items-baseline justify-between gap-2 border-b border-white/10 pb-1.5 sm:flex">
           <h1 className="text-sm font-medium tracking-tight text-ink sm:text-base">
             Tiendas
             <span className="ml-1.5 text-xs font-normal text-ink-muted">· {cards.length}</span>
           </h1>
         </div>
+
+        <h1 className="sr-only">Tiendas · {cards.length}</h1>
 
         {shops.length === 0 ? (
           <EmptyState

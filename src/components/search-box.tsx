@@ -87,7 +87,7 @@ export function SearchBox({
         onSubmit={submitSearch}
         className={
           compact
-            ? "store-search-form flex h-9 w-full items-center overflow-hidden rounded-[var(--radius-card)]"
+            ? "store-search-form flex h-8 w-full items-center overflow-hidden rounded-[var(--radius-card)]"
             : "store-search-form flex h-9 w-full items-center overflow-hidden rounded-[var(--radius-card)]"
         }
         role="search"

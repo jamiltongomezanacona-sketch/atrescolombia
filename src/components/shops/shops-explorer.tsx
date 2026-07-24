@@ -124,7 +124,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
 
   return (
     <div className="grid gap-1.5">
-      <div className="flex flex-wrap items-center gap-1">
+      <div className="hidden flex-wrap items-center gap-1 sm:flex">
         <button
           type="button"
           onClick={requestLocation}
@@ -178,7 +178,7 @@ export function ShopsExplorer({ shops }: ShopsExplorerProps) {
         )}
       </div>
 
-      <div className="grid w-full gap-1 sm:grid-cols-3 sm:gap-1.5">
+      <div className="hidden w-full gap-1 sm:grid sm:grid-cols-3 sm:gap-1.5">
         <label className="grid gap-0.5 text-[9px] font-semibold uppercase tracking-wide text-ink-muted">
           Ciudad
           <select

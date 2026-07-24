@@ -122,8 +122,8 @@
     var(--black-main) 58%,
     var(--black-secondary) 100%
   );
-  /* Mobile: logo/search row only. Desktop: top bar + search + category nav. */
-  --store-header-offset: 2.85rem;
+  /* Mobile: menu + search only. Desktop: top bar + search + category nav. */
+  --store-header-offset: 2.35rem;
 }
 
 @media (min-width: 1024px) {
@@ -821,6 +821,22 @@ h6 {
 
 .products-catalog-container {
   max-width: none;
+}
+
+/* Mobile catalog: edge-to-edge so the grid fills the viewport */
+@media (max-width: 639px) {
+  .products-catalog-container {
+    padding-inline: 0;
+  }
+
+  .catalog-grid-with-sidebar {
+    gap: 0.25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
 }
 
 @media (min-width: 640px) {

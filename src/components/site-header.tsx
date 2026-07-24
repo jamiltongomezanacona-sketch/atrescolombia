@@ -23,8 +23,8 @@ export async function SiteHeader() {
         </div>
       </div>
 
-      <div className="header-container py-1 lg:py-1">
-        <div className="grid grid-cols-[2.5rem_minmax(0,1fr)_2.5rem] items-center gap-1.5 sm:gap-2 lg:grid-cols-[auto_minmax(0,1fr)_auto] xl:gap-3">
+      <div className="header-container py-0.5 lg:py-1">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-1.5 sm:gap-2 lg:grid-cols-[auto_minmax(0,1fr)_auto] xl:gap-3">
           <div className="flex shrink-0 items-center justify-start gap-1.5">
             <div className="lg:hidden">
               <Suspense fallback={<div className="h-9 w-9 rounded-[var(--radius-card)] bg-white/10" />}>
@@ -36,18 +36,20 @@ export async function SiteHeader() {
             </div>
           </div>
 
-          <div className="min-w-0 lg:justify-self-center lg:w-full lg:max-w-[28rem] xl:max-w-[32rem] 2xl:max-w-[36rem]">
-            <Suspense fallback={<div className="h-9 rounded-[var(--radius-card)] bg-white/10 lg:hidden" />}>
-              <HeaderMobileSearch />
-            </Suspense>
-            <SearchBox
-              className="hidden min-w-0 w-full lg:block"
-              placeholder="Buscar vestidos, jeans, pijamas..."
-            />
+          <div className="flex min-w-0 items-center gap-1 lg:justify-self-center lg:w-full lg:max-w-[28rem] xl:max-w-[32rem] 2xl:max-w-[36rem]">
+            <div className="min-w-0 flex-1">
+              <Suspense fallback={<div className="h-9 rounded-[var(--radius-card)] bg-white/10 lg:hidden" />}>
+                <HeaderMobileSearch />
+              </Suspense>
+              <SearchBox
+                className="hidden min-w-0 w-full lg:block"
+                placeholder="Buscar vestidos, jeans, pijamas..."
+              />
+            </div>
+            <HeaderActions compact minimal />
           </div>
 
-          <div className="flex shrink-0 items-center justify-end">
-            <HeaderActions compact minimal />
+          <div className="hidden shrink-0 items-center justify-end lg:flex">
             <HeaderActions />
           </div>
         </div>
